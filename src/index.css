@@ -1,0 +1,212 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Title App - Bold & Colorful Design System
+   All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Core Background Colors */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 10%;
+
+    /* Card & Surface */
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 10%;
+
+    /* Popover */
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 10%;
+
+    /* Primary - Leaf Green */
+    --primary: 142 71% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Forest Green */
+    --secondary: 158 64% 38%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Muted */
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+
+    /* Accent - Warm Orange */
+    --accent: 24 95% 53%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Success - Emerald Green */
+    --success: 152 76% 42%;
+    --success-foreground: 0 0% 100%;
+
+    /* Warning - Golden Yellow */
+    --warning: 45 93% 47%;
+    --warning-foreground: 0 0% 10%;
+
+    /* Destructive - Coral Red */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Border & Input */
+    --border: 142 20% 85%;
+    --input: 142 20% 85%;
+    --ring: 142 71% 45%;
+
+    /* Radius */
+    --radius: 0.75rem;
+
+    /* Category Colors */
+    --professional: 142 71% 45%;
+    --skilled: 158 64% 38%;
+    --freelancer: 120 60% 50%;
+    --educator: 160 84% 39%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(142, 71%, 45%) 0%, hsl(158, 64%, 38%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(120, 60%, 50%) 0%, hsl(160, 84%, 39%) 100%);
+    --gradient-success: linear-gradient(135deg, hsl(142, 71%, 45%) 0%, hsl(160, 84%, 39%) 100%);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(142 20% 10% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(142 20% 10% / 0.1), 0 2px 4px -2px hsl(142 20% 10% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(142 20% 10% / 0.1), 0 4px 6px -4px hsl(142 20% 10% / 0.1);
+    --shadow-xl: 0 20px 25px -5px hsl(142 20% 10% / 0.1), 0 8px 10px -6px hsl(142 20% 10% / 0.1);
+    --shadow-glow: 0 0 40px -8px hsl(142 71% 45% / 0.4);
+
+    /* Sidebar */
+    --sidebar-background: 142 30% 10%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 142 71% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 142 20% 20%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 142 20% 20%;
+    --sidebar-ring: 142 71% 45%;
+  }
+
+  .dark {
+    --background: 142 20% 6%;
+    --foreground: 0 0% 98%;
+
+    --card: 142 20% 10%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 142 20% 10%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 142 71% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 158 64% 45%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 142 10% 18%;
+    --muted-foreground: 142 10% 65%;
+
+    --accent: 120 60% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --success: 152 76% 48%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 45 93% 52%;
+    --warning-foreground: 0 0% 10%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 142 15% 20%;
+    --input: 142 15% 20%;
+    --ring: 142 71% 50%;
+
+    --professional: 142 71% 50%;
+    --skilled: 158 64% 45%;
+    --freelancer: 120 60% 55%;
+    --educator: 160 84% 45%;
+
+    --shadow-glow: 0 0 40px -8px hsl(142 71% 50% / 0.5);
+
+    --sidebar-background: 142 25% 4%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 142 71% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 142 15% 15%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 142 15% 15%;
+    --sidebar-ring: 142 71% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-accent {
+    background: var(--gradient-accent);
+  }
+
+  .gradient-success {
+    background: var(--gradient-success);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
