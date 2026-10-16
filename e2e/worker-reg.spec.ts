@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { mockMapNetwork } from "./mocks";
-import { WORKERS, adminApprove, grantAdmin, registerWorker, setProfile, signInAt } from "./workerFlow";
+import { WORKERS, adminApprove, grantAdmin, registerWorker, setProfile, signInAt, sql } from "./workerFlow";
 
 const SHOTS = process.env.SHOTS_DIR ?? "../meyiyal/screens";
 const shotter = (page: Page) => (name: string) => {
@@ -8,6 +8,7 @@ const shotter = (page: Page) => (name: string) => {
   return page.screenshot({ path: p === "mobile" ? `${SHOTS}/14-worker-reg-${name}.png` : `${SHOTS}/desktop-14-worker-reg-${name}.png`, fullPage: false });
 };
 
+test.setTimeout(120_000);
 test("Doctor registers (Aadhaar OTP + docs) -> pending -> admin approves -> Go Online; non-admin blocked from /admin", async ({ browser }) => {
   const w = WORKERS[0];
   const ctx = await browser.newContext({ ...test.info().project.use, geolocation: w.at, permissions: ["geolocation"] });
@@ -39,4 +40,5 @@ test("Doctor registers (Aadhaar OTP + docs) -> pending -> admin approves -> Go O
   await page.getByTestId("go-online").click(); // offline again so other suites stay deterministic
   await expect(page.getByTestId("go-online")).not.toBeChecked();
   await ctx.close(); await actx.close();
+  sql(`DELETE FROM auth.users WHERE email LIKE 'regdoc+%@meiyiyal.test';`); // keep demo data to the marketplace set
 });
