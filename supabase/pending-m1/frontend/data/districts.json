@@ -1,0 +1,671 @@
+[
+ {
+  "slug": "kanniyakumari",
+  "name": {
+   "en": "Kanniyakumari",
+   "ta": "கன்னியாகுமரி"
+  },
+  "lat": 8.1833,
+  "lng": 77.4119,
+  "sort": 0,
+  "areas": [
+   "Nagercoil",
+   "Kanniyakumari",
+   "Marthandam",
+   "Kuzhithurai",
+   "Colachel",
+   "Thuckalay",
+   "Padmanabhapuram",
+   "Thovalai"
+  ]
+ },
+ {
+  "slug": "ariyalur",
+  "name": {
+   "en": "Ariyalur",
+   "ta": "அரியலூர்"
+  },
+  "lat": 11.1401,
+  "lng": 79.0786,
+  "sort": 1,
+  "areas": [
+   "Ariyalur",
+   "Jayankondam",
+   "Sendurai",
+   "Udayarpalayam"
+  ]
+ },
+ {
+  "slug": "chengalpattu",
+  "name": {
+   "en": "Chengalpattu",
+   "ta": "செங்கல்பட்டு"
+  },
+  "lat": 12.6819,
+  "lng": 79.9888,
+  "sort": 2,
+  "areas": [
+   "Chengalpattu",
+   "Tambaram",
+   "Pallavaram",
+   "Guduvancheri",
+   "Maraimalai Nagar",
+   "Madurantakam",
+   "Thiruporur",
+   "Mamallapuram"
+  ]
+ },
+ {
+  "slug": "chennai",
+  "name": {
+   "en": "Chennai",
+   "ta": "சென்னை"
+  },
+  "lat": 13.0827,
+  "lng": 80.2707,
+  "sort": 3,
+  "areas": [
+   "T. Nagar",
+   "Adyar",
+   "Anna Nagar",
+   "Velachery",
+   "Mylapore",
+   "Egmore",
+   "Guindy",
+   "Porur",
+   "Tondiarpet",
+   "Perambur",
+   "Sholinganallur",
+   "Vadapalani"
+  ]
+ },
+ {
+  "slug": "coimbatore",
+  "name": {
+   "en": "Coimbatore",
+   "ta": "கோயம்புத்தூர்"
+  },
+  "lat": 11.0168,
+  "lng": 76.9558,
+  "sort": 4,
+  "areas": [
+   "Gandhipuram",
+   "RS Puram",
+   "Peelamedu",
+   "Saibaba Colony",
+   "Pollachi",
+   "Mettupalayam",
+   "Sulur",
+   "Valparai"
+  ]
+ },
+ {
+  "slug": "cuddalore",
+  "name": {
+   "en": "Cuddalore",
+   "ta": "கடலூர்"
+  },
+  "lat": 11.748,
+  "lng": 79.7714,
+  "sort": 5,
+  "areas": [
+   "Cuddalore",
+   "Chidambaram",
+   "Neyveli",
+   "Virudhachalam",
+   "Panruti",
+   "Kattumannarkoil"
+  ]
+ },
+ {
+  "slug": "dharmapuri",
+  "name": {
+   "en": "Dharmapuri",
+   "ta": "தர்மபுரி"
+  },
+  "lat": 12.1211,
+  "lng": 78.1582,
+  "sort": 6,
+  "areas": [
+   "Dharmapuri",
+   "Harur",
+   "Palacode",
+   "Pennagaram",
+   "Pappireddipatti"
+  ]
+ },
+ {
+  "slug": "dindigul",
+  "name": {
+   "en": "Dindigul",
+   "ta": "திண்டுக்கல்"
+  },
+  "lat": 10.3673,
+  "lng": 77.9803,
+  "sort": 7,
+  "areas": [
+   "Dindigul",
+   "Palani",
+   "Kodaikanal",
+   "Oddanchatram",
+   "Natham",
+   "Vedasandur"
+  ]
+ },
+ {
+  "slug": "erode",
+  "name": {
+   "en": "Erode",
+   "ta": "ஈரோடு"
+  },
+  "lat": 11.341,
+  "lng": 77.7172,
+  "sort": 8,
+  "areas": [
+   "Erode",
+   "Gobichettipalayam",
+   "Bhavani",
+   "Sathyamangalam",
+   "Perundurai",
+   "Anthiyur"
+  ]
+ },
+ {
+  "slug": "kallakurichi",
+  "name": {
+   "en": "Kallakurichi",
+   "ta": "கள்ளக்குறிச்சி"
+  },
+  "lat": 11.7383,
+  "lng": 78.9639,
+  "sort": 9,
+  "areas": [
+   "Kallakurichi",
+   "Ulundurpet",
+   "Sankarapuram",
+   "Chinnasalem",
+   "Tirukoilur"
+  ]
+ },
+ {
+  "slug": "kancheepuram",
+  "name": {
+   "en": "Kancheepuram",
+   "ta": "காஞ்சிபுரம்"
+  },
+  "lat": 12.8342,
+  "lng": 79.7036,
+  "sort": 10,
+  "areas": [
+   "Kancheepuram",
+   "Sriperumbudur",
+   "Walajabad",
+   "Uthiramerur",
+   "Kundrathur"
+  ]
+ },
+ {
+  "slug": "karur",
+  "name": {
+   "en": "Karur",
+   "ta": "கரூர்"
+  },
+  "lat": 10.9601,
+  "lng": 78.0766,
+  "sort": 11,
+  "areas": [
+   "Karur",
+   "Kulithalai",
+   "Aravakurichi",
+   "Krishnarayapuram"
+  ]
+ },
+ {
+  "slug": "krishnagiri",
+  "name": {
+   "en": "Krishnagiri",
+   "ta": "கிருஷ்ணகிரி"
+  },
+  "lat": 12.5266,
+  "lng": 78.215,
+  "sort": 12,
+  "areas": [
+   "Krishnagiri",
+   "Hosur",
+   "Denkanikottai",
+   "Pochampalli",
+   "Uthangarai"
+  ]
+ },
+ {
+  "slug": "madurai",
+  "name": {
+   "en": "Madurai",
+   "ta": "மதுரை"
+  },
+  "lat": 9.9252,
+  "lng": 78.1198,
+  "sort": 13,
+  "areas": [
+   "Madurai City",
+   "Anna Nagar (Madurai)",
+   "K. Pudur",
+   "Thirumangalam",
+   "Melur",
+   "Usilampatti",
+   "Vadipatti",
+   "Thiruparankundram"
+  ]
+ },
+ {
+  "slug": "mayiladuthurai",
+  "name": {
+   "en": "Mayiladuthurai",
+   "ta": "மயிலாடுதுறை"
+  },
+  "lat": 11.1018,
+  "lng": 79.652,
+  "sort": 14,
+  "areas": [
+   "Mayiladuthurai",
+   "Sirkazhi",
+   "Kuthalam",
+   "Tharangambadi"
+  ]
+ },
+ {
+  "slug": "nagapattinam",
+  "name": {
+   "en": "Nagapattinam",
+   "ta": "நாகப்பட்டினம்"
+  },
+  "lat": 10.7672,
+  "lng": 79.8449,
+  "sort": 15,
+  "areas": [
+   "Nagapattinam",
+   "Vedaranyam",
+   "Kilvelur",
+   "Velankanni"
+  ]
+ },
+ {
+  "slug": "namakkal",
+  "name": {
+   "en": "Namakkal",
+   "ta": "நாமக்கல்"
+  },
+  "lat": 11.2189,
+  "lng": 78.1674,
+  "sort": 16,
+  "areas": [
+   "Namakkal",
+   "Tiruchengode",
+   "Rasipuram",
+   "Paramathi Velur",
+   "Kumarapalayam"
+  ]
+ },
+ {
+  "slug": "nilgiris",
+  "name": {
+   "en": "Nilgiris",
+   "ta": "நீலகிரி"
+  },
+  "lat": 11.4064,
+  "lng": 76.6932,
+  "sort": 17,
+  "areas": [
+   "Ooty",
+   "Coonoor",
+   "Kotagiri",
+   "Gudalur"
+  ]
+ },
+ {
+  "slug": "perambalur",
+  "name": {
+   "en": "Perambalur",
+   "ta": "பெரம்பலூர்"
+  },
+  "lat": 11.2342,
+  "lng": 78.8807,
+  "sort": 18,
+  "areas": [
+   "Perambalur",
+   "Kunnam",
+   "Veppanthattai",
+   "Alathur"
+  ]
+ },
+ {
+  "slug": "pudukkottai",
+  "name": {
+   "en": "Pudukkottai",
+   "ta": "புதுக்கோட்டை"
+  },
+  "lat": 10.3797,
+  "lng": 78.8205,
+  "sort": 19,
+  "areas": [
+   "Pudukkottai",
+   "Aranthangi",
+   "Alangudi",
+   "Illuppur",
+   "Gandarvakottai"
+  ]
+ },
+ {
+  "slug": "ramanathapuram",
+  "name": {
+   "en": "Ramanathapuram",
+   "ta": "ராமநாதபுரம்"
+  },
+  "lat": 9.3639,
+  "lng": 78.8395,
+  "sort": 20,
+  "areas": [
+   "Ramanathapuram",
+   "Rameswaram",
+   "Paramakudi",
+   "Kamuthi",
+   "Mudukulathur"
+  ]
+ },
+ {
+  "slug": "ranipet",
+  "name": {
+   "en": "Ranipet",
+   "ta": "ராணிப்பேட்டை"
+  },
+  "lat": 12.9224,
+  "lng": 79.3326,
+  "sort": 21,
+  "areas": [
+   "Ranipet",
+   "Arakkonam",
+   "Walajapet",
+   "Arcot",
+   "Sholingur"
+  ]
+ },
+ {
+  "slug": "salem",
+  "name": {
+   "en": "Salem",
+   "ta": "சேலம்"
+  },
+  "lat": 11.6643,
+  "lng": 78.146,
+  "sort": 22,
+  "areas": [
+   "Salem City",
+   "Attur",
+   "Mettur",
+   "Omalur",
+   "Edappadi",
+   "Yercaud"
+  ]
+ },
+ {
+  "slug": "sivaganga",
+  "name": {
+   "en": "Sivaganga",
+   "ta": "சிவகங்கை"
+  },
+  "lat": 9.8433,
+  "lng": 78.4809,
+  "sort": 23,
+  "areas": [
+   "Sivaganga",
+   "Karaikudi",
+   "Devakottai",
+   "Manamadurai",
+   "Thiruppuvanam"
+  ]
+ },
+ {
+  "slug": "tenkasi",
+  "name": {
+   "en": "Tenkasi",
+   "ta": "தென்காசி"
+  },
+  "lat": 8.9594,
+  "lng": 77.3152,
+  "sort": 24,
+  "areas": [
+   "Tenkasi",
+   "Sankarankovil",
+   "Kadayanallur",
+   "Courtallam",
+   "Alangulam"
+  ]
+ },
+ {
+  "slug": "thanjavur",
+  "name": {
+   "en": "Thanjavur",
+   "ta": "தஞ்சாவூர்"
+  },
+  "lat": 10.787,
+  "lng": 79.1378,
+  "sort": 25,
+  "areas": [
+   "Thanjavur",
+   "Kumbakonam",
+   "Pattukkottai",
+   "Papanasam",
+   "Orathanadu"
+  ]
+ },
+ {
+  "slug": "theni",
+  "name": {
+   "en": "Theni",
+   "ta": "தேனி"
+  },
+  "lat": 10.0104,
+  "lng": 77.4768,
+  "sort": 26,
+  "areas": [
+   "Theni",
+   "Periyakulam",
+   "Bodinayakanur",
+   "Cumbum",
+   "Andipatti"
+  ]
+ },
+ {
+  "slug": "thoothukudi",
+  "name": {
+   "en": "Thoothukudi",
+   "ta": "தூத்துக்குடி"
+  },
+  "lat": 8.7642,
+  "lng": 78.1348,
+  "sort": 27,
+  "areas": [
+   "Thoothukudi",
+   "Tiruchendur",
+   "Kovilpatti",
+   "Srivaikuntam",
+   "Ettayapuram"
+  ]
+ },
+ {
+  "slug": "tiruchirappalli",
+  "name": {
+   "en": "Tiruchirappalli",
+   "ta": "திருச்சிராப்பள்ளி"
+  },
+  "lat": 10.7905,
+  "lng": 78.7047,
+  "sort": 28,
+  "areas": [
+   "Trichy City",
+   "Srirangam",
+   "Thillai Nagar",
+   "Manapparai",
+   "Lalgudi",
+   "Musiri",
+   "Thuraiyur"
+  ]
+ },
+ {
+  "slug": "tirunelveli",
+  "name": {
+   "en": "Tirunelveli",
+   "ta": "திருநெல்வேலி"
+  },
+  "lat": 8.7139,
+  "lng": 77.7567,
+  "sort": 29,
+  "areas": [
+   "Tirunelveli Town",
+   "Palayamkottai",
+   "Ambasamudram",
+   "Nanguneri",
+   "Radhapuram"
+  ]
+ },
+ {
+  "slug": "tirupathur",
+  "name": {
+   "en": "Tirupathur",
+   "ta": "திருப்பத்தூர்"
+  },
+  "lat": 12.495,
+  "lng": 78.573,
+  "sort": 30,
+  "areas": [
+   "Tirupathur",
+   "Vaniyambadi",
+   "Ambur",
+   "Natrampalli"
+  ]
+ },
+ {
+  "slug": "tiruppur",
+  "name": {
+   "en": "Tiruppur",
+   "ta": "திருப்பூர்"
+  },
+  "lat": 11.1085,
+  "lng": 77.3411,
+  "sort": 31,
+  "areas": [
+   "Tiruppur",
+   "Avinashi",
+   "Palladam",
+   "Dharapuram",
+   "Udumalaipettai",
+   "Kangeyam"
+  ]
+ },
+ {
+  "slug": "tiruvallur",
+  "name": {
+   "en": "Tiruvallur",
+   "ta": "திருவள்ளூர்"
+  },
+  "lat": 13.1231,
+  "lng": 79.912,
+  "sort": 32,
+  "areas": [
+   "Tiruvallur",
+   "Avadi",
+   "Ambattur",
+   "Poonamallee",
+   "Gummidipoondi",
+   "Tiruttani",
+   "Ponneri"
+  ]
+ },
+ {
+  "slug": "tiruvannamalai",
+  "name": {
+   "en": "Tiruvannamalai",
+   "ta": "திருவண்ணாமலை"
+  },
+  "lat": 12.2253,
+  "lng": 79.0747,
+  "sort": 33,
+  "areas": [
+   "Tiruvannamalai",
+   "Arani",
+   "Cheyyar",
+   "Polur",
+   "Vandavasi",
+   "Chengam"
+  ]
+ },
+ {
+  "slug": "tiruvarur",
+  "name": {
+   "en": "Tiruvarur",
+   "ta": "திருவாரூர்"
+  },
+  "lat": 10.7661,
+  "lng": 79.6344,
+  "sort": 34,
+  "areas": [
+   "Tiruvarur",
+   "Mannargudi",
+   "Thiruthuraipoondi",
+   "Needamangalam",
+   "Kodavasal"
+  ]
+ },
+ {
+  "slug": "vellore",
+  "name": {
+   "en": "Vellore",
+   "ta": "வேலூர்"
+  },
+  "lat": 12.9165,
+  "lng": 79.1325,
+  "sort": 35,
+  "areas": [
+   "Vellore",
+   "Katpadi",
+   "Gudiyatham",
+   "Pernambut",
+   "Anaicut"
+  ]
+ },
+ {
+  "slug": "viluppuram",
+  "name": {
+   "en": "Viluppuram",
+   "ta": "விழுப்புரம்"
+  },
+  "lat": 11.9401,
+  "lng": 79.4861,
+  "sort": 36,
+  "areas": [
+   "Viluppuram",
+   "Tindivanam",
+   "Gingee",
+   "Vanur",
+   "Vikravandi"
+  ]
+ },
+ {
+  "slug": "virudhunagar",
+  "name": {
+   "en": "Virudhunagar",
+   "ta": "விருதுநகர்"
+  },
+  "lat": 9.568,
+  "lng": 77.9624,
+  "sort": 37,
+  "areas": [
+   "Virudhunagar",
+   "Sivakasi",
+   "Rajapalayam",
+   "Aruppukottai",
+   "Srivilliputhur",
+   "Sattur"
+  ]
+ }
+]

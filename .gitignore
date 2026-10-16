@@ -28,3 +28,6 @@ dist-ssr
 !.env.example
 supabase/.env
 supabase/.temp
+test-results/
+playwright-report/
+.env.local
