@@ -1,5 +1,8 @@
 {
-  "app": { "name": "Meiyiyal", "tagline": "Verified experts, online" },
+  "app": {
+    "name": "Meiyiyal",
+    "tagline": "Verified experts, online"
+  },
   "auth": {
     "title": "Sign in",
     "google": "Continue with Google",
@@ -22,5 +25,26 @@
     "signedInAs": "Signed in as",
     "signOut": "Sign out"
   },
-  "common": { "error": "Something went wrong" }
+  "common": {
+    "error": "Something went wrong"
+  },
+  "location": {
+    "title": "Select your location",
+    "searchPlaceholder": "Search district or area",
+    "useCurrent": "Use current location",
+    "useCurrentHint": "Using GPS",
+    "detecting": "Detecting your location…",
+    "detected": "Detected location",
+    "confirm": "Confirm & continue",
+    "denied": "Location permission denied. Please pick your district and area below.",
+    "gpsError": "Couldn't get your location. Please pick it manually.",
+    "saveError": "Couldn't save location. Try again.",
+    "allDistricts": "All districts",
+    "wholeDistrict": "Entire {{name}} district",
+    "areas": "Areas",
+    "districts": "Tamil Nadu districts",
+    "noResults": "No matching places",
+    "change": "Change location",
+    "deliverTo": "Your location"
+  }
 }
