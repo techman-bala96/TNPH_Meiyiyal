@@ -43,7 +43,7 @@ export default function Profile() {
     try { const url = await uploadAvatar(user.id, f); await update({ avatar_url: url }); }
     catch { setErr(t("profile.photoError")); } finally { setBusy(null); if (file.current) file.current.value = ""; }
   }
-  async function useLoc(id: string) {
+  async function switchLoc(id: string) {
     await supabase.rpc("use_saved_location", { _id: id });
     await Promise.all([qc.invalidateQueries({ queryKey: ["my-locations"] }), qc.invalidateQueries({ queryKey: ["current-location"] })]);
   }
@@ -89,7 +89,7 @@ export default function Profile() {
               <span className="min-w-0 flex-1"><span className="block truncate text-sm font-medium">{label(l)}</span>
                 {l.address && <span className="block truncate text-xs text-muted-foreground">{l.address}</span>}</span>
               {l.is_current ? <span data-testid="loc-current" className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">{t("profile.current")}</span>
-                : <button data-testid="loc-use" onClick={() => useLoc(l.id)} className="text-xs font-semibold text-primary">{t("profile.use")}</button>}
+                : <button data-testid="loc-use" onClick={() => switchLoc(l.id)} className="text-xs font-semibold text-primary">{t("profile.use")}</button>}
             </li>
           ))}
         </ul>
