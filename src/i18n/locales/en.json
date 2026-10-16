@@ -194,5 +194,16 @@
   },
   "menu2": {
     "admin": "Admin"
+  },
+  "list": {
+    "nearYou": "Near you",
+    "allTn": "All Tamil Nadu",
+    "near": "Nearby",
+    "showAll": "Show all",
+    "online": "Online",
+    "offline": "Offline",
+    "new": "New",
+    "yrs_one": "{{count}} yr",
+    "yrs_other": "{{count}} yrs"
   }
 }

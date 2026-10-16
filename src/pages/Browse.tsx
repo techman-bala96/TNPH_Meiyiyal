@@ -1,7 +1,8 @@
 import { Fragment } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, ChevronRight, House, SearchX } from "lucide-react";
+import { ArrowLeft, ChevronRight, House } from "lucide-react";
+import { WorkerList } from "@/components/app/WorkerList";
 import { HomeHeader } from "@/components/app/HomeHeader";
 import { childrenOf, nodeName, pathTo, useTaxonomy, type TaxNode } from "@/features/taxonomy/useTaxonomy";
 import { iconFor } from "@/features/taxonomy/icons";
@@ -59,11 +60,11 @@ export default function Browse() {
         </div>
       </section>
 
-      <div className="px-4 pt-4">
-        {leaf ? <EmptyWorkers node={node} accent={th.tile} where={where} lang={lang} />
-          : kids.some((k) => childrenOf(all, k.slug).length > 0) || node.kind !== "subcategory"
-            ? <TileGrid kids={kids} all={all} tile={th.tile} ring={th.ring} lang={lang} />
-            : <ChipList kids={kids} accent={th.accent} lang={lang} />}
+      <div className="space-y-5 px-4 pt-4">
+        {!leaf && (kids.some((k) => childrenOf(all, k.slug).length > 0) || node.kind !== "subcategory"
+          ? <TileGrid kids={kids} all={all} tile={th.tile} ring={th.ring} lang={lang} />
+          : <ChipList kids={kids} accent={th.accent} lang={lang} />)}
+        {(node.kind === "subcategory" || node.kind === "specialty") && <WorkerList key={slug} node={slug} nodeLabel={nodeName(node, lang)} tile={th.tile} where={where} />}
       </div>
     </main>
   );
@@ -102,17 +103,5 @@ function ChipList({ kids, accent, lang }: { kids: TaxNode[]; accent: string; lan
         </li>
       ))}
     </ul>
-  );
-}
-
-function EmptyWorkers({ node, accent, where, lang }: { node: TaxNode; accent: string; where: string; lang: string }) {
-  const { t } = useTranslation();
-  return (
-    <section data-testid="worker-empty" className="card-soft flex flex-col items-center gap-3 p-6 text-center">
-      <span className={`grid h-16 w-16 place-items-center rounded-full ${accent}`}><SearchX className="h-8 w-8" /></span>
-      <h2 className="text-base font-semibold">{t("browse.emptyTitle", { name: nodeName(node, lang) })}</h2>
-      <p className="text-sm text-muted-foreground">{t("browse.emptyBody", { place: where })}</p>
-      <Link to="/location" state={{ from: `/browse/${node.slug}` }} className="text-sm font-semibold text-primary">{t("location.change")}</Link>
-    </section>
   );
 }

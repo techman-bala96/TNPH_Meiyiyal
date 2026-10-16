@@ -35,9 +35,9 @@ test("Find Worker: Professionals -> Doctor -> Allopathy -> Paediatrics, breadcru
   await expect(page.getByTestId("breadcrumb")).toContainText("Professionals");
   await expect(page.getByTestId("breadcrumb")).toContainText("Doctor");
   await expect(page.getByTestId("crumb-current")).toHaveText("Allopathy");
-  await page.getByTestId("node-professionals--doctor--allopathy--paediatrics").click();
-  await expect(page.getByTestId("worker-empty")).toContainText("Paediatrics");
-  await expect(page).toHaveURL(/\/browse\/professionals--doctor--allopathy--paediatrics$/);
+  await page.getByTestId("node-professionals--doctor--allopathy--cardiology").click();
+  await expect(page.getByTestId("worker-empty")).toContainText("Cardiology");
+  await expect(page).toHaveURL(/\/browse\/professionals--doctor--allopathy--cardiology$/);
   await shot(page, "03-empty-workers");
 
   // breadcrumb back to Doctor, then back button to Professionals group, then Home

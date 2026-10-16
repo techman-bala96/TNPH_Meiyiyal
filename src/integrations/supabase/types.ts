@@ -899,6 +899,11 @@ isOneToOne: false
 "postgis_wagyu_version":
 { Args: Record<PropertyKey, never>; Returns: string
                            },
+"search_workers":
+{ Args: { "_all"?: boolean,"_lat": number,"_limit"?: number,"_lng": number,"_node": string,"_radius_km"?: number }; Returns: {
+              "display_name": string,"distance_km": number,"district_name": Json,"district_slug": string,"feedback_count": number,"id": string,"is_online": boolean,"photo_url": string,"primary_node": string,"rating": number,"rewards_count": number,"specialty": Json,"years_experience": number
+            }[]
+                           },
 "set_current_location":
 { Args: { "_address"?: string,"_area"?: number,"_district"?: string,"_lat": number,"_lng": number,"_source": string }; Returns: string
                            },
