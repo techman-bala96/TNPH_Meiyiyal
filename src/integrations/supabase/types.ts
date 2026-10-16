@@ -501,14 +501,14 @@ isOneToOne: false
                   ]
                 },"workers": {
                   Row: {
-                    "about": string | null,"base_geog": unknown,"category": Database["public"]['Enums']["worker_category"],"created_at": string,"decided_at": string | null,"display_name": string | null,"district_slug": string | null,"hourly_rate": number | null,"id": string,"is_active": boolean,"is_online": boolean,"is_verified": boolean,"last_seen_at": string | null,"occupation_id": string | null,"photo_url": string | null,"primary_node": string | null,"rating": number | null,"reg_data": NonNullable<Json>,"review_note": string | null,"rewards_count": number,"status": string,"submitted_at": string | null,"total_reviews": number | null,"updated_at": string,"user_id": string,"years_experience": number | null
+                    "about": string | null,"base_geog": unknown,"category": Database["public"]['Enums']["worker_category"],"created_at": string,"decided_at": string | null,"display_name": string | null,"district_slug": string | null,"hourly_rate": number | null,"id": string,"is_active": boolean,"is_online": boolean,"is_verified": boolean,"last_seen_at": string | null,"locked_category": string | null,"occupation_id": string | null,"photo_url": string | null,"primary_node": string | null,"rating": number | null,"reg_data": NonNullable<Json>,"review_note": string | null,"rewards_count": number,"status": string,"submitted_at": string | null,"total_reviews": number | null,"updated_at": string,"user_id": string,"years_experience": number | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "about"?: string | null,"base_geog"?: unknown,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"occupation_id"?: string | null,"photo_url"?: string | null,"primary_node"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"status"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id": string,"years_experience"?: number | null
+                    "about"?: string | null,"base_geog"?: unknown,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"locked_category"?: string | null,"occupation_id"?: string | null,"photo_url"?: string | null,"primary_node"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"status"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id": string,"years_experience"?: number | null
                   }
                   Update: {
-                    "about"?: string | null,"base_geog"?: unknown,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"occupation_id"?: string | null,"photo_url"?: string | null,"primary_node"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"status"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id"?: string,"years_experience"?: number | null
+                    "about"?: string | null,"base_geog"?: unknown,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"locked_category"?: string | null,"occupation_id"?: string | null,"photo_url"?: string | null,"primary_node"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"status"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id"?: string,"years_experience"?: number | null
                   }
                   Relationships: [
                     {
@@ -803,6 +803,7 @@ isOneToOne: false
 "is_online": boolean,
 "is_verified": boolean,
 "last_seen_at": string | null,
+"locked_category": string | null,
 "occupation_id": string | null,
 "photo_url": string | null,
 "primary_node": string | null,
@@ -827,6 +828,9 @@ isOneToOne: false
 { Args: { "_lat": number,"_lng": number }; Returns: {
               "area_id": number,"area_name": string,"area_name_ta": string,"distance_km": number,"district_name": Json,"district_slug": string
             }[]
+                           },
+"node_category":
+{ Args: { "_slug": string }; Returns: string
                            },
 "node_requirements_for":
 { Args: { "_slug": string }; Returns: Json
@@ -1400,6 +1404,9 @@ isOneToOne: false
                            },
 "worker_register":
 { Args: { "_about": string,"_display_name": string,"_extra_nodes": (string)[],"_node": string,"_reg": Json,"_years": number }; Returns: string
+                           },
+"worker_register_guard":
+{ Args: { "_node": string }; Returns: undefined
                            },
 "worker_set_online":
 { Args: { "_online": boolean }; Returns: boolean

@@ -35,6 +35,14 @@ test("Doctor registers (Aadhaar OTP + docs) -> pending -> admin approves -> Go O
   await page.getByTestId("go-online").click();
   await expect(page.getByTestId("go-online")).toBeChecked();
   await shotter(page)("07-online");
+  // profession shown + locked in Profile & Settings
+  await page.goto("/profile");
+  await expect(page.getByTestId("worker-badge")).toHaveAttribute("data-status", "approved");
+  await expect(page.getByTestId("worker-badge-profession")).toContainText("Doctor");
+  await expect(page.getByTestId("worker-badge-profession").locator("svg")).toBeVisible();
+  await page.goto("/settings");
+  await expect(page.getByTestId("worker-badge")).toContainText("Paediatrics");
+  await page.goto("/?tab=worker");
   await page.reload();
   await expect(page.getByTestId("go-online")).toBeChecked();
   await page.getByTestId("go-online").click(); // offline again so other suites stay deterministic

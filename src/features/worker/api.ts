@@ -8,7 +8,7 @@ export type ReqDoc = { type: string; label: I18nName; required: boolean };
 export type Requirements = { fields: ReqField[]; docs: ReqDoc[] };
 export type Worker = {
   id: string; status: "draft" | "pending" | "needs_info" | "approved" | "rejected" | "blocked"; primary_node: string | null; display_name: string | null;
-  years_experience: number | null; about: string | null; reg_data: Record<string, string>; is_online: boolean; review_note: string | null; submitted_at: string | null;
+  years_experience: number | null; about: string | null; reg_data: Record<string, string>; is_online: boolean; review_note: string | null; submitted_at: string | null; locked_category: string | null;
 };
 export type Kyc = { aadhaar_verified: boolean; masked: string; status: string } | null;
 

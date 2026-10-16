@@ -120,8 +120,9 @@ export default function WorkerRegister() {
 
       {step === "profession" && (
         <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2">
+          {w?.locked_category && <p data-testid="profession-locked" className="text-xs text-muted-foreground">{t("worker.lockedNote")}</p>}
           <div className="grid grid-cols-3 gap-2">
-            {cats.map((c) => { const T = THEMES[c.slug.split("--").pop()!] ?? THEMES.default; const Icon = iconFor(c.icon); const on = cat === c.slug;
+            {cats.filter((c) => !w?.locked_category || c.slug === w.locked_category).map((c) => { const T = THEMES[c.slug.split("--").pop()!] ?? THEMES.default; const Icon = iconFor(c.icon); const on = cat === c.slug;
               return (
                 <button key={c.slug} data-testid={`reg-cat-${c.slug}`} onClick={() => { setCat(c.slug); setNode(null); setExtra([]); setReg({}); }}
                   className={`relative overflow-hidden rounded-2xl p-3 text-left transition ${T.hero} ${T.ink} ${on ? "ring-4 ring-primary/40" : "opacity-80"}`}>

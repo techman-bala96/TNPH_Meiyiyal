@@ -175,7 +175,9 @@
       "otp": "Wrong OTP",
       "tooBig": "File is larger than 10 MB",
       "upload": "Upload failed"
-    }
+    },
+    "locked": "Profession locked",
+    "lockedNote": "Your profession is locked after registration. You can still change your field within it."
   },
   "admin": {
     "title": "Verification",

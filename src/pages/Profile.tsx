@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PageShell, Section } from "@/components/app/PageShell";
+import { WorkerBadge } from "@/components/app/WorkerBadge";
 import { UserAvatar } from "@/components/app/UserMenu";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -62,6 +63,7 @@ export default function Profile() {
         <p className="text-xs text-muted-foreground">{t("profile.photoHint")}</p>
       </div>
 
+      <WorkerBadge />
       <Section title={t("profile.details")}>
         <div className="space-y-3">
           <div className="space-y-1"><Label htmlFor="pf-name">{t("profile.name")}</Label>

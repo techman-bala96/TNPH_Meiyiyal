@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Monitor, Moon, Sun } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { PageShell, Section } from "@/components/app/PageShell";
+import { WorkerBadge } from "@/components/app/WorkerBadge";
 import { useProfile, useUpdateProfile, type Prefs } from "@/features/profile/useProfile";
 
 export default function Settings() {
@@ -18,6 +19,7 @@ export default function Settings() {
 
   return (
     <PageShell title={t("menu.settings")} testId="settings-page">
+      <WorkerBadge />
       <Section title={t("settings.language")}>
         <div className="flex gap-1 rounded-2xl bg-muted p-1">
           {(["en", "ta"] as const).map((l) => (
