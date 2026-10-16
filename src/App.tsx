@@ -14,6 +14,9 @@ import Admin from "@/pages/Admin";
 import { ThemeProvider } from "next-themes";
 import { PrefsSync } from "@/components/app/PrefsSync";
 import LocationPage from "@/pages/LocationPage";
+import Session from "@/pages/Session";
+import History from "@/pages/History";
+import { ConsultProvider } from "@/features/consult/ConsultProvider";
 
 const qc = new QueryClient();
 
@@ -25,6 +28,7 @@ export default function App() {
       <BrowserRouter>
         <AuthProvider>
           <PrefsSync />
+          <ConsultProvider>
           <Routes>
             <Route element={<GuestOnly />}><Route path="/login" element={<Login />} /></Route>
             <Route path="/auth/callback" element={<AuthCallback />} />
@@ -33,6 +37,8 @@ export default function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/session/:id" element={<Session />} />
+              <Route path="/history" element={<History />} />
               <Route element={<RequireLocation />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/browse/:slug" element={<Browse />} />
@@ -41,6 +47,7 @@ export default function App() {
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          </ConsultProvider>
         </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>

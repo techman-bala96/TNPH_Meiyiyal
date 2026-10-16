@@ -7,9 +7,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { supabase } from "@/integrations/supabase/client";
 import { useCurrentLocation } from "@/features/location/useCurrentLocation";
 import { initials } from "@/features/profile/useProfile";
+import { RequestSheet } from "@/features/consult/RequestSheet";
+import type { Rates } from "@/features/consult/api";
 
 export type WorkerCard = { id: string; display_name: string; photo_url: string | null; rating: number; feedback_count: number; rewards_count: number; years_experience: number;
-  primary_node: string; specialty: { en: string; ta?: string } | null; is_online: boolean; distance_km: number; district_slug: string | null; district_name: { en: string; ta?: string } | null };
+  primary_node: string; specialty: { en: string; ta?: string } | null; is_online: boolean; distance_km: number; district_slug: string | null; district_name: { en: string; ta?: string } | null;
+  is_busy?: boolean; rates?: Rates };
 
 export function WorkerList({ node, nodeLabel, tile, where }: { node: string; nodeLabel: string; tile: string; where: string }) {
   const { t, i18n } = useTranslation(); const ta = i18n.language?.startsWith("ta");
@@ -60,8 +63,12 @@ export function WorkerList({ node, nodeLabel, tile, where }: { node: string; nod
 function Card({ w }: { w: WorkerCard }) {
   const { t, i18n } = useTranslation(); const ta = i18n.language?.startsWith("ta");
   const spec = w.specialty ? (ta && w.specialty.ta) || w.specialty.en : "";
-  return (
-    <li data-testid="worker-card" data-name={w.display_name} data-online={w.is_online} className="card-soft flex gap-3 p-3 animate-in fade-in slide-in-from-bottom-1">
+  const [open, setOpen] = useState(false);
+  return (<>
+    <RequestSheet w={{ ...w, spec }} open={open} onOpenChange={setOpen} />
+    <li data-testid="worker-card" data-name={w.display_name} data-online={w.is_online} data-busy={!!w.is_busy} role="button" tabIndex={0}
+      onClick={() => setOpen(true)} onKeyDown={(e) => e.key === "Enter" && setOpen(true)}
+      className="card-soft flex cursor-pointer gap-3 p-3 transition hover:-translate-y-0.5 hover:shadow-lg animate-in fade-in slide-in-from-bottom-1">
       <div className="relative shrink-0">
         <Avatar className="h-16 w-16 rounded-2xl">
           {w.photo_url && <AvatarImage src={w.photo_url} alt="" className="object-cover" />}
@@ -77,7 +84,7 @@ function Card({ w }: { w: WorkerCard }) {
           <p className="flex min-w-0 items-center gap-1 font-semibold"><span className="truncate">{w.display_name}</span><BadgeCheck className="h-4 w-4 shrink-0 text-primary" /></p>
           <span data-testid="distance" className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[11px] font-semibold">{w.distance_km.toFixed(1)} km</span>
         </div>
-        <p className="truncate text-xs text-muted-foreground">{spec}</p>
+        <p className="truncate text-xs text-muted-foreground">{spec}{w.is_busy && <span className="ml-1 font-semibold text-amber-600">· {t("consult.busy")}</span>}</p>
         <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
           <span className="flex items-center gap-0.5 font-semibold" data-testid="rating"><Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />{w.feedback_count > 0 ? Number(w.rating).toFixed(1) : t("list.new")}</span>
           <span className="flex items-center gap-0.5 text-muted-foreground"><Briefcase className="h-3.5 w-3.5" />{t("list.yrs", { count: w.years_experience })}</span>
@@ -86,5 +93,5 @@ function Card({ w }: { w: WorkerCard }) {
         </div>
       </div>
     </li>
-  );
+  </>);
 }

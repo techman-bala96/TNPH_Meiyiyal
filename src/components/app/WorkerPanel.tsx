@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
@@ -9,19 +8,9 @@ import { nodeName, pathTo, useTaxonomy } from "@/features/taxonomy/useTaxonomy";
 import { patternStyle, themeFor } from "@/features/taxonomy/themes";
 import { useMyWorker } from "@/features/worker/api";
 
-/** Keeps presence fresh while online (search treats >15 min without heartbeat as offline). */
-function useHeartbeat(on: boolean) {
-  useEffect(() => {
-    if (!on) return;
-    const id = setInterval(() => { supabase.rpc("worker_set_online", { _online: true }); }, 120_000);
-    return () => clearInterval(id);
-  }, [on]);
-}
-
 export function WorkerPanel() {
   const { t, i18n } = useTranslation(); const lang = i18n.language?.startsWith("ta") ? "ta" : "en";
   const { data: w, isLoading } = useMyWorker(); const tax = useTaxonomy(); const qc = useQueryClient();
-  useHeartbeat(!!w?.is_online);
   if (isLoading) return <div className="h-40 animate-pulse rounded-3xl bg-muted" />;
 
   if (!w || (w.status === "draft" && !w.primary_node)) return (

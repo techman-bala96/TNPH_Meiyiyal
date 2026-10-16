@@ -207,5 +207,62 @@
     "new": "New",
     "yrs_one": "{{count}} yr",
     "yrs_other": "{{count}} yrs"
+  },
+  "consult": {
+    "cancel": "Cancel",
+    "declined": "{{name}} declined your request",
+    "noAnswer": "{{name}} didn't answer. Try again later.",
+    "someone": "Someone",
+    "incoming": {
+      "chat": "Incoming chat request",
+      "voice": "Incoming voice call",
+      "video": "Incoming video call"
+    },
+    "rateLine": "{{rate}} credits/min · min {{min}} min",
+    "ringsFor": "Ringing · {{s}}s",
+    "decline": "Decline",
+    "accept": "Accept",
+    "calling": "Calling…",
+    "waiting": "Waiting for answer · {{s}}s",
+    "balance": "Balance",
+    "creditsAdded": "500 test credits added",
+    "testCredits": "Get test credits",
+    "busy": "In a session",
+    "mode": {
+      "chat": "Chat",
+      "voice": "Voice",
+      "video": "Video"
+    },
+    "perMin": "{{rate}} cr/min",
+    "minMin": "min {{min}} min",
+    "billingNote": "Billed per started minute. You can switch to voice or video inside the session.",
+    "call": {
+      "idle": "Starting…",
+      "connecting": "Connecting…",
+      "connected": "Connected",
+      "failed": "Connection failed",
+      "ended": "Call ended"
+    },
+    "notFound": "Session not found",
+    "home": "Home",
+    "spent": "Spent",
+    "earning": "Earned (gross)",
+    "lowBalance": "Low balance · about {{n}} min left",
+    "typeMsg": "Type a message",
+    "tooBig": "File too large (max 20 MB)",
+    "end": "End",
+    "ended": {
+      "normal": "Session ended",
+      "credits": "Session ended · credits used up"
+    },
+    "summary": "Duration {{dur}} · {{credits}} credits",
+    "history": "Conversations",
+    "ringing": "Ringing…",
+    "noHistory": "No conversations yet",
+    "live": "LIVE",
+    "sys": {
+      "session_started": "Session started",
+      "credits_exhausted": "Credits used up · session ended"
+    }
   }
 }

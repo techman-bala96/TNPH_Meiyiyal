@@ -97,6 +97,78 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"consult_messages": {
+                  Row: {
+                    "body": string | null,"created_at": string,"file_name": string | null,"file_path": string | null,"id": string,"kind": string,"mime": string | null,"sender": string,"session_id": string,"size_bytes": number | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "body"?: string | null,"created_at"?: string,"file_name"?: string | null,"file_path"?: string | null,"id"?: string,"kind"?: string,"mime"?: string | null,"sender"?: string,"session_id": string,"size_bytes"?: number | null
+                  }
+                  Update: {
+                    "body"?: string | null,"created_at"?: string,"file_name"?: string | null,"file_path"?: string | null,"id"?: string,"kind"?: string,"mime"?: string | null,"sender"?: string,"session_id"?: string,"size_bytes"?: number | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "consult_messages_session_id_fkey"
+      columns: ["session_id"]
+isOneToOne: false
+      referencedRelation: "consult_sessions"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"consult_requests": {
+                  Row: {
+                    "created_at": string,"expires_at": string,"id": string,"min_minutes": number,"mode": string,"node_slug": string,"rate": number,"responded_at": string | null,"session_id": string | null,"status": string,"user_id": string,"user_name": string | null,"worker_id": string,"worker_user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"expires_at": string,"id"?: string,"min_minutes": number,"mode": string,"node_slug": string,"rate": number,"responded_at"?: string | null,"session_id"?: string | null,"status"?: string,"user_id": string,"user_name"?: string | null,"worker_id": string,"worker_user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"expires_at"?: string,"id"?: string,"min_minutes"?: number,"mode"?: string,"node_slug"?: string,"rate"?: number,"responded_at"?: string | null,"session_id"?: string | null,"status"?: string,"user_id"?: string,"user_name"?: string | null,"worker_id"?: string,"worker_user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "consult_requests_node_slug_fkey"
+      columns: ["node_slug"]
+isOneToOne: false
+      referencedRelation: "taxonomy_nodes"
+      referencedColumns: ["slug"]
+    },{
+      foreignKeyName: "consult_requests_worker_id_fkey"
+      columns: ["worker_id"]
+isOneToOne: false
+      referencedRelation: "workers"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"consult_sessions": {
+                  Row: {
+                    "commission_pct": number,"credits_used": number,"current_mode": string,"end_reason": string | null,"ended_at": string | null,"id": string,"node_slug": string,"request_id": string | null,"started_at": string,"status": string,"user_id": string,"worker_id": string,"worker_user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "commission_pct"?: number,"credits_used"?: number,"current_mode"?: string,"end_reason"?: string | null,"ended_at"?: string | null,"id"?: string,"node_slug": string,"request_id"?: string | null,"started_at"?: string,"status"?: string,"user_id": string,"worker_id": string,"worker_user_id": string
+                  }
+                  Update: {
+                    "commission_pct"?: number,"credits_used"?: number,"current_mode"?: string,"end_reason"?: string | null,"ended_at"?: string | null,"id"?: string,"node_slug"?: string,"request_id"?: string | null,"started_at"?: string,"status"?: string,"user_id"?: string,"worker_id"?: string,"worker_user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "consult_sessions_request_id_fkey"
+      columns: ["request_id"]
+isOneToOne: true
+      referencedRelation: "consult_requests"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "consult_sessions_worker_id_fkey"
+      columns: ["worker_id"]
+isOneToOne: false
+      referencedRelation: "workers"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"kyc_otp_sessions": {
                   Row: {
                     "aadhaar_hash": string,"attempts": number,"created_at": string,"expires_at": string,"last4": string,"provider_ref": string | null,"sends": number,"worker_id": string
@@ -205,6 +277,26 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"rate_cards": {
+                  Row: {
+                    "band_max": number | null,"band_min": number | null,"credits_per_min": number,"min_minutes": number,"mode": string,"node_slug": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "band_max"?: number | null,"band_min"?: number | null,"credits_per_min": number,"min_minutes"?: number,"mode": string,"node_slug": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "band_max"?: number | null,"band_min"?: number | null,"credits_per_min"?: number,"min_minutes"?: number,"mode"?: string,"node_slug"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "rate_cards_node_slug_fkey"
+      columns: ["node_slug"]
+isOneToOne: false
+      referencedRelation: "taxonomy_nodes"
+      referencedColumns: ["slug"]
+    }
+                  ]
                 },"service_requests": {
                   Row: {
                     "cancellation_reason": string | null,"cancelled_at": string | null,"completed_at": string | null,"created_at": string,"description": string | null,"final_price": number | null,"id": string,"occupation_id": string | null,"payment_status": Database["public"]['Enums']["payment_status"],"proposed_price": number | null,"scheduled_at": string | null,"started_at": string | null,"status": Database["public"]['Enums']["request_status"],"title": string,"updated_at": string,"user_id": string,"user_rating": number | null,"user_review": string | null,"worker_id": string,"worker_rating": number | null,"worker_review": string | null
@@ -228,6 +320,46 @@ isOneToOne: false
       columns: ["worker_id"]
 isOneToOne: false
       referencedRelation: "workers"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"session_calls": {
+                  Row: {
+                    "answered_at": string | null,"caller": string,"created_at": string,"ended_at": string | null,"id": string,"mode": string,"session_id": string,"status": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "answered_at"?: string | null,"caller": string,"created_at"?: string,"ended_at"?: string | null,"id"?: string,"mode": string,"session_id": string,"status"?: string
+                  }
+                  Update: {
+                    "answered_at"?: string | null,"caller"?: string,"created_at"?: string,"ended_at"?: string | null,"id"?: string,"mode"?: string,"session_id"?: string,"status"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "session_calls_session_id_fkey"
+      columns: ["session_id"]
+isOneToOne: false
+      referencedRelation: "consult_sessions"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"session_segments": {
+                  Row: {
+                    "credits": number,"ended_at": string | null,"id": number,"minutes_billed": number,"mode": string,"rate": number,"session_id": string,"started_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "credits"?: number,"ended_at"?: string | null,"id"?: number,"minutes_billed"?: number,"mode": string,"rate": number,"session_id": string,"started_at"?: string
+                  }
+                  Update: {
+                    "credits"?: number,"ended_at"?: string | null,"id"?: number,"minutes_billed"?: number,"mode"?: string,"rate"?: number,"session_id"?: string,"started_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "session_segments_session_id_fkey"
+      columns: ["session_id"]
+isOneToOne: false
+      referencedRelation: "consult_sessions"
       referencedColumns: ["id"]
     }
                   ]
@@ -659,6 +791,18 @@ isOneToOne: false
               "aadhaar_masked": string,"aadhaar_verified": boolean,"about": string,"display_name": string,"district_slug": string,"docs": Json,"email": string,"id": string,"node_name": Json,"phone": string,"photo_url": string,"primary_node": string,"reg_data": Json,"status": string,"submitted_at": string,"years_experience": number
             }[]
                            },
+"call_answer":
+{ Args: { "_accept": boolean,"_call": string }; Returns: string
+                           },
+"call_end":
+{ Args: { "_call": string }; Returns: string
+                           },
+"call_start":
+{ Args: { "_mode": string,"_sid": string }; Returns: string
+                           },
+"dev_grant_test_credits":
+{ Args: Record<PropertyKey, never>; Returns: number
+                           },
 "disablelongtransactions":
 { Args: Record<PropertyKey, never>; Returns: string
                            },
@@ -769,15 +913,26 @@ isOneToOne: false
 "is_admin":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
+"is_session_party":
+{ Args: { "_sid": string }; Returns: boolean
+                           },
 "kyc_mode":
 { Args: Record<PropertyKey, never>; Returns: string
                            },
 "longtransactionsenabled":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
+"my_active_session":
+{ Args: Record<PropertyKey, never>; Returns: string
+                           },
 "my_current_location":
 { Args: Record<PropertyKey, never>; Returns: {
               "area_id": number,"area_name": string,"area_name_ta": string,"district_name": Json,"district_slug": string,"id": string,"lat": number,"lng": number,"source": string
+            }[]
+                           },
+"my_history":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "category_name": Json,"credits": number,"duration_sec": number,"earned": number,"end_reason": string,"ended_at": string,"id": string,"messages": number,"modes": (string)[],"node_name": Json,"node_slug": string,"other_name": string,"other_photo": string,"role": string,"started_at": string,"status": string
             }[]
                            },
 "my_kyc":
@@ -787,6 +942,9 @@ isOneToOne: false
 { Args: Record<PropertyKey, never>; Returns: {
               "address": string,"area_id": number,"area_name": string,"area_name_ta": string,"created_at": string,"district_name": Json,"district_slug": string,"id": string,"is_current": boolean,"lat": number,"lng": number
             }[]
+                           },
+"my_wallet":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "my_worker":
 { Args: Record<PropertyKey, never>; Returns: {
@@ -903,10 +1061,48 @@ isOneToOne: false
 "postgis_wagyu_version":
 { Args: Record<PropertyKey, never>; Returns: string
                            },
+"presence_window":
+{ Args: Record<PropertyKey, never>; Returns: string
+                           },
+"rate_for":
+{ Args: { "_mode": string,"_node": string }; Returns: {
+              "credits_per_min": number,"min_minutes": number,"node_slug": string
+            }[]
+                           },
+"rates_for":
+{ Args: { "_node": string }; Returns: Json
+                           },
+"request_cancel":
+{ Args: { "_id": string }; Returns: undefined
+                           },
+"request_create":
+{ Args: { "_mode": string,"_node"?: string,"_worker": string }; Returns: string
+                           },
+"request_expire_due":
+{ Args: Record<PropertyKey, never>; Returns: number
+                           },
+"request_respond":
+{ Args: { "_accept": boolean,"_id": string }; Returns: string
+                           },
 "search_workers":
 { Args: { "_all"?: boolean,"_lat": number,"_limit"?: number,"_lng": number,"_node": string,"_radius_km"?: number }; Returns: {
-              "display_name": string,"distance_km": number,"district_name": Json,"district_slug": string,"feedback_count": number,"id": string,"is_online": boolean,"photo_url": string,"primary_node": string,"rating": number,"rewards_count": number,"specialty": Json,"years_experience": number
+              "display_name": string,"distance_km": number,"district_name": Json,"district_slug": string,"feedback_count": number,"id": string,"is_busy": boolean,"is_online": boolean,"photo_url": string,"primary_node": string,"rates": Json,"rating": number,"rewards_count": number,"specialty": Json,"years_experience": number
             }[]
+                           },
+"session_bill_internal":
+{ Args: { "_close": boolean,"_sid": string }; Returns: Json
+                           },
+"session_end":
+{ Args: { "_reason"?: string,"_sid": string }; Returns: Json
+                           },
+"session_info":
+{ Args: { "_sid": string }; Returns: Json
+                           },
+"session_switch_mode":
+{ Args: { "_mode": string,"_sid": string }; Returns: undefined
+                           },
+"session_tick":
+{ Args: { "_sid": string }; Returns: Json
                            },
 "set_current_location":
 { Args: { "_address"?: string,"_area"?: number,"_district"?: string,"_lat": number,"_lng": number,"_source": string }; Returns: string
@@ -1401,6 +1597,12 @@ isOneToOne: false
                            },
 "use_saved_location":
 { Args: { "_id": string }; Returns: undefined
+                           },
+"wallet_id_for":
+{ Args: { "_uid": string }; Returns: string
+                           },
+"worker_heartbeat":
+{ Args: Record<PropertyKey, never>; Returns: boolean
                            },
 "worker_register":
 { Args: { "_about": string,"_display_name": string,"_extra_nodes": (string)[],"_node": string,"_reg": Json,"_years": number }; Returns: string
