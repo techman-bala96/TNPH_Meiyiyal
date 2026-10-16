@@ -23,7 +23,35 @@ export type Database = {
           }
         },"public": {
           Tables: {
-            "certificates": {
+            "admin_audit": {
+                  Row: {
+                    "action": string,"actor": string,"created_at": string,"data": Json | null,"id": number,"note": string | null,"target": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "action": string,"actor": string,"created_at"?: string,"data"?: Json | null,"id"?: number,"note"?: string | null,"target"?: string | null
+                  }
+                  Update: {
+                    "action"?: string,"actor"?: string,"created_at"?: string,"data"?: Json | null,"id"?: number,"note"?: string | null,"target"?: string | null
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"app_settings": {
+                  Row: {
+                    "key": string,"updated_at": string,"value": NonNullable<Json>
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "key": string,"updated_at"?: string,"value": NonNullable<Json>
+                  }
+                  Update: {
+                    "key"?: string,"updated_at"?: string,"value"?: NonNullable<Json>
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"certificates": {
                   Row: {
                     "certificate_number": string,"created_at": string,"id": string,"issued_at": string,"request_id": string,"user_id": string,"verification_code": string,"worker_id": string
                   }
@@ -69,16 +97,36 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"kyc_verification": {
+                },"kyc_otp_sessions": {
                   Row: {
-                    "aadhaar_number_hash": string | null,"aadhaar_verified": boolean,"created_at": string,"id": string,"pan_name": string | null,"pan_number": string | null,"pan_verified": boolean,"rejection_reason": string | null,"status": Database["public"]['Enums']["kyc_status"],"updated_at": string,"verified_at": string | null,"video_verification_url": string | null,"video_verified": boolean,"worker_id": string
+                    "aadhaar_hash": string,"attempts": number,"created_at": string,"expires_at": string,"last4": string,"provider_ref": string | null,"sends": number,"worker_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "aadhaar_number_hash"?: string | null,"aadhaar_verified"?: boolean,"created_at"?: string,"id"?: string,"pan_name"?: string | null,"pan_number"?: string | null,"pan_verified"?: boolean,"rejection_reason"?: string | null,"status"?: Database["public"]['Enums']["kyc_status"],"updated_at"?: string,"verified_at"?: string | null,"video_verification_url"?: string | null,"video_verified"?: boolean,"worker_id": string
+                    "aadhaar_hash": string,"attempts"?: number,"created_at"?: string,"expires_at": string,"last4": string,"provider_ref"?: string | null,"sends"?: number,"worker_id": string
                   }
                   Update: {
-                    "aadhaar_number_hash"?: string | null,"aadhaar_verified"?: boolean,"created_at"?: string,"id"?: string,"pan_name"?: string | null,"pan_number"?: string | null,"pan_verified"?: boolean,"rejection_reason"?: string | null,"status"?: Database["public"]['Enums']["kyc_status"],"updated_at"?: string,"verified_at"?: string | null,"video_verification_url"?: string | null,"video_verified"?: boolean,"worker_id"?: string
+                    "aadhaar_hash"?: string,"attempts"?: number,"created_at"?: string,"expires_at"?: string,"last4"?: string,"provider_ref"?: string | null,"sends"?: number,"worker_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "kyc_otp_sessions_worker_id_fkey"
+      columns: ["worker_id"]
+isOneToOne: true
+      referencedRelation: "workers"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"kyc_verification": {
+                  Row: {
+                    "aadhaar_last4": string | null,"aadhaar_number_hash": string | null,"aadhaar_verified": boolean,"created_at": string,"id": string,"pan_name": string | null,"pan_number": string | null,"pan_verified": boolean,"provider": string | null,"rejection_reason": string | null,"status": Database["public"]['Enums']["kyc_status"],"updated_at": string,"verified_at": string | null,"video_verification_url": string | null,"video_verified": boolean,"worker_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "aadhaar_last4"?: string | null,"aadhaar_number_hash"?: string | null,"aadhaar_verified"?: boolean,"created_at"?: string,"id"?: string,"pan_name"?: string | null,"pan_number"?: string | null,"pan_verified"?: boolean,"provider"?: string | null,"rejection_reason"?: string | null,"status"?: Database["public"]['Enums']["kyc_status"],"updated_at"?: string,"verified_at"?: string | null,"video_verification_url"?: string | null,"video_verified"?: boolean,"worker_id": string
+                  }
+                  Update: {
+                    "aadhaar_last4"?: string | null,"aadhaar_number_hash"?: string | null,"aadhaar_verified"?: boolean,"created_at"?: string,"id"?: string,"pan_name"?: string | null,"pan_number"?: string | null,"pan_verified"?: boolean,"provider"?: string | null,"rejection_reason"?: string | null,"status"?: Database["public"]['Enums']["kyc_status"],"updated_at"?: string,"verified_at"?: string | null,"video_verification_url"?: string | null,"video_verified"?: boolean,"worker_id"?: string
                   }
                   Relationships: [
                     {
@@ -345,6 +393,26 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"worker_documents": {
+                  Row: {
+                    "created_at": string,"doc_type": string,"id": string,"mime": string | null,"path": string,"size_bytes": number | null,"status": string,"worker_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"doc_type": string,"id"?: string,"mime"?: string | null,"path": string,"size_bytes"?: number | null,"status"?: string,"worker_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"doc_type"?: string,"id"?: string,"mime"?: string | null,"path"?: string,"size_bytes"?: number | null,"status"?: string,"worker_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "worker_documents_worker_id_fkey"
+      columns: ["worker_id"]
+isOneToOne: false
+      referencedRelation: "workers"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"worker_education": {
                   Row: {
                     "created_at": string,"degree_name": string,"document_url": string | null,"id": string,"institution": string,"worker_id": string,"year_completed": number | null
@@ -433,22 +501,34 @@ isOneToOne: false
                   ]
                 },"workers": {
                   Row: {
-                    "about": string | null,"base_geog": unknown,"category": Database["public"]['Enums']["worker_category"],"created_at": string,"hourly_rate": number | null,"id": string,"is_active": boolean,"is_online": boolean,"is_verified": boolean,"last_seen_at": string | null,"occupation_id": string | null,"rating": number | null,"total_reviews": number | null,"updated_at": string,"user_id": string,"years_experience": number | null
+                    "about": string | null,"base_geog": unknown,"category": Database["public"]['Enums']["worker_category"],"created_at": string,"decided_at": string | null,"display_name": string | null,"district_slug": string | null,"hourly_rate": number | null,"id": string,"is_active": boolean,"is_online": boolean,"is_verified": boolean,"last_seen_at": string | null,"occupation_id": string | null,"photo_url": string | null,"primary_node": string | null,"rating": number | null,"reg_data": NonNullable<Json>,"review_note": string | null,"rewards_count": number,"status": string,"submitted_at": string | null,"total_reviews": number | null,"updated_at": string,"user_id": string,"years_experience": number | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "about"?: string | null,"base_geog"?: unknown,"category": Database["public"]['Enums']["worker_category"],"created_at"?: string,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"occupation_id"?: string | null,"rating"?: number | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id": string,"years_experience"?: number | null
+                    "about"?: string | null,"base_geog"?: unknown,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"occupation_id"?: string | null,"photo_url"?: string | null,"primary_node"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"status"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id": string,"years_experience"?: number | null
                   }
                   Update: {
-                    "about"?: string | null,"base_geog"?: unknown,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"occupation_id"?: string | null,"rating"?: number | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id"?: string,"years_experience"?: number | null
+                    "about"?: string | null,"base_geog"?: unknown,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"occupation_id"?: string | null,"photo_url"?: string | null,"primary_node"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"status"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id"?: string,"years_experience"?: number | null
                   }
                   Relationships: [
                     {
+      foreignKeyName: "workers_district_slug_fkey"
+      columns: ["district_slug"]
+isOneToOne: false
+      referencedRelation: "tn_districts"
+      referencedColumns: ["slug"]
+    },{
       foreignKeyName: "workers_occupation_id_fkey"
       columns: ["occupation_id"]
 isOneToOne: false
       referencedRelation: "occupations"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "workers_primary_node_fkey"
+      columns: ["primary_node"]
+isOneToOne: false
+      referencedRelation: "taxonomy_nodes"
+      referencedColumns: ["slug"]
     }
                   ]
                 }
@@ -555,6 +635,12 @@ isOneToOne: false
 "_st_within":
 { Args: { "geom1": unknown,"geom2": unknown }; Returns: boolean
                            },
+"aadhaar_send_otp":
+{ Args: { "_aadhaar": string }; Returns: Json
+                           },
+"aadhaar_verify_otp":
+{ Args: { "_otp": string }; Returns: Json
+                           },
 "addauth":
 { Args: { "": string }; Returns: boolean
                            },
@@ -564,6 +650,14 @@ isOneToOne: false
 { Args: { "column_name": string,"new_dim": number,"new_srid": number,"new_type": string,"schema_name": string,"table_name": string,"use_typmod"?: boolean }; Returns: string
                            } |
 { Args: { "column_name": string,"new_dim": number,"new_srid": number,"new_type": string,"table_name": string,"use_typmod"?: boolean }; Returns: string
+                           },
+"admin_decide_worker":
+{ Args: { "_decision": string,"_note"?: string,"_worker": string }; Returns: string
+                           },
+"admin_worker_queue":
+{ Args: { "_status"?: string }; Returns: {
+              "aadhaar_masked": string,"aadhaar_verified": boolean,"about": string,"display_name": string,"district_slug": string,"docs": Json,"email": string,"id": string,"node_name": Json,"phone": string,"photo_url": string,"primary_node": string,"reg_data": Json,"status": string,"submitted_at": string,"years_experience": number
+            }[]
                            },
 "disablelongtransactions":
 { Args: Record<PropertyKey, never>; Returns: string
@@ -672,6 +766,12 @@ isOneToOne: false
 "has_role":
 { Args: { "_role": Database["public"]['Enums']["user_role"],"_uid": string }; Returns: boolean
                            },
+"is_admin":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"kyc_mode":
+{ Args: Record<PropertyKey, never>; Returns: string
+                           },
 "longtransactionsenabled":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
@@ -680,15 +780,56 @@ isOneToOne: false
               "area_id": number,"area_name": string,"area_name_ta": string,"district_name": Json,"district_slug": string,"id": string,"lat": number,"lng": number,"source": string
             }[]
                            },
+"my_kyc":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "my_locations":
 { Args: Record<PropertyKey, never>; Returns: {
               "address": string,"area_id": number,"area_name": string,"area_name_ta": string,"created_at": string,"district_name": Json,"district_slug": string,"id": string,"is_current": boolean,"lat": number,"lng": number
             }[]
                            },
+"my_worker":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "about": string | null,
+"base_geog": unknown,
+"category": Database["public"]['Enums']["worker_category"],
+"created_at": string,
+"decided_at": string | null,
+"display_name": string | null,
+"district_slug": string | null,
+"hourly_rate": number | null,
+"id": string,
+"is_active": boolean,
+"is_online": boolean,
+"is_verified": boolean,
+"last_seen_at": string | null,
+"occupation_id": string | null,
+"photo_url": string | null,
+"primary_node": string | null,
+"rating": number | null,
+"reg_data": NonNullable<Json>,
+"review_note": string | null,
+"rewards_count": number,
+"status": string,
+"submitted_at": string | null,
+"total_reviews": number | null,
+"updated_at": string,
+"user_id": string,
+"years_experience": number | null
+            }[]
+                          SetofOptions: {
+        from: "*"
+        to: "workers"
+        isOneToOne: false
+        isSetofReturn: true
+      } },
 "nearest_location":
 { Args: { "_lat": number,"_lng": number }; Returns: {
               "area_id": number,"area_name": string,"area_name_ta": string,"distance_km": number,"district_name": Json,"district_slug": string
             }[]
+                           },
+"node_requirements_for":
+{ Args: { "_slug": string }; Returns: Json
                            },
 "populate_geometry_columns":
 { Args: { "tbl_oid": unknown,"use_typmod"?: boolean }; Returns: number
@@ -760,6 +901,9 @@ isOneToOne: false
                            },
 "set_current_location":
 { Args: { "_address"?: string,"_area"?: number,"_district"?: string,"_lat": number,"_lng": number,"_source": string }; Returns: string
+                           },
+"setting":
+{ Args: { "_k": string }; Returns: Json
                            },
 "st_3dclosestpoint":
 { Args: { "geom1": unknown,"geom2": unknown }; Returns: unknown
@@ -1237,6 +1381,9 @@ isOneToOne: false
 "st_wrapx":
 { Args: { "geom": unknown,"move": number,"wrap": number }; Returns: unknown
                            },
+"trusted":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
 "unlockrows":
 { Args: { "": string }; Returns: number
                            },
@@ -1245,6 +1392,15 @@ isOneToOne: false
                            },
 "use_saved_location":
 { Args: { "_id": string }; Returns: undefined
+                           },
+"worker_register":
+{ Args: { "_about": string,"_display_name": string,"_extra_nodes": (string)[],"_node": string,"_reg": Json,"_years": number }; Returns: string
+                           },
+"worker_set_online":
+{ Args: { "_online": boolean }; Returns: boolean
+                           },
+"worker_submit":
+{ Args: Record<PropertyKey, never>; Returns: string
                            }
           }
           Enums: {

@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { BadgeCheck, ChevronRight, UserRound } from "lucide-react";
+import { BadgeCheck, ChevronRight } from "lucide-react";
+import { WorkerPanel } from "@/components/app/WorkerPanel";
 import { Logo } from "@/components/app/Logo";
 import { HomeHeader } from "@/components/app/HomeHeader";
 import { childrenOf, nodeName, useTaxonomy } from "@/features/taxonomy/useTaxonomy";
@@ -12,7 +12,9 @@ export default function Home() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language?.startsWith("ta") ? "ta" : "en";
   const tax = useTaxonomy();
-  const [tab, setTab] = useState<"find" | "worker">("find");
+  const [sp, setSp] = useSearchParams();
+  const tab = sp.get("tab") === "worker" ? "worker" : "find";
+  const setTab = (k: "find" | "worker") => setSp(k === "worker" ? { tab: "worker" } : {}, { replace: true });
   const all = tax.data ?? [];
   const groups = childrenOf(all, null);
 
@@ -71,11 +73,7 @@ export default function Home() {
           <p className="flex items-center gap-1.5 text-xs text-muted-foreground"><BadgeCheck className="h-4 w-4 text-primary" />{t("home.verifiedNote")}</p>
         </section>
       ) : (
-        <section data-testid="worker-panel" className="card-soft space-y-2 p-5 text-center">
-          <UserRound className="mx-auto h-10 w-10 text-primary" />
-          <h2 className="font-semibold">{t("home.workerTitle")}</h2>
-          <p className="text-sm text-muted-foreground">{t("home.workerSoon")}</p>
-        </section>
+        <WorkerPanel />
       )}
 
     </main>

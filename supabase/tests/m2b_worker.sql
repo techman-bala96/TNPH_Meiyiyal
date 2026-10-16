@@ -1,0 +1,60 @@
+BEGIN;
+INSERT INTO auth.users(id,email,aud,role) VALUES
+ ('00000000-0000-0000-0000-0000000000f1','w1@test.local','authenticated','authenticated'),
+ ('00000000-0000-0000-0000-0000000000f9','admin@test.local','authenticated','authenticated');
+INSERT INTO public.user_roles(user_id,role) VALUES ('00000000-0000-0000-0000-0000000000f9','admin');
+SET LOCAL role authenticated;
+SELECT set_config('request.jwt.claims','{"sub":"00000000-0000-0000-0000-0000000000f1","role":"authenticated"}',true);
+DO $$ DECLARE wid uuid; r jsonb; BEGIN
+  BEGIN PERFORM public.worker_register('professionals--doctor',NULL,'Dr X',5,'',NULL); RAISE EXCEPTION 'FAIL: category accepted';
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'FAIL%' THEN RAISE; END IF; RAISE NOTICE 'PASS: must pick sub-category'; END;
+  BEGIN PERFORM public.worker_register('professionals--doctor--allopathy',ARRAY['professionals--lawyer--civil'],'Dr X',5,'',NULL); RAISE EXCEPTION 'FAIL: cross-profession extra';
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'FAIL%' THEN RAISE; END IF; RAISE NOTICE 'PASS: extra areas limited to profession'; END;
+  wid := public.worker_register('professionals--doctor--allopathy--paediatrics',ARRAY['professionals--doctor--siddha'],'Dr Test',8,'hi','{"degree":"MBBS + MD","council":"Tamil Nadu Medical Council (TNMC)","reg_no":"123456"}');
+  IF (SELECT status FROM public.workers WHERE id=wid) <> 'draft' THEN RAISE EXCEPTION 'FAIL: draft'; END IF;
+  BEGIN UPDATE public.workers SET status='approved' WHERE id=wid; RAISE EXCEPTION 'FAIL: self-approve';
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'FAIL%' THEN RAISE; END IF; RAISE NOTICE 'PASS: cannot self-approve'; END;
+  BEGIN UPDATE public.workers SET is_online=true WHERE id=wid; RAISE EXCEPTION 'FAIL: self-online';
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'FAIL%' THEN RAISE; END IF; RAISE NOTICE 'PASS: cannot set online directly'; END;
+  BEGIN PERFORM public.worker_set_online(true); RAISE EXCEPTION 'FAIL: online before approval';
+  EXCEPTION WHEN insufficient_privilege THEN RAISE NOTICE 'PASS: Go Online locked before approval'; END;
+  BEGIN PERFORM public.worker_submit(); RAISE EXCEPTION 'FAIL: submit incomplete';
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM NOT LIKE 'missing:%reg_year%doc:degree_cert%aadhaar%' THEN RAISE; END IF; RAISE NOTICE 'PASS: submit lists missing (%)', SQLERRM; END;
+  BEGIN PERFORM public.aadhaar_send_otp('123412341234'); RAISE EXCEPTION 'FAIL: bad aadhaar';
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'FAIL%' THEN RAISE; END IF; RAISE NOTICE 'PASS: invalid Aadhaar rejected'; END;
+  PERFORM public.aadhaar_send_otp('987654321012');
+  IF (public.aadhaar_verify_otp('000000')->>'ok')::boolean THEN RAISE EXCEPTION 'FAIL: wrong otp'; END IF;
+  IF NOT (public.aadhaar_verify_otp('123456')->>'ok')::boolean THEN RAISE EXCEPTION 'FAIL: stub otp'; END IF;
+  IF public.my_kyc()->>'masked' <> 'XXXX-XXXX-1012' THEN RAISE EXCEPTION 'FAIL: masked'; END IF;
+  IF EXISTS (SELECT 1 FROM public.kyc_verification WHERE aadhaar_number_hash LIKE '%987654321012%') THEN RAISE EXCEPTION 'FAIL: raw aadhaar stored'; END IF;
+  RAISE NOTICE 'PASS: Aadhaar OTP stub, masked + hashed only';
+  BEGIN INSERT INTO public.worker_documents(worker_id,doc_type,path) VALUES (wid,'degree_cert','someoneelse/x.pdf'); RAISE EXCEPTION 'FAIL: foreign path';
+  EXCEPTION WHEN insufficient_privilege THEN RAISE NOTICE 'PASS: doc path must be own folder'; END;
+  INSERT INTO public.worker_documents(worker_id,doc_type,path) VALUES (wid,'degree_cert','00000000-0000-0000-0000-0000000000f1/d.pdf'),(wid,'council_cert','00000000-0000-0000-0000-0000000000f1/c.pdf');
+  UPDATE public.workers SET reg_data = reg_data || '{"reg_year":"2015"}' WHERE id=wid;
+  IF public.worker_submit() <> 'pending' THEN RAISE EXCEPTION 'FAIL: submit'; END IF;
+  BEGIN UPDATE public.workers SET reg_data='{}' WHERE id=wid; RAISE EXCEPTION 'FAIL: edit while pending';
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'FAIL%' THEN RAISE; END IF; RAISE NOTICE 'PASS: locked while pending'; END;
+  BEGIN PERFORM * FROM public.admin_worker_queue('pending'); RAISE EXCEPTION 'FAIL: non-admin queue';
+  EXCEPTION WHEN insufficient_privilege THEN RAISE NOTICE 'PASS: non-admin cannot read queue'; END;
+  BEGIN PERFORM public.admin_decide_worker(wid,'approve'); RAISE EXCEPTION 'FAIL: non-admin approve';
+  EXCEPTION WHEN insufficient_privilege THEN RAISE NOTICE 'PASS: non-admin cannot approve'; END;
+  IF EXISTS (SELECT 1 FROM public.app_settings) THEN RAISE EXCEPTION 'FAIL: settings readable'; END IF;
+  RAISE NOTICE 'PASS: server settings hidden';
+END $$;
+SELECT set_config('request.jwt.claims','{"sub":"00000000-0000-0000-0000-0000000000f9","role":"authenticated"}',true);
+DO $$ DECLARE wid uuid; BEGIN
+  SELECT id INTO wid FROM public.admin_worker_queue('pending') LIMIT 1;
+  BEGIN PERFORM public.admin_decide_worker(wid,'reject',''); RAISE EXCEPTION 'FAIL: reject w/o note';
+  EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'FAIL%' THEN RAISE; END IF; RAISE NOTICE 'PASS: reject needs note'; END;
+  PERFORM public.admin_decide_worker(wid,'approve');
+  IF NOT EXISTS (SELECT 1 FROM public.admin_audit WHERE target=wid) THEN RAISE EXCEPTION 'FAIL: audit'; END IF;
+  RAISE NOTICE 'PASS: admin approves, audited';
+END $$;
+SELECT set_config('request.jwt.claims','{"sub":"00000000-0000-0000-0000-0000000000f1","role":"authenticated"}',true);
+DO $$ BEGIN
+  IF NOT public.worker_set_online(true) THEN RAISE EXCEPTION 'FAIL'; END IF;
+  IF NOT (SELECT is_online AND is_verified AND status='approved' FROM public.workers WHERE user_id=auth.uid()) THEN RAISE EXCEPTION 'FAIL: online'; END IF;
+  RAISE NOTICE 'PASS: approved worker goes online';
+END $$;
+ROLLBACK;

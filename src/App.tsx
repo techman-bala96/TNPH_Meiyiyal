@@ -9,6 +9,8 @@ import Home from "@/pages/Home";
 import Browse from "@/pages/Browse";
 import Profile from "@/pages/Profile";
 import Settings from "@/pages/Settings";
+import WorkerRegister from "@/pages/WorkerRegister";
+import Admin from "@/pages/Admin";
 import { ThemeProvider } from "next-themes";
 import { PrefsSync } from "@/components/app/PrefsSync";
 import LocationPage from "@/pages/LocationPage";
@@ -30,9 +32,11 @@ export default function App() {
               <Route path="/location" element={<LocationPage />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/admin" element={<Admin />} />
               <Route element={<RequireLocation />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/browse/:slug" element={<Browse />} />
+                <Route path="/worker/register" element={<WorkerRegister />} />
               </Route>
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { LogOut, Settings, UserRound } from "lucide-react";
+import { LogOut, Settings, ShieldCheck, UserRound } from "lucide-react";
+import { useIsAdmin } from "@/features/worker/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
@@ -18,7 +19,7 @@ export function UserAvatar({ className = "h-9 w-9" }: { className?: string }) {
 
 export function UserMenu() {
   const { t } = useTranslation(); const nav = useNavigate();
-  const { user, signOut } = useAuth(); const { data: p } = useProfile();
+  const { user, signOut } = useAuth(); const { data: p } = useProfile(); const admin = useIsAdmin();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger data-testid="avatar-btn" aria-label={t("menu.account")} className="tap grid w-11 shrink-0 place-items-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring">
@@ -32,6 +33,7 @@ export function UserMenu() {
         <DropdownMenuSeparator />
         <DropdownMenuItem data-testid="menu-profile" className="min-h-10 gap-2" onSelect={() => nav("/profile")}><UserRound className="h-4 w-4" />{t("menu.profile")}</DropdownMenuItem>
         <DropdownMenuItem data-testid="menu-settings" className="min-h-10 gap-2" onSelect={() => nav("/settings")}><Settings className="h-4 w-4" />{t("menu.settings")}</DropdownMenuItem>
+        {admin.data && <DropdownMenuItem data-testid="menu-admin" className="min-h-10 gap-2" onSelect={() => nav("/admin")}><ShieldCheck className="h-4 w-4" />{t("menu2.admin")}</DropdownMenuItem>}
         <DropdownMenuSeparator />
         <DropdownMenuItem data-testid="btn-signout" className="min-h-10 gap-2 text-destructive focus:text-destructive" onSelect={() => signOut()}><LogOut className="h-4 w-4" />{t("auth.signOut")}</DropdownMenuItem>
       </DropdownMenuContent>

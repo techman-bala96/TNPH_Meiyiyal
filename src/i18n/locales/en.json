@@ -113,5 +113,86 @@
       "promos": "Offers & updates"
     },
     "notifyNote": "Push notifications arrive with the request/ring update."
+  },
+  "worker": {
+    "registerTitle": "Register as expert",
+    "pitch": "Earn by consulting online. Verify Aadhaar and your certificates once — approval within 24 hours.",
+    "start": "Start registration",
+    "continue": "Continue registration",
+    "stepOf": "Step {{n}} of {{total}}",
+    "step": {
+      "profession": "Profession",
+      "details": "Details",
+      "aadhaar": "Aadhaar",
+      "documents": "Documents",
+      "review": "Review"
+    },
+    "pickSub": "Your field",
+    "pickSpec": "Specialty (optional)",
+    "extraAreas": "Other areas you handle",
+    "next": "Continue",
+    "nameAsReg": "Full name (as in registration)",
+    "years": "Years of experience",
+    "yearsShort_one": "{{count}} year",
+    "yearsShort_other": "{{count}} years",
+    "about": "About you",
+    "optional": "optional",
+    "required": "Required",
+    "aadhaarWhy": "We verify your identity with Aadhaar OTP. Only the last 4 digits are stored.",
+    "aadhaarNo": "Aadhaar number",
+    "otpSentTo": "OTP sent to the mobile linked with {{masked}}",
+    "stubHint": "Test mode: use OTP 123456",
+    "upload": "Upload",
+    "replace": "Replace",
+    "docsNote": "PDF or photo, up to 10 MB. Documents are private and seen only by our verification team.",
+    "submit": "Submit for verification",
+    "reviewSla": "Our team reviews within 24 hours.",
+    "status": {
+      "draft": "Registration incomplete",
+      "pending": "Under verification",
+      "needs_info": "More information needed",
+      "approved": "Verified expert",
+      "rejected": "Not approved",
+      "blocked": "Temporarily blocked"
+    },
+    "statusHint": {
+      "draft": "Finish the remaining steps to submit.",
+      "pending": "We'll notify you within 24 hours.",
+      "needs_info": "Update the details below and resubmit.",
+      "approved": "You can go online and receive requests.",
+      "rejected": "Contact support if you think this is a mistake.",
+      "blocked": "Contact support."
+    },
+    "goOnline": "Go online",
+    "online": "You're online",
+    "onlineHint": "Users nearby can find and request you.",
+    "lockedHint": "Unlocks after approval.",
+    "err": {
+      "required": "Required",
+      "years": "Enter 0–70",
+      "format": "Check the format",
+      "aadhaar": "Enter a valid 12-digit Aadhaar",
+      "otp": "Wrong OTP",
+      "tooBig": "File is larger than 10 MB",
+      "upload": "Upload failed"
+    }
+  },
+  "admin": {
+    "title": "Verification",
+    "empty": "Nothing here",
+    "note": "Note to worker (required for reject / more info)",
+    "approve": "Approve",
+    "needsInfo": "More info",
+    "reject": "Reject",
+    "f": {
+      "pending": "Pending",
+      "needs_info": "More info",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "all": "All"
+    }
+  },
+  "menu2": {
+    "admin": "Admin"
   }
 }
