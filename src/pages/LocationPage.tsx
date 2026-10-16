@@ -13,7 +13,7 @@ import { createMap, type LatLng, type MapHandle } from "@/features/location/map"
 import { useCurrentLocation, useSaveLocation } from "@/features/location/useCurrentLocation";
 
 type District = { slug: string; name: { en: string; ta?: string }; lat: number; lng: number; sort: number };
-type Area = { id: number; district_slug: string; name: string; name_ta: string | null; sort: number };
+type Area = { id: number; district_slug: string; name: string; name_ta: string | null; sort: number; lat: number | null; lng: number | null };
 type Source = "gps" | "search" | "pin" | "list";
 const DISTRICTS = (districtsData as District[]).slice().sort((a, b) => a.sort - b.sort);
 const DEFAULT: LatLng = { lat: DISTRICTS[0].lat, lng: DISTRICTS[0].lng }; // Kanniyakumari
@@ -48,7 +48,7 @@ export default function LocationPage() {
   const areas = useQuery({
     queryKey: ["tn-areas"], staleTime: Infinity,
     queryFn: async () => {
-      const { data, error } = await supabase.from("tn_areas").select("id,district_slug,name,name_ta,sort").order("sort");
+      const { data, error } = await supabase.from("tn_areas").select("id,district_slug,name,name_ta,sort,lat,lng").order("sort");
       if (error) throw error;
       return data as Area[];
     },
@@ -151,13 +151,13 @@ export default function LocationPage() {
             <button data-testid="loc-back" aria-label={t("auth.back")} onClick={() => nav(from === "/location" ? "/" : from, { replace: true })}
               className="tap grid w-11 shrink-0 place-items-center rounded-full bg-card shadow"><ArrowLeft className="h-5 w-5" /></button>
           )}
-          <form className="flex h-11 flex-1 items-center gap-2 rounded-xl bg-card px-3 shadow" onSubmit={(e) => { e.preventDefault(); submitSearch(); }}>
+          <form className="flex h-11 min-w-0 flex-1 items-center gap-2 rounded-xl bg-card px-3 shadow" onSubmit={(e) => { e.preventDefault(); submitSearch(); }}>
             <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
             <input data-testid="loc-search" value={q} onChange={(e) => setQ(e.target.value)} onFocus={() => setFocus(true)}
               enterKeyHint="search" placeholder={t("location.searchPlaceholder")} className="h-full min-w-0 flex-1 bg-transparent text-sm outline-none" />
             {q && <button type="button" aria-label="clear" onClick={() => setQ("")}><X className="h-4 w-4 text-muted-foreground" /></button>}
           </form>
-          <div className="shrink-0 rounded-full bg-card shadow"><LangToggle /></div>
+          <LangToggle compact className="border-0 shadow" />
         </div>
 
         {showResults && (
@@ -169,7 +169,7 @@ export default function LocationPage() {
                   <span className="flex-1 font-medium">{dName(d.name)}</span><span className="text-xs text-muted-foreground">{t("location.district")}</span></button></li>
               ))}
               {seededA.map((a) => { const d = byDistrict[a.district_slug]; return (
-                <li key={a.id}><button data-testid="area-hit" onClick={() => go({ lat: d.lat, lng: d.lng }, { district: d.slug, area: a.id })}
+                <li key={a.id}><button data-testid="area-hit" onClick={() => go(a.lat != null && a.lng != null ? { lat: a.lat, lng: a.lng } : { lat: d.lat, lng: d.lng }, { district: d.slug, area: a.id })}
                   className="tap flex w-full items-center gap-3 px-4 py-2 text-left text-sm"><MapPin className="h-4 w-4 text-muted-foreground" />
                   <span className="flex-1">{(ta && a.name_ta) || a.name}</span><span className="text-xs text-muted-foreground">{dName(d.name)}</span></button></li>
               ); })}

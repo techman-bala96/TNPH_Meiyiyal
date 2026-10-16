@@ -47,8 +47,11 @@ test("Map: auto-detects GPS on open, pin + reverse address, drag adjusts, confir
   await expect(page).toHaveURL(/\/location$/);
   await expect(page.locator(".leaflet-container")).toBeVisible();
   await expect(page.getByTestId("center-pin")).toBeVisible();
-  await expect(page.getByTestId("sheet-place")).toContainText("Kanniyakumari");
+  await expect(page.getByTestId("sheet-place")).toHaveText("Kanniyakumari"); // town area, not Nagercoil
   await expect(page.getByTestId("sheet-address")).toContainText("Kanyakumari");
+  // EN|தமிழ் toggle fully inside the viewport (was clipped)
+  const tb = (await page.getByTestId("lang-toggle").boundingBox())!;
+  expect(tb.x + tb.width).toBeLessThanOrEqual(page.viewportSize()!.width);
   await expect(page.locator(".leaflet-control-attribution")).toContainText("OpenStreetMap");
   await tilesLoaded(page);
   await shot(page, "01-gps-pin-sheet");
@@ -90,7 +93,7 @@ test("Map: GPS denied -> message; seeded + Nominatim search moves map; change fr
   await expect(page.getByTestId("place-hit").first()).toContainText("Marina Beach");
   await shot(page, "02-search-results");
   await page.getByTestId("place-hit").first().click();
-  await expect(page.getByTestId("sheet-place")).toContainText("Chennai");
+  await expect(page.getByTestId("sheet-place")).toHaveText("Mylapore, Chennai"); // nearest seeded area by real coords
   await expect(page.getByTestId("sheet-address")).toContainText("Marina Beach");
   await tilesLoaded(page);
   await shot(page, "03-confirm-sheet");

@@ -34,3 +34,26 @@ export async function mockMapNetwork(page: Page) {
     return r.fulfill({ status: 404, body: "" });
   });
 }
+
+/** Fresh user via email magic link (local Mailpit). */
+export async function loginNewEmail(page: Page, request: import("@playwright/test").APIRequestContext, prefix = "u") {
+  const email = `${prefix}+${Math.random().toString(36).slice(2, 8)}-${Date.now()}@meiyiyal.test`;
+  await page.goto("/login");
+  await page.getByTestId("btn-email").click();
+  await page.getByTestId("input-email").fill(email);
+  await page.getByTestId("btn-send-link").click();
+  await page.getByTestId("email-sent").waitFor();
+  let link: string | undefined;
+  for (let i = 0; i < 20 && !link; i++) {
+    const res = await request.get(`http://127.0.0.1:54324/api/v1/search?query=${encodeURIComponent("to:" + email)}`);
+    const id = (await res.json()).messages?.[0]?.ID;
+    if (id) {
+      const msg = await (await request.get(`http://127.0.0.1:54324/api/v1/message/${id}`)).json();
+      link = (msg.HTML || msg.Text).match(/https?:\/\/[^"'\s<>]+verify[^"'\s<>]+/)?.[0]?.replace(/&amp;/g, "&");
+    }
+    if (!link) await page.waitForTimeout(500);
+  }
+  if (!link) throw new Error("magic link not received");
+  await page.goto(link);
+  return email;
+}

@@ -233,14 +233,14 @@ isOneToOne: false
                   ]
                 },"tn_areas": {
                   Row: {
-                    "center": unknown,"district_slug": string,"id": number,"name": string,"name_ta": string | null,"sort": number
+                    "center": unknown,"district_slug": string,"id": number,"lat": number | null,"lng": number | null,"name": string,"name_ta": string | null,"sort": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "center"?: unknown,"district_slug": string,"id"?: number,"name": string,"name_ta"?: string | null,"sort"?: number
+                    "center"?: unknown,"district_slug": string,"id"?: number,"lat"?: never,"lng"?: never,"name": string,"name_ta"?: string | null,"sort"?: number
                   }
                   Update: {
-                    "center"?: unknown,"district_slug"?: string,"id"?: number,"name"?: string,"name_ta"?: string | null,"sort"?: number
+                    "center"?: unknown,"district_slug"?: string,"id"?: number,"lat"?: never,"lng"?: never,"name"?: string,"name_ta"?: string | null,"sort"?: number
                   }
                   Relationships: [
                     {

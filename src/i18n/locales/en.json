@@ -52,5 +52,29 @@
     "district": "District",
     "searchPlaces": "Search places for “{{q}}”",
     "addressUnavailable": "Address not available — district/area saved"
+  },
+  "home": {
+    "findWorker": "Find Worker",
+    "worker": "Worker",
+    "headline": "Talk to verified experts near you",
+    "verifiedNote": "Every expert is ID and certificate verified by our team.",
+    "workerTitle": "Work on Meiyiyal",
+    "workerSoon": "Worker registration (Aadhaar + certificates) is coming in the next update."
+  },
+  "browse": {
+    "seeAll": "See all",
+    "home": "Home",
+    "pickProfession": "Choose a profession",
+    "near": "Experts near {{place}}",
+    "options_one": "{{count}} option",
+    "options_other": "{{count}} options",
+    "emptyTitle": "No {{name}} experts online yet",
+    "emptyBody": "We're onboarding verified experts near {{place}}. Check back soon or try another area.",
+    "tagline": {
+      "doctor": "Consult doctors by chat, voice or video",
+      "lawyer": "Get legal advice from advocates",
+      "engineer": "Engineers, architects & designers",
+      "default": "Verified experts"
+    }
   }
 }
