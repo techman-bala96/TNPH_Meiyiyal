@@ -30,12 +30,12 @@
   },
   "location": {
     "title": "Select your location",
-    "searchPlaceholder": "Search district or area",
+    "searchPlaceholder": "Search area, street, landmark…",
     "useCurrent": "Use current location",
     "useCurrentHint": "Using GPS",
     "detecting": "Detecting your location…",
     "detected": "Detected location",
-    "confirm": "Confirm & continue",
+    "confirm": "Confirm location",
     "denied": "Location permission denied. Please pick your district and area below.",
     "gpsError": "Couldn't get your location. Please pick it manually.",
     "saveError": "Couldn't save location. Try again.",
@@ -45,6 +45,12 @@
     "districts": "Tamil Nadu districts",
     "noResults": "No matching places",
     "change": "Change location",
-    "deliverTo": "Your location"
+    "deliverTo": "Your location",
+    "pinHint": "Move the map to adjust",
+    "locateMe": "Locate me",
+    "selected": "Selected location",
+    "district": "District",
+    "searchPlaces": "Search places for “{{q}}”",
+    "addressUnavailable": "Address not available — district/area saved"
   }
 }

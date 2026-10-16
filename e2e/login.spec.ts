@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { mockMapNetwork } from "./mocks";
 
 const SHOTS = process.env.SHOTS_DIR ?? "../meyiyal/screens";
 const MAILPIT = "http://127.0.0.1:54324";
@@ -9,13 +10,14 @@ const shot = (page: Page, name: string) =>
 async function passLocation(page: Page) {
   await expect(page.getByTestId("loc-search").or(page.getByTestId("signed-in-as"))).toBeVisible();
   if (await page.getByTestId("loc-search").isVisible()) {
-    await page.getByTestId("district-kanniyakumari").click();
-    await page.getByTestId("area-whole").click();
+    await expect(page.getByTestId("sheet-place")).toBeVisible();
+    await page.getByTestId("btn-confirm").click();
   }
   await expect(page).toHaveURL(/\/$/);
 }
 
 test.beforeEach(async ({ page }) => {
+  await mockMapNetwork(page);
   await page.addInitScript(() => localStorage.setItem("i18nextLng", "en"));
 });
 

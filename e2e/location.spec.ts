@@ -1,11 +1,12 @@
 import { expect, test, type Page } from "@playwright/test";
+import { mockMapNetwork } from "./mocks";
 
 const SHOTS = process.env.SHOTS_DIR ?? "../meyiyal/screens";
 const MAILPIT = "http://127.0.0.1:54324";
 const KANNIYAKUMARI = { latitude: 8.0883, longitude: 77.5385 }; // Kanyakumari town
 const shot = (page: Page, name: string) => {
   const p = test.info().project.name;
-  return page.screenshot({ path: p === "mobile" ? `${SHOTS}/10-location-${name}.png` : `${SHOTS}/desktop-10-location-${name}.png`, fullPage: true });
+  return page.screenshot({ path: p === "mobile" ? `${SHOTS}/11-map-${name}.png` : `${SHOTS}/desktop-11-map-${name}.png`, fullPage: true });
 };
 
 async function loginNewEmail(page: Page, request: import("@playwright/test").APIRequestContext) {
@@ -31,62 +32,78 @@ async function loginNewEmail(page: Page, request: import("@playwright/test").API
 }
 
 test.beforeEach(async ({ page }) => {
+  await mockMapNetwork(page);
   await page.addInitScript(() => localStorage.setItem("i18nextLng", "en"));
 });
+const tilesLoaded = (page: Page) => page.waitForFunction(() => {
+  const t = [...document.querySelectorAll<HTMLImageElement>(".leaflet-tile")];
+  return t.length > 0 && t.every((i) => i.complete);
+});
 
-test("GPS: new user is sent to /location, current location resolves to Kanniyakumari and is saved", async ({ page, context, request }) => {
+test("Map: auto-detects GPS on open, pin + reverse address, drag adjusts, confirm saves exact lat/lng", async ({ page, context, request }) => {
   await context.grantPermissions(["geolocation"]);
   await context.setGeolocation(KANNIYAKUMARI);
   await loginNewEmail(page, request);
   await expect(page).toHaveURL(/\/location$/);
-  await expect(page.getByTestId("district-kanniyakumari")).toBeVisible();
-  await shot(page, "01-picker");
-  await page.getByTestId("btn-use-gps").click();
-  await expect(page.getByTestId("gps-place")).toContainText("Kanniyakumari");
-  await shot(page, "02-gps-detected");
-  await page.getByTestId("btn-confirm-gps").click();
+  await expect(page.locator(".leaflet-container")).toBeVisible();
+  await expect(page.getByTestId("center-pin")).toBeVisible();
+  await expect(page.getByTestId("sheet-place")).toContainText("Kanniyakumari");
+  await expect(page.getByTestId("sheet-address")).toContainText("Kanyakumari");
+  await expect(page.locator(".leaflet-control-attribution")).toContainText("OpenStreetMap");
+  await tilesLoaded(page);
+  await shot(page, "01-gps-pin-sheet");
+
+  // drag the map a little -> pin moves, still resolves
+  const box = (await page.getByTestId("map").boundingBox())!;
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 3);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width / 2 + 40, box.y + box.height / 3 + 30, { steps: 8 });
+  await page.mouse.up();
+  await expect(page.getByTestId("btn-confirm")).toBeEnabled();
+  await expect(page.getByTestId("sheet-place")).toContainText("Kanniyakumari");
+  await page.getByTestId("btn-confirm").click();
   await expect(page).toHaveURL(/\/$/);
   await expect(page.getByTestId("loc-chip-label")).toContainText("Kanniyakumari");
-  await shot(page, "03-home-chip");
-  await page.reload(); // persisted server-side, guard passes
-  await expect(page).toHaveURL(/\/$/);
+  await page.reload();
   await expect(page.getByTestId("loc-chip-label")).toContainText("Kanniyakumari");
 });
 
-test("Manual: denied GPS shows message; search + district -> area pick; change from Home header; Tamil", async ({ page, request }) => {
+test("Map: GPS denied -> message; seeded + Nominatim search moves map; change from header; Tamil", async ({ page, request }) => {
   await loginNewEmail(page, request);
   await expect(page).toHaveURL(/\/location$/);
-  await page.getByTestId("btn-use-gps").click(); // no permission granted -> denied
-  await expect(page.getByTestId("loc-error")).toBeVisible();
+  await expect(page.getByTestId("loc-error")).toBeVisible(); // permission not granted
   await page.goto("/"); // guard: Home requires a location
   await expect(page).toHaveURL(/\/location$/);
-  await page.getByTestId("district-kanniyakumari").click();
-  await expect(page.getByTestId("loc-breadcrumb")).toContainText("Kanniyakumari");
-  await expect(page.getByTestId("area-item").first()).toBeVisible();
-  await shot(page, "04-areas");
-  await page.getByTestId("area-item").filter({ hasText: "Nagercoil" }).click();
+
+  await page.getByTestId("loc-search").fill("Nager");
+  await page.getByTestId("area-hit").filter({ hasText: "Nagercoil" }).click();
+  await expect(page.getByTestId("sheet-place")).toContainText("Nagercoil, Kanniyakumari");
+  await page.getByTestId("btn-confirm").click();
   await expect(page).toHaveURL(/\/$/);
   await expect(page.getByTestId("loc-chip-label")).toContainText("Nagercoil, Kanniyakumari");
 
-  // change from header via search
   await page.getByTestId("loc-chip").click();
   await expect(page).toHaveURL(/\/location$/);
-  await page.getByTestId("loc-search").fill("chenn");
-  await expect(page.getByTestId("district-chennai")).toBeVisible();
-  await shot(page, "05-search");
-  await page.getByTestId("loc-search").fill("zzzz");
-  await expect(page.getByTestId("loc-empty")).toBeVisible();
-  await page.getByTestId("loc-search").fill("");
-  await page.getByTestId("district-chennai").click();
-  await page.getByTestId("area-item").first().click();
-  await expect(page).toHaveURL(/\/$/);
+  await page.getByTestId("loc-search").fill("Marina beach");
+  await expect(page.getByTestId("place-hit")).toHaveCount(0); // no autocomplete calls to Nominatim
+  await page.getByTestId("loc-search").press("Enter");
+  await expect(page.getByTestId("place-hit").first()).toContainText("Marina Beach");
+  await shot(page, "02-search-results");
+  await page.getByTestId("place-hit").first().click();
+  await expect(page.getByTestId("sheet-place")).toContainText("Chennai");
+  await expect(page.getByTestId("sheet-address")).toContainText("Marina Beach");
+  await tilesLoaded(page);
+  await shot(page, "03-confirm-sheet");
+  await page.getByTestId("btn-confirm").click();
   await expect(page.getByTestId("loc-chip-label")).toContainText("Chennai");
 
+  await page.getByTestId("loc-search").waitFor({ state: "detached" });
   await page.getByTestId("lang-toggle").click();
   await expect(page.getByTestId("loc-chip-label")).toContainText("சென்னை");
   await page.getByTestId("loc-chip").click();
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("இருப்பிடத்தை");
-  await shot(page, "06-ta");
+  await expect(page.getByTestId("btn-confirm")).toContainText("உறுதிசெய்");
+  await tilesLoaded(page);
+  await shot(page, "04-ta");
   await page.getByTestId("loc-back").click();
   await expect(page).toHaveURL(/\/$/);
 });
