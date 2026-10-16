@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ChevronDown, MapPin } from "lucide-react";
+import { UserMenu } from "@/components/app/UserMenu";
 import { LangToggle } from "@/components/app/LangToggle";
 import { placeLabel, useCurrentLocation } from "@/features/location/useCurrentLocation";
 
@@ -15,7 +16,8 @@ export function HomeHeader({ from = "/" }: { from?: string }) {
         <span className="min-w-0"><span className="block text-[11px] leading-none text-muted-foreground">{t("location.deliverTo")}</span>
           <span data-testid="loc-chip-label" className="flex items-center gap-0.5 truncate text-sm font-semibold">{placeLabel(loc ?? null, !!i18n.language?.startsWith("ta"))}<ChevronDown className="h-4 w-4 shrink-0" /></span></span>
       </Link>
-      <LangToggle />
+      <LangToggle compact />
+      <UserMenu />
     </header>
   );
 }

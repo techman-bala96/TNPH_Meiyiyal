@@ -8,7 +8,7 @@ const shot = (page: Page, name: string) =>
 
 /** M1a: first login lands on /location; pick a district so Home is reachable. */
 async function passLocation(page: Page) {
-  await expect(page.getByTestId("loc-search").or(page.getByTestId("signed-in-as"))).toBeVisible();
+  await expect(page.getByTestId("loc-search").or(page.getByTestId("avatar-btn"))).toBeVisible();
   if (await page.getByTestId("loc-search").isVisible()) {
     await expect(page.getByTestId("sheet-place")).toBeVisible();
     await page.getByTestId("btn-confirm").click();
@@ -50,9 +50,12 @@ test("phone OTP: send + verify signs in (local test_otp), sign out works", async
   await shot(page, "04-otp");
   await page.getByTestId("btn-verify").click();
   await passLocation(page);
+  await page.getByTestId("avatar-btn").click();
   await expect(page.getByTestId("signed-in-as")).toContainText("919876543210");
+  await page.keyboard.press("Escape");
   await shot(page, "05-phone-signed-in");
   await page.reload(); // session persists
+  await page.getByTestId("avatar-btn").click();
   await expect(page.getByTestId("signed-in-as")).toBeVisible();
   await page.getByTestId("btn-signout").click();
   await expect(page).toHaveURL(/\/login$/);
@@ -81,6 +84,7 @@ test("email magic link: link delivered to local Mailpit and signs in", async ({ 
   expect(decodeURIComponent(link!)).toContain("redirect_to=http://localhost:8080/auth/callback");
   await page.goto(link!);
   await passLocation(page);
+  await page.getByTestId("avatar-btn").click();
   await expect(page.getByTestId("signed-in-as")).toHaveText(email);
   await shot(page, "07-email-signed-in");
 });

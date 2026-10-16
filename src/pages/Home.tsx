@@ -2,10 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { BadgeCheck, ChevronRight, UserRound } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/app/Logo";
 import { HomeHeader } from "@/components/app/HomeHeader";
-import { useAuth } from "@/hooks/useAuth";
 import { childrenOf, nodeName, useTaxonomy } from "@/features/taxonomy/useTaxonomy";
 import { iconFor } from "@/features/taxonomy/icons";
 import { THEMES, patternStyle } from "@/features/taxonomy/themes";
@@ -13,7 +11,6 @@ import { THEMES, patternStyle } from "@/features/taxonomy/themes";
 export default function Home() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language?.startsWith("ta") ? "ta" : "en";
-  const { user, signOut } = useAuth();
   const tax = useTaxonomy();
   const [tab, setTab] = useState<"find" | "worker">("find");
   const all = tax.data ?? [];
@@ -81,13 +78,6 @@ export default function Home() {
         </section>
       )}
 
-      <section className="card-soft mt-auto flex items-center gap-3 p-4">
-        <div className="min-w-0 flex-1">
-          <p className="text-xs text-muted-foreground">{t("auth.signedInAs")}</p>
-          <p data-testid="signed-in-as" className="truncate text-sm font-semibold">{user?.email || user?.phone}</p>
-        </div>
-        <Button data-testid="btn-signout" variant="outline" size="sm" className="rounded-xl" onClick={signOut}>{t("auth.signOut")}</Button>
-      </section>
     </main>
   );
 }

@@ -76,5 +76,42 @@
       "engineer": "Engineers, architects & designers",
       "default": "Verified experts"
     }
+  },
+  "menu": {
+    "account": "Account",
+    "profile": "Profile",
+    "settings": "Settings",
+    "noName": "Add your name"
+  },
+  "profile": {
+    "details": "Personal details",
+    "name": "Full name",
+    "namePh": "Your name",
+    "dob": "Date of birth",
+    "save": "Save",
+    "saved": "Profile saved",
+    "nameTooLong": "Name is too long",
+    "photoHint": "Tap to change photo",
+    "changePhoto": "Change photo",
+    "photoType": "Please choose an image",
+    "photoError": "Couldn't upload photo",
+    "locations": "Saved locations",
+    "current": "Current",
+    "use": "Use",
+    "addLocation": "Add a location"
+  },
+  "settings": {
+    "language": "Language",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "notifications": "Notifications",
+    "notify": {
+      "requests": "New requests & calls",
+      "chat": "Chat messages",
+      "promos": "Offers & updates"
+    },
+    "notifyNote": "Push notifications arrive with the request/ring update."
   }
 }

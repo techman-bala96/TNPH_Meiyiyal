@@ -145,14 +145,14 @@ isOneToOne: false
                   ]
                 },"profiles": {
                   Row: {
-                    "avatar_url": string | null,"created_at": string,"email": string | null,"first_name": string,"id": string,"last_name": string,"location_address": string | null,"location_lat": number | null,"location_lng": number | null,"phone_number": string | null,"role": Database["public"]['Enums']["user_role"],"updated_at": string,"user_id": string
+                    "avatar_url": string | null,"created_at": string,"dob": string | null,"email": string | null,"first_name": string,"full_name": string | null,"id": string,"last_name": string,"location_address": string | null,"location_lat": number | null,"location_lng": number | null,"phone_number": string | null,"prefs": NonNullable<Json>,"role": Database["public"]['Enums']["user_role"],"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "avatar_url"?: string | null,"created_at"?: string,"email"?: string | null,"first_name": string,"id"?: string,"last_name": string,"location_address"?: string | null,"location_lat"?: number | null,"location_lng"?: number | null,"phone_number"?: string | null,"role"?: Database["public"]['Enums']["user_role"],"updated_at"?: string,"user_id": string
+                    "avatar_url"?: string | null,"created_at"?: string,"dob"?: string | null,"email"?: string | null,"first_name"?: string,"full_name"?: string | null,"id"?: string,"last_name"?: string,"location_address"?: string | null,"location_lat"?: number | null,"location_lng"?: number | null,"phone_number"?: string | null,"prefs"?: NonNullable<Json>,"role"?: Database["public"]['Enums']["user_role"],"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "avatar_url"?: string | null,"created_at"?: string,"email"?: string | null,"first_name"?: string,"id"?: string,"last_name"?: string,"location_address"?: string | null,"location_lat"?: number | null,"location_lng"?: number | null,"phone_number"?: string | null,"role"?: Database["public"]['Enums']["user_role"],"updated_at"?: string,"user_id"?: string
+                    "avatar_url"?: string | null,"created_at"?: string,"dob"?: string | null,"email"?: string | null,"first_name"?: string,"full_name"?: string | null,"id"?: string,"last_name"?: string,"location_address"?: string | null,"location_lat"?: number | null,"location_lng"?: number | null,"phone_number"?: string | null,"prefs"?: NonNullable<Json>,"role"?: Database["public"]['Enums']["user_role"],"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -678,6 +678,11 @@ isOneToOne: false
 "my_current_location":
 { Args: Record<PropertyKey, never>; Returns: {
               "area_id": number,"area_name": string,"area_name_ta": string,"district_name": Json,"district_slug": string,"id": string,"lat": number,"lng": number,"source": string
+            }[]
+                           },
+"my_locations":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "address": string,"area_id": number,"area_name": string,"area_name_ta": string,"created_at": string,"district_name": Json,"district_slug": string,"id": string,"is_current": boolean,"lat": number,"lng": number
             }[]
                            },
 "nearest_location":
@@ -1237,6 +1242,9 @@ isOneToOne: false
                            },
 "updategeometrysrid":
 { Args: { "catalogn_name": string,"column_name": string,"new_srid_in": number,"schema_name": string,"table_name": string }; Returns: string
+                           },
+"use_saved_location":
+{ Args: { "_id": string }; Returns: undefined
                            }
           }
           Enums: {

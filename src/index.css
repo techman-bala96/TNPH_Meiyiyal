@@ -34,6 +34,36 @@
     --sidebar-border: 180 12% 89%;
     --sidebar-ring: 168 76% 36%;
   }
+  .dark {
+    --background: 200 22% 7%;
+    --foreground: 180 10% 94%;
+    --card: 200 18% 11%;
+    --card-foreground: 180 10% 94%;
+    --popover: 200 18% 11%;
+    --popover-foreground: 180 10% 94%;
+    --primary: 166 64% 46%;
+    --primary-foreground: 200 30% 6%;
+    --secondary: 168 30% 16%;
+    --secondary-foreground: 166 60% 80%;
+    --muted: 200 14% 16%;
+    --muted-foreground: 190 8% 64%;
+    --accent: 350 78% 60%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 70% 58%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 200 14% 20%;
+    --input: 200 14% 20%;
+    --ring: 166 64% 46%;
+    --sidebar-background: 200 18% 11%;
+    --sidebar-foreground: 180 10% 94%;
+    --sidebar-primary: 166 64% 46%;
+    --sidebar-primary-foreground: 200 30% 6%;
+    --sidebar-accent: 168 30% 16%;
+    --sidebar-accent-foreground: 166 60% 80%;
+    --sidebar-border: 200 14% 20%;
+    --sidebar-ring: 166 64% 46%;
+    color-scheme: dark;
+  }
   * { @apply border-border; }
   html { -webkit-tap-highlight-color: transparent; }
   body {
@@ -43,5 +73,10 @@
 }
 @layer components {
   .tap { @apply min-h-11 active:scale-[0.98] transition-transform; }
-  .card-soft { @apply rounded-2xl bg-card shadow-[0_1px_2px_rgba(0,0,0,.04),0_4px_16px_rgba(16,80,70,.06)]; }
+  .card-soft { @apply rounded-2xl bg-card shadow-[0_1px_2px_rgba(0,0,0,.04),0_4px_16px_rgba(16,80,70,.06)] dark:shadow-none dark:ring-1 dark:ring-border; }
+  /* dark map tiles */
+  .dark .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.92) contrast(.9); }
+  .dark .leaflet-container { background: hsl(var(--muted)); }
+  .dark .leaflet-control-attribution { @apply bg-card/80 text-muted-foreground; }
+  .dark .leaflet-control-attribution a { @apply text-primary; }
 }
