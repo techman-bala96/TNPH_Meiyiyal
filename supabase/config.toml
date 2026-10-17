@@ -157,11 +157,11 @@ max_indexes = 5
 enabled = true
 # The base URL of your website. Used as an allow-list for redirects and for constructing URLs used
 # in emails.
-site_url = "http://localhost:8080"
+site_url = "env(SUPABASE_AUTH_SITE_URL)"
 # The public URL that Auth serves on. Defaults to the API external URL with `/auth/v1` appended.
 # external_url = ""
 # A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
-additional_redirect_urls = ["http://localhost:8080/**", "http://127.0.0.1:8080/**", "http://localhost:4173/**"]
+additional_redirect_urls = ["http://localhost:8080/**", "http://127.0.0.1:8080/**", "http://localhost:4173/**", "env(SUPABASE_AUTH_PUBLIC_REDIRECT)"]
 # How long tokens are valid for, in seconds. Defaults to 3600 (1 hour), maximum 604,800 (1 week).
 jwt_expiry = 3600
 # JWT issuer URL. If not set, defaults to auth.external_url.
@@ -243,6 +243,16 @@ otp_expiry = 3600
 # pass = "env(SENDGRID_API_KEY)"
 # admin_email = "admin@email.com"
 # sender_name = "Admin"
+
+# Magic-link / confirmation emails: https redirect_to (public tunnel) -> link via site_url (public host),
+# http redirect_to (local dev/e2e) -> default local ConfirmationURL. See supabase/templates/.
+[auth.email.template.magic_link]
+subject = "Your Magic Link"
+content_path = "./supabase/templates/magic_link.html"
+
+[auth.email.template.confirmation]
+subject = "Confirm Your Signup"
+content_path = "./supabase/templates/confirmation.html"
 
 # Uncomment to customize email template
 # [auth.email.template.invite]
@@ -328,7 +338,8 @@ enabled = true
 # Needs a real Google OAuth Web client. Put values in supabase/.env (gitignored):
 client_id = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID)"
 secret = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET)"
-redirect_uri = ""
+# Public callback (tunnel/prod host), set in supabase/.env; must also be listed in Google Cloud Console.
+redirect_uri = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_REDIRECT_URI)"
 url = ""
 skip_nonce_check = true
 

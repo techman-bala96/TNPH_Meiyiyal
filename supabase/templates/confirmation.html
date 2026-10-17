@@ -1,0 +1,3 @@
+<h2>Confirm your Meiyiyal email</h2>
+<p><a href="{{ if and (ge (len .RedirectTo) 8) (eq (slice .RedirectTo 0 8) "https://") }}{{ .SiteURL }}/auth/v1/verify?token={{ .TokenHash }}&type=signup&redirect_to={{ .RedirectTo }}{{ else }}{{ .ConfirmationURL }}{{ end }}">Confirm email</a></p>
+<p>Or enter this code: {{ .Token }}</p>
