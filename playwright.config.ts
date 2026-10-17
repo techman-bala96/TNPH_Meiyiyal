@@ -11,6 +11,8 @@ export default defineConfig({
   webServer: [
     { command: "npm run dev -- --port 8080 --strictPort", url: "http://localhost:8080", reuseExistingServer: true, timeout: 60_000 },
     // voice agent (FastAPI) — reads the local Supabase URL/anon key from .env.local
+    // Edge Functions (payments) on the local stack: GET payments-create-order is a health check
+    { command: "supabase functions serve", url: "http://127.0.0.1:54321/functions/v1/payments-create-order", reuseExistingServer: true, timeout: 180_000 },
     { command: "services/agent/run.sh", url: "http://127.0.0.1:8787/agent/health", reuseExistingServer: true, timeout: 120_000 },
   ],
   projects: [

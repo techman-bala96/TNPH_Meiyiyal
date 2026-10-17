@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { History, LogOut, Settings, ShieldCheck, UserRound } from "lucide-react";
+import { History, LogOut, Settings, ShieldCheck, UserRound, Coins } from "lucide-react";
 import { useIsAdmin } from "@/features/worker/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -33,6 +33,7 @@ export function UserMenu() {
         <DropdownMenuSeparator />
         <DropdownMenuItem data-testid="menu-profile" className="min-h-10 gap-2" onSelect={() => nav("/profile")}><UserRound className="h-4 w-4" />{t("menu.profile")}</DropdownMenuItem>
         <DropdownMenuItem data-testid="menu-settings" className="min-h-10 gap-2" onSelect={() => nav("/settings")}><Settings className="h-4 w-4" />{t("menu.settings")}</DropdownMenuItem>
+        <DropdownMenuItem data-testid="menu-wallet" className="min-h-10 gap-2" onSelect={() => nav("/wallet")}><Coins className="h-4 w-4" />{t("wallet.title")}</DropdownMenuItem>
         <DropdownMenuItem data-testid="menu-history" className="min-h-10 gap-2" onSelect={() => nav("/history")}><History className="h-4 w-4" />{t("consult.history")}</DropdownMenuItem>
         {admin.data && <DropdownMenuItem data-testid="menu-admin" className="min-h-10 gap-2" onSelect={() => nav("/admin")}><ShieldCheck className="h-4 w-4" />{t("menu2.admin")}</DropdownMenuItem>}
         <DropdownMenuSeparator />

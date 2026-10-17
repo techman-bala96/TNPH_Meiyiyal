@@ -97,6 +97,26 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"commission_rules": {
+                  Row: {
+                    "node_slug": string,"pct": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "node_slug": string,"pct": number
+                  }
+                  Update: {
+                    "node_slug"?: string,"pct"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "commission_rules_node_slug_fkey"
+      columns: ["node_slug"]
+isOneToOne: true
+      referencedRelation: "taxonomy_nodes"
+      referencedColumns: ["slug"]
+    }
+                  ]
                 },"consult_feedback": {
                   Row: {
                     "comment": string | null,"complaint_reason": string | null,"created_at": string,"id": string,"is_complaint": boolean,"is_good": boolean,"is_negative": boolean,"rating": number,"session_id": string,"tags": (string)[],"user_id": string,"worker_id": string
@@ -195,6 +215,20 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"credit_packs": {
+                  Row: {
+                    "active": boolean,"bonus": number,"credits": number,"id": string,"name_i18n": NonNullable<Json>,"popular": boolean,"price_inr": number,"sort": number,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "active"?: boolean,"bonus"?: number,"credits": number,"id": string,"name_i18n": NonNullable<Json>,"popular"?: boolean,"price_inr": number,"sort"?: number,"updated_at"?: string
+                  }
+                  Update: {
+                    "active"?: boolean,"bonus"?: number,"credits"?: number,"id"?: string,"name_i18n"?: NonNullable<Json>,"popular"?: boolean,"price_inr"?: number,"sort"?: number,"updated_at"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"kyc_otp_sessions": {
                   Row: {
                     "aadhaar_hash": string,"attempts": number,"created_at": string,"expires_at": string,"last4": string,"provider_ref": string | null,"sends": number,"worker_id": string
@@ -285,6 +319,60 @@ isOneToOne: false
                   }
                   Update: {
                     "category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"description"?: string | null,"description_ta"?: string | null,"icon"?: string | null,"id"?: string,"name"?: string,"name_ta"?: string | null,"payment_methodology"?: Database["public"]['Enums']["payment_methodology"]
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"payment_events": {
+                  Row: {
+                    "event_id": string,"order_id": string | null,"outcome": string | null,"payload": Json | null,"provider": string,"received_at": string,"type": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "event_id": string,"order_id"?: string | null,"outcome"?: string | null,"payload"?: Json | null,"provider": string,"received_at"?: string,"type": string
+                  }
+                  Update: {
+                    "event_id"?: string,"order_id"?: string | null,"outcome"?: string | null,"payload"?: Json | null,"provider"?: string,"received_at"?: string,"type"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "payment_events_order_id_fkey"
+      columns: ["order_id"]
+isOneToOne: false
+      referencedRelation: "payment_orders"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"payment_orders": {
+                  Row: {
+                    "amount_paise": number,"bonus": number,"created_at": string,"credited_at": string | null,"credits": number,"currency": string,"failure_reason": string | null,"gst_paise": number,"id": string,"pack_id": string,"provider": string,"provider_order_id": string | null,"provider_payment_id": string | null,"refund_note": string | null,"refunded_at": string | null,"status": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "amount_paise": number,"bonus"?: number,"created_at"?: string,"credited_at"?: string | null,"credits": number,"currency"?: string,"failure_reason"?: string | null,"gst_paise"?: number,"id"?: string,"pack_id": string,"provider": string,"provider_order_id"?: string | null,"provider_payment_id"?: string | null,"refund_note"?: string | null,"refunded_at"?: string | null,"status"?: string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "amount_paise"?: number,"bonus"?: number,"created_at"?: string,"credited_at"?: string | null,"credits"?: number,"currency"?: string,"failure_reason"?: string | null,"gst_paise"?: number,"id"?: string,"pack_id"?: string,"provider"?: string,"provider_order_id"?: string | null,"provider_payment_id"?: string | null,"refund_note"?: string | null,"refunded_at"?: string | null,"status"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "payment_orders_pack_id_fkey"
+      columns: ["pack_id"]
+isOneToOne: false
+      referencedRelation: "credit_packs"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"payout_requests": {
+                  Row: {
+                    "admin_note": string | null,"amount": number,"decided_at": string | null,"decided_by": string | null,"id": string,"method": string,"reference": string | null,"requested_at": string,"status": string,"worker_user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "admin_note"?: string | null,"amount": number,"decided_at"?: string | null,"decided_by"?: string | null,"id"?: string,"method"?: string,"reference"?: string | null,"requested_at"?: string,"status"?: string,"worker_user_id": string
+                  }
+                  Update: {
+                    "admin_note"?: string | null,"amount"?: number,"decided_at"?: string | null,"decided_by"?: string | null,"id"?: string,"method"?: string,"reference"?: string | null,"requested_at"?: string,"status"?: string,"worker_user_id"?: string
                   }
                   Relationships: [
                     
@@ -585,6 +673,32 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"worker_earnings": {
+                  Row: {
+                    "available_at": string,"commission": number,"commission_pct": number,"created_at": string,"gross": number,"id": number,"minutes": number | null,"mode": string | null,"net": number,"payout_id": string | null,"session_id": string | null,"worker_user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "available_at": string,"commission": number,"commission_pct": number,"created_at"?: string,"gross": number,"id"?: number,"minutes"?: number | null,"mode"?: string | null,"net": number,"payout_id"?: string | null,"session_id"?: string | null,"worker_user_id": string
+                  }
+                  Update: {
+                    "available_at"?: string,"commission"?: number,"commission_pct"?: number,"created_at"?: string,"gross"?: number,"id"?: number,"minutes"?: number | null,"mode"?: string | null,"net"?: number,"payout_id"?: string | null,"session_id"?: string | null,"worker_user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "worker_earnings_payout_id_fkey"
+      columns: ["payout_id"]
+isOneToOne: false
+      referencedRelation: "payout_requests"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "worker_earnings_session_id_fkey"
+      columns: ["session_id"]
+isOneToOne: false
+      referencedRelation: "consult_sessions"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"worker_education": {
                   Row: {
                     "created_at": string,"degree_name": string,"document_url": string | null,"id": string,"institution": string,"worker_id": string,"year_completed": number | null
@@ -868,13 +982,32 @@ isOneToOne: false
               "block_reason": string,"blocked": boolean,"blocked_until": string,"display_name": string,"flag_active": boolean,"flag_good_needed": number,"flag_reason": string,"id": string,"negatives": number,"node_name": Json,"photo_url": string,"primary_node": string,"rating": number,"recent": Json,"reviews": number
             }[]
                            },
+"admin_payments":
+{ Args: { "_limit"?: number }; Returns: {
+              "amount_paise": number,"bonus": number,"created_at": string,"credits": number,"events": number,"failure_reason": string,"id": string,"pack_id": string,"provider": string,"provider_order_id": string,"provider_payment_id": string,"refund_note": string,"status": string,"user_name": string
+            }[]
+                           },
+"admin_payout_decide":
+{ Args: { "_id": string,"_note": string,"_paid": boolean,"_reference": string }; Returns: string
+                           },
+"admin_payouts":
+{ Args: { "_status"?: string }; Returns: {
+              "admin_note": string,"amount": number,"decided_at": string,"id": string,"items": number,"reference": string,"requested_at": string,"status": string,"worker_name": string,"worker_user_id": string
+            }[]
+                           },
 "admin_rate_cards":
 { Args: Record<PropertyKey, never>; Returns: {
               "band_max": number,"band_min": number,"credits_per_min": number,"depth": number,"min_minutes": number,"mode": string,"node_name": Json,"node_slug": string,"updated_at": string
             }[]
                            },
+"admin_refund":
+{ Args: { "_id": string,"_note": string }; Returns: Json
+                           },
 "admin_set_rate":
 { Args: { "_min": number,"_mode": string,"_node": string,"_rate": number }; Returns: undefined
+                           },
+"admin_upsert_pack":
+{ Args: { "_active": boolean,"_bonus": number,"_credits": number,"_id": string,"_name": Json,"_popular": boolean,"_price": number,"_sort": number }; Returns: undefined
                            },
 "admin_worker_queue":
 { Args: { "_status"?: string }; Returns: {
@@ -889,6 +1022,9 @@ isOneToOne: false
                            },
 "call_start":
 { Args: { "_mode": string,"_sid": string }; Returns: string
+                           },
+"commission_for":
+{ Args: { "_node": string,"_worker": string }; Returns: number
                            },
 "dev_grant_test_credits":
 { Args: Record<PropertyKey, never>; Returns: number
@@ -1026,6 +1162,9 @@ isOneToOne: false
               "area_id": number,"area_name": string,"area_name_ta": string,"district_name": Json,"district_slug": string,"id": string,"lat": number,"lng": number,"source": string
             }[]
                            },
+"my_earnings":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "my_feedback":
 { Args: { "_sid": string }; Returns: Json
                            },
@@ -1044,6 +1183,11 @@ isOneToOne: false
                            },
 "my_wallet":
 { Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"my_wallet_ledger":
+{ Args: { "_limit"?: number }; Returns: {
+              "amount": number,"created_at": string,"description": string,"id": string,"reference_id": string,"type": string
+            }[]
                            },
 "my_worker":
 { Args: Record<PropertyKey, never>; Returns: {
@@ -1101,6 +1245,36 @@ isOneToOne: false
                            },
 "node_requirements_for":
 { Args: { "_slug": string }; Returns: Json
+                           },
+"payment_event_once":
+{ Args: { "_event_id": string,"_payload": Json,"_provider": string,"_provider_order_id": string,"_type": string }; Returns: boolean
+                           },
+"payment_event_outcome":
+{ Args: { "_event_id": string,"_outcome": string }; Returns: undefined
+                           },
+"payment_mark_failed":
+{ Args: { "_provider_order_id": string,"_reason": string }; Returns: string
+                           },
+"payment_mark_paid":
+{ Args: { "_payment_id": string,"_provider_order_id": string,"_source": string }; Returns: Json
+                           },
+"payment_order_attach":
+{ Args: { "_id": string,"_provider_order_id": string }; Returns: undefined
+                           },
+"payment_order_cancel":
+{ Args: { "_id": string }; Returns: string
+                           },
+"payment_order_new":
+{ Args: { "_pack": string,"_provider": string }; Returns: Json
+                           },
+"payments_config":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"payments_mock_enabled":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"payout_request":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "populate_geometry_columns":
 { Args: { "tbl_oid": unknown,"use_typmod"?: boolean }; Returns: number

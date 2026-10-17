@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { BadgeCheck, ExternalLink, Loader2, ShieldX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { PacksEditor, PaymentsView, PayoutsAdmin } from "@/features/admin/Payments";
 import { PageShell } from "@/components/app/PageShell";
 import { supabase } from "@/integrations/supabase/client";
 import { Splash } from "@/components/app/Guards";
@@ -19,7 +20,7 @@ type Row = { id: string; display_name: string; primary_node: string; node_name: 
 
 export default function Admin() {
   const { t } = useTranslation(); const admin = useIsAdmin(); const qc = useQueryClient();
-  const [status, setStatus] = useState("pending"); const [tab, setTab] = useState<"queue" | "moderation" | "rates" | "audit">("queue");
+  const [status, setStatus] = useState("pending"); const [tab, setTab] = useState<"queue" | "moderation" | "rates" | "audit" | "packs" | "payments" | "payouts">("queue");
   const q = useQuery({ queryKey: ["admin-queue", status], enabled: admin.data === true, queryFn: async () => {
     const { data, error } = await supabase.rpc("admin_worker_queue", { _status: status }); if (error) throw error; return data as unknown as Row[];
   } });
@@ -29,12 +30,15 @@ export default function Admin() {
   return (
     <PageShell title={t("admin.title")} testId="admin-page">
       <div className="grid grid-cols-4 gap-1 rounded-2xl bg-primary/10 p-1">
-        {(["queue", "moderation", "rates", "audit"] as const).map((k) => (
+        {(["queue", "moderation", "rates", "audit", "packs", "payments", "payouts"] as const).map((k) => (
           <button key={k} data-testid={`admin-tab-${k}`} onClick={() => setTab(k)} className={`rounded-xl py-2 text-xs font-semibold transition ${tab === k ? "bg-primary text-primary-foreground shadow" : "text-primary"}`}>{t(`admin.tab.${k}`)}</button>))}
       </div>
       {tab === "moderation" && <Moderation />}
       {tab === "rates" && <RatesEditor />}
       {tab === "audit" && <AuditLog />}
+      {tab === "packs" && <PacksEditor />}
+      {tab === "payments" && <PaymentsView />}
+      {tab === "payouts" && <PayoutsAdmin />}
       {tab === "queue" && <>
       <div className="flex gap-1 overflow-x-auto rounded-2xl bg-muted p-1 [scrollbar-width:none]">
         {["pending", "needs_info", "approved", "rejected", "all"].map((s) => (

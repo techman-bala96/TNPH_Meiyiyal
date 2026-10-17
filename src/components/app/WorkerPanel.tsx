@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
-import { BadgeCheck, Clock, FileWarning, Hourglass, Power, ShieldAlert, UserRoundPlus } from "lucide-react";
+import { BadgeCheck, Clock, FileWarning, Hourglass, Power, ShieldAlert, UserRoundPlus, Banknote, ChevronRight } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -61,6 +61,12 @@ export function WorkerPanel() {
           <p className="text-xs text-muted-foreground">{t(w.status === "approved" ? "worker.onlineHint" : "worker.lockedHint")}</p></div>
         <Switch data-testid="go-online" checked={w.is_online && !blocked} disabled={w.status !== "approved" || blocked} onCheckedChange={toggle} aria-label={t("worker.goOnline")} />
       </div>
+      {w.status === "approved" && (
+        <Link to="/earnings" data-testid="btn-earnings" className="card-soft flex items-center gap-3 p-4 transition hover:-translate-y-0.5">
+          <span className="grid h-11 w-11 place-items-center rounded-full bg-violet-500/15 text-violet-600"><Banknote className="h-5 w-5" /></span>
+          <div className="flex-1"><p className="font-semibold">{t("earn.title")}</p><p className="text-xs text-muted-foreground">{t("earn.hint")}</p></div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+        </Link>)}
       {w.status === "approved" && standing && <MyRewards s={standing} name={w.display_name} profession={tax.data?.find((n) => n.slug === w.primary_node)?.name ?? null} />}
     </section>
   );

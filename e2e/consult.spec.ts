@@ -112,7 +112,8 @@ test("user ↔ lawyer: ring/decline/timeout/accept, chat + file, video + voice c
   await law.page.goto("/history");
   const lrow = law.page.locator('[data-testid="history-row"][data-name="Meena Lakshmi"]');
   await expect(lrow).toHaveAttribute("data-role", "worker");
-  await expect(lrow.getByTestId("history-credits")).toHaveText(`+${Math.round(used * 0.82 * 100) / 100}`);
+  // new workers pay the 15% introductory fee (commission_new_pct, M6)
+  await expect(lrow.getByTestId("history-credits")).toHaveText(`+${Math.round(used * 0.85 * 100) / 100}`);
   await shot(law.page, "19-history-lawyer");
   // transcript reopens read-only
   await row.click();

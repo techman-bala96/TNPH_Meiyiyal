@@ -16,6 +16,8 @@ import { PrefsSync } from "@/components/app/PrefsSync";
 import LocationPage from "@/pages/LocationPage";
 import Session from "@/pages/Session";
 import History from "@/pages/History";
+import Wallet from "./pages/Wallet";
+import Earnings from "./pages/Earnings";
 import WorkerProfile from "@/pages/WorkerProfile";
 import { ConsultProvider } from "@/features/consult/ConsultProvider";
 import { VoiceProvider } from "@/features/voice/VoiceProvider";
@@ -42,6 +44,8 @@ export default function App() {
               <Route path="/admin" element={<Admin />} />
               <Route path="/session/:id" element={<Session />} />
               <Route path="/history" element={<History />} />
+              <Route path="/wallet" element={<Wallet />} />
+              <Route path="/earnings" element={<Earnings />} />
               <Route path="/w/:id" element={<WorkerProfile />} />
               <Route element={<RequireLocation />}>
                 <Route path="/" element={<Home />} />

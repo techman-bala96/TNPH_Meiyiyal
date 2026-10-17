@@ -197,7 +197,34 @@
       "queue": "Queue",
       "moderation": "Moderation",
       "rates": "Rates",
-      "audit": "Audit"
+      "audit": "Audit",
+      "packs": "Packs",
+      "payments": "Payments",
+      "payouts": "Payouts"
+    },
+    "save": "Save",
+    "saved": "Saved",
+    "pack": {
+      "price_inr": "Price ₹ (incl. GST)",
+      "credits": "Credits",
+      "bonus": "Bonus",
+      "active": "Active"
+    },
+    "pay": {
+      "collected": "Collected (paid)",
+      "events": "{{n}} webhook events",
+      "refund": "Refund",
+      "refundReason": "Refund reason",
+      "refunded": "Refunded"
+    },
+    "payout": {
+      "none": "No payout requests",
+      "items": "{{n}} earning entries",
+      "refOrReason": "UTR / reference (or reject reason)",
+      "paid": "Mark paid",
+      "reject": "Reject",
+      "markedPaid": "Marked paid",
+      "rejected": "Rejected"
     }
   },
   "menu2": {
@@ -397,6 +424,72 @@
       "rating": "Top rated",
       "experience": "Most experienced",
       "distance": "Nearest"
+    }
+  },
+  "wallet": {
+    "title": "Wallet",
+    "balance": "Balance",
+    "credits": "credits",
+    "rule": "1 credit = ₹1 · used only for consultations",
+    "addCredits": "Add credits",
+    "popular": "Popular",
+    "bonus": "+{{n}} bonus",
+    "inclGst": "incl. {{gst}} GST ({{pct}}%)",
+    "ledger": "Transactions",
+    "noTx": "No transactions yet",
+    "payments": "Payments",
+    "topUp": "Add credits",
+    "result": {
+      "paid": "Payment successful — {{credits}} credits added",
+      "failed": "Payment failed — no credits were added",
+      "cancelled": "Payment cancelled"
+    },
+    "status": {
+      "created": "Pending",
+      "paid": "Paid",
+      "failed": "Failed",
+      "cancelled": "Cancelled",
+      "refunded": "Refunded"
+    },
+    "l": {
+      "pack": "{{name}} pack",
+      "bonus": "Bonus · {{name}}",
+      "refund": "Refund · {{name}}",
+      "consult": "{{mode}} consultation · {{min}} min"
+    }
+  },
+  "pay": {
+    "testMode": "Test mode",
+    "cancel": "Cancel payment",
+    "youGet": "You get {{credits}} credits",
+    "simSuccess": "Pay (simulate success)",
+    "simFail": "Simulate failure",
+    "mockNote": "No real money is charged — the Razorpay switch happens when keys are added"
+  },
+  "earn": {
+    "title": "Earnings",
+    "hint": "Weekly payouts to your bank",
+    "available": "Available to withdraw",
+    "onHold": "On hold",
+    "fee": "Platform fee",
+    "request": "Request payout",
+    "requested": "Payout requested",
+    "pendingNote": "Payout of {{amt}} is being processed",
+    "rule": "Minimum {{min}} · earnings unlock {{h}}h after each session",
+    "lifetime": "Lifetime",
+    "pending": "Processing",
+    "paid": "Paid out",
+    "weekly": "Weekly earnings",
+    "none": "No earnings yet",
+    "sessions_one": "{{count}} session",
+    "sessions_other": "{{count}} sessions",
+    "grossFee": "{{gross}} billed · {{fee}} fee",
+    "payouts": "Payouts",
+    "noPayouts": "No payouts yet",
+    "status": {
+      "requested": "Processing",
+      "paid": "Paid",
+      "rejected": "Rejected"
     }
   }
 }
