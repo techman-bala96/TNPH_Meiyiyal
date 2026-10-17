@@ -97,6 +97,9 @@ test("Google OAuth: redirects to accounts.google.com with our client + callback"
   const url = new URL((await req).url());
   expect(url.pathname).toContain("/o/oauth2");
   expect(url.searchParams.get("client_id")).toBeTruthy();
-  expect(url.searchParams.get("redirect_uri")).toBe("http://127.0.0.1:54321/auth/v1/callback");
+  // redirect_uri comes from SUPABASE_AUTH_EXTERNAL_GOOGLE_REDIRECT_URI (public tunnel host) — only the callback path is fixed
+  const redirect = url.searchParams.get("redirect_uri") ?? "";
+  expect(redirect).toMatch(/^https?:\/\/[^/]+\/auth\/v1\/callback$/);
+  if (process.env.SUPABASE_AUTH_EXTERNAL_GOOGLE_REDIRECT_URI) expect(redirect).toBe(process.env.SUPABASE_AUTH_EXTERNAL_GOOGLE_REDIRECT_URI);
   expect(url.searchParams.get("scope")).toContain("email");
 });
