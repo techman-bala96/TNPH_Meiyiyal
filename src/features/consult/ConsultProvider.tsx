@@ -52,14 +52,16 @@ export function ConsultProvider({ children }: { children: ReactNode }) {
   // incoming rings for me as a worker
   useEffect(() => {
     if (!uid || !meId || meStatus !== "approved") return;
-    void supabase.from("consult_requests").select("*").eq("worker_user_id", uid).eq("status", "ringing").gt("expires_at", new Date().toISOString())
-      .order("created_at", { ascending: false }).limit(1).then(({ data }) => { if (data?.[0]) setIncoming(data[0] as unknown as ConsultRequest); });
+    // initial fetch + slow poll as a safety net if a realtime event is missed (reconnects, slow channel join)
+    const check = () => void supabase.from("consult_requests").select("*").eq("worker_user_id", uid).eq("status", "ringing").gt("expires_at", new Date().toISOString())
+      .order("created_at", { ascending: false }).limit(1).then(({ data }) => { if (data?.[0]) setIncoming((cur) => (cur?.id === data[0].id ? cur : (data[0] as unknown as ConsultRequest))); });
+    check(); const poll = setInterval(check, 5000);
     const ch = supabase.channel(`ring:${uid}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "consult_requests", filter: `worker_user_id=eq.${uid}` }, (p) => {
         const r = p.new as ConsultRequest;
         if (r.status === "ringing") setIncoming(r); else setIncoming((cur) => (cur?.id === r.id ? null : cur));
       }).subscribe();
-    return () => { void supabase.removeChannel(ch); };
+    return () => { clearInterval(poll); void supabase.removeChannel(ch); };
   }, [uid, meId, meStatus]);
 
   // outgoing request status

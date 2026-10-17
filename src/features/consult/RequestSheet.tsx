@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { BadgeCheck, Coins, Loader2, Sparkles } from "lucide-react";
@@ -59,6 +60,7 @@ export function RequestSheet({ w, open, onOpenChange }: { w: SheetWorker; open: 
                 </button>); })}
           </div>
           <p className="text-center text-xs text-muted-foreground">{t("consult.billingNote")}</p>
+          {!location.pathname.startsWith("/w/") && <Link to={`/w/${w.id}`} data-testid="view-profile" className="block text-center text-sm font-semibold text-primary">{t("wprofile.view")}</Link>}
         </div>
       </SheetContent>
     </Sheet>

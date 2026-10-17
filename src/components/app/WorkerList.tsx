@@ -9,10 +9,12 @@ import { useCurrentLocation } from "@/features/location/useCurrentLocation";
 import { initials } from "@/features/profile/useProfile";
 import { RequestSheet } from "@/features/consult/RequestSheet";
 import type { Rates } from "@/features/consult/api";
+import { BadgeRow } from "@/features/rewards/RewardIcon";
+import type { Reward } from "@/features/rewards/types";
 
 export type WorkerCard = { id: string; display_name: string; photo_url: string | null; rating: number; feedback_count: number; rewards_count: number; years_experience: number;
   primary_node: string; specialty: { en: string; ta?: string } | null; is_online: boolean; distance_km: number; district_slug: string | null; district_name: { en: string; ta?: string } | null;
-  is_busy?: boolean; rates?: Rates };
+  is_busy?: boolean; rates?: Rates; badges?: Reward[] };
 
 export function WorkerList({ node, nodeLabel, tile, where }: { node: string; nodeLabel: string; tile: string; where: string }) {
   const { t, i18n } = useTranslation(); const ta = i18n.language?.startsWith("ta");
@@ -66,7 +68,7 @@ function Card({ w }: { w: WorkerCard }) {
   const [open, setOpen] = useState(false);
   return (<>
     <RequestSheet w={{ ...w, spec }} open={open} onOpenChange={setOpen} />
-    <li data-testid="worker-card" data-name={w.display_name} data-online={w.is_online} data-busy={!!w.is_busy} role="button" tabIndex={0}
+    <li data-testid="worker-card" data-id={w.id} data-name={w.display_name} data-online={w.is_online} data-busy={!!w.is_busy} role="button" tabIndex={0}
       onClick={() => setOpen(true)} onKeyDown={(e) => e.key === "Enter" && setOpen(true)}
       className="card-soft flex cursor-pointer gap-3 p-3 transition hover:-translate-y-0.5 hover:shadow-lg animate-in fade-in slide-in-from-bottom-1">
       <div className="relative shrink-0">
@@ -88,8 +90,9 @@ function Card({ w }: { w: WorkerCard }) {
         <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
           <span className="flex items-center gap-0.5 font-semibold" data-testid="rating"><Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />{w.feedback_count > 0 ? Number(w.rating).toFixed(1) : t("list.new")}</span>
           <span className="flex items-center gap-0.5 text-muted-foreground"><Briefcase className="h-3.5 w-3.5" />{t("list.yrs", { count: w.years_experience })}</span>
-          <span className="flex items-center gap-0.5 text-muted-foreground"><Award className="h-3.5 w-3.5" />{w.rewards_count}</span>
-          <span className="flex items-center gap-0.5 text-muted-foreground"><MessageSquareText className="h-3.5 w-3.5" />{w.feedback_count}</span>
+          <span className="flex items-center gap-0.5 text-muted-foreground"><Award className="h-3.5 w-3.5" /><span data-testid="rewards-count">{w.rewards_count}</span></span>
+          <BadgeRow badges={w.badges ?? []} lang={i18n.language ?? "en"} />
+          <span className="flex items-center gap-0.5 text-muted-foreground"><MessageSquareText className="h-3.5 w-3.5" /><span data-testid="feedback-count">{w.feedback_count}</span></span>
         </div>
       </div>
     </li>

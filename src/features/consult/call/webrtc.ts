@@ -24,13 +24,16 @@ export function createWebRtcProvider(): CallProvider {
         if (s && map[s]) onState(map[s]);
       };
       const makeOffer = async () => {
-        if (!pc || pc.signalingState !== "stable") return;
+        if (!pc) return;
+        // callee may have joined after our first offer: re-send it instead of dropping the retry
+        if (pc.signalingState === "have-local-offer" && pc.localDescription) { send("offer", { sdp: pc.localDescription.toJSON() }); return; }
+        if (pc.signalingState !== "stable" || pc.remoteDescription) return;
         const o = await pc.createOffer(); await pc.setLocalDescription(o); send("offer", { sdp: o });
       };
       ch = supabase.channel(`call:${sessionId}`, { config: { private: true, broadcast: { self: false } } });
       ch.on("broadcast", { event: "ready" }, ({ payload }) => { if (payload.callId === callId && isCaller) void makeOffer(); })
         .on("broadcast", { event: "offer" }, async ({ payload }) => {
-          if (payload.callId !== callId || isCaller || !pc) return;
+          if (payload.callId !== callId || isCaller || !pc || pc.signalingState !== "stable" || pc.remoteDescription) return;
           await pc.setRemoteDescription(payload.sdp); const a = await pc.createAnswer(); await pc.setLocalDescription(a); send("answer", { sdp: a });
           while (pending.length) await pc.addIceCandidate(pending.shift()!);
         })

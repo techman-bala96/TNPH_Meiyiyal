@@ -97,6 +97,32 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"consult_feedback": {
+                  Row: {
+                    "comment": string | null,"complaint_reason": string | null,"created_at": string,"id": string,"is_complaint": boolean,"is_good": boolean,"is_negative": boolean,"rating": number,"session_id": string,"tags": (string)[],"user_id": string,"worker_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "comment"?: string | null,"complaint_reason"?: string | null,"created_at"?: string,"id"?: string,"is_complaint"?: boolean,"is_good": boolean,"is_negative": boolean,"rating": number,"session_id": string,"tags"?: (string)[],"user_id": string,"worker_id": string
+                  }
+                  Update: {
+                    "comment"?: string | null,"complaint_reason"?: string | null,"created_at"?: string,"id"?: string,"is_complaint"?: boolean,"is_good"?: boolean,"is_negative"?: boolean,"rating"?: number,"session_id"?: string,"tags"?: (string)[],"user_id"?: string,"worker_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "consult_feedback_session_id_fkey"
+      columns: ["session_id"]
+isOneToOne: true
+      referencedRelation: "consult_sessions"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "consult_feedback_worker_id_fkey"
+      columns: ["worker_id"]
+isOneToOne: false
+      referencedRelation: "workers"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"consult_messages": {
                   Row: {
                     "body": string | null,"created_at": string,"file_name": string | null,"file_path": string | null,"id": string,"kind": string,"mime": string | null,"sender": string,"session_id": string,"size_bytes": number | null
@@ -296,6 +322,20 @@ isOneToOne: false
       referencedRelation: "taxonomy_nodes"
       referencedColumns: ["slug"]
     }
+                  ]
+                },"reward_milestones": {
+                  Row: {
+                    "active": boolean,"color": string,"desc_i18n": NonNullable<Json>,"icon": string,"kind": string,"min_reviews": number,"slug": string,"sort": number,"threshold": number,"title_i18n": NonNullable<Json>
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "active"?: boolean,"color"?: string,"desc_i18n": NonNullable<Json>,"icon"?: string,"kind": string,"min_reviews"?: number,"slug": string,"sort"?: number,"threshold": number,"title_i18n": NonNullable<Json>
+                  }
+                  Update: {
+                    "active"?: boolean,"color"?: string,"desc_i18n"?: NonNullable<Json>,"icon"?: string,"kind"?: string,"min_reviews"?: number,"slug"?: string,"sort"?: number,"threshold"?: number,"title_i18n"?: NonNullable<Json>
+                  }
+                  Relationships: [
+                    
                   ]
                 },"service_requests": {
                   Row: {
@@ -631,16 +671,42 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"workers": {
+                },"worker_rewards": {
                   Row: {
-                    "about": string | null,"base_geog": unknown,"category": Database["public"]['Enums']["worker_category"],"created_at": string,"decided_at": string | null,"display_name": string | null,"district_slug": string | null,"hourly_rate": number | null,"id": string,"is_active": boolean,"is_online": boolean,"is_verified": boolean,"last_seen_at": string | null,"locked_category": string | null,"occupation_id": string | null,"photo_url": string | null,"primary_node": string | null,"rating": number | null,"reg_data": NonNullable<Json>,"review_note": string | null,"rewards_count": number,"status": string,"submitted_at": string | null,"total_reviews": number | null,"updated_at": string,"user_id": string,"years_experience": number | null
+                    "awarded_at": string,"cert_no": string,"id": string,"metric": number | null,"milestone": string,"worker_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "about"?: string | null,"base_geog"?: unknown,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"locked_category"?: string | null,"occupation_id"?: string | null,"photo_url"?: string | null,"primary_node"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"status"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id": string,"years_experience"?: number | null
+                    "awarded_at"?: string,"cert_no"?: string,"id"?: string,"metric"?: number | null,"milestone": string,"worker_id": string
                   }
                   Update: {
-                    "about"?: string | null,"base_geog"?: unknown,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"locked_category"?: string | null,"occupation_id"?: string | null,"photo_url"?: string | null,"primary_node"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"status"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id"?: string,"years_experience"?: number | null
+                    "awarded_at"?: string,"cert_no"?: string,"id"?: string,"metric"?: number | null,"milestone"?: string,"worker_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "worker_rewards_milestone_fkey"
+      columns: ["milestone"]
+isOneToOne: false
+      referencedRelation: "reward_milestones"
+      referencedColumns: ["slug"]
+    },{
+      foreignKeyName: "worker_rewards_worker_id_fkey"
+      columns: ["worker_id"]
+isOneToOne: false
+      referencedRelation: "workers"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"workers": {
+                  Row: {
+                    "about": string | null,"base_geog": unknown,"block_reason": string | null,"blocked_until": string | null,"category": Database["public"]['Enums']["worker_category"],"created_at": string,"decided_at": string | null,"display_name": string | null,"district_slug": string | null,"flag_active": boolean,"flag_good_needed": number,"flag_reason": string | null,"flagged_at": string | null,"hourly_rate": number | null,"id": string,"is_active": boolean,"is_online": boolean,"is_verified": boolean,"last_seen_at": string | null,"locked_category": string | null,"occupation_id": string | null,"photo_url": string | null,"primary_node": string | null,"rating": number | null,"reg_data": NonNullable<Json>,"review_note": string | null,"rewards_count": number,"status": string,"strikes_reset_at": string,"submitted_at": string | null,"total_reviews": number | null,"updated_at": string,"user_id": string,"years_experience": number | null,"worker_is_blocked": boolean | null
+                  }
+                  ComputedFields: "worker_is_blocked"
+                  Insert: {
+                    "about"?: string | null,"base_geog"?: unknown,"block_reason"?: string | null,"blocked_until"?: string | null,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"flag_active"?: boolean,"flag_good_needed"?: number,"flag_reason"?: string | null,"flagged_at"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"locked_category"?: string | null,"occupation_id"?: string | null,"photo_url"?: string | null,"primary_node"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"status"?: string,"strikes_reset_at"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id": string,"years_experience"?: number | null
+                  }
+                  Update: {
+                    "about"?: string | null,"base_geog"?: unknown,"block_reason"?: string | null,"blocked_until"?: string | null,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"flag_active"?: boolean,"flag_good_needed"?: number,"flag_reason"?: string | null,"flagged_at"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"locked_category"?: string | null,"occupation_id"?: string | null,"photo_url"?: string | null,"primary_node"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"status"?: string,"strikes_reset_at"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id"?: string,"years_experience"?: number | null
                   }
                   Relationships: [
                     {
@@ -783,8 +849,32 @@ isOneToOne: false
                            } |
 { Args: { "column_name": string,"new_dim": number,"new_srid": number,"new_type": string,"table_name": string,"use_typmod"?: boolean }; Returns: string
                            },
+"admin_audit_log":
+{ Args: { "_limit"?: number }; Returns: {
+              "action": string,"actor_name": string,"created_at": string,"data": Json,"id": number,"note": string,"target": string,"target_name": string
+            }[]
+                           },
 "admin_decide_worker":
 { Args: { "_decision": string,"_note"?: string,"_worker": string }; Returns: string
+                           },
+"admin_delete_rate":
+{ Args: { "_mode": string,"_node": string }; Returns: undefined
+                           },
+"admin_moderate":
+{ Args: { "_action": string,"_days"?: number,"_note": string,"_worker": string }; Returns: Json
+                           },
+"admin_moderation":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "block_reason": string,"blocked": boolean,"blocked_until": string,"display_name": string,"flag_active": boolean,"flag_good_needed": number,"flag_reason": string,"id": string,"negatives": number,"node_name": Json,"photo_url": string,"primary_node": string,"rating": number,"recent": Json,"reviews": number
+            }[]
+                           },
+"admin_rate_cards":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "band_max": number,"band_min": number,"credits_per_min": number,"depth": number,"min_minutes": number,"mode": string,"node_name": Json,"node_slug": string,"updated_at": string
+            }[]
+                           },
+"admin_set_rate":
+{ Args: { "_min": number,"_mode": string,"_node": string,"_rate": number }; Returns: undefined
                            },
 "admin_worker_queue":
 { Args: { "_status"?: string }; Returns: {
@@ -825,6 +915,12 @@ isOneToOne: false
                            },
 "equals":
 { Args: { "geom1": unknown,"geom2": unknown }; Returns: boolean
+                           },
+"feedback_config":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"feedback_submit":
+{ Args: { "_comment"?: string,"_complaint"?: boolean,"_complaint_reason"?: string,"_rating": number,"_sid": string,"_tags"?: (string)[] }; Returns: Json
                            },
 "geometry":
 { Args: { "": string }; Returns: unknown
@@ -930,6 +1026,9 @@ isOneToOne: false
               "area_id": number,"area_name": string,"area_name_ta": string,"district_name": Json,"district_slug": string,"id": string,"lat": number,"lng": number,"source": string
             }[]
                            },
+"my_feedback":
+{ Args: { "_sid": string }; Returns: Json
+                           },
 "my_history":
 { Args: Record<PropertyKey, never>; Returns: {
               "category_name": Json,"credits": number,"duration_sec": number,"earned": number,"end_reason": string,"ended_at": string,"id": string,"messages": number,"modes": (string)[],"node_name": Json,"node_slug": string,"other_name": string,"other_photo": string,"role": string,"started_at": string,"status": string
@@ -950,11 +1049,17 @@ isOneToOne: false
 { Args: Record<PropertyKey, never>; Returns: {
               "about": string | null,
 "base_geog": unknown,
+"block_reason": string | null,
+"blocked_until": string | null,
 "category": Database["public"]['Enums']["worker_category"],
 "created_at": string,
 "decided_at": string | null,
 "display_name": string | null,
 "district_slug": string | null,
+"flag_active": boolean,
+"flag_good_needed": number,
+"flag_reason": string | null,
+"flagged_at": string | null,
 "hourly_rate": number | null,
 "id": string,
 "is_active": boolean,
@@ -970,6 +1075,7 @@ isOneToOne: false
 "review_note": string | null,
 "rewards_count": number,
 "status": string,
+"strikes_reset_at": string,
 "submitted_at": string | null,
 "total_reviews": number | null,
 "updated_at": string,
@@ -982,6 +1088,9 @@ isOneToOne: false
         isOneToOne: false
         isSetofReturn: true
       } },
+"my_worker_standing":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "nearest_location":
 { Args: { "_lat": number,"_lng": number }; Returns: {
               "area_id": number,"area_name": string,"area_name_ta": string,"distance_km": number,"district_name": Json,"district_slug": string
@@ -1086,7 +1195,7 @@ isOneToOne: false
                            },
 "search_workers":
 { Args: { "_all"?: boolean,"_lat": number,"_limit"?: number,"_lng": number,"_node": string,"_radius_km"?: number }; Returns: {
-              "display_name": string,"distance_km": number,"district_name": Json,"district_slug": string,"feedback_count": number,"id": string,"is_busy": boolean,"is_online": boolean,"photo_url": string,"primary_node": string,"rates": Json,"rating": number,"rewards_count": number,"specialty": Json,"years_experience": number
+              "badges": Json,"display_name": string,"distance_km": number,"district_name": Json,"district_slug": string,"feedback_count": number,"id": string,"is_busy": boolean,"is_online": boolean,"photo_url": string,"primary_node": string,"rates": Json,"rating": number,"rewards_count": number,"specialty": Json,"years_experience": number
             }[]
                            },
 "session_bill_internal":
@@ -1109,6 +1218,9 @@ isOneToOne: false
                            },
 "setting":
 { Args: { "_k": string }; Returns: Json
+                           },
+"setting_num":
+{ Args: { "_d": number,"_k": string }; Returns: number
                            },
 "st_3dclosestpoint":
 { Args: { "geom1": unknown,"geom2": unknown }; Returns: unknown
@@ -1604,6 +1716,15 @@ isOneToOne: false
 "worker_heartbeat":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
+"worker_is_blocked":
+{ Args: { "_w": Omit<Database["public"]['Tables']["workers"]['Row'], Database["public"]['Tables']["workers"]['ComputedFields']> }; Returns: boolean
+                           },
+"worker_public":
+{ Args: { "_id": string }; Returns: Json
+                           },
+"worker_refresh":
+{ Args: { "_wid": string }; Returns: (string)[]
+                           },
 "worker_register":
 { Args: { "_about": string,"_display_name": string,"_extra_nodes": (string)[],"_node": string,"_reg": Json,"_years": number }; Returns: string
                            },
@@ -1612,6 +1733,11 @@ isOneToOne: false
                            },
 "worker_set_online":
 { Args: { "_online": boolean }; Returns: boolean
+                           },
+"worker_stats":
+{ Args: { "_wid": string }; Returns: {
+              "avg_rating": number,"five_stars": number,"reviews": number,"sessions_served": number,"streak": number,"users_served": number
+            }[]
                            },
 "worker_submit":
 { Args: Record<PropertyKey, never>; Returns: string

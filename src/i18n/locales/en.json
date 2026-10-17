@@ -192,6 +192,12 @@
       "approved": "Approved",
       "rejected": "Rejected",
       "all": "All"
+    },
+    "tab": {
+      "queue": "Queue",
+      "moderation": "Moderation",
+      "rates": "Rates",
+      "audit": "Audit"
     }
   },
   "menu2": {
@@ -264,5 +270,102 @@
       "session_started": "Session started",
       "credits_exhausted": "Credits used up · session ended"
     }
+  },
+  "feedback": {
+    "title": "How was your consultation with {{name}}?",
+    "r1": "Very poor",
+    "r2": "Poor",
+    "r3": "Okay",
+    "r4": "Good",
+    "r5": "Excellent!",
+    "comment": "Add a comment (optional)",
+    "report": "Report a problem",
+    "reportHint": "Complaints are reviewed by our team. Repeated complaints temporarily block the professional.",
+    "submit": "Submit feedback",
+    "submitReport": "Submit report",
+    "thanks": "Thanks for your feedback!",
+    "complaintLogged": "Your report was recorded",
+    "workerAwarded": "{{name}} just earned a new recognition 🎉"
+  },
+  "rewards": {
+    "title": "Rewards",
+    "none": "No rewards yet. Complete consultations and earn great reviews to unlock badges.",
+    "viewCert": "View certificate",
+    "certificate": "Certificate",
+    "share": "Share",
+    "shared": "Certificate saved. Share it anywhere!",
+    "shareText": "{{name}} received “{{title}}” on Meiyiyal"
+  },
+  "standing": {
+    "blocked": "Temporarily blocked",
+    "until": "Until {{date}}",
+    "blockedHint": "You are hidden from search and can't go online. Our team reviews every block.",
+    "autoReason": "{{n}} negative reviews/complaints within the review window",
+    "complaintReason": "Complaint: {{reason}}",
+    "lowRating": "Low rating ({{n}}★)",
+    "flagged": "Recent complaint on your profile",
+    "flagHint": "Complete {{n}} more well-rated sessions to clear it automatically. Negatives: {{neg}}/{{max}}.",
+    "reasons": {
+      "misconduct": "Misconduct",
+      "fake_profile": "Not a real professional",
+      "wrong_advice": "Harmful / wrong advice",
+      "abuse": "Abuse or harassment",
+      "other": "Other"
+    }
+  },
+  "wprofile": {
+    "unavailable": "This profile is not available right now",
+    "rating": "Rating",
+    "served": "Clients served",
+    "experience": "Experience",
+    "onPlatform": "On Meiyiyal",
+    "newMember": "New",
+    "consultNow": "Consult now",
+    "viewRates": "View rates",
+    "about": "About",
+    "recent": "Recent feedback",
+    "noReviews": "No reviews yet",
+    "view": "View full profile",
+    "viewPublic": "Public profile"
+  },
+  "mod": {
+    "empty": "No flagged or blocked professionals",
+    "blocked": "Blocked",
+    "flagged": "Flagged",
+    "clear": "Clear",
+    "negatives": "Negatives (window)",
+    "until": "Until",
+    "goodNeeded": "Good sessions to clear",
+    "reason": "Reason",
+    "note": "Note (required, saved in audit log)",
+    "unblock": "Unblock",
+    "extend": "Extend",
+    "block": "Block",
+    "days": "days",
+    "clearFlag": "Clear flag",
+    "done": {
+      "unblock": "Unblocked",
+      "extend": "Block updated",
+      "clear_flag": "Flag cleared"
+    }
+  },
+  "rates": {
+    "hint": "Credits per minute by profession. Sub-professions inherit from their parent unless overridden.",
+    "filter": "Filter professions",
+    "addOverride": "Add override for…",
+    "added": "Override added",
+    "saved": "Rate saved"
+  },
+  "audit": {
+    "worker_approve": "Approved worker",
+    "worker_reject": "Rejected worker",
+    "worker_needs_info": "Asked for info",
+    "worker_auto_block": "Auto-blocked",
+    "worker_unblock": "Unblocked",
+    "worker_extend": "Block extended",
+    "worker_clear_flag": "Flag cleared",
+    "worker_flag_auto_cleared": "Flag auto-cleared",
+    "rate_set": "Rate changed",
+    "rate_delete": "Rate override removed"
   }
 }

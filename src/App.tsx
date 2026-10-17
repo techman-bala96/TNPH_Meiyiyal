@@ -16,6 +16,7 @@ import { PrefsSync } from "@/components/app/PrefsSync";
 import LocationPage from "@/pages/LocationPage";
 import Session from "@/pages/Session";
 import History from "@/pages/History";
+import WorkerProfile from "@/pages/WorkerProfile";
 import { ConsultProvider } from "@/features/consult/ConsultProvider";
 
 const qc = new QueryClient();
@@ -39,6 +40,7 @@ export default function App() {
               <Route path="/admin" element={<Admin />} />
               <Route path="/session/:id" element={<Session />} />
               <Route path="/history" element={<History />} />
+              <Route path="/w/:id" element={<WorkerProfile />} />
               <Route element={<RequireLocation />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/browse/:slug" element={<Browse />} />

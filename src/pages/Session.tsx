@@ -12,6 +12,7 @@ import type { Call, Message, Mode, SessionInfo } from "@/features/consult/api";
 import { ModeIcon } from "@/features/consult/ConsultProvider";
 import { CallView } from "@/features/consult/CallView";
 import { startRing, stopRing } from "@/features/consult/ringtone";
+import { FeedbackCard } from "@/features/feedback/FeedbackCard";
 
 const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
 const MAX = 20 * 1024 * 1024;
@@ -124,9 +125,10 @@ export default function Session() {
           <button data-testid="chat-send" onClick={send} disabled={!text.trim()} className="grid h-10 w-10 place-items-center rounded-full bg-primary text-primary-foreground transition active:scale-90 disabled:opacity-40"><Send className="h-4 w-4" /></button>
         </footer>
       ) : (
-        <footer data-testid="session-summary" className="space-y-2 border-t bg-card p-4 text-center animate-in slide-in-from-bottom-2">
+        <footer data-testid="session-summary" className="max-h-[70dvh] space-y-2 overflow-y-auto border-t bg-card p-4 text-center animate-in slide-in-from-bottom-2">
           <p className="font-semibold">{t(`consult.ended.${s.end_reason === "credits_exhausted" ? "credits" : "normal"}`)}</p>
           <p className="text-sm text-muted-foreground">{t("consult.summary", { dur: elapsed, credits: used })}</p>
+          {s.role === "user" && <FeedbackCard sessionId={id} workerName={s.other.name} />}
           <div className="flex justify-center gap-3"><Link to="/history" data-testid="go-history" className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">{t("consult.history")}</Link>
             <Link to="/" className="rounded-full bg-muted px-4 py-2 text-sm font-semibold">{t("consult.home")}</Link></div>
         </footer>
