@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Camera, Check, Loader2, MapPin, Plus } from "lucide-react";
+import { Camera, Check, ChevronRight, Coins, Loader2, MapPin, Plus } from "lucide-react";
+import { useWallet } from "@/features/consult/api";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -50,8 +51,14 @@ export default function Profile() {
   }
   const label = (l: Saved) => [(ta && l.area_name_ta) || l.area_name, l.district_name ? (ta && l.district_name.ta) || l.district_name.en : null].filter((v, i, a) => v && a.indexOf(v) === i).join(", ");
 
+  const { data: wallet } = useWallet();
   return (
     <PageShell title={t("menu.profile")} testId="profile-page">
+      <Link to="/wallet" data-testid="profile-wallet" className="flex items-center gap-3 rounded-2xl bg-gradient-to-br from-teal-600 to-emerald-600 p-4 text-white shadow-md transition hover:-translate-y-0.5">
+        <span className="grid h-11 w-11 place-items-center rounded-full bg-white/15"><Coins className="h-5 w-5" /></span>
+        <span className="flex-1"><span className="block text-xs opacity-85">{t("wallet.title")}</span><b className="text-lg tabular-nums">{wallet ? Number(wallet.balance).toFixed(0) : "—"} {t("wallet.credits")}</b></span>
+        <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold">{t("wallet.topUp")}</span><ChevronRight className="h-4 w-4 opacity-80" />
+      </Link>
       <div className="flex flex-col items-center gap-2 pt-2">
         <button data-testid="btn-photo" onClick={() => file.current?.click()} className="relative rounded-full" aria-label={t("profile.changePhoto")}>
           <UserAvatar className="h-24 w-24 text-2xl" />

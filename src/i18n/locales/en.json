@@ -491,5 +491,11 @@
       "paid": "Paid",
       "rejected": "Rejected"
     }
+  },
+  "nav": {
+    "label": "Main",
+    "home": "Home",
+    "conversations": "Conversations",
+    "profile": "Profile"
   }
 }

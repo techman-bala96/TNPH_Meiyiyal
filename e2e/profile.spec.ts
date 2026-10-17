@@ -20,9 +20,10 @@ test.beforeEach(async ({ page, context, request }) => {
 test("avatar menu, profile edit + photo upload, saved locations, dark mode + Tamil persisted", async ({ page }) => {
   await expect(page.getByText("Sign out")).toHaveCount(0); // no bottom account row
   await page.getByTestId("avatar-btn").click();
-  for (const id of ["menu-profile", "menu-settings", "btn-signout"]) await expect(page.getByTestId(id)).toBeVisible();
+  for (const id of ["menu-settings", "btn-signout"]) await expect(page.getByTestId(id)).toBeVisible();
   await shot(page, "01-menu");
-  await page.getByTestId("menu-profile").click();
+  await page.keyboard.press("Escape");
+  await page.getByTestId("nav-profile").click();
   await expect(page.getByTestId("profile-page")).toBeVisible();
   await expect(page.getByTestId("input-email-ro")).toBeDisabled();
 

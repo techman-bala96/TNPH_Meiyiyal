@@ -20,6 +20,7 @@ import Wallet from "./pages/Wallet";
 import Earnings from "./pages/Earnings";
 import WorkerProfile from "@/pages/WorkerProfile";
 import { ConsultProvider } from "@/features/consult/ConsultProvider";
+import { BottomNav } from "@/components/app/BottomNav";
 import { VoiceProvider } from "@/features/voice/VoiceProvider";
 
 const qc = new QueryClient();
@@ -55,6 +56,7 @@ export default function App() {
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          <BottomNav />
           </VoiceProvider>
           </ConsultProvider>
         </AuthProvider>

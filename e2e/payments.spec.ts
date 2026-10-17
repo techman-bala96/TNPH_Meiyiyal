@@ -25,7 +25,7 @@ test("wallet: packs (GST incl.), mock checkout success / failure / cancel, idemp
   const uEmail = await signInAt(p, p.request, "pm-user"); await setProfile(p, "Karthik Subramanian", IMG("engineer"));
 
   // ---- wallet + packs from DB
-  await p.getByTestId("avatar-btn").click(); await p.getByTestId("menu-wallet").click();
+  await p.getByTestId("nav-profile").click(); await p.getByTestId("profile-wallet").click();
   await expect(p.getByTestId("wallet-page")).toBeVisible();
   await expect(p.getByTestId("pack")).toHaveCount(5);
   const value = p.locator('[data-testid="pack"][data-id="value"]');

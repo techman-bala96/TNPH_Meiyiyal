@@ -15,7 +15,7 @@ export function VoicePill({ state, interim, heard, result, error, lang, onClose,
   const reply = q ? q.text[lang] : result?.reply[lang];
   const tone = state === "listening" ? "from-rose-500 to-pink-500" : state === "thinking" ? "from-violet-500 to-indigo-500" : state === "speaking" ? "from-emerald-500 to-teal-500" : "from-slate-500 to-slate-600";
   return (
-    <div data-testid="voice-pill" data-state={state} className="fixed inset-x-3 bottom-4 z-[80] mx-auto max-w-md animate-in fade-in slide-in-from-bottom-4">
+    <div data-testid="voice-pill" data-state={state} className="fixed inset-x-3 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-[80] md:bottom-28 mx-auto max-w-md animate-in fade-in slide-in-from-bottom-4">
       <div className="overflow-hidden rounded-3xl border bg-card/95 shadow-2xl backdrop-blur-xl">
         <div className="flex items-center gap-3 p-3">
           <span className={`relative grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-to-br ${tone} text-white shadow-lg transition-colors duration-500`}>

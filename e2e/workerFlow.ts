@@ -36,8 +36,7 @@ export async function signInAt(page: Page, request: APIRequestContext, prefix: s
 }
 
 export async function setProfile(page: Page, name: string, photo: string) {
-  await page.getByTestId("avatar-btn").click();
-  await page.getByTestId("menu-profile").click();
+  await page.getByTestId("nav-profile").click();
   await page.getByTestId("input-name").fill(name);
   await page.getByTestId("btn-save-profile").click();
   await expect(page.getByText("Profile saved")).toBeVisible();

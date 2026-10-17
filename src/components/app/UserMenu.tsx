@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { History, LogOut, Settings, ShieldCheck, UserRound, Coins } from "lucide-react";
+import { LogOut, Settings, ShieldCheck } from "lucide-react";
 import { useIsAdmin } from "@/features/worker/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -31,10 +31,7 @@ export function UserMenu() {
           <p data-testid="signed-in-as" className="truncate text-xs text-muted-foreground">{user?.email || user?.phone}</p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem data-testid="menu-profile" className="min-h-10 gap-2" onSelect={() => nav("/profile")}><UserRound className="h-4 w-4" />{t("menu.profile")}</DropdownMenuItem>
         <DropdownMenuItem data-testid="menu-settings" className="min-h-10 gap-2" onSelect={() => nav("/settings")}><Settings className="h-4 w-4" />{t("menu.settings")}</DropdownMenuItem>
-        <DropdownMenuItem data-testid="menu-wallet" className="min-h-10 gap-2" onSelect={() => nav("/wallet")}><Coins className="h-4 w-4" />{t("wallet.title")}</DropdownMenuItem>
-        <DropdownMenuItem data-testid="menu-history" className="min-h-10 gap-2" onSelect={() => nav("/history")}><History className="h-4 w-4" />{t("consult.history")}</DropdownMenuItem>
         {admin.data && <DropdownMenuItem data-testid="menu-admin" className="min-h-10 gap-2" onSelect={() => nav("/admin")}><ShieldCheck className="h-4 w-4" />{t("menu2.admin")}</DropdownMenuItem>}
         <DropdownMenuSeparator />
         <DropdownMenuItem data-testid="btn-signout" className="min-h-10 gap-2 text-destructive focus:text-destructive" onSelect={() => signOut()}><LogOut className="h-4 w-4" />{t("auth.signOut")}</DropdownMenuItem>
