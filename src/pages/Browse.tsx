@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, ChevronRight, House } from "lucide-react";
 import { WorkerList } from "@/components/app/WorkerList";
@@ -15,7 +15,7 @@ export default function Browse() {
   const lang = i18n.language?.startsWith("ta") ? "ta" : "en";
   const nav = useNavigate();
   const tax = useTaxonomy();
-  const { data: loc } = useCurrentLocation();
+  const { data: loc } = useCurrentLocation(); const [sp] = useSearchParams();
   const all = tax.data ?? [];
   const node = all.find((n) => n.slug === slug);
   if (tax.isLoading) return <main className="mx-auto max-w-md p-4"><div className="h-40 animate-pulse rounded-3xl bg-muted" /></main>;
@@ -61,10 +61,10 @@ export default function Browse() {
       </section>
 
       <div className="space-y-5 px-4 pt-4">
-        {!leaf && (kids.some((k) => childrenOf(all, k.slug).length > 0) || node.kind !== "subcategory"
+        {!leaf && (sp.get("list") !== "1" && (kids.some((k) => childrenOf(all, k.slug).length > 0) || node.kind !== "subcategory")
           ? <TileGrid kids={kids} all={all} tile={th.tile} ring={th.ring} lang={lang} />
           : <ChipList kids={kids} accent={th.accent} lang={lang} />)}
-        {(node.kind === "subcategory" || node.kind === "specialty") && <WorkerList key={slug} node={slug} nodeLabel={nodeName(node, lang)} tile={th.tile} where={where} />}
+        {(node.kind === "subcategory" || node.kind === "specialty" || sp.get("list") === "1") && <WorkerList key={slug} node={slug} nodeLabel={nodeName(node, lang)} tile={th.tile} where={where} />}
       </div>
     </main>
   );

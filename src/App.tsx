@@ -18,6 +18,7 @@ import Session from "@/pages/Session";
 import History from "@/pages/History";
 import WorkerProfile from "@/pages/WorkerProfile";
 import { ConsultProvider } from "@/features/consult/ConsultProvider";
+import { VoiceProvider } from "@/features/voice/VoiceProvider";
 
 const qc = new QueryClient();
 
@@ -30,6 +31,7 @@ export default function App() {
         <AuthProvider>
           <PrefsSync />
           <ConsultProvider>
+          <VoiceProvider>
           <Routes>
             <Route element={<GuestOnly />}><Route path="/login" element={<Login />} /></Route>
             <Route path="/auth/callback" element={<AuthCallback />} />
@@ -49,6 +51,7 @@ export default function App() {
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          </VoiceProvider>
           </ConsultProvider>
         </AuthProvider>
       </BrowserRouter>

@@ -367,5 +367,36 @@
     "worker_flag_auto_cleared": "Flag auto-cleared",
     "rate_set": "Rate changed",
     "rate_delete": "Rate override removed"
+  },
+  "voice": {
+    "on": "Turn on voice assistant",
+    "off": "Turn off voice assistant",
+    "hint": "Say what you need — e.g. “child doctor near Madurai”",
+    "state": {
+      "listening": "Listening",
+      "thinking": "Thinking",
+      "speaking": "Speaking",
+      "error": "Voice unavailable",
+      "off": ""
+    },
+    "err": {
+      "unsupported": "Voice input isn't supported in this browser. Try Chrome.",
+      "denied": "Microphone permission was denied.",
+      "network": "Couldn't reach the assistant. Please try again.",
+      "rate": "Too many requests — try again later.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "filters": {
+    "online": "Online now",
+    "near": "Near {{place}}",
+    "district": "In {{name}}",
+    "km": "Within {{km}} km",
+    "not": "Not {{name}}",
+    "sort": {
+      "rating": "Top rated",
+      "experience": "Most experienced",
+      "distance": "Nearest"
+    }
   }
 }

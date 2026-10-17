@@ -1,0 +1,2960 @@
+{
+ "nodes": [
+  {
+   "slug": "professionals",
+   "parent_slug": null,
+   "name_i18n": {
+    "en": "Professionals",
+    "ta": "தொழில் வல்லுநர்கள்"
+   },
+   "synonyms": [],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--doctor--siddha--general-siddha",
+   "parent_slug": "professionals--doctor--siddha",
+   "name_i18n": {
+    "en": "General Siddha",
+    "ta": "பொது சித்த மருத்துவம்"
+   },
+   "synonyms": [],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--doctor--siddha--varmam",
+   "parent_slug": "professionals--doctor--siddha",
+   "name_i18n": {
+    "en": "Varmam",
+    "ta": "வர்மம்"
+   },
+   "synonyms": [],
+   "sort": 1
+  },
+  {
+   "slug": "professionals--doctor--siddha--thokkanam",
+   "parent_slug": "professionals--doctor--siddha",
+   "name_i18n": {
+    "en": "Thokkanam",
+    "ta": "தொக்கணம்"
+   },
+   "synonyms": [],
+   "sort": 2
+  },
+  {
+   "slug": "professionals--doctor--siddha--siddha-dermatology",
+   "parent_slug": "professionals--doctor--siddha",
+   "name_i18n": {
+    "en": "Siddha Dermatology",
+    "ta": "சித்த தோல் மருத்துவம்"
+   },
+   "synonyms": [],
+   "sort": 3
+  },
+  {
+   "slug": "professionals--doctor--siddha--women-s-health-siddha",
+   "parent_slug": "professionals--doctor--siddha",
+   "name_i18n": {
+    "en": "Women's Health (Siddha)",
+    "ta": "மகளிர் நலம் (சித்தா)"
+   },
+   "synonyms": [],
+   "sort": 5
+  },
+  {
+   "slug": "professionals--doctor--siddha--noi-nadal-diagnosis",
+   "parent_slug": "professionals--doctor--siddha",
+   "name_i18n": {
+    "en": "Noi Nadal (Diagnosis)",
+    "ta": "நோய் நாடல்"
+   },
+   "synonyms": [],
+   "sort": 6
+  },
+  {
+   "slug": "professionals--doctor--ayurveda--kayachikitsa",
+   "parent_slug": "professionals--doctor--ayurveda",
+   "name_i18n": {
+    "en": "Kayachikitsa",
+    "ta": "காயசிகித்சை"
+   },
+   "synonyms": [],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--doctor--ayurveda--panchakarma",
+   "parent_slug": "professionals--doctor--ayurveda",
+   "name_i18n": {
+    "en": "Panchakarma",
+    "ta": "பஞ்சகர்மா"
+   },
+   "synonyms": [],
+   "sort": 1
+  },
+  {
+   "slug": "professionals--doctor--ayurveda--ayurveda-skin-care",
+   "parent_slug": "professionals--doctor--ayurveda",
+   "name_i18n": {
+    "en": "Ayurveda Skin Care",
+    "ta": "ஆயுர்வேத தோல் பராமரிப்பு"
+   },
+   "synonyms": [],
+   "sort": 2
+  },
+  {
+   "slug": "professionals--doctor--unani",
+   "parent_slug": "professionals--doctor",
+   "name_i18n": {
+    "en": "Unani",
+    "ta": "யுனானி"
+   },
+   "synonyms": [],
+   "sort": 4
+  },
+  {
+   "slug": "professionals--doctor--dental--general-dentist",
+   "parent_slug": "professionals--doctor--dental",
+   "name_i18n": {
+    "en": "General Dentist",
+    "ta": "பொது பல் மருத்துவர்"
+   },
+   "synonyms": [],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--doctor--dental--oral-surgery",
+   "parent_slug": "professionals--doctor--dental",
+   "name_i18n": {
+    "en": "Oral Surgery",
+    "ta": "வாய் அறுவை சிகிச்சை"
+   },
+   "synonyms": [],
+   "sort": 4
+  },
+  {
+   "slug": "professionals--doctor--physiotherapy--orthopaedic-physio",
+   "parent_slug": "professionals--doctor--physiotherapy",
+   "name_i18n": {
+    "en": "Orthopaedic Physio",
+    "ta": "எலும்பு இயன்முறை"
+   },
+   "synonyms": [],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--doctor--physiotherapy--neuro-physio",
+   "parent_slug": "professionals--doctor--physiotherapy",
+   "name_i18n": {
+    "en": "Neuro Physio",
+    "ta": "நரம்பு இயன்முறை"
+   },
+   "synonyms": [],
+   "sort": 1
+  },
+  {
+   "slug": "professionals--doctor--physiotherapy--sports-physio",
+   "parent_slug": "professionals--doctor--physiotherapy",
+   "name_i18n": {
+    "en": "Sports Physio",
+    "ta": "விளையாட்டு இயன்முறை"
+   },
+   "synonyms": [],
+   "sort": 2
+  },
+  {
+   "slug": "professionals--doctor--physiotherapy--women-s-health-physio",
+   "parent_slug": "professionals--doctor--physiotherapy",
+   "name_i18n": {
+    "en": "Women's Health Physio",
+    "ta": "மகளிர் இயன்முறை"
+   },
+   "synonyms": [],
+   "sort": 3
+  },
+  {
+   "slug": "professionals--doctor--psychology-counselling--clinical-psychologist",
+   "parent_slug": "professionals--doctor--psychology-counselling",
+   "name_i18n": {
+    "en": "Clinical Psychologist",
+    "ta": "மருத்துவ உளவியலாளர்"
+   },
+   "synonyms": [],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--lawyer--civil",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Civil",
+    "ta": "சிவில்"
+   },
+   "synonyms": [],
+   "sort": 3
+  },
+  {
+   "slug": "professionals--engineer--software-it--web-app-development",
+   "parent_slug": "professionals--engineer--software-it",
+   "name_i18n": {
+    "en": "Web & App Development",
+    "ta": "இணையம் & செயலி"
+   },
+   "synonyms": [],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--engineer--software-it--cloud-devops",
+   "parent_slug": "professionals--engineer--software-it",
+   "name_i18n": {
+    "en": "Cloud & DevOps",
+    "ta": "கிளவுட்"
+   },
+   "synonyms": [],
+   "sort": 1
+  },
+  {
+   "slug": "professionals--engineer--software-it--data-ai",
+   "parent_slug": "professionals--engineer--software-it",
+   "name_i18n": {
+    "en": "Data & AI",
+    "ta": "தரவு & AI"
+   },
+   "synonyms": [],
+   "sort": 2
+  },
+  {
+   "slug": "professionals--engineer--software-it--cyber-security",
+   "parent_slug": "professionals--engineer--software-it",
+   "name_i18n": {
+    "en": "Cyber Security",
+    "ta": "இணைய பாதுகாப்பு"
+   },
+   "synonyms": [],
+   "sort": 3
+  },
+  {
+   "slug": "professionals--engineer--mechanical",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Mechanical",
+    "ta": "இயந்திரவியல்"
+   },
+   "synonyms": [],
+   "sort": 3
+  },
+  {
+   "slug": "professionals--engineer--electronics-communication",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Electronics & Communication",
+    "ta": "மின்னணுவியல்"
+   },
+   "synonyms": [],
+   "sort": 4
+  },
+  {
+   "slug": "professionals--doctor",
+   "parent_slug": "professionals",
+   "name_i18n": {
+    "en": "Doctor",
+    "ta": "மருத்துவர்"
+   },
+   "synonyms": [
+    "வைத்தியர்",
+    "doc",
+    "டாக்டரு",
+    "vaidhyar",
+    "டாக்டர்",
+    "மருத்துவர்",
+    "maruthuvar",
+    "physician",
+    "doctor"
+   ],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--doctor--allopathy",
+   "parent_slug": "professionals--doctor",
+   "name_i18n": {
+    "en": "Allopathy",
+    "ta": "ஆங்கில மருத்துவம்"
+   },
+   "synonyms": [
+    "ஆங்கில மருத்துவர்",
+    "mbbs",
+    "english medicine",
+    "allopathic"
+   ],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--doctor--allopathy--paediatrics",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Paediatrics",
+    "ta": "குழந்தை நலம்"
+   },
+   "synonyms": [
+    "kuzhanthai doctor",
+    "குழந்தைகள் மருத்துவர்",
+    "குழந்தை டாக்டர்",
+    "baby doctor",
+    "pediatrics",
+    "children doctor",
+    "குழந்தை மருத்துவர்",
+    "paediatrician",
+    "pillai doctor",
+    "child specialist",
+    "child doctor",
+    "kids doctor",
+    "பிள்ளை டாக்டர்",
+    "kuzhandhai doctor",
+    "pediatrician"
+   ],
+   "sort": 1
+  },
+  {
+   "slug": "professionals--doctor--allopathy--cardiology",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Cardiology",
+    "ta": "இதய மருத்துவம்"
+   },
+   "synonyms": [
+    "cardiac",
+    "heart doctor",
+    "இதய டாக்டர்",
+    "இதய மருத்துவர்",
+    "heart",
+    "cardiologist",
+    "idhaya doctor",
+    "இருதய மருத்துவர்",
+    "heart specialist"
+   ],
+   "sort": 3
+  },
+  {
+   "slug": "professionals--doctor--homeopathy",
+   "parent_slug": "professionals--doctor",
+   "name_i18n": {
+    "en": "Homeopathy",
+    "ta": "ஹோமியோபதி"
+   },
+   "synonyms": [
+    "homeopathic",
+    "homoeopathy",
+    "ஹோமியோ",
+    "homeo"
+   ],
+   "sort": 3
+  },
+  {
+   "slug": "professionals--doctor--allopathy--dermatology",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Dermatology",
+    "ta": "தோல் மருத்துவம்"
+   },
+   "synonyms": [
+    "தோல் டாக்டர்",
+    "skin doctor",
+    "தோல் மருத்துவர்",
+    "tholl doctor",
+    "dermatologist",
+    "acne",
+    "thol doctor",
+    "hair fall",
+    "skin specialist",
+    "pimples"
+   ],
+   "sort": 4
+  },
+  {
+   "slug": "professionals--doctor--allopathy--diabetology-endocrinology",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Diabetology & Endocrinology",
+    "ta": "சர்க்கரை நோய் மருத்துவம்"
+   },
+   "synonyms": [
+    "thyroid",
+    "sugar",
+    "sugar doctor",
+    "சுகர் டாக்டர்",
+    "நீரிழிவு மருத்துவர்",
+    "sarkarai doctor",
+    "diabetologist",
+    "diabetes doctor",
+    "சர்க்கரை டாக்டர்",
+    "endocrinologist"
+   ],
+   "sort": 12
+  },
+  {
+   "slug": "professionals--doctor--allopathy--ent",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "ENT",
+    "ta": "காது மூக்கு தொண்டை"
+   },
+   "synonyms": [
+    "nose doctor",
+    "ear doctor",
+    "காது டாக்டர்",
+    "throat doctor",
+    "காது மருத்துவர்",
+    "ent specialist",
+    "ear nose throat"
+   ],
+   "sort": 5
+  },
+  {
+   "slug": "professionals--doctor--allopathy--gastroenterology",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Gastroenterology",
+    "ta": "இரைப்பை குடல் மருத்துவம்"
+   },
+   "synonyms": [
+    "வயிற்று மருத்துவர்",
+    "வயிறு டாக்டர்",
+    "gastro",
+    "vayiru doctor",
+    "gastroenterologist",
+    "stomach doctor"
+   ],
+   "sort": 9
+  },
+  {
+   "slug": "professionals--doctor--allopathy--general-physician",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "General Physician",
+    "ta": "பொது மருத்துவர்"
+   },
+   "synonyms": [
+    "family physician",
+    "cold",
+    "gp",
+    "பொது டாக்டர்",
+    "fever",
+    "காய்ச்சல்",
+    "pothu doctor",
+    "general doctor",
+    "family doctor"
+   ],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--doctor--allopathy--general-surgery",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "General Surgery",
+    "ta": "பொது அறுவை சிகிச்சை"
+   },
+   "synonyms": [
+    "surgeon",
+    "அறுவை மருத்துவர்",
+    "general surgeon"
+   ],
+   "sort": 16
+  },
+  {
+   "slug": "professionals--doctor--allopathy--gynaecology-obstetrics",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Gynaecology & Obstetrics",
+    "ta": "மகப்பேறு மருத்துவம்"
+   },
+   "synonyms": [
+    "பெண்கள் மருத்துவர்",
+    "gynec",
+    "women doctor",
+    "magapperu doctor",
+    "மகப்பேறு டாக்டர்",
+    "கர்ப்ப மருத்துவர்",
+    "gynaecologist",
+    "lady doctor",
+    "pregnancy doctor",
+    "gynecologist"
+   ],
+   "sort": 2
+  },
+  {
+   "slug": "professionals--doctor--allopathy--nephrology",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Nephrology",
+    "ta": "சிறுநீரக மருத்துவம்"
+   },
+   "synonyms": [
+    "nephrologist",
+    "கிட்னி டாக்டர்",
+    "kidney specialist",
+    "kidney doctor"
+   ],
+   "sort": 11
+  },
+  {
+   "slug": "professionals--doctor--allopathy--neurology",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Neurology",
+    "ta": "நரம்பியல்"
+   },
+   "synonyms": [
+    "நரம்பியல் மருத்துவர்",
+    "neurologist",
+    "நரம்பு டாக்டர்",
+    "nerve doctor",
+    "narambu doctor",
+    "brain doctor"
+   ],
+   "sort": 7
+  },
+  {
+   "slug": "professionals--doctor--allopathy--oncology",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Oncology",
+    "ta": "புற்றுநோய் மருத்துவம்"
+   },
+   "synonyms": [
+    "cancer doctor",
+    "புற்றுநோய் டாக்டர்",
+    "cancer specialist",
+    "oncologist"
+   ],
+   "sort": 15
+  },
+  {
+   "slug": "professionals--doctor--allopathy--ophthalmology",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Ophthalmology",
+    "ta": "கண் மருத்துவம்"
+   },
+   "synonyms": [
+    "கண் டாக்டர்",
+    "eye specialist",
+    "kan doctor",
+    "eye doctor",
+    "kann doctor",
+    "ophthalmologist",
+    "கண் மருத்துவர்"
+   ],
+   "sort": 14
+  },
+  {
+   "slug": "professionals--doctor--allopathy--orthopaedics",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Orthopaedics",
+    "ta": "எலும்பு மருத்துவம்"
+   },
+   "synonyms": [
+    "எலும்பு மருத்துவர்",
+    "bone doctor",
+    "elumbu doctor",
+    "orthopaedic",
+    "எலும்பு டாக்டர்",
+    "ortho",
+    "joint pain",
+    "orthopedic",
+    "back pain",
+    "orthopedician"
+   ],
+   "sort": 6
+  },
+  {
+   "slug": "professionals--doctor--allopathy--psychiatry",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Psychiatry",
+    "ta": "மனநல மருத்துவம்"
+   },
+   "synonyms": [
+    "மனநல டாக்டர்",
+    "mental health doctor",
+    "psychiatrist"
+   ],
+   "sort": 8
+  },
+  {
+   "slug": "professionals--doctor--allopathy--pulmonology",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Pulmonology",
+    "ta": "நுரையீரல் மருத்துவம்"
+   },
+   "synonyms": [
+    "pulmonologist",
+    "asthma",
+    "chest doctor",
+    "lung doctor",
+    "நுரையீரல் டாக்டர்"
+   ],
+   "sort": 13
+  },
+  {
+   "slug": "professionals--doctor--allopathy--urology",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Urology",
+    "ta": "சிறுநீரகவியல்"
+   },
+   "synonyms": [
+    "சிறுநீர் டாக்டர்",
+    "urine problem",
+    "urologist"
+   ],
+   "sort": 10
+  },
+  {
+   "slug": "professionals--doctor--siddha",
+   "parent_slug": "professionals--doctor",
+   "name_i18n": {
+    "en": "Siddha",
+    "ta": "சித்த மருத்துவம்"
+   },
+   "synonyms": [
+    "சித்தா",
+    "sitha",
+    "சித்த வைத்தியர்",
+    "சித்த டாக்டர்",
+    "chitha",
+    "siddha doctor",
+    "siddha"
+   ],
+   "sort": 1
+  },
+  {
+   "slug": "professionals--doctor--siddha--siddha-paediatrics",
+   "parent_slug": "professionals--doctor--siddha",
+   "name_i18n": {
+    "en": "Siddha Paediatrics",
+    "ta": "சித்த குழந்தை மருத்துவம்"
+   },
+   "synonyms": [
+    "சித்த குழந்தை டாக்டர்",
+    "siddha child doctor"
+   ],
+   "sort": 4
+  },
+  {
+   "slug": "professionals--doctor--ayurveda",
+   "parent_slug": "professionals--doctor",
+   "name_i18n": {
+    "en": "Ayurveda",
+    "ta": "ஆயுர்வேதம்"
+   },
+   "synonyms": [
+    "ayurvedic",
+    "ஆயுர்வேத டாக்டர்",
+    "ayurveda doctor"
+   ],
+   "sort": 2
+  },
+  {
+   "slug": "professionals--doctor--dental",
+   "parent_slug": "professionals--doctor",
+   "name_i18n": {
+    "en": "Dental",
+    "ta": "பல் மருத்துவம்"
+   },
+   "synonyms": [
+    "dental doctor",
+    "dentist",
+    "tooth pain",
+    "பல் வலி",
+    "பல் மருத்துவர்",
+    "pal doctor",
+    "tooth doctor",
+    "பல் டாக்டர்",
+    "teeth doctor"
+   ],
+   "sort": 6
+  },
+  {
+   "slug": "professionals--doctor--dental--endodontics-root-canal",
+   "parent_slug": "professionals--doctor--dental",
+   "name_i18n": {
+    "en": "Endodontics (Root Canal)",
+    "ta": "வேர் சிகிச்சை"
+   },
+   "synonyms": [
+    "root canal",
+    "rct"
+   ],
+   "sort": 2
+  },
+  {
+   "slug": "professionals--doctor--dental--orthodontics",
+   "parent_slug": "professionals--doctor--dental",
+   "name_i18n": {
+    "en": "Orthodontics",
+    "ta": "பல் சீரமைப்பு"
+   },
+   "synonyms": [
+    "teeth alignment",
+    "orthodontist",
+    "braces"
+   ],
+   "sort": 1
+  },
+  {
+   "slug": "professionals--doctor--dental--paediatric-dentistry",
+   "parent_slug": "professionals--doctor--dental",
+   "name_i18n": {
+    "en": "Paediatric Dentistry",
+    "ta": "குழந்தை பல் மருத்துவம்"
+   },
+   "synonyms": [
+    "குழந்தை பல் டாக்டர்",
+    "kids dentist",
+    "child dentist"
+   ],
+   "sort": 3
+  },
+  {
+   "slug": "professionals--doctor--physiotherapy",
+   "parent_slug": "professionals--doctor",
+   "name_i18n": {
+    "en": "Physiotherapy",
+    "ta": "இயன்முறை மருத்துவம்"
+   },
+   "synonyms": [
+    "physio therapy",
+    "பிசியோ",
+    "physio",
+    "பிசியோதெரபி",
+    "physiotherapist"
+   ],
+   "sort": 7
+  },
+  {
+   "slug": "professionals--doctor--nutrition-diet",
+   "parent_slug": "professionals--doctor",
+   "name_i18n": {
+    "en": "Nutrition & Diet",
+    "ta": "உணவியல்"
+   },
+   "synonyms": [
+    "டயட்",
+    "உணவு ஆலோசகர்",
+    "weight loss",
+    "diet",
+    "dietician",
+    "dietitian",
+    "nutritionist"
+   ],
+   "sort": 9
+  },
+  {
+   "slug": "professionals--doctor--psychology-counselling",
+   "parent_slug": "professionals--doctor",
+   "name_i18n": {
+    "en": "Psychology & Counselling",
+    "ta": "உளவியல் ஆலோசனை"
+   },
+   "synonyms": [
+    "stress",
+    "therapist",
+    "counsellor",
+    "மன அழுத்தம்",
+    "therapy",
+    "கவுன்சிலிங்",
+    "depression",
+    "psychologist",
+    "counseling",
+    "counselling",
+    "ஆலோசகர்",
+    "counselor"
+   ],
+   "sort": 8
+  },
+  {
+   "slug": "professionals--doctor--psychology-counselling--child-psychology",
+   "parent_slug": "professionals--doctor--psychology-counselling",
+   "name_i18n": {
+    "en": "Child Psychology",
+    "ta": "குழந்தை உளவியல்"
+   },
+   "synonyms": [
+    "குழந்தை மனநல ஆலோசகர்",
+    "child counsellor",
+    "child psychologist"
+   ],
+   "sort": 1
+  },
+  {
+   "slug": "professionals--doctor--psychology-counselling--de-addiction",
+   "parent_slug": "professionals--doctor--psychology-counselling",
+   "name_i18n": {
+    "en": "De-addiction",
+    "ta": "போதை மீட்பு"
+   },
+   "synonyms": [
+    "குடி பழக்கம்",
+    "deaddiction",
+    "addiction",
+    "alcohol addiction"
+   ],
+   "sort": 3
+  },
+  {
+   "slug": "professionals--doctor--psychology-counselling--relationship-counselling",
+   "parent_slug": "professionals--doctor--psychology-counselling",
+   "name_i18n": {
+    "en": "Relationship Counselling",
+    "ta": "உறவு ஆலோசனை"
+   },
+   "synonyms": [
+    "marriage counselling",
+    "couple counselling",
+    "relationship counsellor"
+   ],
+   "sort": 2
+  },
+  {
+   "slug": "professionals--doctor--yoga-naturopathy",
+   "parent_slug": "professionals--doctor",
+   "name_i18n": {
+    "en": "Yoga & Naturopathy",
+    "ta": "யோகா & இயற்கை மருத்துவம்"
+   },
+   "synonyms": [
+    "naturopathy",
+    "yoga",
+    "யோகா"
+   ],
+   "sort": 5
+  },
+  {
+   "slug": "professionals--lawyer",
+   "parent_slug": "professionals",
+   "name_i18n": {
+    "en": "Lawyer",
+    "ta": "வழக்கறிஞர்"
+   },
+   "synonyms": [
+    "சட்ட ஆலோசனை",
+    "vakil",
+    "லாயர்",
+    "counsel",
+    "attorney",
+    "lawyer",
+    "வழக்கறிஞர்",
+    "advocate",
+    "வக்கீல்",
+    "legal advice",
+    "vakeel"
+   ],
+   "sort": 1
+  },
+  {
+   "slug": "professionals--lawyer--property-land",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Property & Land",
+    "ta": "சொத்து & நிலம்"
+   },
+   "synonyms": [
+    "சொத்து வழக்கு",
+    "sale deed",
+    "land lawyer",
+    "property lawyer",
+    "sothu",
+    "chitta",
+    "property dispute",
+    "patta",
+    "land dispute",
+    "நிலம்",
+    "land",
+    "property",
+    "நில வழக்கு",
+    "nilam",
+    "சொத்து",
+    "பட்டா"
+   ],
+   "sort": 1
+  },
+  {
+   "slug": "professionals--lawyer--family-divorce",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Family & Divorce",
+    "ta": "குடும்பம் & விவாகரத்து"
+   },
+   "synonyms": [
+    "family court",
+    "divorce",
+    "விவாகரத்து",
+    "maintenance",
+    "family lawyer",
+    "குடும்ப வழக்கு",
+    "custody",
+    "vivagarathu",
+    "alimony",
+    "divorce lawyer"
+   ],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--lawyer--criminal",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Criminal",
+    "ta": "குற்றவியல்"
+   },
+   "synonyms": [
+    "kutravial",
+    "bail",
+    "போலீஸ் கேஸ்",
+    "fir",
+    "ஜாமீன்",
+    "குற்ற வழக்கு",
+    "arrest",
+    "police case",
+    "criminal lawyer"
+   ],
+   "sort": 2
+  },
+  {
+   "slug": "professionals--lawyer--cheque-bounce",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Cheque Bounce",
+    "ta": "காசோலை மோசடி"
+   },
+   "synonyms": [
+    "check bounce",
+    "செக் பவுன்ஸ்",
+    "cheque case",
+    "cheque bounce"
+   ],
+   "sort": 6
+  },
+  {
+   "slug": "professionals--lawyer--consumer",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Consumer",
+    "ta": "நுகர்வோர்"
+   },
+   "synonyms": [
+    "consumer complaint",
+    "நுகர்வோர் வழக்கு",
+    "consumer court",
+    "consumer case"
+   ],
+   "sort": 4
+  },
+  {
+   "slug": "professionals--lawyer--cyber-crime",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Cyber Crime",
+    "ta": "இணைய குற்றம்"
+   },
+   "synonyms": [
+    "online fraud",
+    "cyber crime lawyer",
+    "cyber fraud",
+    "சைபர் குற்றம்"
+   ],
+   "sort": 7
+  },
+  {
+   "slug": "professionals--lawyer--motor-accident-claims",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Motor Accident Claims",
+    "ta": "வாகன விபத்து இழப்பீடு"
+   },
+   "synonyms": [
+    "accident case",
+    "விபத்து வழக்கு",
+    "accident claim",
+    "motor accident"
+   ],
+   "sort": 11
+  },
+  {
+   "slug": "professionals--lawyer--labour-employment",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Labour & Employment",
+    "ta": "தொழிலாளர்"
+   },
+   "synonyms": [
+    "pf issue",
+    "salary not paid",
+    "labour lawyer",
+    "employment lawyer"
+   ],
+   "sort": 5
+  },
+  {
+   "slug": "professionals--lawyer--tax-law",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Tax Law",
+    "ta": "வரி சட்டம்"
+   },
+   "synonyms": [
+    "gst lawyer",
+    "income tax case",
+    "tax lawyer"
+   ],
+   "sort": 10
+  },
+  {
+   "slug": "professionals--lawyer--documentation-registration",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Documentation & Registration",
+    "ta": "ஆவணம் & பதிவு"
+   },
+   "synonyms": [
+    "பத்திரப் பதிவு",
+    "உயில்",
+    "agreement",
+    "document registration",
+    "registration",
+    "will"
+   ],
+   "sort": 8
+  },
+  {
+   "slug": "professionals--lawyer--corporate-startup",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Corporate & Startup",
+    "ta": "நிறுவன சட்டம்"
+   },
+   "synonyms": [
+    "startup lawyer",
+    "company registration",
+    "company lawyer"
+   ],
+   "sort": 9
+  },
+  {
+   "slug": "professionals--engineer",
+   "parent_slug": "professionals",
+   "name_i18n": {
+    "en": "Engineer",
+    "ta": "பொறியாளர்"
+   },
+   "synonyms": [
+    "இன்ஜினியர்",
+    "engineering",
+    "பொறியாளர்",
+    "enginear",
+    "engineer"
+   ],
+   "sort": 2
+  },
+  {
+   "slug": "professionals--engineer--civil",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Civil",
+    "ta": "கட்டுமானப் பொறியியல்"
+   },
+   "synonyms": [
+    "veedu kattanum",
+    "civil engineer",
+    "building engineer",
+    "வீடு கட்ட",
+    "house construction",
+    "construction engineer",
+    "கட்டிட பொறியாளர்",
+    "சிவில் இன்ஜினியர்"
+   ],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--engineer--civil--house-plan-review",
+   "parent_slug": "professionals--engineer--civil",
+   "name_i18n": {
+    "en": "House Plan Review",
+    "ta": "வீட்டு வரைபட ஆய்வு"
+   },
+   "synonyms": [
+    "வீட்டு பிளான்",
+    "வீட்டு வரைபடம்",
+    "plan review",
+    "house plan",
+    "building plan"
+   ],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--engineer--civil--structural",
+   "parent_slug": "professionals--engineer--civil",
+   "name_i18n": {
+    "en": "Structural",
+    "ta": "கட்டமைப்பு"
+   },
+   "synonyms": [
+    "building crack",
+    "crack in wall",
+    "structural engineer",
+    "விரிசல்"
+   ],
+   "sort": 2
+  },
+  {
+   "slug": "professionals--engineer--civil--estimate-boq",
+   "parent_slug": "professionals--engineer--civil",
+   "name_i18n": {
+    "en": "Estimate & BOQ",
+    "ta": "மதிப்பீடு"
+   },
+   "synonyms": [
+    "construction cost",
+    "கட்டுமான செலவு",
+    "estimate",
+    "boq"
+   ],
+   "sort": 1
+  },
+  {
+   "slug": "professionals--engineer--architect",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Architect",
+    "ta": "கட்டடக் கலைஞர்"
+   },
+   "synonyms": [
+    "architect",
+    "ஆர்க்கிடெக்ட்",
+    "building design",
+    "architecture"
+   ],
+   "sort": 5
+  },
+  {
+   "slug": "professionals--engineer--electrical",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Electrical",
+    "ta": "மின் பொறியியல்"
+   },
+   "synonyms": [
+    "எலக்ட்ரிகல் இன்ஜினியர்",
+    "wiring",
+    "electrical engineer"
+   ],
+   "sort": 2
+  },
+  {
+   "slug": "professionals--engineer--interior-design",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Interior Design",
+    "ta": "உள் அலங்காரம்"
+   },
+   "synonyms": [
+    "interior designer",
+    "இன்டீரியர்",
+    "interior"
+   ],
+   "sort": 6
+  },
+  {
+   "slug": "professionals--engineer--software-it",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Software & IT",
+    "ta": "மென்பொருள்"
+   },
+   "synonyms": [
+    "developer",
+    "software",
+    "சாஃப்ட்வேர்",
+    "programmer",
+    "software engineer",
+    "it engineer"
+   ],
+   "sort": 1
+  },
+  {
+   "slug": "professionals--engineer--solar-ev",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Solar & EV",
+    "ta": "சூரிய சக்தி & மின் வாகனம்"
+   },
+   "synonyms": [
+    "solar panel",
+    "சோலார்",
+    "ev",
+    "electric vehicle",
+    "solar"
+   ],
+   "sort": 7
+  }
+ ],
+ "districts": [
+  {
+   "slug": "kanniyakumari",
+   "name_i18n": {
+    "en": "Kanniyakumari",
+    "ta": "கன்னியாகுமரி"
+   }
+  },
+  {
+   "slug": "ariyalur",
+   "name_i18n": {
+    "en": "Ariyalur",
+    "ta": "அரியலூர்"
+   }
+  },
+  {
+   "slug": "chengalpattu",
+   "name_i18n": {
+    "en": "Chengalpattu",
+    "ta": "செங்கல்பட்டு"
+   }
+  },
+  {
+   "slug": "chennai",
+   "name_i18n": {
+    "en": "Chennai",
+    "ta": "சென்னை"
+   }
+  },
+  {
+   "slug": "coimbatore",
+   "name_i18n": {
+    "en": "Coimbatore",
+    "ta": "கோயம்புத்தூர்"
+   }
+  },
+  {
+   "slug": "cuddalore",
+   "name_i18n": {
+    "en": "Cuddalore",
+    "ta": "கடலூர்"
+   }
+  },
+  {
+   "slug": "dharmapuri",
+   "name_i18n": {
+    "en": "Dharmapuri",
+    "ta": "தர்மபுரி"
+   }
+  },
+  {
+   "slug": "dindigul",
+   "name_i18n": {
+    "en": "Dindigul",
+    "ta": "திண்டுக்கல்"
+   }
+  },
+  {
+   "slug": "erode",
+   "name_i18n": {
+    "en": "Erode",
+    "ta": "ஈரோடு"
+   }
+  },
+  {
+   "slug": "kallakurichi",
+   "name_i18n": {
+    "en": "Kallakurichi",
+    "ta": "கள்ளக்குறிச்சி"
+   }
+  },
+  {
+   "slug": "kancheepuram",
+   "name_i18n": {
+    "en": "Kancheepuram",
+    "ta": "காஞ்சிபுரம்"
+   }
+  },
+  {
+   "slug": "karur",
+   "name_i18n": {
+    "en": "Karur",
+    "ta": "கரூர்"
+   }
+  },
+  {
+   "slug": "krishnagiri",
+   "name_i18n": {
+    "en": "Krishnagiri",
+    "ta": "கிருஷ்ணகிரி"
+   }
+  },
+  {
+   "slug": "madurai",
+   "name_i18n": {
+    "en": "Madurai",
+    "ta": "மதுரை"
+   }
+  },
+  {
+   "slug": "mayiladuthurai",
+   "name_i18n": {
+    "en": "Mayiladuthurai",
+    "ta": "மயிலாடுதுறை"
+   }
+  },
+  {
+   "slug": "nagapattinam",
+   "name_i18n": {
+    "en": "Nagapattinam",
+    "ta": "நாகப்பட்டினம்"
+   }
+  },
+  {
+   "slug": "namakkal",
+   "name_i18n": {
+    "en": "Namakkal",
+    "ta": "நாமக்கல்"
+   }
+  },
+  {
+   "slug": "nilgiris",
+   "name_i18n": {
+    "en": "Nilgiris",
+    "ta": "நீலகிரி"
+   }
+  },
+  {
+   "slug": "perambalur",
+   "name_i18n": {
+    "en": "Perambalur",
+    "ta": "பெரம்பலூர்"
+   }
+  },
+  {
+   "slug": "pudukkottai",
+   "name_i18n": {
+    "en": "Pudukkottai",
+    "ta": "புதுக்கோட்டை"
+   }
+  },
+  {
+   "slug": "ramanathapuram",
+   "name_i18n": {
+    "en": "Ramanathapuram",
+    "ta": "ராமநாதபுரம்"
+   }
+  },
+  {
+   "slug": "ranipet",
+   "name_i18n": {
+    "en": "Ranipet",
+    "ta": "ராணிப்பேட்டை"
+   }
+  },
+  {
+   "slug": "salem",
+   "name_i18n": {
+    "en": "Salem",
+    "ta": "சேலம்"
+   }
+  },
+  {
+   "slug": "sivaganga",
+   "name_i18n": {
+    "en": "Sivaganga",
+    "ta": "சிவகங்கை"
+   }
+  },
+  {
+   "slug": "tenkasi",
+   "name_i18n": {
+    "en": "Tenkasi",
+    "ta": "தென்காசி"
+   }
+  },
+  {
+   "slug": "thanjavur",
+   "name_i18n": {
+    "en": "Thanjavur",
+    "ta": "தஞ்சாவூர்"
+   }
+  },
+  {
+   "slug": "theni",
+   "name_i18n": {
+    "en": "Theni",
+    "ta": "தேனி"
+   }
+  },
+  {
+   "slug": "thoothukudi",
+   "name_i18n": {
+    "en": "Thoothukudi",
+    "ta": "தூத்துக்குடி"
+   }
+  },
+  {
+   "slug": "tiruchirappalli",
+   "name_i18n": {
+    "en": "Tiruchirappalli",
+    "ta": "திருச்சிராப்பள்ளி"
+   }
+  },
+  {
+   "slug": "tirunelveli",
+   "name_i18n": {
+    "en": "Tirunelveli",
+    "ta": "திருநெல்வேலி"
+   }
+  },
+  {
+   "slug": "tirupathur",
+   "name_i18n": {
+    "en": "Tirupathur",
+    "ta": "திருப்பத்தூர்"
+   }
+  },
+  {
+   "slug": "tiruppur",
+   "name_i18n": {
+    "en": "Tiruppur",
+    "ta": "திருப்பூர்"
+   }
+  },
+  {
+   "slug": "tiruvallur",
+   "name_i18n": {
+    "en": "Tiruvallur",
+    "ta": "திருவள்ளூர்"
+   }
+  },
+  {
+   "slug": "tiruvannamalai",
+   "name_i18n": {
+    "en": "Tiruvannamalai",
+    "ta": "திருவண்ணாமலை"
+   }
+  },
+  {
+   "slug": "tiruvarur",
+   "name_i18n": {
+    "en": "Tiruvarur",
+    "ta": "திருவாரூர்"
+   }
+  },
+  {
+   "slug": "vellore",
+   "name_i18n": {
+    "en": "Vellore",
+    "ta": "வேலூர்"
+   }
+  },
+  {
+   "slug": "viluppuram",
+   "name_i18n": {
+    "en": "Viluppuram",
+    "ta": "விழுப்புரம்"
+   }
+  },
+  {
+   "slug": "virudhunagar",
+   "name_i18n": {
+    "en": "Virudhunagar",
+    "ta": "விருதுநகர்"
+   }
+  }
+ ],
+ "areas": [
+  {
+   "name": "Nagercoil",
+   "name_ta": "நாகர்கோவில்",
+   "district_slug": "kanniyakumari",
+   "lat": 8.18399,
+   "lng": 77.43154
+  },
+  {
+   "name": "Kanniyakumari",
+   "name_ta": "கன்னியாகுமரி",
+   "district_slug": "kanniyakumari",
+   "lat": 8.08796,
+   "lng": 77.54674
+  },
+  {
+   "name": "Marthandam",
+   "name_ta": "மார்த்தாண்டம்",
+   "district_slug": "kanniyakumari",
+   "lat": 8.3065,
+   "lng": 77.22231
+  },
+  {
+   "name": "Kuzhithurai",
+   "name_ta": "குழித்துறை",
+   "district_slug": "kanniyakumari",
+   "lat": 8.31553,
+   "lng": 77.20688
+  },
+  {
+   "name": "Colachel",
+   "name_ta": "குளச்சல்",
+   "district_slug": "kanniyakumari",
+   "lat": 8.17527,
+   "lng": 77.25192
+  },
+  {
+   "name": "Thuckalay",
+   "name_ta": null,
+   "district_slug": "kanniyakumari",
+   "lat": 8.25837,
+   "lng": 77.31119
+  },
+  {
+   "name": "Padmanabhapuram",
+   "name_ta": "பத்மனாபபுரம்",
+   "district_slug": "kanniyakumari",
+   "lat": 8.25226,
+   "lng": 77.32649
+  },
+  {
+   "name": "Thovalai",
+   "name_ta": null,
+   "district_slug": "kanniyakumari",
+   "lat": 8.33587,
+   "lng": 77.47203
+  },
+  {
+   "name": "Ariyalur",
+   "name_ta": "அரியலூர்",
+   "district_slug": "ariyalur",
+   "lat": 11.13577,
+   "lng": 79.07232
+  },
+  {
+   "name": "Jayankondam",
+   "name_ta": "ஜெயங்கொண்டம்",
+   "district_slug": "ariyalur",
+   "lat": 11.21199,
+   "lng": 79.36486
+  },
+  {
+   "name": "Sendurai",
+   "name_ta": null,
+   "district_slug": "ariyalur",
+   "lat": 11.27201,
+   "lng": 79.18656
+  },
+  {
+   "name": "Udayarpalayam",
+   "name_ta": null,
+   "district_slug": "ariyalur",
+   "lat": 11.15881,
+   "lng": 79.34441
+  },
+  {
+   "name": "Chengalpattu",
+   "name_ta": "செங்கல்பட்டு",
+   "district_slug": "chengalpattu",
+   "lat": 12.68409,
+   "lng": 79.98364
+  },
+  {
+   "name": "Tambaram",
+   "name_ta": "தாம்பரம்",
+   "district_slug": "chengalpattu",
+   "lat": 12.92453,
+   "lng": 80.11505
+  },
+  {
+   "name": "Pallavaram",
+   "name_ta": "பல்லாவரம்",
+   "district_slug": "chengalpattu",
+   "lat": 12.96547,
+   "lng": 80.14512
+  },
+  {
+   "name": "Guduvancheri",
+   "name_ta": "கூடுவாஞ்சேரி",
+   "district_slug": "chengalpattu",
+   "lat": 12.844,
+   "lng": 80.06083
+  },
+  {
+   "name": "Maraimalai Nagar",
+   "name_ta": "மறைமலை நகர்",
+   "district_slug": "chengalpattu",
+   "lat": 12.79582,
+   "lng": 80.02691
+  },
+  {
+   "name": "Madurantakam",
+   "name_ta": "மதுராந்தகம்",
+   "district_slug": "chengalpattu",
+   "lat": 12.50818,
+   "lng": 79.88823
+  },
+  {
+   "name": "Thiruporur",
+   "name_ta": null,
+   "district_slug": "chengalpattu",
+   "lat": 12.73931,
+   "lng": 80.18666
+  },
+  {
+   "name": "Mamallapuram",
+   "name_ta": "மகாபலிபுரம்",
+   "district_slug": "chengalpattu",
+   "lat": 12.6196,
+   "lng": 80.19365
+  },
+  {
+   "name": "T. Nagar",
+   "name_ta": null,
+   "district_slug": "chennai",
+   "lat": 13.03783,
+   "lng": 80.23184
+  },
+  {
+   "name": "Adyar",
+   "name_ta": "அடையாறு",
+   "district_slug": "chennai",
+   "lat": 13.00645,
+   "lng": 80.25778
+  },
+  {
+   "name": "Anna Nagar",
+   "name_ta": "அண்ணா நகர்",
+   "district_slug": "chennai",
+   "lat": 13.08825,
+   "lng": 80.20734
+  },
+  {
+   "name": "Velachery",
+   "name_ta": "வேளச்சேரி",
+   "district_slug": "chennai",
+   "lat": 12.98017,
+   "lng": 80.22285
+  },
+  {
+   "name": "Mylapore",
+   "name_ta": "மயிலாப்பூர்",
+   "district_slug": "chennai",
+   "lat": 13.03165,
+   "lng": 80.27002
+  },
+  {
+   "name": "Egmore",
+   "name_ta": "எழும்பூர்",
+   "district_slug": "chennai",
+   "lat": 13.07283,
+   "lng": 80.25769
+  },
+  {
+   "name": "Guindy",
+   "name_ta": "கிண்டி",
+   "district_slug": "chennai",
+   "lat": 13.00871,
+   "lng": 80.22036
+  },
+  {
+   "name": "Porur",
+   "name_ta": "போரூர்",
+   "district_slug": "chennai",
+   "lat": 13.03246,
+   "lng": 80.15829
+  },
+  {
+   "name": "Tondiarpet",
+   "name_ta": "தண்டையார்பேட்டை",
+   "district_slug": "chennai",
+   "lat": 13.12777,
+   "lng": 80.28958
+  },
+  {
+   "name": "Perambur",
+   "name_ta": "பெரம்பூர்",
+   "district_slug": "chennai",
+   "lat": 13.11212,
+   "lng": 80.24502
+  },
+  {
+   "name": "Sholinganallur",
+   "name_ta": null,
+   "district_slug": "chennai",
+   "lat": 12.91795,
+   "lng": 80.22689
+  },
+  {
+   "name": "Vadapalani",
+   "name_ta": "வடபழனி",
+   "district_slug": "chennai",
+   "lat": 13.0503,
+   "lng": 80.21183
+  },
+  {
+   "name": "Gandhipuram",
+   "name_ta": "காந்திபுரம்",
+   "district_slug": "coimbatore",
+   "lat": 11.01827,
+   "lng": 76.96777
+  },
+  {
+   "name": "RS Puram",
+   "name_ta": "ஆர்எஸ் புரம்",
+   "district_slug": "coimbatore",
+   "lat": 11.00802,
+   "lng": 76.95017
+  },
+  {
+   "name": "Peelamedu",
+   "name_ta": "பீளமேடு",
+   "district_slug": "coimbatore",
+   "lat": 11.02778,
+   "lng": 76.99862
+  },
+  {
+   "name": "Saibaba Colony",
+   "name_ta": "சாய்பாபா காலனி",
+   "district_slug": "coimbatore",
+   "lat": 11.02433,
+   "lng": 76.94479
+  },
+  {
+   "name": "Pollachi",
+   "name_ta": "பொள்ளாச்சி",
+   "district_slug": "coimbatore",
+   "lat": 10.65882,
+   "lng": 77.00873
+  },
+  {
+   "name": "Mettupalayam",
+   "name_ta": "மேட்டுப்பாளையம்",
+   "district_slug": "coimbatore",
+   "lat": 11.30594,
+   "lng": 76.93565
+  },
+  {
+   "name": "Sulur",
+   "name_ta": "சூலூர்",
+   "district_slug": "coimbatore",
+   "lat": 10.98905,
+   "lng": 77.1015
+  },
+  {
+   "name": "Valparai",
+   "name_ta": "வால்பாறை",
+   "district_slug": "coimbatore",
+   "lat": 10.32799,
+   "lng": 76.95573
+  },
+  {
+   "name": "Cuddalore",
+   "name_ta": "கடலூர்",
+   "district_slug": "cuddalore",
+   "lat": 11.74269,
+   "lng": 79.75031
+  },
+  {
+   "name": "Chidambaram",
+   "name_ta": null,
+   "district_slug": "cuddalore",
+   "lat": 11.41018,
+   "lng": 79.67222
+  },
+  {
+   "name": "Neyveli",
+   "name_ta": "நெய்வேலி",
+   "district_slug": "cuddalore",
+   "lat": 11.53599,
+   "lng": 79.48244
+  },
+  {
+   "name": "Virudhachalam",
+   "name_ta": null,
+   "district_slug": "cuddalore",
+   "lat": 11.54788,
+   "lng": 79.38454
+  },
+  {
+   "name": "Panruti",
+   "name_ta": "பண்ருட்டி",
+   "district_slug": "cuddalore",
+   "lat": 11.77228,
+   "lng": 79.5519
+  },
+  {
+   "name": "Kattumannarkoil",
+   "name_ta": null,
+   "district_slug": "cuddalore",
+   "lat": 11.26048,
+   "lng": 79.5758
+  },
+  {
+   "name": "Dharmapuri",
+   "name_ta": "தர்மபுரி",
+   "district_slug": "dharmapuri",
+   "lat": 12.1348,
+   "lng": 78.15899
+  },
+  {
+   "name": "Harur",
+   "name_ta": "அரூர்",
+   "district_slug": "dharmapuri",
+   "lat": 12.05457,
+   "lng": 78.47862
+  },
+  {
+   "name": "Palacode",
+   "name_ta": "பாலக்கோடு",
+   "district_slug": "dharmapuri",
+   "lat": 12.30412,
+   "lng": 78.07288
+  },
+  {
+   "name": "Pennagaram",
+   "name_ta": null,
+   "district_slug": "dharmapuri",
+   "lat": 12.11253,
+   "lng": 77.86772
+  },
+  {
+   "name": "Pappireddipatti",
+   "name_ta": "பாப்பிரெட்டிப்பட்டி",
+   "district_slug": "dharmapuri",
+   "lat": 11.91382,
+   "lng": 78.36711
+  },
+  {
+   "name": "Dindigul",
+   "name_ta": "திண்டுக்கல்",
+   "district_slug": "dindigul",
+   "lat": 10.36565,
+   "lng": 77.96933
+  },
+  {
+   "name": "Palani",
+   "name_ta": "பழனி",
+   "district_slug": "dindigul",
+   "lat": 10.45111,
+   "lng": 77.51545
+  },
+  {
+   "name": "Kodaikanal",
+   "name_ta": "கொடைக்கானல்",
+   "district_slug": "dindigul",
+   "lat": 10.23371,
+   "lng": 77.49197
+  },
+  {
+   "name": "Oddanchatram",
+   "name_ta": null,
+   "district_slug": "dindigul",
+   "lat": 10.55104,
+   "lng": 77.72741
+  },
+  {
+   "name": "Natham",
+   "name_ta": null,
+   "district_slug": "dindigul",
+   "lat": 10.269,
+   "lng": 78.25071
+  },
+  {
+   "name": "Vedasandur",
+   "name_ta": null,
+   "district_slug": "dindigul",
+   "lat": 10.59903,
+   "lng": 78.00168
+  },
+  {
+   "name": "Erode",
+   "name_ta": "ஈரோடு",
+   "district_slug": "erode",
+   "lat": 11.33065,
+   "lng": 77.72765
+  },
+  {
+   "name": "Gobichettipalayam",
+   "name_ta": "கோபிச்செட்டிப்பாளையம்",
+   "district_slug": "erode",
+   "lat": 11.45518,
+   "lng": 77.43507
+  },
+  {
+   "name": "Bhavani",
+   "name_ta": null,
+   "district_slug": "erode",
+   "lat": 11.49958,
+   "lng": 77.64807
+  },
+  {
+   "name": "Sathyamangalam",
+   "name_ta": null,
+   "district_slug": "erode",
+   "lat": 11.55237,
+   "lng": 77.26538
+  },
+  {
+   "name": "Perundurai",
+   "name_ta": null,
+   "district_slug": "erode",
+   "lat": 11.2591,
+   "lng": 77.54606
+  },
+  {
+   "name": "Anthiyur",
+   "name_ta": null,
+   "district_slug": "erode",
+   "lat": 11.71445,
+   "lng": 77.56794
+  },
+  {
+   "name": "Kallakurichi",
+   "name_ta": "கள்ளக்குறிச்சி",
+   "district_slug": "kallakurichi",
+   "lat": 11.74063,
+   "lng": 78.96371
+  },
+  {
+   "name": "Ulundurpet",
+   "name_ta": "உளுந்தூர்பேட்டை",
+   "district_slug": "kallakurichi",
+   "lat": 11.70203,
+   "lng": 79.31818
+  },
+  {
+   "name": "Sankarapuram",
+   "name_ta": null,
+   "district_slug": "kallakurichi",
+   "lat": 11.85559,
+   "lng": 78.9858
+  },
+  {
+   "name": "Chinnasalem",
+   "name_ta": "சின்னசேலம்",
+   "district_slug": "kallakurichi",
+   "lat": 11.63549,
+   "lng": 78.88099
+  },
+  {
+   "name": "Tirukoilur",
+   "name_ta": null,
+   "district_slug": "kallakurichi",
+   "lat": 11.9073,
+   "lng": 79.13817
+  },
+  {
+   "name": "Kancheepuram",
+   "name_ta": null,
+   "district_slug": "kancheepuram",
+   "lat": 12.81189,
+   "lng": 79.75246
+  },
+  {
+   "name": "Sriperumbudur",
+   "name_ta": "ஸ்ரீபெரும்புதூர்",
+   "district_slug": "kancheepuram",
+   "lat": 12.96661,
+   "lng": 79.94581
+  },
+  {
+   "name": "Walajabad",
+   "name_ta": null,
+   "district_slug": "kancheepuram",
+   "lat": 12.79181,
+   "lng": 79.8284
+  },
+  {
+   "name": "Uthiramerur",
+   "name_ta": null,
+   "district_slug": "kancheepuram",
+   "lat": 12.77267,
+   "lng": 79.73047
+  },
+  {
+   "name": "Kundrathur",
+   "name_ta": null,
+   "district_slug": "kancheepuram",
+   "lat": 12.99597,
+   "lng": 80.09757
+  },
+  {
+   "name": "Karur",
+   "name_ta": "கரூர்",
+   "district_slug": "karur",
+   "lat": 10.9596,
+   "lng": 78.08078
+  },
+  {
+   "name": "Kulithalai",
+   "name_ta": null,
+   "district_slug": "karur",
+   "lat": 10.81545,
+   "lng": 78.48813
+  },
+  {
+   "name": "Aravakurichi",
+   "name_ta": null,
+   "district_slug": "karur",
+   "lat": 10.85059,
+   "lng": 77.92608
+  },
+  {
+   "name": "Krishnarayapuram",
+   "name_ta": null,
+   "district_slug": "karur",
+   "lat": 10.83586,
+   "lng": 78.35193
+  },
+  {
+   "name": "Krishnagiri",
+   "name_ta": null,
+   "district_slug": "krishnagiri",
+   "lat": 12.57328,
+   "lng": 78.19276
+  },
+  {
+   "name": "Hosur",
+   "name_ta": null,
+   "district_slug": "krishnagiri",
+   "lat": 12.73456,
+   "lng": 77.84946
+  },
+  {
+   "name": "Denkanikottai",
+   "name_ta": null,
+   "district_slug": "krishnagiri",
+   "lat": 12.51283,
+   "lng": 77.76112
+  },
+  {
+   "name": "Pochampalli",
+   "name_ta": null,
+   "district_slug": "krishnagiri",
+   "lat": 12.34789,
+   "lng": 78.3766
+  },
+  {
+   "name": "Uthangarai",
+   "name_ta": null,
+   "district_slug": "krishnagiri",
+   "lat": 12.27528,
+   "lng": 78.49388
+  },
+  {
+   "name": "Madurai City",
+   "name_ta": null,
+   "district_slug": "madurai",
+   "lat": 9.91475,
+   "lng": 78.14216
+  },
+  {
+   "name": "Anna Nagar (Madurai)",
+   "name_ta": null,
+   "district_slug": "madurai",
+   "lat": 9.91603,
+   "lng": 78.13675
+  },
+  {
+   "name": "K. Pudur",
+   "name_ta": "கோ. புதூர்",
+   "district_slug": "madurai",
+   "lat": 9.95502,
+   "lng": 78.15067
+  },
+  {
+   "name": "Thirumangalam",
+   "name_ta": null,
+   "district_slug": "madurai",
+   "lat": 9.79801,
+   "lng": 77.92984
+  },
+  {
+   "name": "Melur",
+   "name_ta": null,
+   "district_slug": "madurai",
+   "lat": 10.08584,
+   "lng": 78.35602
+  },
+  {
+   "name": "Usilampatti",
+   "name_ta": null,
+   "district_slug": "madurai",
+   "lat": 9.96623,
+   "lng": 77.82873
+  },
+  {
+   "name": "Vadipatti",
+   "name_ta": null,
+   "district_slug": "madurai",
+   "lat": 10.07901,
+   "lng": 78.036
+  },
+  {
+   "name": "Thiruparankundram",
+   "name_ta": "திருப்பரங்குன்றம்",
+   "district_slug": "madurai",
+   "lat": 9.87633,
+   "lng": 78.0712
+  },
+  {
+   "name": "Mayiladuthurai",
+   "name_ta": "மயிலாடுதுறை",
+   "district_slug": "mayiladuthurai",
+   "lat": 11.10186,
+   "lng": 79.65032
+  },
+  {
+   "name": "Sirkazhi",
+   "name_ta": "சீர்காழி",
+   "district_slug": "mayiladuthurai",
+   "lat": 11.23778,
+   "lng": 79.73958
+  },
+  {
+   "name": "Kuthalam",
+   "name_ta": null,
+   "district_slug": "mayiladuthurai",
+   "lat": 11.03823,
+   "lng": 79.59153
+  },
+  {
+   "name": "Tharangambadi",
+   "name_ta": "தரங்கம்பாடி",
+   "district_slug": "mayiladuthurai",
+   "lat": 11.02993,
+   "lng": 79.8522
+  },
+  {
+   "name": "Nagapattinam",
+   "name_ta": "நாகப்பட்டினம்",
+   "district_slug": "nagapattinam",
+   "lat": 10.7648,
+   "lng": 79.84308
+  },
+  {
+   "name": "Vedaranyam",
+   "name_ta": null,
+   "district_slug": "nagapattinam",
+   "lat": 10.42795,
+   "lng": 79.74896
+  },
+  {
+   "name": "Kilvelur",
+   "name_ta": null,
+   "district_slug": "nagapattinam",
+   "lat": 10.68943,
+   "lng": 79.71718
+  },
+  {
+   "name": "Velankanni",
+   "name_ta": "வேளாங்கண்ணி",
+   "district_slug": "nagapattinam",
+   "lat": 10.68189,
+   "lng": 79.84967
+  },
+  {
+   "name": "Namakkal",
+   "name_ta": "நாமக்கல்",
+   "district_slug": "namakkal",
+   "lat": 11.21917,
+   "lng": 78.16787
+  },
+  {
+   "name": "Tiruchengode",
+   "name_ta": "திருச்செங்கோடு",
+   "district_slug": "namakkal",
+   "lat": 11.37866,
+   "lng": 77.89492
+  },
+  {
+   "name": "Rasipuram",
+   "name_ta": null,
+   "district_slug": "namakkal",
+   "lat": 11.49117,
+   "lng": 78.24117
+  },
+  {
+   "name": "Paramathi Velur",
+   "name_ta": null,
+   "district_slug": "namakkal",
+   "lat": 11.18645,
+   "lng": 77.95902
+  },
+  {
+   "name": "Kumarapalayam",
+   "name_ta": null,
+   "district_slug": "namakkal",
+   "lat": 11.38825,
+   "lng": 77.77784
+  },
+  {
+   "name": "Ooty",
+   "name_ta": "உதகமண்டலம்",
+   "district_slug": "nilgiris",
+   "lat": 11.41268,
+   "lng": 76.70305
+  },
+  {
+   "name": "Coonoor",
+   "name_ta": "குன்னூர்",
+   "district_slug": "nilgiris",
+   "lat": 11.34594,
+   "lng": 76.79653
+  },
+  {
+   "name": "Kotagiri",
+   "name_ta": "கோத்தகிரி",
+   "district_slug": "nilgiris",
+   "lat": 11.42304,
+   "lng": 76.86582
+  },
+  {
+   "name": "Gudalur",
+   "name_ta": "கூடலூர்",
+   "district_slug": "nilgiris",
+   "lat": 11.49924,
+   "lng": 76.49239
+  },
+  {
+   "name": "Perambalur",
+   "name_ta": "பெரம்பலூர்",
+   "district_slug": "perambalur",
+   "lat": 11.23567,
+   "lng": 78.86884
+  },
+  {
+   "name": "Kunnam",
+   "name_ta": null,
+   "district_slug": "perambalur",
+   "lat": 11.29427,
+   "lng": 79.0145
+  },
+  {
+   "name": "Veppanthattai",
+   "name_ta": null,
+   "district_slug": "perambalur",
+   "lat": 11.39942,
+   "lng": 78.88688
+  },
+  {
+   "name": "Alathur",
+   "name_ta": null,
+   "district_slug": "perambalur",
+   "lat": 11.13474,
+   "lng": 78.90813
+  },
+  {
+   "name": "Pudukkottai",
+   "name_ta": "புதுக்கோட்டை",
+   "district_slug": "pudukkottai",
+   "lat": 10.38265,
+   "lng": 78.81913
+  },
+  {
+   "name": "Aranthangi",
+   "name_ta": "அறந்தாங்கி வட்டம்",
+   "district_slug": "pudukkottai",
+   "lat": 10.20078,
+   "lng": 79.05122
+  },
+  {
+   "name": "Alangudi",
+   "name_ta": "ஆலங்குடி வட்டம்",
+   "district_slug": "pudukkottai",
+   "lat": 10.31974,
+   "lng": 78.92484
+  },
+  {
+   "name": "Illuppur",
+   "name_ta": "இலுப்பூர் வட்டம்",
+   "district_slug": "pudukkottai",
+   "lat": 10.52782,
+   "lng": 78.653
+  },
+  {
+   "name": "Gandarvakottai",
+   "name_ta": "கந்தர்வகோட்டை வட்டம்",
+   "district_slug": "pudukkottai",
+   "lat": 10.57572,
+   "lng": 79.04692
+  },
+  {
+   "name": "Ramanathapuram",
+   "name_ta": "இராமநாதபுரம்",
+   "district_slug": "ramanathapuram",
+   "lat": 9.5,
+   "lng": 78.5
+  },
+  {
+   "name": "Rameswaram",
+   "name_ta": "இராமேசுவரம்",
+   "district_slug": "ramanathapuram",
+   "lat": 9.28447,
+   "lng": 79.31256
+  },
+  {
+   "name": "Paramakudi",
+   "name_ta": null,
+   "district_slug": "ramanathapuram",
+   "lat": 9.48672,
+   "lng": 78.67227
+  },
+  {
+   "name": "Kamuthi",
+   "name_ta": null,
+   "district_slug": "ramanathapuram",
+   "lat": 9.3677,
+   "lng": 78.3706
+  },
+  {
+   "name": "Mudukulathur",
+   "name_ta": null,
+   "district_slug": "ramanathapuram",
+   "lat": 9.38213,
+   "lng": 78.55157
+  },
+  {
+   "name": "Ranipet",
+   "name_ta": "இராணிப்பேட்டை",
+   "district_slug": "ranipet",
+   "lat": 12.92925,
+   "lng": 79.33217
+  },
+  {
+   "name": "Arakkonam",
+   "name_ta": null,
+   "district_slug": "ranipet",
+   "lat": 13.03008,
+   "lng": 79.60878
+  },
+  {
+   "name": "Walajapet",
+   "name_ta": "வாலாஜாபேட்டை",
+   "district_slug": "ranipet",
+   "lat": 12.92547,
+   "lng": 79.36379
+  },
+  {
+   "name": "Arcot",
+   "name_ta": "ஆற்காடு",
+   "district_slug": "ranipet",
+   "lat": 12.90789,
+   "lng": 79.32039
+  },
+  {
+   "name": "Sholingur",
+   "name_ta": null,
+   "district_slug": "ranipet",
+   "lat": 13.1187,
+   "lng": 79.4206
+  },
+  {
+   "name": "Salem City",
+   "name_ta": "சேலம்",
+   "district_slug": "salem",
+   "lat": 11.6552,
+   "lng": 78.15818
+  },
+  {
+   "name": "Attur",
+   "name_ta": "ஆத்தூர் (சேலம்)",
+   "district_slug": "salem",
+   "lat": 11.59954,
+   "lng": 78.59627
+  },
+  {
+   "name": "Mettur",
+   "name_ta": null,
+   "district_slug": "salem",
+   "lat": 11.79283,
+   "lng": 77.86486
+  },
+  {
+   "name": "Omalur",
+   "name_ta": "ஓமலூர்",
+   "district_slug": "salem",
+   "lat": 11.74285,
+   "lng": 78.04727
+  },
+  {
+   "name": "Edappadi",
+   "name_ta": "எடப்பாடி",
+   "district_slug": "salem",
+   "lat": 11.58384,
+   "lng": 77.83476
+  },
+  {
+   "name": "Yercaud",
+   "name_ta": "ஏற்காடு",
+   "district_slug": "salem",
+   "lat": 11.78521,
+   "lng": 78.20754
+  },
+  {
+   "name": "Sivaganga",
+   "name_ta": "சிவகங்கை",
+   "district_slug": "sivaganga",
+   "lat": 9.84869,
+   "lng": 78.48705
+  },
+  {
+   "name": "Karaikudi",
+   "name_ta": null,
+   "district_slug": "sivaganga",
+   "lat": 9.79178,
+   "lng": 78.63275
+  },
+  {
+   "name": "Devakottai",
+   "name_ta": null,
+   "district_slug": "sivaganga",
+   "lat": 9.9504,
+   "lng": 78.81375
+  },
+  {
+   "name": "Manamadurai",
+   "name_ta": null,
+   "district_slug": "sivaganga",
+   "lat": 9.87481,
+   "lng": 78.48961
+  },
+  {
+   "name": "Thiruppuvanam",
+   "name_ta": null,
+   "district_slug": "sivaganga",
+   "lat": 9.82409,
+   "lng": 78.25787
+  },
+  {
+   "name": "Tenkasi",
+   "name_ta": null,
+   "district_slug": "tenkasi",
+   "lat": 9.0319,
+   "lng": 77.36536
+  },
+  {
+   "name": "Sankarankovil",
+   "name_ta": "சங்கரன்கோவில்",
+   "district_slug": "tenkasi",
+   "lat": 9.17007,
+   "lng": 77.53537
+  },
+  {
+   "name": "Kadayanallur",
+   "name_ta": "கடையநல்லூர்",
+   "district_slug": "tenkasi",
+   "lat": 9.0842,
+   "lng": 77.3462
+  },
+  {
+   "name": "Courtallam",
+   "name_ta": "குற்றாலம்",
+   "district_slug": "tenkasi",
+   "lat": 8.93288,
+   "lng": 77.27146
+  },
+  {
+   "name": "Alangulam",
+   "name_ta": null,
+   "district_slug": "tenkasi",
+   "lat": 8.85973,
+   "lng": 77.48822
+  },
+  {
+   "name": "Thanjavur",
+   "name_ta": "தஞ்சாவூர்",
+   "district_slug": "thanjavur",
+   "lat": 10.78603,
+   "lng": 79.13815
+  },
+  {
+   "name": "Kumbakonam",
+   "name_ta": "கும்பகோணம்",
+   "district_slug": "thanjavur",
+   "lat": 10.96041,
+   "lng": 79.38209
+  },
+  {
+   "name": "Pattukkottai",
+   "name_ta": null,
+   "district_slug": "thanjavur",
+   "lat": 10.4118,
+   "lng": 79.33777
+  },
+  {
+   "name": "Papanasam",
+   "name_ta": null,
+   "district_slug": "thanjavur",
+   "lat": 10.86042,
+   "lng": 79.23582
+  },
+  {
+   "name": "Orathanadu",
+   "name_ta": null,
+   "district_slug": "thanjavur",
+   "lat": 10.57527,
+   "lng": 79.29706
+  },
+  {
+   "name": "Theni",
+   "name_ta": "தேனி",
+   "district_slug": "theni",
+   "lat": 10.01081,
+   "lng": 77.48101
+  },
+  {
+   "name": "Periyakulam",
+   "name_ta": "பெரியகுளம்",
+   "district_slug": "theni",
+   "lat": 10.11987,
+   "lng": 77.54671
+  },
+  {
+   "name": "Bodinayakanur",
+   "name_ta": null,
+   "district_slug": "theni",
+   "lat": 10.03245,
+   "lng": 77.35049
+  },
+  {
+   "name": "Cumbum",
+   "name_ta": "கம்பம்",
+   "district_slug": "theni",
+   "lat": 9.73941,
+   "lng": 77.2853
+  },
+  {
+   "name": "Andipatti",
+   "name_ta": null,
+   "district_slug": "theni",
+   "lat": 9.80336,
+   "lng": 77.5269
+  },
+  {
+   "name": "Thoothukudi",
+   "name_ta": "தூத்துக்குடி",
+   "district_slug": "thoothukudi",
+   "lat": 8.80526,
+   "lng": 78.14527
+  },
+  {
+   "name": "Tiruchendur",
+   "name_ta": "திருச்செந்தூர்",
+   "district_slug": "thoothukudi",
+   "lat": 8.49557,
+   "lng": 78.12332
+  },
+  {
+   "name": "Kovilpatti",
+   "name_ta": "கோவில்ப்பட்டி",
+   "district_slug": "thoothukudi",
+   "lat": 9.17559,
+   "lng": 77.8687
+  },
+  {
+   "name": "Srivaikuntam",
+   "name_ta": null,
+   "district_slug": "thoothukudi",
+   "lat": 8.69619,
+   "lng": 77.90224
+  },
+  {
+   "name": "Ettayapuram",
+   "name_ta": null,
+   "district_slug": "thoothukudi",
+   "lat": 9.18061,
+   "lng": 78.02305
+  },
+  {
+   "name": "Trichy City",
+   "name_ta": null,
+   "district_slug": "tiruchirappalli",
+   "lat": 10.805,
+   "lng": 78.6856
+  },
+  {
+   "name": "Srirangam",
+   "name_ta": "திருவரங்கம்",
+   "district_slug": "tiruchirappalli",
+   "lat": 10.85733,
+   "lng": 78.69308
+  },
+  {
+   "name": "Thillai Nagar",
+   "name_ta": null,
+   "district_slug": "tiruchirappalli",
+   "lat": 10.82225,
+   "lng": 78.6834
+  },
+  {
+   "name": "Manapparai",
+   "name_ta": "மணப்பாறை",
+   "district_slug": "tiruchirappalli",
+   "lat": 10.60823,
+   "lng": 78.42312
+  },
+  {
+   "name": "Lalgudi",
+   "name_ta": null,
+   "district_slug": "tiruchirappalli",
+   "lat": 10.96976,
+   "lng": 78.86693
+  },
+  {
+   "name": "Musiri",
+   "name_ta": null,
+   "district_slug": "tiruchirappalli",
+   "lat": 11.04882,
+   "lng": 78.52823
+  },
+  {
+   "name": "Thuraiyur",
+   "name_ta": null,
+   "district_slug": "tiruchirappalli",
+   "lat": 11.2302,
+   "lng": 78.56507
+  },
+  {
+   "name": "Tirunelveli Town",
+   "name_ta": "திருநெல்வேலி டவுன்",
+   "district_slug": "tirunelveli",
+   "lat": 8.72755,
+   "lng": 77.68849
+  },
+  {
+   "name": "Palayamkottai",
+   "name_ta": null,
+   "district_slug": "tirunelveli",
+   "lat": 8.71965,
+   "lng": 77.76443
+  },
+  {
+   "name": "Ambasamudram",
+   "name_ta": null,
+   "district_slug": "tirunelveli",
+   "lat": 8.70866,
+   "lng": 77.34547
+  },
+  {
+   "name": "Nanguneri",
+   "name_ta": "நாங்குநேரி",
+   "district_slug": "tirunelveli",
+   "lat": 8.48926,
+   "lng": 77.65967
+  },
+  {
+   "name": "Radhapuram",
+   "name_ta": null,
+   "district_slug": "tirunelveli",
+   "lat": 8.28754,
+   "lng": 77.64101
+  },
+  {
+   "name": "Tirupathur",
+   "name_ta": "திருப்பத்தூர்",
+   "district_slug": "tirupathur",
+   "lat": 12.4909,
+   "lng": 78.56471
+  },
+  {
+   "name": "Vaniyambadi",
+   "name_ta": null,
+   "district_slug": "tirupathur",
+   "lat": 12.55833,
+   "lng": 78.57815
+  },
+  {
+   "name": "Ambur",
+   "name_ta": "ஆம்பூர்",
+   "district_slug": "tirupathur",
+   "lat": 12.78742,
+   "lng": 78.71882
+  },
+  {
+   "name": "Natrampalli",
+   "name_ta": "நாட்டறம்பள்ளி",
+   "district_slug": "tirupathur",
+   "lat": 12.59373,
+   "lng": 78.51409
+  },
+  {
+   "name": "Tiruppur",
+   "name_ta": "திருப்பூர்",
+   "district_slug": "tiruppur",
+   "lat": 11.10178,
+   "lng": 77.34519
+  },
+  {
+   "name": "Avinashi",
+   "name_ta": "அவிநாசி",
+   "district_slug": "tiruppur",
+   "lat": 11.19001,
+   "lng": 77.26799
+  },
+  {
+   "name": "Palladam",
+   "name_ta": null,
+   "district_slug": "tiruppur",
+   "lat": 10.97081,
+   "lng": 77.28173
+  },
+  {
+   "name": "Dharapuram",
+   "name_ta": "தாராபுரம்",
+   "district_slug": "tiruppur",
+   "lat": 10.73691,
+   "lng": 77.5261
+  },
+  {
+   "name": "Udumalaipettai",
+   "name_ta": "உடுமலைப்பேட்டை",
+   "district_slug": "tiruppur",
+   "lat": 10.5839,
+   "lng": 77.25
+  },
+  {
+   "name": "Kangeyam",
+   "name_ta": null,
+   "district_slug": "tiruppur",
+   "lat": 10.99025,
+   "lng": 77.62825
+  },
+  {
+   "name": "Tiruvallur",
+   "name_ta": "திருவள்ளூர்",
+   "district_slug": "tiruvallur",
+   "lat": 13.13942,
+   "lng": 79.90708
+  },
+  {
+   "name": "Avadi",
+   "name_ta": null,
+   "district_slug": "tiruvallur",
+   "lat": 13.19577,
+   "lng": 80.08764
+  },
+  {
+   "name": "Ambattur",
+   "name_ta": "அம்பத்தூர்",
+   "district_slug": "tiruvallur",
+   "lat": 13.10557,
+   "lng": 80.16396
+  },
+  {
+   "name": "Poonamallee",
+   "name_ta": "பூந்தமல்லி",
+   "district_slug": "tiruvallur",
+   "lat": 13.04174,
+   "lng": 80.10069
+  },
+  {
+   "name": "Gummidipoondi",
+   "name_ta": "கும்மிடிப்பூண்டி",
+   "district_slug": "tiruvallur",
+   "lat": 13.43088,
+   "lng": 80.08214
+  },
+  {
+   "name": "Tiruttani",
+   "name_ta": null,
+   "district_slug": "tiruvallur",
+   "lat": 13.17756,
+   "lng": 79.61151
+  },
+  {
+   "name": "Ponneri",
+   "name_ta": null,
+   "district_slug": "tiruvallur",
+   "lat": 13.34926,
+   "lng": 80.24967
+  },
+  {
+   "name": "Tiruvannamalai",
+   "name_ta": "திருவண்ணாமலை",
+   "district_slug": "tiruvannamalai",
+   "lat": 12.23432,
+   "lng": 79.0762
+  },
+  {
+   "name": "Arani",
+   "name_ta": null,
+   "district_slug": "tiruvannamalai",
+   "lat": 12.68623,
+   "lng": 79.29924
+  },
+  {
+   "name": "Cheyyar",
+   "name_ta": "செய்யாறு",
+   "district_slug": "tiruvannamalai",
+   "lat": 12.65639,
+   "lng": 79.54046
+  },
+  {
+   "name": "Polur",
+   "name_ta": null,
+   "district_slug": "tiruvannamalai",
+   "lat": 12.59377,
+   "lng": 79.13853
+  },
+  {
+   "name": "Vandavasi",
+   "name_ta": "வந்தவாசி",
+   "district_slug": "tiruvannamalai",
+   "lat": 12.5056,
+   "lng": 79.60496
+  },
+  {
+   "name": "Chengam",
+   "name_ta": null,
+   "district_slug": "tiruvannamalai",
+   "lat": 12.35023,
+   "lng": 78.8768
+  },
+  {
+   "name": "Tiruvarur",
+   "name_ta": null,
+   "district_slug": "tiruvarur",
+   "lat": 10.7746,
+   "lng": 79.62797
+  },
+  {
+   "name": "Mannargudi",
+   "name_ta": null,
+   "district_slug": "tiruvarur",
+   "lat": 10.59041,
+   "lng": 79.45064
+  },
+  {
+   "name": "Thiruthuraipoondi",
+   "name_ta": "திருத்துறைப்பூண்டி",
+   "district_slug": "tiruvarur",
+   "lat": 10.53174,
+   "lng": 79.64007
+  },
+  {
+   "name": "Needamangalam",
+   "name_ta": null,
+   "district_slug": "tiruvarur",
+   "lat": 10.72496,
+   "lng": 79.47004
+  },
+  {
+   "name": "Kodavasal",
+   "name_ta": "குடவாசல்",
+   "district_slug": "tiruvarur",
+   "lat": 10.85528,
+   "lng": 79.48096
+  },
+  {
+   "name": "Vellore",
+   "name_ta": "வேலூர்",
+   "district_slug": "vellore",
+   "lat": 12.90718,
+   "lng": 79.13097
+  },
+  {
+   "name": "Katpadi",
+   "name_ta": null,
+   "district_slug": "vellore",
+   "lat": 13.04351,
+   "lng": 79.24041
+  },
+  {
+   "name": "Gudiyatham",
+   "name_ta": "குடியாத்தம்",
+   "district_slug": "vellore",
+   "lat": 12.94857,
+   "lng": 78.87053
+  },
+  {
+   "name": "Pernambut",
+   "name_ta": "பேரணாம்பட்டு",
+   "district_slug": "vellore",
+   "lat": 12.93667,
+   "lng": 78.71875
+  },
+  {
+   "name": "Anaicut",
+   "name_ta": null,
+   "district_slug": "vellore",
+   "lat": 12.87801,
+   "lng": 78.99089
+  },
+  {
+   "name": "Viluppuram",
+   "name_ta": null,
+   "district_slug": "viluppuram",
+   "lat": 11.91379,
+   "lng": 79.50789
+  },
+  {
+   "name": "Tindivanam",
+   "name_ta": "திண்டிவனம்",
+   "district_slug": "viluppuram",
+   "lat": 12.22617,
+   "lng": 79.6515
+  },
+  {
+   "name": "Gingee",
+   "name_ta": "செஞ்சி",
+   "district_slug": "viluppuram",
+   "lat": 12.25442,
+   "lng": 79.41578
+  },
+  {
+   "name": "Vanur",
+   "name_ta": null,
+   "district_slug": "viluppuram",
+   "lat": 12.05384,
+   "lng": 79.71786
+  },
+  {
+   "name": "Vikravandi",
+   "name_ta": null,
+   "district_slug": "viluppuram",
+   "lat": 12.04731,
+   "lng": 79.44757
+  },
+  {
+   "name": "Virudhunagar",
+   "name_ta": null,
+   "district_slug": "virudhunagar",
+   "lat": 9.52089,
+   "lng": 77.87846
+  },
+  {
+   "name": "Sivakasi",
+   "name_ta": "சிவகாசி",
+   "district_slug": "virudhunagar",
+   "lat": 9.45083,
+   "lng": 77.79767
+  },
+  {
+   "name": "Rajapalayam",
+   "name_ta": null,
+   "district_slug": "virudhunagar",
+   "lat": 9.40316,
+   "lng": 77.51826
+  },
+  {
+   "name": "Aruppukottai",
+   "name_ta": null,
+   "district_slug": "virudhunagar",
+   "lat": 9.55617,
+   "lng": 78.0037
+  },
+  {
+   "name": "Srivilliputhur",
+   "name_ta": null,
+   "district_slug": "virudhunagar",
+   "lat": 9.56014,
+   "lng": 77.60913
+  },
+  {
+   "name": "Sattur",
+   "name_ta": null,
+   "district_slug": "virudhunagar",
+   "lat": 9.32268,
+   "lng": 77.94185
+  }
+ ]
+}
