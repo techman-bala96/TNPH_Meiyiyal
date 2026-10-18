@@ -18,6 +18,9 @@ import { useConsult } from "@/features/consult/context";
 import { useCurrentLocation } from "@/features/location/useCurrentLocation";
 import type { SessionState } from "@/features/nearby/api";
 
+/** Same list as the consult-files bucket (migration 20261019110000). */
+const FILE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif", "image/gif", "application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+
 type Info = SessionInfo & { worker_id?: string; ended_by?: "me" | "other" | null; refunded?: number; reconnect_until?: string | null };
 const RESUME_MIN = 3;
 
@@ -98,10 +101,11 @@ export default function Session() {
   };
   const upload = async (f: File) => {
     if (f.size > MAX) { toast.error(t("consult.tooBig")); return; }
+    if (!FILE_TYPES.includes(f.type)) { toast.error(t("consult.fileType")); return; }
     setUploading(true);
     const path = `${id}/${crypto.randomUUID()}-${f.name.replace(/[^\w.-]+/g, "_")}`;
     const up = await supabase.storage.from("consult-files").upload(path, f, { contentType: f.type || "application/octet-stream" });
-    if (up.error) { setUploading(false); toast.error(up.error.message); return; }
+    if (up.error) { setUploading(false); toast.error(friendlyError(t, up.error.message)); return; }
     const { error } = await supabase.from("consult_messages").insert({ session_id: id, sender: user.id, kind: "file", file_path: path, file_name: f.name, mime: f.type, size_bytes: f.size });
     setUploading(false); if (error) toast.error(friendlyError(t, error.message));
   };
@@ -143,7 +147,7 @@ export default function Session() {
 
       {active ? (
         <footer className="flex items-end gap-2 border-t bg-card p-2">
-          <input ref={fileRef} type="file" data-testid="file-input" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) void upload(f); e.target.value = ""; }} />
+          <input ref={fileRef} type="file" accept={FILE_TYPES.join(",")} data-testid="file-input" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) void upload(f); e.target.value = ""; }} />
           <button data-testid="attach" onClick={() => fileRef.current?.click()} disabled={uploading} className="rounded-full p-2.5 text-muted-foreground hover:bg-muted">{uploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Paperclip className="h-5 w-5" />}</button>
           <textarea data-testid="chat-input" rows={1} value={text} onChange={(e) => setText(e.target.value)} placeholder={t("consult.typeMsg")}
             onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); void send(); } }}

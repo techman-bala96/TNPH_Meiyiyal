@@ -528,7 +528,8 @@
       "credits_exhausted": "Credits used up · session ended",
       "session_paused": "Connection lost · billing paused",
       "session_resumed": "Back together · session continues"
-    }
+    },
+    "fileType": "Send a photo, PDF or Word file."
   },
   "feedback": {
     "title": "How was your consultation with {{name}}?",

@@ -11,7 +11,7 @@ import { expect, test, type Browser, type Page } from "@playwright/test";
 import { mockMapNetwork } from "./mocks";
 import { grantAdmin, registerWorker, setProfile, signInAt, sql, type WorkerSpec } from "./workerFlow";
 
-const FX = `${process.cwd()}/test-results/verify-fixtures`;
+const FX = `${process.cwd()}/.cache/verify-fixtures`;
 const SHOTS = process.env.SCENARIO_SHOTS ?? "/workspace/scenario-shots";
 const PORT = 8789; const KEY = "e2e-local-verify-key";
 const AT = { latitude: 13.0317, longitude: 80.27 };
@@ -93,8 +93,10 @@ async function register(browser: Browser, c: Case) {
   return { ...who, email, checks };
 }
 async function outcome(p: Page) {
-  await expect.poll(async () => { await p.reload(); return p.getByTestId("verify-check").count(); }, { timeout: 90_000, intervals: [2000] }).toBeGreaterThanOrEqual(6);
-  await p.waitForTimeout(2500); await p.reload();
+  const panel = async () => { await p.goto("/?tab=worker"); await expect(p.getByTestId("worker-status")).toBeVisible(); };
+  await expect.poll(async () => { await panel(); await p.waitForTimeout(800); return p.getByTestId("verify-check").count(); }, { timeout: 90_000, intervals: [2000] }).toBeGreaterThanOrEqual(6)
+    .catch(async (e) => { await snap(p, "DEBUG", "outcome"); throw e; });
+  await p.waitForTimeout(2500); await panel(); await expect(p.getByTestId("verify-check").first()).toBeVisible();
   const out: Record<string, string> = {};
   for (const li of await p.getByTestId("verify-check").all()) out[(await li.getAttribute("data-check"))!] = (await li.getAttribute("data-status"))!;
   out.status = (await p.getByTestId("worker-status").getAttribute("data-status"))!;
@@ -120,9 +122,9 @@ async function adminSees(browser: Browser, id: string, name: string) {
   await snap(a, id, "admin-queue");
   return card;
 }
-const n = (s: string) => `${s} ${TAG().toUpperCase()}`;
+const n = (s: string) => s; // names must match the Aadhaar QR name, so no per-project suffix; beforeEach clears old vf- accounts
 
-test.beforeEach(() => { sql(`DELETE FROM auth.users WHERE email LIKE 'vf${TAG()}-v%@meiyiyal.test';`); council({}); });
+test.beforeEach(() => { sql(`DELETE FROM auth.users WHERE email LIKE 'vf_-v%@meiyiyal.test'; DELETE FROM public.identity_fingerprints WHERE worker_id IS NULL AND NOT blocked;`); council({}); });
 
 test("[V01] doctor, everything genuine, auto-approve ON for doctors → approved automatically → can go online", async ({ browser }) => {
   await autoApprove(browser, "professionals--doctor", "on");
@@ -181,9 +183,9 @@ for (const [id, name, qr, expectName] of [
 ] as const) {
   test(`[${id}] name on Aadhaar vs profile: "${name}" vs ${qr.replace("qr-valid-a", "QR").replace(/-/g, " ")} → name ${expectName}`, async ({ browser }) => {
     await autoApprove(browser, "professionals--doctor", "on");
-    const r = await register(browser, { id, name: `${name} ${TAG().toUpperCase()}`.trim(), qr: `${FX}/${qr}.png` });
+    const r = await register(browser, { id, name, qr: `${FX}/${qr}.png` });
     expect(r.checks.name).toBe(expectName);
-    if (expectName !== "pass") { expect(r.checks.status).toBe("pending"); await adminSees(browser, id, `${name} ${TAG().toUpperCase()}`); }
+    if (expectName !== "pass") { expect(r.checks.status).toBe("pending"); await adminSees(browser, id, name); }
     await r.close();
   });
 }

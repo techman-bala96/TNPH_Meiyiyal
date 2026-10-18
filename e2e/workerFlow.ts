@@ -88,7 +88,7 @@ export async function registerWorker(page: Page, w: WorkerSpec, shot?: (n: strin
     // photo of the QR → decoded in the browser (jsQR / BarcodeDetector) → shown for review
     await page.getByTestId("reg-qr-mode-image").click();
     await page.getByTestId("reg-qr-image").setInputFiles(opts.qrImage);
-    await expect(page.getByTestId("reg-qr")).toHaveValue(/^MYQR1\./);
+    await expect(page.getByTestId("reg-qr")).toHaveValue(/^(MYQR1\.|\d{300,}$)/); // test QR or a real-layout UIDAI Secure QR
   } else {
     await page.getByTestId("reg-qr-mode-paste").click();
     await expect(page.getByTestId("reg-qr")).toBeVisible();

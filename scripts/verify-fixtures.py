@@ -1,4 +1,4 @@
-"""Build e2e verification fixtures into test-results/verify-fixtures/ (never committed).
+"""Build e2e verification fixtures into .cache/verify-fixtures/ (never committed).
 
 Run with the verify service venv:  services/verify/.venv/bin/python scripts/verify-fixtures.py
 - a throw-away "UIDAI" key pair + self-signed cert (the verify service gets UIDAI_QR_CERT_PATH = this cert,
@@ -26,7 +26,7 @@ from PIL import Image, ImageOps  # noqa: E402
 
 from verify.qr import encode_secure_qr_for_tests  # noqa: E402
 
-OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "test-results", "verify-fixtures"))
+OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".cache", "verify-fixtures"))
 os.makedirs(OUT, exist_ok=True)
 
 # ---- keys

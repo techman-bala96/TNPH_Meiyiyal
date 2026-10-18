@@ -9,7 +9,7 @@ export default function setup() {
   writeFileSync("test-results/.admin-mfa-prev", prev);
   sql(`UPDATE public.app_settings SET value = 'false' WHERE key = 'admin_mfa_required'`);
   // verification fixtures (test UIDAI cert, Secure QR images, camera videos, council register) for e2e/verification.spec.ts
-  if (!existsSync("test-results/verify-fixtures/cam-a.y4m") || process.env.REBUILD_VERIFY_FIXTURES) {
+  if (!existsSync(".cache/verify-fixtures/cam-a.y4m") || process.env.REBUILD_VERIFY_FIXTURES) {
     execSync("services/verify/.venv/bin/python scripts/verify-fixtures.py && node scripts/qr-png.mjs", { stdio: "inherit" });
   }
 }
