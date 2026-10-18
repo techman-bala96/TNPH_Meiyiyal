@@ -286,32 +286,6 @@
    "sort": 0
   },
   {
-   "slug": "professionals--doctor--allopathy--paediatrics",
-   "parent_slug": "professionals--doctor--allopathy",
-   "name_i18n": {
-    "en": "Paediatrics",
-    "ta": "குழந்தை நலம்"
-   },
-   "synonyms": [
-    "kuzhanthai doctor",
-    "குழந்தைகள் மருத்துவர்",
-    "குழந்தை டாக்டர்",
-    "baby doctor",
-    "pediatrics",
-    "children doctor",
-    "குழந்தை மருத்துவர்",
-    "paediatrician",
-    "pillai doctor",
-    "child specialist",
-    "child doctor",
-    "kids doctor",
-    "பிள்ளை டாக்டர்",
-    "kuzhandhai doctor",
-    "pediatrician"
-   ],
-   "sort": 1
-  },
-  {
    "slug": "professionals--doctor--allopathy--cardiology",
    "parent_slug": "professionals--doctor--allopathy",
    "name_i18n": {
@@ -328,21 +302,6 @@
     "idhaya doctor",
     "இருதய மருத்துவர்",
     "heart specialist"
-   ],
-   "sort": 3
-  },
-  {
-   "slug": "professionals--doctor--homeopathy",
-   "parent_slug": "professionals--doctor",
-   "name_i18n": {
-    "en": "Homeopathy",
-    "ta": "ஹோமியோபதி"
-   },
-   "synonyms": [
-    "homeopathic",
-    "homoeopathy",
-    "ஹோமியோ",
-    "homeo"
    ],
    "sort": 3
   },
@@ -387,6 +346,54 @@
     "endocrinologist"
    ],
    "sort": 12
+  },
+  {
+   "slug": "professionals--lawyer--motor-accident-claims",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Motor Accident Claims",
+    "ta": "வாகன விபத்து இழப்பீடு"
+   },
+   "synonyms": [
+    "accident case",
+    "விபத்து வழக்கு",
+    "accident claim",
+    "motor accident"
+   ],
+   "sort": 11
+  },
+  {
+   "slug": "professionals--doctor--allopathy--paediatrics",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Paediatrics",
+    "ta": "குழந்தை நலம்"
+   },
+   "synonyms": [
+    "child fever",
+    "child doctor",
+    "baby fever",
+    "kulanthai",
+    "kids doctor",
+    "பிள்ளை டாக்டர்",
+    "pediatrician",
+    "kuzhandhai doctor",
+    "kid fever",
+    "kuzhanthai doctor",
+    "குழந்தை டாக்டர்",
+    "குழந்தைகள் மருத்துவர்",
+    "குழந்தைக்கு காய்ச்சல்",
+    "baby doctor",
+    "pediatrics",
+    "children doctor",
+    "குழந்தை மருத்துவர்",
+    "kuzhanthai",
+    "குழந்தை காய்ச்சல்",
+    "paediatrician",
+    "pillai doctor",
+    "child specialist"
+   ],
+   "sort": 1
   },
   {
    "slug": "professionals--doctor--allopathy--ent",
@@ -654,6 +661,21 @@
    "sort": 2
   },
   {
+   "slug": "professionals--doctor--homeopathy",
+   "parent_slug": "professionals--doctor",
+   "name_i18n": {
+    "en": "Homeopathy",
+    "ta": "ஹோமியோபதி"
+   },
+   "synonyms": [
+    "homeopathic",
+    "homoeopathy",
+    "ஹோமியோ",
+    "homeo"
+   ],
+   "sort": 3
+  },
+  {
    "slug": "professionals--doctor--dental",
    "parent_slug": "professionals--doctor",
    "name_i18n": {
@@ -851,54 +873,6 @@
    "sort": 1
   },
   {
-   "slug": "professionals--lawyer--property-land",
-   "parent_slug": "professionals--lawyer",
-   "name_i18n": {
-    "en": "Property & Land",
-    "ta": "சொத்து & நிலம்"
-   },
-   "synonyms": [
-    "சொத்து வழக்கு",
-    "sale deed",
-    "land lawyer",
-    "property lawyer",
-    "sothu",
-    "chitta",
-    "property dispute",
-    "patta",
-    "land dispute",
-    "நிலம்",
-    "land",
-    "property",
-    "நில வழக்கு",
-    "nilam",
-    "சொத்து",
-    "பட்டா"
-   ],
-   "sort": 1
-  },
-  {
-   "slug": "professionals--lawyer--family-divorce",
-   "parent_slug": "professionals--lawyer",
-   "name_i18n": {
-    "en": "Family & Divorce",
-    "ta": "குடும்பம் & விவாகரத்து"
-   },
-   "synonyms": [
-    "family court",
-    "divorce",
-    "விவாகரத்து",
-    "maintenance",
-    "family lawyer",
-    "குடும்ப வழக்கு",
-    "custody",
-    "vivagarathu",
-    "alimony",
-    "divorce lawyer"
-   ],
-   "sort": 0
-  },
-  {
    "slug": "professionals--lawyer--criminal",
    "parent_slug": "professionals--lawyer",
    "name_i18n": {
@@ -964,21 +938,6 @@
    "sort": 7
   },
   {
-   "slug": "professionals--lawyer--motor-accident-claims",
-   "parent_slug": "professionals--lawyer",
-   "name_i18n": {
-    "en": "Motor Accident Claims",
-    "ta": "வாகன விபத்து இழப்பீடு"
-   },
-   "synonyms": [
-    "accident case",
-    "விபத்து வழக்கு",
-    "accident claim",
-    "motor accident"
-   ],
-   "sort": 11
-  },
-  {
    "slug": "professionals--lawyer--labour-employment",
    "parent_slug": "professionals--lawyer",
    "name_i18n": {
@@ -1006,23 +965,6 @@
     "tax lawyer"
    ],
    "sort": 10
-  },
-  {
-   "slug": "professionals--lawyer--documentation-registration",
-   "parent_slug": "professionals--lawyer",
-   "name_i18n": {
-    "en": "Documentation & Registration",
-    "ta": "ஆவணம் & பதிவு"
-   },
-   "synonyms": [
-    "பத்திரப் பதிவு",
-    "உயில்",
-    "agreement",
-    "document registration",
-    "registration",
-    "will"
-   ],
-   "sort": 8
   },
   {
    "slug": "professionals--lawyer--corporate-startup",
@@ -1053,6 +995,16 @@
     "engineer"
    ],
    "sort": 2
+  },
+  {
+   "slug": "professionals--doctor--veterinary--veterinary-nutrition",
+   "parent_slug": "professionals--doctor--veterinary",
+   "name_i18n": {
+    "en": "Veterinary Nutrition",
+    "ta": "கால்நடை உணவியல்"
+   },
+   "synonyms": [],
+   "sort": 3
   },
   {
    "slug": "professionals--engineer--civil",
@@ -1088,21 +1040,6 @@
     "building plan"
    ],
    "sort": 0
-  },
-  {
-   "slug": "professionals--engineer--civil--structural",
-   "parent_slug": "professionals--engineer--civil",
-   "name_i18n": {
-    "en": "Structural",
-    "ta": "கட்டமைப்பு"
-   },
-   "synonyms": [
-    "building crack",
-    "crack in wall",
-    "structural engineer",
-    "விரிசல்"
-   ],
-   "sort": 2
   },
   {
    "slug": "professionals--engineer--civil--estimate-boq",
@@ -1194,6 +1131,629 @@
     "solar"
    ],
    "sort": 7
+  },
+  {
+   "slug": "professionals--doctor--unani--general-unani",
+   "parent_slug": "professionals--doctor--unani",
+   "name_i18n": {
+    "en": "General Unani",
+    "ta": "பொது யுனானி"
+   },
+   "synonyms": [],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--doctor--homeopathy--general-homeopathy",
+   "parent_slug": "professionals--doctor--homeopathy",
+   "name_i18n": {
+    "en": "General Homoeopathy",
+    "ta": "பொது ஹோமியோபதி"
+   },
+   "synonyms": [],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--doctor--yoga-naturopathy--therapeutic-yoga",
+   "parent_slug": "professionals--doctor--yoga-naturopathy",
+   "name_i18n": {
+    "en": "Therapeutic Yoga",
+    "ta": "சிகிச்சை யோகா"
+   },
+   "synonyms": [],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--doctor--yoga-naturopathy--naturopathy",
+   "parent_slug": "professionals--doctor--yoga-naturopathy",
+   "name_i18n": {
+    "en": "Naturopathy",
+    "ta": "இயற்கை மருத்துவம்"
+   },
+   "synonyms": [],
+   "sort": 1
+  },
+  {
+   "slug": "professionals--doctor--nutrition-diet--clinical-diet",
+   "parent_slug": "professionals--doctor--nutrition-diet",
+   "name_i18n": {
+    "en": "Clinical Diet",
+    "ta": "மருத்துவ உணவியல்"
+   },
+   "synonyms": [],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--doctor--nutrition-diet--diabetes-diet",
+   "parent_slug": "professionals--doctor--nutrition-diet",
+   "name_i18n": {
+    "en": "Diabetes Diet",
+    "ta": "சர்க்கரை உணவு"
+   },
+   "synonyms": [],
+   "sort": 1
+  },
+  {
+   "slug": "professionals--doctor--nutrition-diet--sports-nutrition",
+   "parent_slug": "professionals--doctor--nutrition-diet",
+   "name_i18n": {
+    "en": "Sports Nutrition",
+    "ta": "விளையாட்டு உணவியல்"
+   },
+   "synonyms": [],
+   "sort": 2
+  },
+  {
+   "slug": "professionals--doctor--veterinary--livestock",
+   "parent_slug": "professionals--doctor--veterinary",
+   "name_i18n": {
+    "en": "Livestock",
+    "ta": "கால்நடை"
+   },
+   "synonyms": [
+    "pasu",
+    "goat",
+    "மாடு",
+    "calf",
+    "aadu",
+    "erumai",
+    "cows",
+    "maadu",
+    "cow",
+    "goats",
+    "ஆடு",
+    "பசு",
+    "கன்று",
+    "எருமை",
+    "sheep",
+    "buffalo",
+    "cattle",
+    "ஆட்டு",
+    "மாட்டு"
+   ],
+   "sort": 1
+  },
+  {
+   "slug": "professionals--doctor--veterinary--poultry",
+   "parent_slug": "professionals--doctor--veterinary",
+   "name_i18n": {
+    "en": "Poultry",
+    "ta": "கோழி வளர்ப்பு"
+   },
+   "synonyms": [
+    "chicken",
+    "poultry farm",
+    "கோழி",
+    "hens",
+    "koli",
+    "kozhi",
+    "hen"
+   ],
+   "sort": 2
+  },
+  {
+   "slug": "professionals--engineer--civil--structural",
+   "parent_slug": "professionals--engineer--civil",
+   "name_i18n": {
+    "en": "Structural",
+    "ta": "கட்டமைப்பு"
+   },
+   "synonyms": [
+    "cracks",
+    "சுவர் விரிசல்",
+    "crack",
+    "seepage",
+    "கசிவு",
+    "roof leak",
+    "cracks in wall",
+    "crack in wall",
+    "wall cracked",
+    "wall crack",
+    "விரிசல்",
+    "suvar virisal",
+    "pillar crack",
+    "building crack",
+    "structural engineer",
+    "virisal",
+    "ஒழுகுது",
+    "leakage"
+   ],
+   "sort": 2
+  },
+  {
+   "slug": "professionals--engineer--structural--building-plans",
+   "parent_slug": "professionals--engineer--structural",
+   "name_i18n": {
+    "en": "Building Plans",
+    "ta": "கட்டிட வரைபடம்"
+   },
+   "synonyms": [],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--engineer--structural--structural-audit",
+   "parent_slug": "professionals--engineer--structural",
+   "name_i18n": {
+    "en": "Structural Audit",
+    "ta": "கட்டமைப்பு தணிக்கை"
+   },
+   "synonyms": [],
+   "sort": 1
+  },
+  {
+   "slug": "professionals--doctor--veterinary",
+   "parent_slug": "professionals--doctor",
+   "name_i18n": {
+    "en": "Veterinary",
+    "ta": "கால்நடை மருத்துவம்"
+   },
+   "synonyms": [
+    "கால்நடை மருத்துவர்",
+    "vet doctor",
+    "கால்நடை",
+    "animal doctor",
+    "vet",
+    "pet doctor",
+    "veterinarian",
+    "veterinary"
+   ],
+   "sort": 10
+  },
+  {
+   "slug": "professionals--doctor--allopathy--radiology",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Radiology (report review)",
+    "ta": "கதிரியக்க அறிக்கை"
+   },
+   "synonyms": [
+    "radiologist",
+    "xray report",
+    "கதிரியக்கம்",
+    "scan report"
+   ],
+   "sort": 17
+  },
+  {
+   "slug": "professionals--doctor--allopathy--rheumatology",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Rheumatology",
+    "ta": "மூட்டு வாத மருத்துவம்"
+   },
+   "synonyms": [
+    "வாதம்",
+    "joint doctor",
+    "rheumatologist",
+    "arthritis"
+   ],
+   "sort": 18
+  },
+  {
+   "slug": "professionals--doctor--allopathy--geriatrics",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Geriatrics",
+    "ta": "முதியோர் மருத்துவம்"
+   },
+   "synonyms": [
+    "முதியோர்",
+    "elder doctor",
+    "geriatrician"
+   ],
+   "sort": 19
+  },
+  {
+   "slug": "professionals--doctor--allopathy--infectious-diseases",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Infectious Diseases",
+    "ta": "தொற்று நோய்"
+   },
+   "synonyms": [
+    "தொற்று",
+    "infection doctor",
+    "fever specialist"
+   ],
+   "sort": 20
+  },
+  {
+   "slug": "professionals--doctor--allopathy--hematology",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Hematology",
+    "ta": "இரத்த மருத்துவம்"
+   },
+   "synonyms": [
+    "blood doctor",
+    "இரத்தம்",
+    "hematologist"
+   ],
+   "sort": 21
+  },
+  {
+   "slug": "professionals--doctor--allopathy--allergy-immunology",
+   "parent_slug": "professionals--doctor--allopathy",
+   "name_i18n": {
+    "en": "Allergy & Immunology",
+    "ta": "ஒவ்வாமை"
+   },
+   "synonyms": [
+    "immunologist",
+    "allergy doctor",
+    "ஒவ்வாமை"
+   ],
+   "sort": 22
+  },
+  {
+   "slug": "professionals--lawyer--intellectual-property",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Intellectual Property",
+    "ta": "அறிவுசார் சொத்து"
+   },
+   "synonyms": [
+    "காப்புரிமை",
+    "trademark",
+    "ip lawyer",
+    "copyright",
+    "patent"
+   ],
+   "sort": 12
+  },
+  {
+   "slug": "professionals--doctor--veterinary--pet-small-animal",
+   "parent_slug": "professionals--doctor--veterinary",
+   "name_i18n": {
+    "en": "Pet & Small Animal",
+    "ta": "செல்லப் பிராணி"
+   },
+   "synonyms": [
+    "kitten",
+    "dogs",
+    "பூனை",
+    "poonai",
+    "நாய்",
+    "cat doctor",
+    "dog sick",
+    "naai",
+    "நாய்க்குட்டி",
+    "செல்லப்பிராணி",
+    "pet sick",
+    "cat",
+    "my pet",
+    "செல்லப் பிராணி",
+    "pet",
+    "dog doctor",
+    "dog",
+    "pet doctor",
+    "puppy",
+    "sick dog"
+   ],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--lawyer--insurance-claims",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Insurance Claims",
+    "ta": "காப்பீட்டு கோரிக்கை"
+   },
+   "synonyms": [
+    "claim rejected",
+    "காப்பீடு",
+    "insurance lawyer"
+   ],
+   "sort": 13
+  },
+  {
+   "slug": "professionals--lawyer--insolvency-bankruptcy",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Insolvency & Bankruptcy",
+    "ta": "திவால் & நொடிப்பு"
+   },
+   "synonyms": [
+    "திவால்",
+    "bankruptcy",
+    "insolvency",
+    "ibc"
+   ],
+   "sort": 14
+  },
+  {
+   "slug": "professionals--lawyer--medical-negligence",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Medical Negligence",
+    "ta": "மருத்துவ அலட்சியம்"
+   },
+   "synonyms": [
+    "மருத்துவ அலட்சியம்",
+    "hospital negligence",
+    "medical negligence"
+   ],
+   "sort": 15
+  },
+  {
+   "slug": "professionals--lawyer--rera-housing",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "RERA & Housing",
+    "ta": "ரெரா & குடியிருப்பு"
+   },
+   "synonyms": [
+    "apartment lawyer",
+    "ரெரா",
+    "flat dispute",
+    "rera"
+   ],
+   "sort": 16
+  },
+  {
+   "slug": "professionals--lawyer--banking-debt",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Banking & Debt Recovery",
+    "ta": "வங்கி & கடன்"
+   },
+   "synonyms": [
+    "கடன்",
+    "debt",
+    "loan recovery",
+    "bank lawyer"
+   ],
+   "sort": 17
+  },
+  {
+   "slug": "professionals--engineer--structural",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Structural",
+    "ta": "கட்டமைப்புப் பொறியியல்"
+   },
+   "synonyms": [
+    "structural engineer",
+    "structure",
+    "கட்டமைப்பு"
+   ],
+   "sort": 8
+  },
+  {
+   "slug": "professionals--engineer--chemical",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Chemical",
+    "ta": "வேதியியல் பொறியியல்"
+   },
+   "synonyms": [
+    "chemical engineer",
+    "வேதியியல் பொறியாளர்"
+   ],
+   "sort": 9
+  },
+  {
+   "slug": "professionals--engineer--instrumentation",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Instrumentation",
+    "ta": "கருவிப் பொறியியல்"
+   },
+   "synonyms": [
+    "control systems",
+    "instrumentation engineer"
+   ],
+   "sort": 10
+  },
+  {
+   "slug": "professionals--engineer--environmental",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Environmental",
+    "ta": "சுற்றுச்சூழல் பொறியியல்"
+   },
+   "synonyms": [
+    "சுற்றுச்சூழல்",
+    "environmental engineer",
+    "pollution"
+   ],
+   "sort": 11
+  },
+  {
+   "slug": "professionals--engineer--biomedical",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Biomedical",
+    "ta": "உயிரி மருத்துவப் பொறியியல்"
+   },
+   "synonyms": [
+    "medical devices",
+    "biomedical engineer"
+   ],
+   "sort": 12
+  },
+  {
+   "slug": "professionals--engineer--aeronautical",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Aeronautical",
+    "ta": "வானூர்திப் பொறியியல்"
+   },
+   "synonyms": [
+    "விமானம்",
+    "aeronautical engineer",
+    "aerospace"
+   ],
+   "sort": 13
+  },
+  {
+   "slug": "professionals--engineer--automobile",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Automobile",
+    "ta": "தானியங்கிப் பொறியியல்"
+   },
+   "synonyms": [
+    "automobile engineer",
+    "வாகன பொறியாளர்",
+    "car engineer"
+   ],
+   "sort": 14
+  },
+  {
+   "slug": "professionals--engineer--agricultural",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Agricultural",
+    "ta": "வேளாண் பொறியியல்"
+   },
+   "synonyms": [
+    "agricultural engineer",
+    "farm engineer",
+    "வேளாண்மை"
+   ],
+   "sort": 15
+  },
+  {
+   "slug": "professionals--engineer--mining",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Mining",
+    "ta": "சுரங்கப் பொறியியல்"
+   },
+   "synonyms": [
+    "சுரங்கம்",
+    "mining engineer"
+   ],
+   "sort": 16
+  },
+  {
+   "slug": "professionals--engineer--marine",
+   "parent_slug": "professionals--engineer",
+   "name_i18n": {
+    "en": "Marine",
+    "ta": "கடல் பொறியியல்"
+   },
+   "synonyms": [
+    "marine engineer",
+    "கடல் பொறியாளர்",
+    "ship engineer"
+   ],
+   "sort": 17
+  },
+  {
+   "slug": "professionals--lawyer--family-divorce",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Family & Divorce",
+    "ta": "குடும்பம் & விவாகரத்து"
+   },
+   "synonyms": [
+    "husband wife problem",
+    "விவாகரத்து வழக்கு",
+    "வரதட்சணை",
+    "divorce",
+    "family court",
+    "vivaagarathu",
+    "custody",
+    "குடும்ப வழக்கு",
+    "vivagarathu",
+    "vivakarathu",
+    "dowry",
+    "divorce case",
+    "கணவன் மனைவி",
+    "talaq",
+    "divorce lawyer",
+    "alimony",
+    "separation",
+    "மனைவி பிரச்சனை",
+    "maintenance",
+    "விவாகரத்து",
+    "family lawyer",
+    "domestic violence"
+   ],
+   "sort": 0
+  },
+  {
+   "slug": "professionals--lawyer--property-land",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Property & Land",
+    "ta": "சொத்து & நிலம்"
+   },
+   "synonyms": [
+    "partition",
+    "inheritance",
+    "boundary dispute",
+    "land problem",
+    "patta",
+    "நிலம்",
+    "பட்டா மாற்றம்",
+    "encroachment",
+    "land case",
+    "நில வழக்கு",
+    "nila prachanai",
+    "பாகப்பிரிவினை",
+    "சொத்து வழக்கு",
+    "sale deed",
+    "property lawyer",
+    "land lawyer",
+    "sothu",
+    "chitta",
+    "property dispute",
+    "patta maatram",
+    "land dispute",
+    "property",
+    "land",
+    "patta transfer",
+    "எல்லை பிரச்சனை",
+    "patta name change",
+    "nilam",
+    "சொத்து",
+    "பட்டா",
+    "நில பிரச்சனை"
+   ],
+   "sort": 1
+  },
+  {
+   "slug": "professionals--lawyer--documentation-registration",
+   "parent_slug": "professionals--lawyer",
+   "name_i18n": {
+    "en": "Documentation & Registration",
+    "ta": "ஆவணம் & பதிவு"
+   },
+   "synonyms": [
+    "my will",
+    "பத்திரப் பதிவு",
+    "agreement",
+    "உயில்",
+    "will writing",
+    "உயில் எழுத",
+    "document registration",
+    "will deed",
+    "registration",
+    "write a will"
+   ],
+   "sort": 8
   }
  ],
  "districts": [

@@ -134,6 +134,30 @@ export const TEXTS: Record<string, Record<Lang, T>> = {
   "admin.complaint": L(
     (_p, _l, n) => ({ title: "New complaint", body: n > 1 ? `${n} complaints to review.` : "A complaint needs review." }),
     (_p, _l, n) => ({ title: "புதிய புகார்", body: n > 1 ? `${n} புகார்கள் பரிசீலனைக்கு உள்ளன.` : "ஒரு புகார் பரிசீலனைக்கு உள்ளது." })),
+  "session.early_end": L(
+    (p) => ({ title: "Credits returned", body: `${p.name ?? SOMEONE.en} ended without helping. ${p.amount ?? 0} credits are back in your wallet.` }),
+    (p) => ({ title: "கிரெடிட் திரும்ப வந்தது", body: `${p.name ?? SOMEONE.ta} உதவாமல் முடித்துவிட்டார். ${p.amount ?? 0} கிரெடிட் உங்கள் wallet-க்கு திரும்ப வந்தது.` })),
+  "session.dropped": L(
+    (p) => ({ title: "Consultation ended", body: `The connection with ${p.name ?? SOMEONE.en} was lost. You can reconnect for 10 minutes.` }),
+    (p) => ({ title: "ஆலோசனை முடிந்தது", body: `${p.name ?? SOMEONE.ta} உடன் இணைப்பு துண்டிக்கப்பட்டது. 10 நிமிடத்துக்குள் மீண்டும் இணையலாம்.` })),
+  "session.resume_ask": L(
+    () => ({ title: "Your consultation is paused", body: "You lost connection. Open the app within 3 minutes to continue. You are not charged while paused." }),
+    () => ({ title: "ஆலோசனை நிறுத்தி வைக்கப்பட்டது", body: "இணைப்பு போய்விட்டது. 3 நிமிடத்துக்குள் ஆப்பைத் திறந்து தொடருங்கள். நிறுத்தியிருக்கும்போது கட்டணம் இல்லை." })),
+  "worker.message": L(
+    (p) => ({ title: `Message from ${p.name ?? SOMEONE.en}`, body: "Someone wants to consult you. Go online and tap to reply." }),
+    (p) => ({ title: `${p.name ?? SOMEONE.ta} அனுப்பிய செய்தி`, body: "ஒருவர் உங்களிடம் ஆலோசனை கேட்க விரும்புகிறார். ஆன்லைனுக்கு வந்து பதில் சொல்ல தட்டுங்கள்." })),
+  "worker.available_for_you": L(
+    (p) => ({ title: `${p.name ?? SOMEONE.en} is free for you now`, body: "They saw your message. Tap to connect in the next 5 minutes." }),
+    (p) => ({ title: `${p.name ?? SOMEONE.ta} இப்போது உங்களுக்காகத் தயார்`, body: "உங்கள் செய்தியைப் பார்த்தார். அடுத்த 5 நிமிடத்துக்குள் இணைய தட்டுங்கள்." })),
+  "worker.message_refunded": L(
+    (p) => ({ title: "Message credits returned", body: `${p.name ?? SOMEONE.en} didn't reply in 24 hours. ${p.amount ?? 0} credits are back in your wallet.` }),
+    (p) => ({ title: "செய்தி கிரெடிட் திரும்ப வந்தது", body: `${p.name ?? SOMEONE.ta} 24 மணி நேரத்தில் பதில் சொல்லவில்லை. ${p.amount ?? 0} கிரெடிட் உங்கள் wallet-க்கு திரும்ப வந்தது.` })),
+  "search.exhausted": L(
+    (p) => ({ title: "No one answered yet", body: p.reason === "cap" ? `We tried ${p.tried ?? 0} people near you. Tap to try more or send a message.` : "No one is free nearby right now. Tap to search all of Tamil Nadu or send a message." }),
+    (p) => ({ title: "இன்னும் யாரும் பதில் சொல்லவில்லை", body: p.reason === "cap" ? `உங்கள் அருகில் ${p.tried ?? 0} பேரிடம் கேட்டோம். மேலும் முயற்சிக்க அல்லது செய்தி அனுப்ப தட்டுங்கள்.` : "இப்போது அருகில் யாரும் இல்லை. தமிழ்நாடு முழுவதும் தேட அல்லது செய்தி அனுப்ப தட்டுங்கள்." })),
+  "worker.auto_offline": L(
+    (p) => ({ title: "You are now offline", body: `You missed ${p.count ?? 3} requests in a row, so we set you offline. Go online again when you're ready.` }),
+    (p) => ({ title: "நீங்கள் இப்போது ஆஃப்லைன்", body: `தொடர்ந்து ${p.count ?? 3} கோரிக்கைகளை எடுக்கவில்லை, அதனால் உங்களை ஆஃப்லைன் ஆக்கினோம். தயாரானதும் மீண்டும் ஆன்லைன் வாருங்கள்.` })),
   "test.ping": L(
     () => ({ title: "Notifications are working ✅", body: "This is how Meiyiyal alerts will look." }),
     () => ({ title: "அறிவிப்புகள் வேலை செய்கின்றன ✅", body: "மெய்யியல் அறிவிப்புகள் இப்படித்தான் வரும்." })),

@@ -47,7 +47,7 @@ test("3 workers register via real flow, admin approves, go online; user in Kanni
   await expect(doc).toBeVisible();
   await expect(u.page.getByTestId("worker-card").first()).toHaveAttribute("data-online", "true");
   await expect(doc).toHaveAttribute("data-online", "true");
-  await expect(doc.getByTestId("distance")).toHaveText("15.8 km");
+  await expect(doc.getByTestId("distance")).toHaveText("16 km");
   await expect(doc).toContainText("Paediatrics");
   await expect(doc).toContainText("12 yrs");
   await expect(doc.locator("img")).toBeVisible();
@@ -59,7 +59,7 @@ test("3 workers register via real flow, admin approves, go online; user in Kanni
   await u.page.goto("/browse/professionals--engineer--civil");
   const eng = card(u.page, WORKERS[2].name);
   await expect(eng).toHaveAttribute("data-online", "true");
-  await expect(eng.getByTestId("distance")).toHaveText("0.0 km");
+  await expect(eng.getByTestId("distance")).toHaveText("< 1 km");
   await shot(u.page, "02-engineer-civil");
 
   await u.page.goto("/browse/professionals--lawyer--property-land");

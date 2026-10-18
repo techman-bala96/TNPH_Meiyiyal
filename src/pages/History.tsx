@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronRight, Clock, Coins, History as HistoryIcon, MessageSquareText } from "lucide-react";
+import { ChevronRight, Clock, Coins, History as HistoryIcon, Mail, MessageSquareText } from "lucide-react";
+import { useMyMessages } from "@/features/nearby/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PageShell } from "@/components/app/PageShell";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,9 +19,16 @@ export default function History() {
   const { t, i18n } = useTranslation(); const ta = i18n.language?.startsWith("ta");
   const q = useQuery({ queryKey: ["history"], queryFn: async () => { const { data, error } = await supabase.rpc("my_history"); if (error) throw error; return data as unknown as Row[]; } });
   const n = (x: { en: string; ta?: string } | null) => (x ? (ta && x.ta) || x.en : "");
+  const msgs = useMyMessages(); const newMsgs = (msgs.data ?? []).filter((m) => (m.role === "worker" && m.status === "sent") || (m.role === "user" && m.status === "responded")).length;
   return (
     <PageShell title={t("consult.history")} testId="history-page">
       <WalletChip />
+      {(msgs.data?.length ?? 0) > 0 && (
+        <Link to="/messages" data-testid="open-messages" className="card-soft flex items-center gap-3 p-3 transition hover:-translate-y-0.5">
+          <span className="grid h-10 w-10 place-items-center rounded-2xl bg-primary/10 text-primary"><Mail className="h-5 w-5" /></span>
+          <span className="flex-1 font-semibold">{t("nearby.messages.open")}</span>
+          {newMsgs > 0 && <span data-testid="messages-badge" className="grid h-6 min-w-6 place-items-center rounded-full bg-primary px-1.5 text-xs font-bold text-primary-foreground">{newMsgs}</span>}
+          <ChevronRight className="h-4 w-4 text-muted-foreground" /></Link>)}
       {q.isLoading && [0, 1, 2].map((i) => <div key={i} className="h-20 animate-pulse rounded-2xl bg-muted" />)}
       {q.data?.length === 0 && <div data-testid="history-empty" className="card-soft flex flex-col items-center gap-2 p-8 text-center"><HistoryIcon className="h-10 w-10 text-muted-foreground" /><p className="font-semibold">{t("consult.noHistory")}</p></div>}
       <ul className="space-y-2">

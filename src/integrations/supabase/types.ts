@@ -165,14 +165,14 @@ isOneToOne: false
                   ]
                 },"consult_requests": {
                   Row: {
-                    "created_at": string,"expires_at": string,"id": string,"min_minutes": number,"mode": string,"node_slug": string,"rate": number,"responded_at": string | null,"session_id": string | null,"status": string,"user_id": string,"user_name": string | null,"worker_id": string,"worker_user_id": string
+                    "created_at": string,"expires_at": string,"id": string,"min_minutes": number,"mode": string,"node_slug": string,"rate": number,"responded_at": string | null,"search_id": string | null,"session_id": string | null,"status": string,"user_id": string,"user_name": string | null,"worker_id": string,"worker_user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"expires_at": string,"id"?: string,"min_minutes": number,"mode": string,"node_slug": string,"rate": number,"responded_at"?: string | null,"session_id"?: string | null,"status"?: string,"user_id": string,"user_name"?: string | null,"worker_id": string,"worker_user_id": string
+                    "created_at"?: string,"expires_at": string,"id"?: string,"min_minutes": number,"mode": string,"node_slug": string,"rate": number,"responded_at"?: string | null,"search_id"?: string | null,"session_id"?: string | null,"status"?: string,"user_id": string,"user_name"?: string | null,"worker_id": string,"worker_user_id": string
                   }
                   Update: {
-                    "created_at"?: string,"expires_at"?: string,"id"?: string,"min_minutes"?: number,"mode"?: string,"node_slug"?: string,"rate"?: number,"responded_at"?: string | null,"session_id"?: string | null,"status"?: string,"user_id"?: string,"user_name"?: string | null,"worker_id"?: string,"worker_user_id"?: string
+                    "created_at"?: string,"expires_at"?: string,"id"?: string,"min_minutes"?: number,"mode"?: string,"node_slug"?: string,"rate"?: number,"responded_at"?: string | null,"search_id"?: string | null,"session_id"?: string | null,"status"?: string,"user_id"?: string,"user_name"?: string | null,"worker_id"?: string,"worker_user_id"?: string
                   }
                   Relationships: [
                     {
@@ -182,6 +182,12 @@ isOneToOne: false
       referencedRelation: "taxonomy_nodes"
       referencedColumns: ["slug"]
     },{
+      foreignKeyName: "consult_requests_search_id_fkey"
+      columns: ["search_id"]
+isOneToOne: false
+      referencedRelation: "consult_searches"
+      referencedColumns: ["id"]
+    },{
       foreignKeyName: "consult_requests_worker_id_fkey"
       columns: ["worker_id"]
 isOneToOne: false
@@ -189,16 +195,36 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"consult_sessions": {
+                },"consult_searches": {
                   Row: {
-                    "commission_pct": number,"credits_used": number,"current_mode": string,"end_reason": string | null,"ended_at": string | null,"id": string,"node_slug": string,"request_id": string | null,"started_at": string,"status": string,"user_id": string,"worker_id": string,"worker_user_id": string
+                    "all_tn": boolean,"attempts": number,"created_at": string,"current_request": string | null,"ended_at": string | null,"geog": unknown,"id": string,"max_rate": number,"mode": string,"node_slug": string,"reason": string | null,"round_attempts": number,"session_id": string | null,"status": string,"tried": (string)[],"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "commission_pct"?: number,"credits_used"?: number,"current_mode"?: string,"end_reason"?: string | null,"ended_at"?: string | null,"id"?: string,"node_slug": string,"request_id"?: string | null,"started_at"?: string,"status"?: string,"user_id": string,"worker_id": string,"worker_user_id": string
+                    "all_tn"?: boolean,"attempts"?: number,"created_at"?: string,"current_request"?: string | null,"ended_at"?: string | null,"geog": unknown,"id"?: string,"max_rate": number,"mode": string,"node_slug": string,"reason"?: string | null,"round_attempts"?: number,"session_id"?: string | null,"status"?: string,"tried"?: (string)[],"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "commission_pct"?: number,"credits_used"?: number,"current_mode"?: string,"end_reason"?: string | null,"ended_at"?: string | null,"id"?: string,"node_slug"?: string,"request_id"?: string | null,"started_at"?: string,"status"?: string,"user_id"?: string,"worker_id"?: string,"worker_user_id"?: string
+                    "all_tn"?: boolean,"attempts"?: number,"created_at"?: string,"current_request"?: string | null,"ended_at"?: string | null,"geog"?: unknown,"id"?: string,"max_rate"?: number,"mode"?: string,"node_slug"?: string,"reason"?: string | null,"round_attempts"?: number,"session_id"?: string | null,"status"?: string,"tried"?: (string)[],"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "consult_searches_node_slug_fkey"
+      columns: ["node_slug"]
+isOneToOne: false
+      referencedRelation: "taxonomy_nodes"
+      referencedColumns: ["slug"]
+    }
+                  ]
+                },"consult_sessions": {
+                  Row: {
+                    "commission_pct": number,"credits_used": number,"current_mode": string,"end_reason": string | null,"ended_at": string | null,"ended_by": string | null,"id": string,"node_slug": string,"pause_side": string | null,"paused_at": string | null,"refunded_credits": number,"request_id": string | null,"resume_user": boolean | null,"resume_worker": boolean | null,"search_id": string | null,"started_at": string,"status": string,"user_id": string,"user_seen_at": string | null,"worker_id": string,"worker_seen_at": string | null,"worker_user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "commission_pct"?: number,"credits_used"?: number,"current_mode"?: string,"end_reason"?: string | null,"ended_at"?: string | null,"ended_by"?: string | null,"id"?: string,"node_slug": string,"pause_side"?: string | null,"paused_at"?: string | null,"refunded_credits"?: number,"request_id"?: string | null,"resume_user"?: boolean | null,"resume_worker"?: boolean | null,"search_id"?: string | null,"started_at"?: string,"status"?: string,"user_id": string,"user_seen_at"?: string | null,"worker_id": string,"worker_seen_at"?: string | null,"worker_user_id": string
+                  }
+                  Update: {
+                    "commission_pct"?: number,"credits_used"?: number,"current_mode"?: string,"end_reason"?: string | null,"ended_at"?: string | null,"ended_by"?: string | null,"id"?: string,"node_slug"?: string,"pause_side"?: string | null,"paused_at"?: string | null,"refunded_credits"?: number,"request_id"?: string | null,"resume_user"?: boolean | null,"resume_worker"?: boolean | null,"search_id"?: string | null,"started_at"?: string,"status"?: string,"user_id"?: string,"user_seen_at"?: string | null,"worker_id"?: string,"worker_seen_at"?: string | null,"worker_user_id"?: string
                   }
                   Relationships: [
                     {
@@ -229,6 +255,26 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"identity_fingerprints": {
+                  Row: {
+                    "blocked": boolean,"created_at": string,"hash": string,"id": string,"kind": string,"worker_id": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "blocked"?: boolean,"created_at"?: string,"hash": string,"id"?: string,"kind": string,"worker_id"?: string | null
+                  }
+                  Update: {
+                    "blocked"?: boolean,"created_at"?: string,"hash"?: string,"id"?: string,"kind"?: string,"worker_id"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "identity_fingerprints_worker_id_fkey"
+      columns: ["worker_id"]
+isOneToOne: false
+      referencedRelation: "workers"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"kyc_otp_sessions": {
                   Row: {
                     "aadhaar_hash": string,"attempts": number,"created_at": string,"expires_at": string,"last4": string,"provider_ref": string | null,"sends": number,"worker_id": string
@@ -251,14 +297,14 @@ isOneToOne: true
                   ]
                 },"kyc_verification": {
                   Row: {
-                    "aadhaar_last4": string | null,"aadhaar_number_hash": string | null,"aadhaar_verified": boolean,"created_at": string,"id": string,"pan_name": string | null,"pan_number": string | null,"pan_verified": boolean,"provider": string | null,"rejection_reason": string | null,"status": Database["public"]['Enums']["kyc_status"],"updated_at": string,"verified_at": string | null,"video_verification_url": string | null,"video_verified": boolean,"worker_id": string
+                    "aadhaar_last4": string | null,"aadhaar_number_hash": string | null,"aadhaar_verified": boolean,"created_at": string,"id": string,"legal_name": string | null,"pan_name": string | null,"pan_number": string | null,"pan_verified": boolean,"provider": string | null,"rejection_reason": string | null,"status": Database["public"]['Enums']["kyc_status"],"updated_at": string,"verified_at": string | null,"video_verification_url": string | null,"video_verified": boolean,"worker_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "aadhaar_last4"?: string | null,"aadhaar_number_hash"?: string | null,"aadhaar_verified"?: boolean,"created_at"?: string,"id"?: string,"pan_name"?: string | null,"pan_number"?: string | null,"pan_verified"?: boolean,"provider"?: string | null,"rejection_reason"?: string | null,"status"?: Database["public"]['Enums']["kyc_status"],"updated_at"?: string,"verified_at"?: string | null,"video_verification_url"?: string | null,"video_verified"?: boolean,"worker_id": string
+                    "aadhaar_last4"?: string | null,"aadhaar_number_hash"?: string | null,"aadhaar_verified"?: boolean,"created_at"?: string,"id"?: string,"legal_name"?: string | null,"pan_name"?: string | null,"pan_number"?: string | null,"pan_verified"?: boolean,"provider"?: string | null,"rejection_reason"?: string | null,"status"?: Database["public"]['Enums']["kyc_status"],"updated_at"?: string,"verified_at"?: string | null,"video_verification_url"?: string | null,"video_verified"?: boolean,"worker_id": string
                   }
                   Update: {
-                    "aadhaar_last4"?: string | null,"aadhaar_number_hash"?: string | null,"aadhaar_verified"?: boolean,"created_at"?: string,"id"?: string,"pan_name"?: string | null,"pan_number"?: string | null,"pan_verified"?: boolean,"provider"?: string | null,"rejection_reason"?: string | null,"status"?: Database["public"]['Enums']["kyc_status"],"updated_at"?: string,"verified_at"?: string | null,"video_verification_url"?: string | null,"video_verified"?: boolean,"worker_id"?: string
+                    "aadhaar_last4"?: string | null,"aadhaar_number_hash"?: string | null,"aadhaar_verified"?: boolean,"created_at"?: string,"id"?: string,"legal_name"?: string | null,"pan_name"?: string | null,"pan_number"?: string | null,"pan_verified"?: boolean,"provider"?: string | null,"rejection_reason"?: string | null,"status"?: Database["public"]['Enums']["kyc_status"],"updated_at"?: string,"verified_at"?: string | null,"video_verification_url"?: string | null,"video_verified"?: boolean,"worker_id"?: string
                   }
                   Relationships: [
                     {
@@ -288,6 +334,20 @@ isOneToOne: true
       referencedRelation: "taxonomy_nodes"
       referencedColumns: ["slug"]
     }
+                  ]
+                },"notifications": {
+                  Row: {
+                    "always": boolean,"category": string,"collapse_key": string | null,"count": number,"created_at": string,"dedupe_key": string | null,"id": string,"kind": string,"params": NonNullable<Json>,"priority": string,"push_attempts": number,"push_payload": Json | null,"push_result": Json | null,"push_status": string,"read_at": string | null,"sent_at": string | null,"tag": string | null,"updated_at": string,"url": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "always"?: boolean,"category": string,"collapse_key"?: string | null,"count"?: number,"created_at"?: string,"dedupe_key"?: string | null,"id"?: string,"kind": string,"params"?: NonNullable<Json>,"priority"?: string,"push_attempts"?: number,"push_payload"?: Json | null,"push_result"?: Json | null,"push_status"?: string,"read_at"?: string | null,"sent_at"?: string | null,"tag"?: string | null,"updated_at"?: string,"url"?: string,"user_id": string
+                  }
+                  Update: {
+                    "always"?: boolean,"category"?: string,"collapse_key"?: string | null,"count"?: number,"created_at"?: string,"dedupe_key"?: string | null,"id"?: string,"kind"?: string,"params"?: NonNullable<Json>,"priority"?: string,"push_attempts"?: number,"push_payload"?: Json | null,"push_result"?: Json | null,"push_status"?: string,"read_at"?: string | null,"sent_at"?: string | null,"tag"?: string | null,"updated_at"?: string,"url"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
                   ]
                 },"occupation_services": {
                   Row: {
@@ -363,19 +423,45 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"payout_requests": {
+                },"payout_events": {
                   Row: {
-                    "admin_note": string | null,"amount": number,"decided_at": string | null,"decided_by": string | null,"id": string,"method": string,"reference": string | null,"requested_at": string,"status": string,"worker_user_id": string
+                    "event_id": string,"outcome": string | null,"payload": Json | null,"payout_id": string | null,"provider": string,"received_at": string,"type": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "admin_note"?: string | null,"amount": number,"decided_at"?: string | null,"decided_by"?: string | null,"id"?: string,"method"?: string,"reference"?: string | null,"requested_at"?: string,"status"?: string,"worker_user_id": string
+                    "event_id": string,"outcome"?: string | null,"payload"?: Json | null,"payout_id"?: string | null,"provider": string,"received_at"?: string,"type": string
                   }
                   Update: {
-                    "admin_note"?: string | null,"amount"?: number,"decided_at"?: string | null,"decided_by"?: string | null,"id"?: string,"method"?: string,"reference"?: string | null,"requested_at"?: string,"status"?: string,"worker_user_id"?: string
+                    "event_id"?: string,"outcome"?: string | null,"payload"?: Json | null,"payout_id"?: string | null,"provider"?: string,"received_at"?: string,"type"?: string
                   }
                   Relationships: [
-                    
+                    {
+      foreignKeyName: "payout_events_payout_id_fkey"
+      columns: ["payout_id"]
+isOneToOne: false
+      referencedRelation: "payout_requests"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"payout_requests": {
+                  Row: {
+                    "account_id": string | null,"admin_note": string | null,"amount": number,"attempt_count": number,"decided_at": string | null,"decided_by": string | null,"entry_count": number,"failure_reason": string | null,"fee": number,"fee_bearer": string | null,"gross": number | null,"id": string,"method": string,"provider": string | null,"provider_payout_id": string | null,"reference": string | null,"requested_at": string,"review_reason": string | null,"status": string,"tds": number,"worker_user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "account_id"?: string | null,"admin_note"?: string | null,"amount": number,"attempt_count"?: number,"decided_at"?: string | null,"decided_by"?: string | null,"entry_count"?: number,"failure_reason"?: string | null,"fee"?: number,"fee_bearer"?: string | null,"gross"?: number | null,"id"?: string,"method"?: string,"provider"?: string | null,"provider_payout_id"?: string | null,"reference"?: string | null,"requested_at"?: string,"review_reason"?: string | null,"status"?: string,"tds"?: number,"worker_user_id": string
+                  }
+                  Update: {
+                    "account_id"?: string | null,"admin_note"?: string | null,"amount"?: number,"attempt_count"?: number,"decided_at"?: string | null,"decided_by"?: string | null,"entry_count"?: number,"failure_reason"?: string | null,"fee"?: number,"fee_bearer"?: string | null,"gross"?: number | null,"id"?: string,"method"?: string,"provider"?: string | null,"provider_payout_id"?: string | null,"reference"?: string | null,"requested_at"?: string,"review_reason"?: string | null,"status"?: string,"tds"?: number,"worker_user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "payout_requests_account_id_fkey"
+      columns: ["account_id"]
+isOneToOne: false
+      referencedRelation: "worker_payout_accounts"
+      referencedColumns: ["id"]
+    }
                   ]
                 },"profiles": {
                   Row: {
@@ -387,6 +473,20 @@ isOneToOne: false
                   }
                   Update: {
                     "avatar_url"?: string | null,"created_at"?: string,"dob"?: string | null,"email"?: string | null,"first_name"?: string,"full_name"?: string | null,"id"?: string,"last_name"?: string,"location_address"?: string | null,"location_lat"?: number | null,"location_lng"?: number | null,"phone_number"?: string | null,"prefs"?: NonNullable<Json>,"role"?: Database["public"]['Enums']["user_role"],"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"push_subscriptions": {
+                  Row: {
+                    "auth": string,"created_at": string,"endpoint": string,"failure_count": number,"id": string,"lang": string,"last_ok_at": string | null,"p256dh": string,"platform": string | null,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "auth": string,"created_at"?: string,"endpoint": string,"failure_count"?: number,"id"?: string,"lang"?: string,"last_ok_at"?: string | null,"p256dh": string,"platform"?: string | null,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "auth"?: string,"created_at"?: string,"endpoint"?: string,"failure_count"?: number,"id"?: string,"lang"?: string,"last_ok_at"?: string | null,"p256dh"?: string,"platform"?: string | null,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -410,6 +510,20 @@ isOneToOne: false
       referencedRelation: "taxonomy_nodes"
       referencedColumns: ["slug"]
     }
+                  ]
+                },"registry_cache": {
+                  Row: {
+                    "cache_key": string,"fetched_at": string,"payload": NonNullable<Json>,"source": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "cache_key": string,"fetched_at"?: string,"payload": NonNullable<Json>,"source": string
+                  }
+                  Update: {
+                    "cache_key"?: string,"fetched_at"?: string,"payload"?: NonNullable<Json>,"source"?: string
+                  }
+                  Relationships: [
+                    
                   ]
                 },"reward_milestones": {
                   Row: {
@@ -613,6 +727,132 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"verification_appeals": {
+                  Row: {
+                    "case_id": string,"created_at": string,"decided_at": string | null,"decided_by": string | null,"id": string,"note": string,"sla_due_at": string,"status": string,"worker_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "case_id": string,"created_at"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"id"?: string,"note": string,"sla_due_at": string,"status"?: string,"worker_id": string
+                  }
+                  Update: {
+                    "case_id"?: string,"created_at"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"id"?: string,"note"?: string,"sla_due_at"?: string,"status"?: string,"worker_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "verification_appeals_case_id_fkey"
+      columns: ["case_id"]
+isOneToOne: true
+      referencedRelation: "verification_cases"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "verification_appeals_worker_id_fkey"
+      columns: ["worker_id"]
+isOneToOne: false
+      referencedRelation: "workers"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"verification_cases": {
+                  Row: {
+                    "created_at": string,"decided_at": string | null,"decided_by": string | null,"decision": string | null,"hard_fail": string | null,"id": string,"kind": string,"purge_after": string | null,"qr_path": string | null,"raw_selfie_path": string | null,"reason_codes": (string)[],"risk": number | null,"sla_due_at": string | null,"sla_paused_at": string | null,"status": string,"worker_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"decision"?: string | null,"hard_fail"?: string | null,"id"?: string,"kind"?: string,"purge_after"?: string | null,"qr_path"?: string | null,"raw_selfie_path"?: string | null,"reason_codes"?: (string)[],"risk"?: number | null,"sla_due_at"?: string | null,"sla_paused_at"?: string | null,"status"?: string,"worker_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"decision"?: string | null,"hard_fail"?: string | null,"id"?: string,"kind"?: string,"purge_after"?: string | null,"qr_path"?: string | null,"raw_selfie_path"?: string | null,"reason_codes"?: (string)[],"risk"?: number | null,"sla_due_at"?: string | null,"sla_paused_at"?: string | null,"status"?: string,"worker_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "verification_cases_worker_id_fkey"
+      columns: ["worker_id"]
+isOneToOne: false
+      referencedRelation: "workers"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"verification_checks": {
+                  Row: {
+                    "case_id": string,"check_name": string,"created_at": string,"evidence": NonNullable<Json>,"id": string,"provider": string | null,"raw_ref": string | null,"score": number | null,"status": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "case_id": string,"check_name": string,"created_at"?: string,"evidence"?: NonNullable<Json>,"id"?: string,"provider"?: string | null,"raw_ref"?: string | null,"score"?: number | null,"status": string
+                  }
+                  Update: {
+                    "case_id"?: string,"check_name"?: string,"created_at"?: string,"evidence"?: NonNullable<Json>,"id"?: string,"provider"?: string | null,"raw_ref"?: string | null,"score"?: number | null,"status"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "verification_checks_case_id_fkey"
+      columns: ["case_id"]
+isOneToOne: false
+      referencedRelation: "verification_cases"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"verification_intake": {
+                  Row: {
+                    "liveness_challenge": string | null,"liveness_ok": boolean | null,"public_portrait_url": string | null,"qr_path": string | null,"raw_selfie_path": string | null,"selfie_consent_at": string | null,"updated_at": string,"worker_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "liveness_challenge"?: string | null,"liveness_ok"?: boolean | null,"public_portrait_url"?: string | null,"qr_path"?: string | null,"raw_selfie_path"?: string | null,"selfie_consent_at"?: string | null,"updated_at"?: string,"worker_id": string
+                  }
+                  Update: {
+                    "liveness_challenge"?: string | null,"liveness_ok"?: boolean | null,"public_portrait_url"?: string | null,"qr_path"?: string | null,"raw_selfie_path"?: string | null,"selfie_consent_at"?: string | null,"updated_at"?: string,"worker_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "verification_intake_worker_id_fkey"
+      columns: ["worker_id"]
+isOneToOne: true
+      referencedRelation: "workers"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"verification_jobs": {
+                  Row: {
+                    "attempts": number,"case_id": string,"created_at": string,"id": string,"last_error": string | null,"locked_at": string | null,"run_after": string,"status": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "attempts"?: number,"case_id": string,"created_at"?: string,"id"?: string,"last_error"?: string | null,"locked_at"?: string | null,"run_after"?: string,"status"?: string
+                  }
+                  Update: {
+                    "attempts"?: number,"case_id"?: string,"created_at"?: string,"id"?: string,"last_error"?: string | null,"locked_at"?: string | null,"run_after"?: string,"status"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "verification_jobs_case_id_fkey"
+      columns: ["case_id"]
+isOneToOne: false
+      referencedRelation: "verification_cases"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"verification_rules": {
+                  Row: {
+                    "category_slug": string,"check_name": string,"params": NonNullable<Json>,"required": boolean,"weight": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "category_slug": string,"check_name": string,"params"?: NonNullable<Json>,"required"?: boolean,"weight"?: number
+                  }
+                  Update: {
+                    "category_slug"?: string,"check_name"?: string,"params"?: NonNullable<Json>,"required"?: boolean,"weight"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "verification_rules_category_slug_fkey"
+      columns: ["category_slug"]
+isOneToOne: false
+      referencedRelation: "taxonomy_nodes"
+      referencedColumns: ["slug"]
+    }
+                  ]
                 },"wallet_transactions": {
                   Row: {
                     "amount": number,"created_at": string,"description": string | null,"id": string,"reference_id": string | null,"request_id": string | null,"status": Database["public"]['Enums']["payment_status"],"type": Database["public"]['Enums']["transaction_type"],"wallet_id": string
@@ -739,6 +979,40 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"worker_messages": {
+                  Row: {
+                    "body": string | null,"created_at": string,"credits": number,"id": string,"read_at": string | null,"refunded_at": string | null,"reserved_until": string | null,"responded_at": string | null,"status": string,"user_id": string,"user_name": string | null,"voice_path": string | null,"voice_seconds": number | null,"worker_id": string,"worker_user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "body"?: string | null,"created_at"?: string,"credits": number,"id"?: string,"read_at"?: string | null,"refunded_at"?: string | null,"reserved_until"?: string | null,"responded_at"?: string | null,"status"?: string,"user_id": string,"user_name"?: string | null,"voice_path"?: string | null,"voice_seconds"?: number | null,"worker_id": string,"worker_user_id": string
+                  }
+                  Update: {
+                    "body"?: string | null,"created_at"?: string,"credits"?: number,"id"?: string,"read_at"?: string | null,"refunded_at"?: string | null,"reserved_until"?: string | null,"responded_at"?: string | null,"status"?: string,"user_id"?: string,"user_name"?: string | null,"voice_path"?: string | null,"voice_seconds"?: number | null,"worker_id"?: string,"worker_user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "worker_messages_worker_id_fkey"
+      columns: ["worker_id"]
+isOneToOne: false
+      referencedRelation: "workers"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"worker_mutes": {
+                  Row: {
+                    "created_at": string,"user_id": string,"worker_user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"user_id": string,"worker_user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"user_id"?: string,"worker_user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"worker_nodes": {
                   Row: {
                     "is_primary": boolean,"node_slug": string,"worker_id": string
@@ -759,6 +1033,26 @@ isOneToOne: false
       referencedColumns: ["slug"]
     },{
       foreignKeyName: "worker_nodes_worker_id_fkey"
+      columns: ["worker_id"]
+isOneToOne: false
+      referencedRelation: "workers"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"worker_payout_accounts": {
+                  Row: {
+                    "account_hash": string,"account_last4": string | null,"account_mask": string,"cooling_until": string | null,"created_at": string,"duplicate": boolean,"failure_reason": string | null,"fund_account_id": string | null,"id": string,"ifsc": string | null,"kind": string,"mock_fail": string | null,"registered_name": string | null,"updated_at": string,"validation_status": string,"verified_at": string | null,"worker_id": string | null,"worker_user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "account_hash": string,"account_last4"?: string | null,"account_mask": string,"cooling_until"?: string | null,"created_at"?: string,"duplicate"?: boolean,"failure_reason"?: string | null,"fund_account_id"?: string | null,"id"?: string,"ifsc"?: string | null,"kind": string,"mock_fail"?: string | null,"registered_name"?: string | null,"updated_at"?: string,"validation_status"?: string,"verified_at"?: string | null,"worker_id"?: string | null,"worker_user_id": string
+                  }
+                  Update: {
+                    "account_hash"?: string,"account_last4"?: string | null,"account_mask"?: string,"cooling_until"?: string | null,"created_at"?: string,"duplicate"?: boolean,"failure_reason"?: string | null,"fund_account_id"?: string | null,"id"?: string,"ifsc"?: string | null,"kind"?: string,"mock_fail"?: string | null,"registered_name"?: string | null,"updated_at"?: string,"validation_status"?: string,"verified_at"?: string | null,"worker_id"?: string | null,"worker_user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "worker_payout_accounts_worker_id_fkey"
       columns: ["worker_id"]
 isOneToOne: false
       referencedRelation: "workers"
@@ -813,14 +1107,14 @@ isOneToOne: false
                   ]
                 },"workers": {
                   Row: {
-                    "about": string | null,"base_geog": unknown,"block_reason": string | null,"blocked_until": string | null,"category": Database["public"]['Enums']["worker_category"],"created_at": string,"decided_at": string | null,"display_name": string | null,"district_slug": string | null,"flag_active": boolean,"flag_good_needed": number,"flag_reason": string | null,"flagged_at": string | null,"hourly_rate": number | null,"id": string,"is_active": boolean,"is_online": boolean,"is_verified": boolean,"last_seen_at": string | null,"locked_category": string | null,"occupation_id": string | null,"photo_url": string | null,"primary_node": string | null,"rating": number | null,"reg_data": NonNullable<Json>,"review_note": string | null,"rewards_count": number,"status": string,"strikes_reset_at": string,"submitted_at": string | null,"total_reviews": number | null,"updated_at": string,"user_id": string,"years_experience": number | null,"worker_is_blocked": boolean | null
+                    "about": string | null,"badge_tier": string | null,"base_geog": unknown,"block_reason": string | null,"blocked_until": string | null,"category": Database["public"]['Enums']["worker_category"],"created_at": string,"decided_at": string | null,"display_name": string | null,"district_slug": string | null,"flag_active": boolean,"flag_good_needed": number,"flag_reason": string | null,"flagged_at": string | null,"hourly_rate": number | null,"id": string,"is_active": boolean,"is_online": boolean,"is_verified": boolean,"last_seen_at": string | null,"locked_category": string | null,"missed_streak": number,"noshow_count": number,"occupation_id": string | null,"payout_hold": boolean,"photo_url": string | null,"primary_node": string | null,"public_selfie_path": string | null,"rating": number | null,"reg_data": NonNullable<Json>,"review_note": string | null,"rewards_count": number,"selfie_consent_at": string | null,"status": string,"strikes_reset_at": string,"submitted_at": string | null,"total_reviews": number | null,"updated_at": string,"user_id": string,"verified_at": string | null,"years_experience": number | null,"worker_is_blocked": boolean | null,"worker_reachable": boolean | null
                   }
-                  ComputedFields: "worker_is_blocked"
+                  ComputedFields: "worker_is_blocked" | "worker_reachable"
                   Insert: {
-                    "about"?: string | null,"base_geog"?: unknown,"block_reason"?: string | null,"blocked_until"?: string | null,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"flag_active"?: boolean,"flag_good_needed"?: number,"flag_reason"?: string | null,"flagged_at"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"locked_category"?: string | null,"occupation_id"?: string | null,"photo_url"?: string | null,"primary_node"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"status"?: string,"strikes_reset_at"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id": string,"years_experience"?: number | null
+                    "about"?: string | null,"badge_tier"?: string | null,"base_geog"?: unknown,"block_reason"?: string | null,"blocked_until"?: string | null,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"flag_active"?: boolean,"flag_good_needed"?: number,"flag_reason"?: string | null,"flagged_at"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"locked_category"?: string | null,"missed_streak"?: number,"noshow_count"?: number,"occupation_id"?: string | null,"payout_hold"?: boolean,"photo_url"?: string | null,"primary_node"?: string | null,"public_selfie_path"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"selfie_consent_at"?: string | null,"status"?: string,"strikes_reset_at"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id": string,"verified_at"?: string | null,"years_experience"?: number | null
                   }
                   Update: {
-                    "about"?: string | null,"base_geog"?: unknown,"block_reason"?: string | null,"blocked_until"?: string | null,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"flag_active"?: boolean,"flag_good_needed"?: number,"flag_reason"?: string | null,"flagged_at"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"locked_category"?: string | null,"occupation_id"?: string | null,"photo_url"?: string | null,"primary_node"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"status"?: string,"strikes_reset_at"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id"?: string,"years_experience"?: number | null
+                    "about"?: string | null,"badge_tier"?: string | null,"base_geog"?: unknown,"block_reason"?: string | null,"blocked_until"?: string | null,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"flag_active"?: boolean,"flag_good_needed"?: number,"flag_reason"?: string | null,"flagged_at"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"locked_category"?: string | null,"missed_streak"?: number,"noshow_count"?: number,"occupation_id"?: string | null,"payout_hold"?: boolean,"photo_url"?: string | null,"primary_node"?: string | null,"public_selfie_path"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"selfie_consent_at"?: string | null,"status"?: string,"strikes_reset_at"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id"?: string,"verified_at"?: string | null,"years_experience"?: number | null
                   }
                   Relationships: [
                     {
@@ -947,6 +1241,9 @@ isOneToOne: false
 "_st_within":
 { Args: { "geom1": unknown,"geom2": unknown }; Returns: boolean
                            },
+"_verification_apply":
+{ Args: { "_by": string,"_case": string,"_decision": string,"_hard": string,"_risk": number }; Returns: string
+                           },
 "aadhaar_send_otp":
 { Args: { "_aadhaar": string }; Returns: Json
                            },
@@ -967,6 +1264,9 @@ isOneToOne: false
 { Args: { "_limit"?: number }; Returns: {
               "action": string,"actor_name": string,"created_at": string,"data": Json,"id": number,"note": string,"target": string,"target_name": string
             }[]
+                           },
+"admin_decide_appeal":
+{ Args: { "_case": string,"_decision": string,"_note": string }; Returns: string
                            },
 "admin_decide_worker":
 { Args: { "_decision": string,"_note"?: string,"_worker": string }; Returns: string
@@ -1031,8 +1331,11 @@ isOneToOne: false
                            },
 "admin_worker_queue":
 { Args: { "_status"?: string }; Returns: {
-              "aadhaar_masked": string,"aadhaar_verified": boolean,"about": string,"display_name": string,"district_slug": string,"docs": Json,"email": string,"id": string,"node_name": Json,"phone": string,"photo_url": string,"primary_node": string,"reg_data": Json,"status": string,"submitted_at": string,"years_experience": number
+              "aadhaar_masked": string,"aadhaar_verified": boolean,"about": string,"badge_tier": string,"case_id": string,"case_status": string,"checks": Json,"deep_link": string,"display_name": string,"district_slug": string,"docs": Json,"email": string,"id": string,"node_name": Json,"phone": string,"photo_url": string,"primary_node": string,"reason_codes": (string)[],"reg_data": Json,"risk": number,"sla_due_at": string,"status": string,"submitted_at": string,"years_experience": number
             }[]
+                           },
+"badge_tier_for":
+{ Args: { "_reg": Json,"_slug": string }; Returns: string
                            },
 "call_answer":
 { Args: { "_accept": boolean,"_call": string }; Returns: string
@@ -1071,6 +1374,9 @@ isOneToOne: false
                            },
 "equals":
 { Args: { "geom1": unknown,"geom2": unknown }; Returns: boolean
+                           },
+"fast_sweep":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "feedback_config":
 { Args: Record<PropertyKey, never>; Returns: Json
@@ -1174,6 +1480,9 @@ isOneToOne: false
 "longtransactionsenabled":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
+"mask_contact":
+{ Args: { "_t": string }; Returns: string
+                           },
 "my_active_session":
 { Args: Record<PropertyKey, never>; Returns: string
                            },
@@ -1196,10 +1505,16 @@ isOneToOne: false
 "my_kyc":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"my_live_search":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "my_locations":
 { Args: Record<PropertyKey, never>; Returns: {
               "address": string,"area_id": number,"area_name": string,"area_name_ta": string,"created_at": string,"district_name": Json,"district_slug": string,"id": string,"is_current": boolean,"lat": number,"lng": number
             }[]
+                           },
+"my_verification":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "my_wallet":
 { Args: Record<PropertyKey, never>; Returns: Json
@@ -1212,6 +1527,7 @@ isOneToOne: false
 "my_worker":
 { Args: Record<PropertyKey, never>; Returns: {
               "about": string | null,
+"badge_tier": string | null,
 "base_geog": unknown,
 "block_reason": string | null,
 "blocked_until": string | null,
@@ -1231,19 +1547,25 @@ isOneToOne: false
 "is_verified": boolean,
 "last_seen_at": string | null,
 "locked_category": string | null,
+"missed_streak": number,
+"noshow_count": number,
 "occupation_id": string | null,
+"payout_hold": boolean,
 "photo_url": string | null,
 "primary_node": string | null,
+"public_selfie_path": string | null,
 "rating": number | null,
 "reg_data": NonNullable<Json>,
 "review_note": string | null,
 "rewards_count": number,
+"selfie_consent_at": string | null,
 "status": string,
 "strikes_reset_at": string,
 "submitted_at": string | null,
 "total_reviews": number | null,
 "updated_at": string,
 "user_id": string,
+"verified_at": string | null,
 "years_experience": number | null
             }[]
                           SetofOptions: {
@@ -1252,6 +1574,11 @@ isOneToOne: false
         isOneToOne: false
         isSetofReturn: true
       } },
+"my_worker_messages":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "body": string,"created_at": string,"credits": number,"id": string,"muted": boolean,"other_name": string,"other_photo": string,"refund_at": string,"reserved_until": string,"responded_at": string,"role": string,"status": string,"voice_path": string,"voice_seconds": number,"worker_id": string
+            }[]
+                           },
 "my_worker_standing":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
@@ -1265,6 +1592,15 @@ isOneToOne: false
                            },
 "node_requirements_for":
 { Args: { "_slug": string }; Returns: Json
+                           },
+"notifications_mark_read":
+{ Args: { "_ids"?: (string)[] }; Returns: number
+                           },
+"notify":
+{ Args: { "_collapse"?: string,"_dedupe"?: string,"_kind": string,"_params"?: Json,"_tag"?: string,"_url"?: string,"_user": string }; Returns: string
+                           },
+"notify_admins":
+{ Args: { "_collapse"?: string,"_kind": string,"_params"?: Json,"_url"?: string }; Returns: number
                            },
 "payment_event_once":
 { Args: { "_event_id": string,"_payload": Json,"_provider": string,"_provider_order_id": string,"_type": string }; Returns: boolean
@@ -1293,8 +1629,41 @@ isOneToOne: false
 "payments_mock_enabled":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
+"payout_account_submit":
+{ Args: { "_account": string,"_ifsc": string,"_kind": string,"_otp": string,"_pan"?: string }; Returns: Json
+                           },
+"payout_apply_event":
+{ Args: { "_event_id": string,"_payload": Json,"_payout_id": string,"_provider_payout_id": string,"_reason": string,"_type": string,"_utr": string }; Returns: Json
+                           },
+"payout_block_reason":
+{ Args: { "_user": string }; Returns: string
+                           },
+"payout_dispatch_mock":
+{ Args: { "_id"?: string }; Returns: Json
+                           },
+"payout_fold_name":
+{ Args: { "_n": string }; Returns: string
+                           },
+"payout_name_result":
+{ Args: { "_bank": string,"_legal": string }; Returns: string
+                           },
+"payout_next_at":
+{ Args: { "_not_before"?: string }; Returns: string
+                           },
 "payout_request":
 { Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"payout_run":
+{ Args: { "_force"?: boolean,"_only"?: string }; Returns: Json
+                           },
+"payout_unlink":
+{ Args: { "_id": string }; Returns: undefined
+                           },
+"payouts_auto_enabled":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"payouts_mock_enabled":
+{ Args: Record<PropertyKey, never>; Returns: boolean
                            },
 "populate_geometry_columns":
 { Args: { "tbl_oid": unknown,"use_typmod"?: boolean }; Returns: number
@@ -1367,6 +1736,60 @@ isOneToOne: false
 "presence_window":
 { Args: Record<PropertyKey, never>; Returns: string
                            },
+"public_km":
+{ Args: { "_m": number }; Returns: number
+                           },
+"push_claim":
+{ Args: { "_limit"?: number }; Returns: Json
+                           },
+"push_config":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"push_device_result":
+{ Args: { "_gone"?: boolean,"_ok": boolean,"_sub": string }; Returns: undefined
+                           },
+"push_first_name":
+{ Args: { "_name": string }; Returns: string
+                           },
+"push_hook_ok":
+{ Args: { "_secret": string }; Returns: boolean
+                           },
+"push_kick":
+{ Args: Record<PropertyKey, never>; Returns: undefined
+                           },
+"push_kind_meta":
+{ Args: { "_kind": string }; Returns: Record<string, unknown>
+                           },
+"push_payout_batch_done":
+{ Args: { "_dispatch": Json,"_run": Json }; Returns: undefined
+                           },
+"push_pref_on":
+{ Args: { "_category": string,"_prefs": Json }; Returns: boolean
+                           },
+"push_quiet_now":
+{ Args: { "_at"?: string,"_prefs": Json }; Returns: boolean
+                           },
+"push_record":
+{ Args: { "_id": string,"_payload"?: Json,"_result"?: Json,"_status": string }; Returns: undefined
+                           },
+"push_set_lang":
+{ Args: { "_endpoint": string,"_lang": string }; Returns: boolean
+                           },
+"push_subscribe":
+{ Args: { "_auth": string,"_endpoint": string,"_lang"?: string,"_p256dh": string,"_platform"?: string }; Returns: string
+                           },
+"push_sweep":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"push_test":
+{ Args: Record<PropertyKey, never>; Returns: string
+                           },
+"push_unsubscribe":
+{ Args: { "_endpoint": string }; Returns: boolean
+                           },
+"push_user_name":
+{ Args: { "_uid": string }; Returns: string
+                           },
 "rate_for":
 { Args: { "_mode": string,"_node": string }; Returns: {
               "credits_per_min": number,"min_minutes": number,"node_slug": string
@@ -1374,6 +1797,15 @@ isOneToOne: false
                            },
 "rates_for":
 { Args: { "_node": string }; Returns: Json
+                           },
+"recent_request_count":
+{ Args: { "_uid": string }; Returns: number
+                           },
+"registry_cache_get":
+{ Args: { "_key": string,"_max_age": string,"_source": string }; Returns: Json
+                           },
+"registry_cache_put":
+{ Args: { "_key": string,"_payload": Json,"_source": string }; Returns: undefined
                            },
 "request_cancel":
 { Args: { "_id": string }; Returns: undefined
@@ -1387,10 +1819,36 @@ isOneToOne: false
 "request_respond":
 { Args: { "_accept": boolean,"_id": string }; Returns: string
                            },
+"search_advance":
+{ Args: { "_sid": string }; Returns: string
+                           },
+"search_cancel":
+{ Args: { "_sid": string }; Returns: Json
+                           },
+"search_continue":
+{ Args: { "_all"?: boolean,"_sid": string }; Returns: Json
+                           },
+"search_start":
+{ Args: { "_all"?: boolean,"_lat": number,"_lng": number,"_mode": string,"_node": string }; Returns: Json
+                           },
+"search_suggestions":
+{ Args: { "_exclude"?: (string)[],"_lat": number,"_lng": number,"_n"?: number,"_node": string }; Returns: {
+              "badge_tier": string,"display_name": string,"distance_km": number,"feedback_count": number,"id": string,"photo_url": string,"primary_node": string,"rates": Json,"rating": number,"specialty": Json,"years_experience": number
+            }[]
+                           },
+"search_tick":
+{ Args: { "_sid": string }; Returns: Json
+                           },
+"search_view":
+{ Args: { "_sid": string }; Returns: Json
+                           },
 "search_workers":
 { Args: { "_all"?: boolean,"_lat": number,"_limit"?: number,"_lng": number,"_node": string,"_radius_km"?: number }; Returns: {
-              "badges": Json,"display_name": string,"distance_km": number,"district_name": Json,"district_slug": string,"feedback_count": number,"id": string,"is_busy": boolean,"is_online": boolean,"photo_url": string,"primary_node": string,"rates": Json,"rating": number,"rewards_count": number,"specialty": Json,"years_experience": number
+              "availability": string,"badge_tier": string,"badges": Json,"display_name": string,"distance_km": number,"district_name": Json,"district_slug": string,"feedback_count": number,"id": string,"is_busy": boolean,"is_online": boolean,"photo_url": string,"primary_node": string,"rates": Json,"rating": number,"rewards_count": number,"specialty": Json,"verified_at": string,"years_experience": number
             }[]
+                           },
+"session_bill_at":
+{ Args: { "_at": string,"_close": boolean,"_sid": string }; Returns: undefined
                            },
 "session_bill_internal":
 { Args: { "_close": boolean,"_sid": string }; Returns: Json
@@ -1399,6 +1857,18 @@ isOneToOne: false
 { Args: { "_reason"?: string,"_sid": string }; Returns: Json
                            },
 "session_info":
+{ Args: { "_sid": string }; Returns: Json
+                           },
+"session_presence_check":
+{ Args: { "_sid": string }; Returns: undefined
+                           },
+"session_presence_sweep":
+{ Args: Record<PropertyKey, never>; Returns: number
+                           },
+"session_resume_answer":
+{ Args: { "_sid": string,"_yes": boolean }; Returns: Json
+                           },
+"session_state":
 { Args: { "_sid": string }; Returns: Json
                            },
 "session_switch_mode":
@@ -1904,6 +2374,47 @@ isOneToOne: false
 "use_saved_location":
 { Args: { "_id": string }; Returns: undefined
                            },
+"verification_appeal":
+{ Args: { "_note": string }; Returns: string
+                           },
+"verification_case_bundle":
+{ Args: { "_case": string }; Returns: Json
+                           },
+"verification_claim_job":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "case_id": string,"job_id": string
+            }[]
+                           },
+"verification_decide":
+{ Args: { "_case": string }; Returns: string
+                           },
+"verification_enqueue_recheck":
+{ Args: { "_why": string,"_worker": string }; Returns: string
+                           },
+"verification_liveness_challenge":
+{ Args: Record<PropertyKey, never>; Returns: string
+                           },
+"verification_observe_fingerprint":
+{ Args: { "_hash": string,"_kind": string,"_worker": string }; Returns: string
+                           },
+"verification_purge_expired":
+{ Args: Record<PropertyKey, never>; Returns: number
+                           },
+"verification_rules_for":
+{ Args: { "_slug": string }; Returns: Json
+                           },
+"verification_scan_rechecks":
+{ Args: Record<PropertyKey, never>; Returns: number
+                           },
+"verification_stage_qr":
+{ Args: { "_path": string }; Returns: string
+                           },
+"verification_stage_selfie":
+{ Args: { "_consent": boolean,"_did_challenge": boolean,"_public_url": string,"_raw_path": string }; Returns: string
+                           },
+"verification_write_check":
+{ Args: { "_case": string,"_check": string,"_evidence": Json,"_provider": string,"_score": number,"_status": string }; Returns: string
+                           },
 "wallet_id_for":
 { Args: { "_uid": string }; Returns: string
                            },
@@ -1913,8 +2424,26 @@ isOneToOne: false
 "worker_is_blocked":
 { Args: { "_w": Omit<Database["public"]['Tables']["workers"]['Row'], Database["public"]['Tables']["workers"]['ComputedFields']> }; Returns: boolean
                            },
+"worker_message_read":
+{ Args: { "_id": string }; Returns: undefined
+                           },
+"worker_message_refund_due":
+{ Args: Record<PropertyKey, never>; Returns: number
+                           },
+"worker_message_respond":
+{ Args: { "_id": string }; Returns: Json
+                           },
+"worker_message_send":
+{ Args: { "_body"?: string,"_voice_path"?: string,"_voice_seconds"?: number,"_worker": string }; Returns: string
+                           },
+"worker_mute_user":
+{ Args: { "_message": string }; Returns: undefined
+                           },
 "worker_public":
 { Args: { "_id": string }; Returns: Json
+                           },
+"worker_reachable":
+{ Args: { "_w": Omit<Database["public"]['Tables']["workers"]['Row'], Database["public"]['Tables']["workers"]['ComputedFields']> }; Returns: boolean
                            },
 "worker_refresh":
 { Args: { "_wid": string }; Returns: (string)[]
@@ -1924,6 +2453,12 @@ isOneToOne: false
                            },
 "worker_register_guard":
 { Args: { "_node": string }; Returns: undefined
+                           },
+"worker_reserved_for_other":
+{ Args: { "_uid": string,"_wid": string }; Returns: boolean
+                           },
+"worker_ringing":
+{ Args: { "_wid": string }; Returns: boolean
                            },
 "worker_set_online":
 { Args: { "_online": boolean }; Returns: boolean
@@ -1935,21 +2470,6 @@ isOneToOne: false
                            },
 "worker_submit":
 { Args: Record<PropertyKey, never>; Returns: string
-                           },
-"verification_liveness_challenge":
-{ Args: Record<PropertyKey, never>; Returns: string
-                           },
-"verification_stage_qr":
-{ Args: { "_path": string }; Returns: string
-                           },
-"verification_stage_selfie":
-{ Args: { "_raw_path": string; "_public_url": string; "_consent": boolean; "_did_challenge": boolean }; Returns: string
-                           },
-"my_verification":
-{ Args: Record<PropertyKey, never>; Returns: Json
-                           },
-"verification_appeal":
-{ Args: { "_note": string }; Returns: string
                            }
           }
           Enums: {

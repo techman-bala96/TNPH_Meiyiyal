@@ -1,7 +1,6 @@
 // Web Push on this device: support checks, subscribe / unsubscribe, and keeping the server row current.
 // Standard Push API with our own VAPID key; no Firebase.
 import { supabase } from "@/integrations/supabase/client";
-import { db } from "./db";
 import { canAskFrom, snoozed, type AskState } from "./askPace";
 import type { PushProvider } from "@/features/consult/context";
 
@@ -59,7 +58,7 @@ export async function currentSubscription(): Promise<PushSubscription | null> {
 
 async function save(sub: PushSubscription, lang: string) {
   const j = sub.toJSON() as { endpoint: string; keys?: { p256dh?: string; auth?: string } };
-  const { error } = await db.rpc("push_subscribe", { _endpoint: j.endpoint, _p256dh: j.keys?.p256dh, _auth: j.keys?.auth, _lang: lang, _platform: platform() });
+  const { error } = await supabase.rpc("push_subscribe", { _endpoint: j.endpoint, _p256dh: j.keys?.p256dh, _auth: j.keys?.auth, _lang: lang, _platform: platform() });
   if (error) throw error;
 }
 
@@ -88,7 +87,7 @@ export async function enablePush(lang: string): Promise<EnableResult> {
 export async function disablePush(): Promise<void> {
   const sub = await currentSubscription().catch(() => null);
   if (!sub) return;
-  await db.rpc("push_unsubscribe", { _endpoint: sub.endpoint });
+  await supabase.rpc("push_unsubscribe", { _endpoint: sub.endpoint });
   await sub.unsubscribe().catch(() => undefined);
 }
 

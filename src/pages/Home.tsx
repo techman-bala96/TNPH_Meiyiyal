@@ -9,6 +9,7 @@ import { iconFor } from "@/features/taxonomy/icons";
 import { THEMES, patternStyle } from "@/features/taxonomy/themes";
 import { PushAskCard } from "@/features/push/PushAskCard";
 import { REQUESTED_KEY } from "@/features/push/webPush";
+import { SearchBar } from "@/features/nearby/SearchBar";
 
 export default function Home() {
   const { t, i18n } = useTranslation();
@@ -21,7 +22,7 @@ export default function Home() {
   const groups = childrenOf(all, null);
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-md flex-col gap-4 px-4 pb-8 pt-3">
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col gap-4 px-4 pb-8 pt-3 md:max-w-3xl lg:max-w-5xl">
       <HomeHeader />
       <div className="flex items-center justify-between"><Logo className="h-7" /></div>
 
@@ -36,7 +37,8 @@ export default function Home() {
 
       {tab === "find" ? (
         <section className="space-y-5" data-testid="find-panel">
-          <h1 className="text-xl font-bold leading-tight">{t("home.headline")}</h1>
+          <h1 className="text-xl font-bold leading-tight md:text-2xl">{t("home.headline")}</h1>
+          <SearchBar />
           {localStorage.getItem(REQUESTED_KEY) && <PushAskCard reason="client" />}
           {tax.isLoading && <div className="h-40 animate-pulse rounded-3xl bg-muted" />}
           {groups.map((g) => (
@@ -45,7 +47,7 @@ export default function Home() {
                 <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">{nodeName(g, lang)}</h2>
                 <span className="flex items-center text-xs font-medium text-primary">{t("browse.seeAll")}<ChevronRight className="h-4 w-4" /></span>
               </Link>
-              <div className="grid gap-3">
+              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                 {childrenOf(all, g.slug).map((c) => {
                   const th = THEMES[c.slug.split("--").pop()!] ?? THEMES.default;
                   const Icon = iconFor(c.icon);

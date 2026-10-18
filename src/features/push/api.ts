@@ -1,13 +1,13 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { useCallback, useEffect, useState } from "react";
-import { db } from "./db";
 import { useAuth } from "@/hooks/useAuth";
 import { currentSubscription, pushSupport, type PushSupport } from "./webPush";
 
 export type Note = { id: string; kind: string; category: string; priority: string; params: Record<string, unknown>; url: string; tag: string | null;
   count: number; push_status: string; created_at: string; updated_at: string; read_at: string | null };
 
-const notesTable = () => db.from("notifications");
+const notesTable = () => supabase.from("notifications");
 
 export function useNotifications(limit = 50) {
   const { user } = useAuth();
@@ -35,7 +35,7 @@ export function useUnreadCount() {
 }
 
 export async function markRead(ids?: string[]) {
-  await db.rpc("notifications_mark_read", { _ids: ids ?? null });
+  await supabase.rpc("notifications_mark_read", { _ids: ids ?? null });
 }
 
 export function useInvalidateNotes() {
@@ -52,7 +52,7 @@ export function usePushState() {
     queryFn: async () => {
       const sub = await currentSubscription().catch(() => null);
       if (!sub) return { enabled: false, endpoint: null as string | null };
-      const { data } = await db.from("push_subscriptions")
+      const { data } = await supabase.from("push_subscriptions")
         .select("id").eq("endpoint", sub.endpoint).maybeSingle();
       return { enabled: !!data, endpoint: sub.endpoint };
     },

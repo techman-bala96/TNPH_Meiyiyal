@@ -37,4 +37,7 @@ export default defineConfig(() => ({
     }),
   ],
   resolve: { alias: { "@": path.resolve(__dirname, "./src") } },
+  // The dev service worker (src/sw.ts) is only loaded when push is first turned on. Pre-bundle its imports up front,
+  // otherwise Vite discovers them at that moment, re-optimizes and reloads the page mid-tap (the "Alerts turned on" flake).
+  optimizeDeps: { include: ["workbox-precaching", "workbox-routing", "workbox-core"] },
 }));

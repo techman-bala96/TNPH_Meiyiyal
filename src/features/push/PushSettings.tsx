@@ -1,10 +1,10 @@
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { BellOff, BellRing, Moon, Send } from "lucide-react";
 import { toast } from "sonner";
 import { Switch } from "@/components/ui/switch";
-import { db } from "./db";
 import { useIsAdmin } from "@/features/worker/api";
 import type { NotifyPrefs, Prefs } from "@/features/profile/useProfile";
 import { usePushState } from "./api";
@@ -20,7 +20,7 @@ const notifyDefaults = (n: NotifyPrefs | undefined): Required<Omit<NotifyPrefs, 
 export function PushSettings({ prefs, savePrefs }: { prefs: Prefs; savePrefs: (p: Prefs) => void }) {
   const { t, i18n } = useTranslation(); const lang = i18n.language?.startsWith("ta") ? "ta" : "en";
   const { support, enabled, refresh } = usePushState(); const admin = useIsAdmin();
-  const cfg = useQuery({ queryKey: ["push-config"], queryFn: async () => (await db.rpc("push_config")).data as unknown as { mock: boolean } | null });
+  const cfg = useQuery({ queryKey: ["push-config"], queryFn: async () => (await supabase.rpc("push_config")).data as unknown as { mock: boolean } | null });
   const [busy, setBusy] = useState(false);
   const n = notifyDefaults(prefs.notify);
   const quiet = { ...QUIET_DEFAULT, ...(prefs.notify?.quiet ?? {}) };
@@ -38,7 +38,7 @@ export function PushSettings({ prefs, savePrefs }: { prefs: Prefs; savePrefs: (p
   };
   const turnOff = async () => { setBusy(true); await disablePush().catch(() => undefined); setBusy(false); await refresh(); toast(t("push.turnedOff")); };
   const test = async () => {
-    const { error } = await db.rpc("push_test");
+    const { error } = await supabase.rpc("push_test");
     if (error) { toast.error(error.message); return; }
     void kickPush(); toast.success(t("push.testSent"));
   };

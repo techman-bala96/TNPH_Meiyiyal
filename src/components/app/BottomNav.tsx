@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 const TABS = [
   { key: "home", to: "/", icon: House, match: (p: string) => p === "/" || p.startsWith("/browse") },
-  { key: "conversations", to: "/history", icon: MessagesSquare, match: (p: string) => p.startsWith("/history") },
+  { key: "conversations", to: "/history", icon: MessagesSquare, match: (p: string) => p.startsWith("/history") || p.startsWith("/messages") },
   { key: "profile", to: "/profile", icon: UserRound, match: (p: string) => ["/profile", "/wallet", "/settings", "/earnings"].some((x) => p.startsWith(x)) },
 ] as const;
 // full-screen flows keep the whole viewport

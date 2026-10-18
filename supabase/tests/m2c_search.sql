@@ -14,13 +14,22 @@ INSERT INTO public.workers(id,user_id,display_name,primary_node,status,is_active
 INSERT INTO public.worker_nodes(worker_id,node_slug,is_primary) SELECT id, primary_node, true FROM public.workers WHERE id::text LIKE '00000000-0000-0000-0000-00000000bb0%';
 SELECT set_config('meiyiyal.trusted','off',true);
 SET LOCAL role anon;
+DO $$ BEGIN
+  PERFORM public.search_workers('professionals--doctor', 8.0883, 77.5385);
+  RAISE EXCEPTION 'FAIL: anon can search';
+EXCEPTION WHEN insufficient_privilege THEN RAISE NOTICE 'PASS: search needs sign-in (distance is private)';
+END $$;
+RESET role;
+SELECT set_config('request.jwt.claims', '{"sub":"00000000-0000-0000-0000-00000000aa09","role":"authenticated"}', true);
+SET LOCAL role authenticated;
 DO $$ DECLARE names text[]; d double precision; BEGIN
   SELECT array_agg(display_name) INTO names FROM public.search_workers('professionals--doctor--allopathy', 8.0883, 77.5385);
   IF names <> ARRAY['Far Online','Near Offline'] THEN RAISE EXCEPTION 'FAIL: order/radius %', names; END IF;
-  RAISE NOTICE 'PASS: online first, then distance; 50 km radius; pending hidden';
+  RAISE NOTICE 'PASS: available first, then offline, nearest first; 50 km radius; pending hidden';
   SELECT distance_km INTO d FROM public.search_workers('professionals--doctor', 8.0883, 77.5385) WHERE display_name='Far Online';
-  IF abs(d - 15.8) > 0.2 THEN RAISE EXCEPTION 'FAIL: distance %', d; END IF;
-  RAISE NOTICE 'PASS: distance % km (Kanyakumari -> Nagercoil)', d;
+  IF d <> 16 THEN RAISE EXCEPTION 'FAIL: distance % (want whole km)', d; END IF;
+  RAISE NOTICE 'PASS: distance % km, rounded to whole km (Kanyakumari -> Nagercoil)', d;
+  IF (SELECT distance_km FROM public.search_workers('professionals--doctor', 8.0883, 77.5385, 50, true) WHERE display_name='Near Offline') <> 0 THEN RAISE EXCEPTION 'FAIL: under 1 km should be 0 (shown as < 1 km)'; END IF;
   IF (SELECT count(*) FROM public.search_workers('professionals--doctor--allopathy--paediatrics', 8.0883, 77.5385, 50, true)) <> 3 THEN RAISE EXCEPTION 'FAIL: show all'; END IF;
   IF EXISTS (SELECT 1 FROM public.search_workers('professionals--lawyer', 8.0883, 77.5385, 50, true)) THEN RAISE EXCEPTION 'FAIL: other subtree'; END IF;
   IF EXISTS (SELECT 1 FROM public.search_workers('professionals--doctor--allopathy--paed', 8.0883, 77.5385, 50, true)) THEN RAISE EXCEPTION 'FAIL: prefix match'; END IF;

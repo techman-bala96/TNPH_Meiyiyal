@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
-import { Award, BadgeCheck, Briefcase, MapPin, MessageSquareText, SearchX, Star, X } from "lucide-react";
+import { Award, BadgeCheck, Briefcase, Info, MapPin, MessageSquareText, SearchX, Sparkles, Star, X } from "lucide-react";
 import { useTaxonomy, nodeName } from "@/features/taxonomy/useTaxonomy";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,10 +12,14 @@ import { RequestSheet } from "@/features/consult/RequestSheet";
 import type { Rates } from "@/features/consult/api";
 import { BadgeRow } from "@/features/rewards/RewardIcon";
 import type { Reward } from "@/features/rewards/types";
+import { FindNowBar } from "@/features/nearby/FindNowBar";
+import { kmLabel } from "@/features/nearby/match";
 
 export type WorkerCard = { id: string; display_name: string; photo_url: string | null; rating: number; feedback_count: number; rewards_count: number; years_experience: number;
   primary_node: string; specialty: { en: string; ta?: string } | null; is_online: boolean; distance_km: number; district_slug: string | null; district_name: { en: string; ta?: string } | null;
-  is_busy?: boolean; rates?: Rates; badges?: Reward[]; badge_tier?: "licence" | "degree" | null; verified_at?: string | null };
+  is_busy?: boolean; rates?: Rates; badges?: Reward[]; badge_tier?: "licence" | "degree" | null; verified_at?: string | null; availability?: "available" | "busy" | "offline" };
+const GROUPS = ["available", "busy", "offline"] as const;
+const availabilityOf = (w: WorkerCard) => w.availability ?? (w.is_busy ? "busy" : w.is_online ? "available" : "offline");
 
 export function WorkerList({ node, nodeLabel, tile, where }: { node: string; nodeLabel: string; tile: string; where: string }) {
   const { t, i18n } = useTranslation(); const ta = i18n.language?.startsWith("ta");
@@ -25,7 +29,11 @@ export function WorkerList({ node, nodeLabel, tile, where }: { node: string; nod
   const [sp, setSp] = useSearchParams();
   const district = sp.get("district"); const all = sp.get("all") === "1" || !!district;
   const near = sp.get("near")?.split(","); const center = near && near.length >= 2 ? { lat: Number(near[0]), lng: Number(near[1]), label: near.slice(2).join(",") } : null;
-  const km = sp.get("km") ? Number(sp.get("km")) : null; const online = sp.get("online") === "1"; const sort = sp.get("sort");
+  const km = sp.get("km") ? Number(sp.get("km")) : null; const online = sp.get("online") === "1";
+  // advocates are never ranked by rating (Bar Council rules): distance only
+  const lawyer = node.startsWith("professionals--lawyer"); const rawSort = sp.get("sort"); const sort = lawyer && rawSort === "rating" ? "distance" : rawSort;
+  const alts = (sp.get("alt") ?? "").split(",").filter((x) => x && x !== node);
+  const nodeKind = tax.data?.find((x) => x.slug === node)?.kind;
   const xn = (sp.get("xn") ?? "").split(",").filter(Boolean); const xw = (sp.get("xw") ?? "").split(",").filter(Boolean);
   const setAll = (v: boolean) => { const n = new URLSearchParams(sp); if (v) n.set("all", "1"); else { n.delete("all"); n.delete("district"); } setSp(n, { replace: true }); };
   const drop = (keys: string[], val?: string) => { const n = new URLSearchParams(sp); for (const k of keys) {
@@ -41,9 +49,12 @@ export function WorkerList({ node, nodeLabel, tile, where }: { node: string; nod
   });
   let rows = (q.data ?? []).filter((w) => (!online || w.is_online) && (!district || w.district_slug === district) && (!km || w.distance_km <= km)
     && !xn.some((x) => w.primary_node === x || w.primary_node.startsWith(x + "--")) && !xw.some((x) => w.display_name.toLowerCase().includes(x.toLowerCase())));
-  if (sort === "rating") rows = [...rows].sort((a, b) => Number(b.rating) - Number(a.rating) || b.feedback_count - a.feedback_count);
-  else if (sort === "experience") rows = [...rows].sort((a, b) => b.years_experience - a.years_experience);
-  else if (sort === "distance") rows = [...rows].sort((a, b) => a.distance_km - b.distance_km);
+  // available → busy → offline always comes first (server order is nearest-first inside each group); a chosen sort applies inside a group
+  const cmp = sort === "rating" ? (a: WorkerCard, b: WorkerCard) => Number(b.rating) - Number(a.rating) || b.feedback_count - a.feedback_count
+    : sort === "experience" ? (a: WorkerCard, b: WorkerCard) => b.years_experience - a.years_experience : null;
+  if (cmp) rows = GROUPS.flatMap((g) => rows.filter((w) => availabilityOf(w) === g).sort(cmp));
+  const availableCount = rows.filter((w) => availabilityOf(w) === "available").length;
+  const byGroup = GROUPS.map((g) => [g, rows.filter((w) => availabilityOf(w) === g)] as const).filter(([, l]) => l.length > 0);
   const tn = (slug: string) => { const n = tax.data?.find((x) => x.slug === slug); return n ? nodeName(n, ta ? "ta" : "en") : slug; };
   const chips: { key: string; label: string; keys: string[]; val?: string }[] = [
     ...(online ? [{ key: "online", label: t("filters.online"), keys: ["online"] }] : []),
@@ -65,6 +76,14 @@ export function WorkerList({ node, nodeLabel, tile, where }: { node: string; nod
           <button data-testid="list-all" onClick={() => setAll(true)} className={`rounded-full px-3 py-1.5 transition ${all ? "bg-card shadow" : "text-muted-foreground"}`}>{t("list.showAll")}</button>
         </div>
       </div>
+      {lat != null && lng != null && (nodeKind === "subcategory" || nodeKind === "specialty") && (
+        <FindNowBar node={node} nodeLabel={nodeLabel} lat={lat} lng={lng} available={availableCount} rates={rows[0]?.rates} />)}
+      {alts.length > 0 && (
+        <div className="flex flex-wrap items-center gap-1.5 text-xs" data-testid="alt-chips">
+          <span className="flex items-center gap-1 text-muted-foreground"><Sparkles className="h-3.5 w-3.5" />{t("nearby.search.alsoTry")}</span>
+          {alts.map((a) => <Link key={a} to={`/browse/${a}?list=1`} data-testid="alt-chip" data-slug={a} className="rounded-full border px-2.5 py-1 font-semibold transition hover:bg-muted">{tn(a)}</Link>)}
+        </div>)}
+      {lawyer && <p data-testid="lawyer-note" className="flex items-start gap-1.5 text-[11px] text-muted-foreground"><Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />{t("nearby.lawyerNote")}</p>}
       {chips.length > 0 && (
         <div className="flex flex-wrap gap-1.5" data-testid="filter-chips">
           {chips.map((c) => (
@@ -87,9 +106,14 @@ export function WorkerList({ node, nodeLabel, tile, where }: { node: string; nod
       {all ? groups.map(([d, list]) => (
         <div key={d} className="space-y-2" data-testid="district-group" data-district={d}>
           <h3 className="sticky top-0 z-10 flex items-center gap-1.5 bg-background/90 py-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground backdrop-blur"><MapPin className="h-3.5 w-3.5" />{d} · {list.length}</h3>
-          <ul className="space-y-2">{list.map((w) => <Card key={w.id} w={w} />)}</ul>
+          <ul className="grid gap-2 md:grid-cols-2">{list.map((w) => <Card key={w.id} w={w} />)}</ul>
         </div>
-      )) : <ul className="space-y-2">{rows.map((w) => <Card key={w.id} w={w} />)}</ul>}
+      )) : byGroup.map(([g, list]) => (
+        <div key={g} className="space-y-2" data-testid="availability-group" data-group={g}>
+          {byGroup.length > 1 && <h3 className="flex items-center gap-1.5 pt-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            <span className={`h-2 w-2 rounded-full ${g === "available" ? "bg-emerald-500" : g === "busy" ? "bg-amber-500" : "bg-muted-foreground/40"}`} />{t(`nearby.groups.${g}`)} · {list.length}</h3>}
+          <ul className="grid gap-2 md:grid-cols-2">{list.map((w) => <Card key={w.id} w={w} />)}</ul>
+        </div>))}
     </section>
   );
 }
@@ -97,10 +121,11 @@ export function WorkerList({ node, nodeLabel, tile, where }: { node: string; nod
 function Card({ w }: { w: WorkerCard }) {
   const { t, i18n } = useTranslation(); const ta = i18n.language?.startsWith("ta");
   const spec = w.specialty ? (ta && w.specialty.ta) || w.specialty.en : "";
+  const avail = availabilityOf(w);
   const [open, setOpen] = useState(false);
   return (<>
-    <RequestSheet w={{ ...w, spec }} open={open} onOpenChange={setOpen} />
-    <li data-testid="worker-card" data-id={w.id} data-name={w.display_name} data-online={w.is_online} data-busy={!!w.is_busy} role="button" tabIndex={0}
+    <RequestSheet w={{ ...w, spec, node: w.primary_node }} open={open} onOpenChange={setOpen} />
+    <li data-testid="worker-card" data-id={w.id} data-name={w.display_name} data-online={w.is_online} data-busy={!!w.is_busy} data-availability={avail} role="button" tabIndex={0}
       onClick={() => setOpen(true)} onKeyDown={(e) => e.key === "Enter" && setOpen(true)}
       className="card-soft flex cursor-pointer gap-3 p-3 transition hover:-translate-y-0.5 hover:shadow-lg animate-in fade-in slide-in-from-bottom-1">
       <div className="relative shrink-0">
@@ -109,15 +134,15 @@ function Card({ w }: { w: WorkerCard }) {
           <AvatarFallback className="rounded-2xl bg-primary/10 font-semibold text-primary">{initials(w.display_name)}</AvatarFallback>
         </Avatar>
         <span data-testid="online-dot" aria-label={w.is_online ? t("list.online") : t("list.offline")}
-          className={`absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full ring-2 ring-card ${w.is_online ? "bg-emerald-500" : "bg-muted-foreground/40"}`}>
-          {w.is_online && <span className="absolute inset-0 animate-ping rounded-full bg-emerald-500/60" />}
+          className={`absolute -bottom-0.5 -right-0.5 h-4 w-4 rounded-full ring-2 ring-card ${avail === "available" ? "bg-emerald-500" : avail === "busy" ? "bg-amber-500" : "bg-muted-foreground/40"}`}>
+          {avail === "available" && <span className="absolute inset-0 animate-ping rounded-full bg-emerald-500/60" />}
         </span>
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-start justify-between gap-2">
           <p className="flex min-w-0 items-center gap-1 font-semibold"><span className="truncate">{w.display_name}</span><BadgeCheck className="h-4 w-4 shrink-0 text-primary" />
             {w.badge_tier && <span data-testid="badge-tier" data-tier={w.badge_tier} className="shrink-0 text-[10px] font-semibold uppercase text-primary">{t(`worker.badge.${w.badge_tier}`)}</span>}</p>
-          <span data-testid="distance" className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[11px] font-semibold">{w.distance_km.toFixed(1)} km</span>
+          <span data-testid="distance" className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[11px] font-semibold">{kmLabel(w.distance_km, ta ? "ta" : "en")}</span>
         </div>
         <p className="truncate text-xs text-muted-foreground">{spec}{w.is_busy && <span className="ml-1 font-semibold text-amber-600">· {t("consult.busy")}</span>}</p>
         <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
