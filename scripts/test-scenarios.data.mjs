@@ -113,7 +113,7 @@ export const REAL_PHONE = [
 /** RPCs / functions / notification kinds with no screen of their own, or that need a key. */
 export const SERVER_ONLY = {
   is_session_party: "SQL helper: checked inside every session RPC (session_tick, session_end, …) and RLS; exercised by every consult scenario",
-  mask_contact: "SQL helper: masks phone/email inside chat messages (consult_messages trigger); CL04/LR12 send text through it",
+  mask_contact: "SQL helper: masks phone numbers/emails inside worker_message_send (paid messages); CL03 / nearby paid-message scenarios go through it",
   node_category: "SQL helper: category lookup inside worker/search RPCs and the category lock",
   presence_window: "SQL helper: online window used inside search_workers / nearby",
   public_km: "SQL helper: rounds distances inside search_workers (privacy)",
