@@ -987,12 +987,32 @@ isOneToOne: false
               "amount_paise": number,"bonus": number,"created_at": string,"credits": number,"events": number,"failure_reason": string,"id": string,"pack_id": string,"provider": string,"provider_order_id": string,"provider_payment_id": string,"refund_note": string,"status": string,"user_name": string
             }[]
                            },
+"admin_payout_accounts":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "account_mask": string,"cooling_until": string,"duplicate": boolean,"failure_reason": string,"flag_active": boolean,"ifsc": string,"kind": string,"payout_hold": boolean,"registered_name": string,"status": string,"worker_name": string,"worker_user_id": string
+            }[]
+                           },
+"admin_payout_approve":
+{ Args: { "_id": string }; Returns: string
+                           },
 "admin_payout_decide":
 { Args: { "_id": string,"_note": string,"_paid": boolean,"_reference": string }; Returns: string
                            },
+"admin_payout_hold":
+{ Args: { "_hold": boolean,"_user": string }; Returns: boolean
+                           },
+"admin_payout_pause":
+{ Args: { "_paused": boolean }; Returns: boolean
+                           },
+"admin_payout_release_cooling":
+{ Args: { "_user": string }; Returns: string
+                           },
+"admin_payout_run":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "admin_payouts":
 { Args: { "_status"?: string }; Returns: {
-              "admin_note": string,"amount": number,"decided_at": string,"id": string,"items": number,"reference": string,"requested_at": string,"status": string,"worker_name": string,"worker_user_id": string
+              "account_mask": string,"account_status": string,"admin_note": string,"amount": number,"attempt_count": number,"decided_at": string,"failure_reason": string,"flag_active": boolean,"id": string,"items": number,"payout_hold": boolean,"provider": string,"reference": string,"requested_at": string,"review_reason": string,"status": string,"worker_name": string,"worker_user_id": string
             }[]
                            },
 "admin_rate_cards":

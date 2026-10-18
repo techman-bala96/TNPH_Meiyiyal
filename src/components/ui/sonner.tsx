@@ -3,13 +3,14 @@ import { Toaster as Sonner, toast } from "sonner";
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
-const Toaster = ({ ...props }: ToasterProps) => {
+const Toaster = ({ mobileOffset, ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme();
 
   return (
     <Sonner
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
+      mobileOffset={mobileOffset ?? { bottom: "calc(4.75rem + env(safe-area-inset-bottom))" }}
       toastOptions={{
         classNames: {
           toast:

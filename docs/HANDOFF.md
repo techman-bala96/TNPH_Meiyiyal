@@ -33,7 +33,7 @@ _This file replaces the 16 Oct HANDOFF.md. It is self-contained: you can rebuild
 
 **அடுத்து செய்ய வேண்டியவை (இந்த வரிசையில்):**
 1. Verification engine v1. எல்லாம் முடிஞ்ச அளவு automate: doctors/lawyers-உம் checks pass ஆனா தானா approve ஆகணும். "Licence verified" / "Degree verified" ரெண்டு badge இருக்கும். எல்லா வகை engineers, doctors-ஐயும் சேர்க்கணும்.
-2. RazorpayX மூலம் payout automation + penny-drop.
+2. Payout automation — mock வந்துவிட்டது (M8, வாரம் ஒரு முறை, 3 நாள் cool-off). நேரடி RazorpayX keys இன்னும் இல்லை.
 3. FCM push.
 4. TURN/100ms.
 5. MSG91 SMS.
@@ -101,7 +101,7 @@ Meiyiyal is a **Tamil Nadu-first marketplace for ONLINE professional consultatio
 | 21 | **Voice agent:** top-bar mic; filter/sort the list by speech; asks follow-up questions; EN + TA | ✅ M5 | Accessibility |
 | 22 | **Profession lock:** once a worker submits a profession it can never be changed | ✅ server trigger | Stops category-hopping fraud |
 | 23 | **Bottom navigation:** Home / Conversations / Profile at the bottom (not Conversations inside the profile menu) | ✅ `137cf8e` | User request 17 Oct |
-| 24 | **Automate payouts** (no manual admin "mark paid" in the normal case) | ❌ next (RazorpayX + penny-drop) | User request 17 Oct |
+| 24 | **Automate payouts** (no manual admin "mark paid" in the normal case) | 🟡 M8 mock (weekly Monday 10:00 IST, 3-day cool-off). Live RazorpayX still needs keys | User request 17 Oct; cooling changed to 3 days on approval |
 | 25 | **Automate verification as much as possible**, including **auto-approve for doctors & lawyers** when all checks pass | ❌ next (verification engine v1) | User request 17 Oct |
 | 26 | **Council website lookups automated** as score signals, with admin fallback | ❌ next | User asked for clarification; answered: allowed as signals |
 | 27 | **Two-tier badges:** "Licence verified" (statutory register) vs "Degree verified" (unregulated disciplines); handle both correctly | ❌ next | Some disciplines have no licence |
@@ -432,6 +432,13 @@ Conventions used everywhere:
   - Admin tabs: Packs, Payments (refunds), Payouts.
 - **Tests:** `m6_payments.sql` (26 checks); `e2e/payments.spec.ts`: success, failure, cancel, bad signature, duplicate webhook, late capture after cancel, no client minting, chat with earnings at the 15% fee, payout request, admin mark paid, refunds view, packs editor.
 
+### M8 — Automatic payouts, mock mode (`20261018070000_m8_payouts.sql`)
+- Bank and UPI penny-drop, Aadhaar name match, 3-day cool-off (including the first account), Monday 10:00 IST batch, ₹200 minimum, existing 72-hour hold. No TDS. Platform bears the fee. No Request tap once the account is verified.
+- `worker_payout_accounts` (mask + hash only), `payout_events`, `workers.payout_hold`, `kyc_verification.legal_name`.
+- Edge: `payout-fund-account`, `payout-run`, `payout-webhook`, mock provider in `_shared/payouts.ts`. Live RazorpayX calls are refused.
+- Earnings screen shows the masked account, verification state, the first Monday 10:00 IST batch on or after the worker is eligible (cool-off, 72-hour hold, temporary block), and the cool-off or hold end in IST. A rejected or flagged account does not show a payout date. Admin Payouts tab: review queue, global pause, per-worker hold, cool-off end, break-glass mark-paid. A failed, reversed, or rejected payout says how many earning entries went back to the balance (`entry_count`, migration `20261018103000_m8_payout_next.sql`).
+- **Tests:** `m8_payouts.sql`; `e2e/payouts.spec.ts` (penny-drop, name mismatch, weekly run, flagged skip, failure returns the balance). The M6 manual request path still runs when there is no verified account.
+
 ### UI — Bottom navigation (`137cf8e`)
 - `BottomNav`:
   - Home / Conversations (`/history`) / Profile, with a sliding active pill and animated icons; safe-area padding.
@@ -646,7 +653,7 @@ Prerequisites: Linux/macOS, **Docker**, **Node 20** (box: v20.19.2), **Supabase 
 | 5 | **Lawyer advertising risk** (BCI Rule 36; Madras HC, P.N. Vignesh 2024) | Ratings/rankings for advocates may be seen as solicitation | Counsel review before scaling; admin kill switch recommended |
 | 6 | **Voice agent never sorts lawyers by rating**, though lawyers are otherwise in full mode | Inconsistent with decision #16 (user was told; no reply) | One line in `services/agent/agent/parser.py` (~318) if the user wants it removed |
 | 7 | **Bonus credits:** the 180-day expiry and "bonus spent first" are not implemented | Bonus behaves like paid credit | Split ledger (paid vs bonus buckets) |
-| 8 | **Payouts are manual** (admin enters UTR) | Ops load | RazorpayX (§7.2) |
+| 8 | **Payouts run in mock mode** until RazorpayX keys exist. `payouts_auto` stays off until someone turns it on | No real bank transfer yet | Add the four `RAZORPAYX_*` secrets and a live provider (§7.2) |
 | 9 | **No admin UI for** reward milestones, moderation thresholds, commission rules, app_settings, taxonomy CMS, node_requirements | SQL needed | §7.9 |
 | 10 | **Aadhaar is a stub**; registry checks manual | Fakes are possible | Verification engine (§7.1) |
 | 11 | No real SMS (test OTPs only) | Real phones can't log in on prod | MSG91 (§7.5) |
@@ -750,14 +757,17 @@ Prerequisites: Linux/macOS, **Docker**, **Node 20** (box: v20.19.2), **Supabase 
 8. **Server pepper:** `VERIFY_HMAC_PEPPER` (new secret; keep in `supabase/.env` / service env).
 
 ### 7.2 Payout automation (RazorpayX + penny-drop)
-- `PayoutProvider` interface (`razorpayx` | `mock`), like payments. New Edge Functions or a scheduled job:
-  - `payout-fund-account` (create contact + fund account; **Fund Account Validation / penny-drop** name match vs the worker's KYC name)
-  - `payout-run` (weekly cron + on-request when ≥ `payout_min` and no risk flags)
-  - `payout-webhook` (`payout.processed/failed/reversed`, idempotent)
-- **Tables:** `worker_payout_accounts` (bank/UPI, masked; hash for duplicate detection), with `payout_requests` extended with `provider_payout_id`, `status`, `failure_reason`.
-- **Risk rules route a payout to admin review instead of paying automatically:** a new account < 7 days old, a recent complaint/flag, a name mismatch, a duplicate bank hash, or an amount > a threshold.
-- **Env names:** `RAZORPAYX_KEY_ID`, `RAZORPAYX_KEY_SECRET`, `RAZORPAYX_ACCOUNT_NUMBER`, `RAZORPAYX_WEBHOOK_SECRET`. New settings: `payouts_auto`, `payout_review_amount`, `payout_schedule`.
-- TDS (194-O) / GST handling per CA advice; PAN capture later.
+
+**Shipped in mock mode (M8, migration `20261018070000_m8_payouts.sql`).** No live RazorpayX HTTP. A verified bank or UPI account is paid by the Monday 10:00 IST batch; the worker does not tap Request. Manual request stays only when there is no verified account. Admin pay-now and break-glass mark-paid (UTR required) stay.
+
+- Cool-off is **3 days** for a new or changed account, including the first one. An admin can release it sooner (`payout_cooling_days`). The earnings screen's next payout is the Monday 10:00 IST batch on or after that cool-off (and after the 72-hour hold, when that is later). The cool-off line shows the end time in IST.
+- Same penny-drop and Aadhaar-name check for bank and UPI. The full account number is not stored (mask + hash + mock fund-account id).
+- Platform bears the transfer fee (`payout_fee_bearer=platform`; v1 does not deduct it even if flipped). No TDS (`tds_enabled=false`). PAN is optional text and is not verified.
+- Batch skips a flagged worker, a temporary block, an admin hold, a cool-off, a duplicate or unmatched account, and anything under ₹200 or still inside the 72-hour hold. Amounts ≥ ₹10,000 wait for review.
+- Mock suffixes: account ending `0000` is a name mismatch, `0001` is invalid, `0002` validates and then the payout fails (earnings return). Step-up uses the existing stub phone code while `payouts_mock` is true.
+- Functions: `payout-fund-account`, `payout-run`, `payout-webhook`. Secrets, still unset: `RAZORPAYX_KEY_ID`, `RAZORPAYX_KEY_SECRET`, `RAZORPAYX_ACCOUNT_NUMBER`, `RAZORPAYX_WEBHOOK_SECRET`.
+
+**Still needs a person:** a RazorpayX account and those four secrets; a CA before anyone sets `tds_enabled`; MSG91 (or another real OTP) before live step-up; turn `payouts_auto` on only after a sandbox transfer looks right. The hosted Monday schedule is not wired — the admin “Run payout batch” button and a direct call to `payout-run` are what move money in this build.
 
 ### 7.3 FCM push (ring when the app is closed)
 - A Firebase project; the web SW handles `push` with vibrate, `requireInteraction` and Accept/Decline actions.

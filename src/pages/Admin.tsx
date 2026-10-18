@@ -31,7 +31,7 @@ export default function Admin() {
   if (!admin.data) return <Navigate to="/" replace />;
 
   return (
-    <PageShell title={t("admin.title")} testId="admin-page">
+    <PageShell title={`${t("admin.title")} · ${t(`admin.heading.${tab}`)}`} testId="admin-page">
       <div className="grid grid-cols-4 gap-1 rounded-2xl bg-primary/10 p-1">
         {(["queue", "moderation", "rates", "audit", "packs", "payments", "payouts"] as const).map((k) => (
           <button key={k} data-testid={`admin-tab-${k}`} onClick={() => setTab(k)} className={`rounded-xl py-2 text-xs font-semibold transition ${tab === k ? "bg-primary text-primary-foreground shadow" : "text-primary"}`}>{t(`admin.tab.${k}`)}</button>))}

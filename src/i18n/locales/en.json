@@ -201,7 +201,16 @@
     "appealSubmit": "Request a review"
   },
   "admin": {
-    "title": "Verification",
+    "title": "Admin",
+    "heading": {
+      "queue": "Verification queue",
+      "moderation": "Moderation",
+      "rates": "Consult rates",
+      "audit": "Audit log",
+      "packs": "Credit packs",
+      "payments": "Payments",
+      "payouts": "Payouts"
+    },
     "empty": "Nothing here",
     "note": "Note to worker (required for reject / more info)",
     "approve": "Approve",
@@ -243,12 +252,47 @@
     },
     "payout": {
       "none": "No payout requests",
-      "items": "{{n}} earning entries",
+      "items_one": "{{count}} earning entry",
+      "items_other": "{{count}} earning entries",
+      "returned_one": "{{count}} earning entry returned to the balance",
+      "returned_other": "{{count}} earning entries returned to the balance",
+      "returnedNone": "Earnings returned to the balance",
       "refOrReason": "UTR / reference (or reject reason)",
       "paid": "Mark paid",
       "reject": "Reject",
       "markedPaid": "Marked paid",
-      "rejected": "Rejected"
+      "rejected": "Rejected",
+      "policy": "Monday 10:00 IST · ₹200 minimum · 72h hold · 3-day cool-off · platform pays the transfer fee",
+      "paused": "Automatic payouts are paused",
+      "live": "Automatic payouts are on",
+      "pause": "Pause payouts",
+      "resume": "Resume payouts",
+      "run": "Run payout batch",
+      "ran": "Batch finished",
+      "accounts": "Payout accounts",
+      "noAccounts": "No payout accounts yet",
+      "hold": "Hold worker",
+      "releaseHold": "Release hold",
+      "held": "Worker held",
+      "released": "Hold released",
+      "coolingUntil": "Cool-off until {{date}}",
+      "flagged": "Flagged",
+      "releaseCooling": "Release cool-off",
+      "coolingReleased": "Cool-off released",
+      "send": "Send",
+      "sent": "Sent to the bank",
+      "duplicate": "Duplicate account",
+      "reviewReason": "Needs a person: {{reason}}",
+      "why": {
+        "amount": "large amount",
+        "duplicate": "same account as another worker",
+        "tds": "TDS check",
+        "name_mismatch": "bank name does not match Aadhaar",
+        "name_review": "name needs a check",
+        "no_legal_name": "no Aadhaar name on file",
+        "invalid_account": "invalid account",
+        "beneficiary": "bank rejected the beneficiary"
+      }
     }
   },
   "menu2": {
@@ -500,6 +544,47 @@
     "requested": "Payout requested",
     "pendingNote": "Payout of {{amt}} is being processed",
     "rule": "Minimum {{min}} · earnings unlock {{h}}h after each session",
+    "autoNote": "Paid automatically on the next eligible Monday at 10:00 IST. No request needed.",
+    "account": "Payout account",
+    "accountHint": "Bank or UPI. We check it with a ₹1 transfer and match the bank’s name to your Aadhaar name.",
+    "bank": "Bank",
+    "upi": "UPI",
+    "accountNo": "Account number",
+    "ifsc": "IFSC",
+    "vpa": "UPI id",
+    "otp": "Phone code",
+    "pan": "PAN (optional)",
+    "saveAccount": "Check account",
+    "change": "Change account",
+    "next": "Next payout",
+    "registered": "Bank name",
+    "returned": "Returned to your balance",
+    "saved": {
+      "verified": "Account verified. Payouts start after the cool-off.",
+      "review": "Account needs a person to look at it.",
+      "rejected": "The bank name does not match your Aadhaar name.",
+      "failed": "That account could not be verified."
+    },
+    "waitPlain": {
+      "cooling": "The new account is in its cool-off",
+      "on_hold": "Earnings are still inside the 72-hour hold",
+      "blocked": "Payouts are paused during a temporary block"
+    },
+    "wait": {
+      "cooling": "Cool-off until {{date}}",
+      "below_min": "Available balance is under the minimum",
+      "on_hold": "Earnings unlock {{date}}",
+      "paused": "Automatic payouts are paused",
+      "ready": "Included in the next Monday batch",
+      "flagged": "Payouts are paused while a complaint is open",
+      "blocked": "Payouts resume when the temporary block ends on {{date}}",
+      "payout_hold": "An admin has paused your payouts",
+      "account_unverified": "Add a verified bank account or UPI id",
+      "account_rejected": "The bank name does not match your Aadhaar name",
+      "account_review": "This account is waiting for an admin",
+      "in_flight": "A payout is already in progress",
+      "not_approved": "Payouts start after your profile is approved"
+    },
     "lifetime": "Lifetime",
     "pending": "Processing",
     "paid": "Paid out",
@@ -512,8 +597,15 @@
     "noPayouts": "No payouts yet",
     "status": {
       "requested": "Processing",
+      "queued": "Queued",
+      "review": "In review",
+      "processing": "Sending",
       "paid": "Paid",
-      "rejected": "Rejected"
+      "failed": "Failed",
+      "reversed": "Reversed",
+      "rejected": "Rejected",
+      "verified": "Verified",
+      "pending": "Checking"
     }
   },
   "nav": {
