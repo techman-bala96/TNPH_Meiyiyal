@@ -325,7 +325,23 @@ test("[V23] admin rejects with a note → worker sees it, cannot go online, is n
   await r.page.getByTestId("appeal-submit").click();
   await expect(r.page.getByTestId("worker-status")).toHaveAttribute("data-status", "pending");
   await snap(r.page, "V23", "appealed");
-  await c.close(); await r.close();
+  // a different admin (not the one who rejected) upholds the rejection in the Appeals tab → worker is told
+  const a2 = await person(browser, null);
+  grantAdmin(await signInAt(a2.page, a2.page.request, `vf${TAG()}-admin2`));
+  await a2.page.goto("/admin#appeals"); await a2.page.reload();
+  const ac = a2.page.locator(`[data-testid="appeal-card"][data-name="${n("Dr. Arun Kumar")}"]`);
+  await expect(ac.getByTestId("appeal-text")).toContainText("renewed certificate");
+  await expect(ac.getByTestId("appeal-uphold")).toBeDisabled();
+  await ac.getByTestId("appeal-decision-note").fill("Council record still shows the 2024 expiry.");
+  await snap(a2.page, "V23", "admin-uphold");
+  await ac.getByTestId("appeal-uphold").click();
+  await expect(ac).toHaveCount(0);
+  await r.page.reload();
+  await expect(r.page.getByTestId("worker-status")).toHaveAttribute("data-status", "rejected");
+  await r.page.goto("/notifications");
+  await expect(r.page.locator('[data-testid="inbox-item"][data-kind="appeal.upheld"]')).toBeVisible();
+  await snap(r.page, "V23", "upheld-inbox");
+  await a2.close(); await c.close(); await r.close();
 });
 
 for (const [id, cat, reg, regStatus] of [
