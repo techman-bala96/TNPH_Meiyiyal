@@ -24,6 +24,8 @@ const council = (patch: Record<string, unknown>) => writeFileSync(`${FX}/council
 let svc: ChildProcess | null = null;
 test.beforeAll(async () => {
   council({});
+  // this file needs the (fixture) council register looked up; a crawl or an admin may have switched it off
+  sql(`UPDATE public.app_settings SET value = 'true' WHERE key = 'verify_registry_live';`);
   const status = execSync("npx supabase status -o env", { stdio: ["ignore", "pipe", "ignore"] }).toString();
   const service = /^SERVICE_ROLE_KEY="?([^"\n]+)"?$/m.exec(status)?.[1] ?? "";
   svc = spawn("services/verify/run.sh", [], { stdio: "ignore", detached: true, env: { ...process.env,
