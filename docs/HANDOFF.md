@@ -363,6 +363,8 @@ Secrets in `app_settings` (`aadhaar_pepper`, `payout_account_pepper`, `verify_hm
 | --- | --- | --- |
 @@TESTS@@
 
+**Scenario checklist:** every scenario (steps, expected, actual pass/fail per device, language, spec, screenshots), the coverage matrix of every route / RPC / Edge Function / cron job / setting / admin tool / notification, the Button coverage table from the click-crawl, the live-readiness list and the real-phone / production-only checks are in **[TEST-SCENARIOS.md](TEST-SCENARIOS.md)** (regenerate with `node scripts/test-scenarios.mjs` after a full run; see the header there).
+
 Notes: `test:db` turns admin MFA off for the run and restores it; Playwright's global setup/teardown does the same.
 `test:e2e` starts Vite :8080, `supabase functions serve` and the agent :8787 itself; the local stack must be up.
 
