@@ -10,7 +10,7 @@ Links: [HANDOFF](HANDOFF.md) · [Live readiness](#live-readiness) · [Real-phone
 
 ## 1. Coverage matrix (feature inventory from the code)
 
-**216 / 371 items covered (58.2%)**: UI 90 · GAP 93 · server 123 · key-only 3 · FAIL 62
+**313 / 371 items covered (84.4%)**: UI 279 · GAP 48 · server 33 · key-only 1 · FAIL 10
 
 Status: **UI** = exercised through the app's UI in a passing scenario · **server** = runs server-side inside a UI journey or by a DB test (no screen of its own) · **key-only** = needs a production key/account, mock adapter tested instead · **GAP** = not covered.
 
@@ -50,158 +50,158 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | Admin tool | `milestones` | GAP | crawl: admin console + admin-m11 editors |
 | Admin tool | `security` | GAP | crawl: admin console + admin-m11 editors |
 | Admin tool | `audit` | GAP | crawl: admin console + admin-m11 editors |
-| RPC | `aadhaar_send_otp` | server | supabase/tests |
-| RPC | `aadhaar_verify_otp` | server | supabase/tests |
-| RPC | `account_delete_cancel` | server | supabase/tests |
-| RPC | `account_delete_request` | server | supabase/tests |
-| RPC | `admin_appeals` | server | supabase/tests |
-| RPC | `admin_audit_log` | server | supabase/tests |
-| RPC | `admin_case_media` | server | supabase/tests |
-| RPC | `admin_commission_rules` | server | 6 calls in run |
-| RPC | `admin_create_campaign_code` | server | supabase/tests |
-| RPC | `admin_decide_appeal` | server | supabase/tests |
-| RPC | `admin_decide_worker` | server | supabase/tests |
+| RPC | `aadhaar_send_otp` | UI | called by the app during the UI run |
+| RPC | `aadhaar_verify_otp` | UI | called by the app during the UI run |
+| RPC | `account_delete_cancel` | UI | called by the app during the UI run |
+| RPC | `account_delete_request` | UI | called by the app during the UI run |
+| RPC | `admin_appeals` | UI | called by the app during the UI run |
+| RPC | `admin_audit_log` | UI | called by the app during the UI run |
+| RPC | `admin_case_media` | UI | called by the app during the UI run |
+| RPC | `admin_commission_rules` | UI | called by the app during the UI run |
+| RPC | `admin_create_campaign_code` | UI | called by the app during the UI run |
+| RPC | `admin_decide_appeal` | UI | called by the app during the UI run |
+| RPC | `admin_decide_worker` | UI | called by the app during the UI run |
 | RPC | `admin_delete_rate` | GAP |  |
-| RPC | `admin_guard` | server | 110 calls in run |
-| RPC | `admin_list_admins` | server | supabase/tests |
+| RPC | `admin_guard` | server | 127 calls in run |
+| RPC | `admin_list_admins` | UI | called by the app during the UI run |
 | RPC | `admin_mfa_ok` | GAP |  |
-| RPC | `admin_milestones` | server | supabase/tests |
-| RPC | `admin_moderate` | server | supabase/tests |
-| RPC | `admin_moderation` | server | supabase/tests |
-| RPC | `admin_payments` | server | 24 calls in run |
-| RPC | `admin_payout_accounts` | server | 24 calls in run |
+| RPC | `admin_milestones` | UI | called by the app during the UI run |
+| RPC | `admin_moderate` | UI | called by the app during the UI run |
+| RPC | `admin_moderation` | UI | called by the app during the UI run |
+| RPC | `admin_payments` | UI | called by the app during the UI run |
+| RPC | `admin_payout_accounts` | UI | called by the app during the UI run |
 | RPC | `admin_payout_approve` | server | supabase/tests |
-| RPC | `admin_payout_decide` | server | supabase/tests |
+| RPC | `admin_payout_decide` | UI | called by the app during the UI run |
 | RPC | `admin_payout_hold` | server | supabase/tests |
-| RPC | `admin_payout_pause` | server | supabase/tests |
-| RPC | `admin_payout_release_cooling` | server | supabase/tests |
+| RPC | `admin_payout_pause` | UI | called by the app during the UI run |
+| RPC | `admin_payout_release_cooling` | UI | called by the app during the UI run |
 | RPC | `admin_payout_run` | server | supabase/tests |
-| RPC | `admin_payouts` | server | supabase/tests |
-| RPC | `admin_professionals_by_district` | server | supabase/tests |
-| RPC | `admin_rate_cards` | server | 6 calls in run |
-| RPC | `admin_referral_codes` | server | supabase/tests |
-| RPC | `admin_referrals` | server | supabase/tests |
+| RPC | `admin_payouts` | UI | called by the app during the UI run |
+| RPC | `admin_professionals_by_district` | UI | called by the app during the UI run |
+| RPC | `admin_rate_cards` | UI | called by the app during the UI run |
+| RPC | `admin_referral_codes` | UI | called by the app during the UI run |
+| RPC | `admin_referrals` | UI | called by the app during the UI run |
 | RPC | `admin_refund` | server | supabase/tests |
 | RPC | `admin_reset_mfa` | server | supabase/tests |
 | RPC | `admin_security_event` | server | supabase/tests |
-| RPC | `admin_set_commission` | server | supabase/tests |
-| RPC | `admin_set_rate` | server | supabase/tests |
+| RPC | `admin_set_commission` | UI | called by the app during the UI run |
+| RPC | `admin_set_rate` | UI | called by the app during the UI run |
 | RPC | `admin_set_referral_code_active` | server | supabase/tests |
 | RPC | `admin_set_requirements` | server | supabase/tests |
-| RPC | `admin_set_setting` | server | supabase/tests |
-| RPC | `admin_set_verification_rule` | server | supabase/tests |
-| RPC | `admin_settings` | server | supabase/tests |
-| RPC | `admin_status` | server | supabase/tests |
-| RPC | `admin_taxonomy` | server | 6 calls in run |
-| RPC | `admin_upsert_milestone` | server | supabase/tests |
-| RPC | `admin_upsert_node` | server | supabase/tests |
-| RPC | `admin_upsert_pack` | server | supabase/tests |
-| RPC | `admin_verification_rules` | server | 6 calls in run |
-| RPC | `admin_worker_queue` | server | supabase/tests |
+| RPC | `admin_set_setting` | UI | called by the app during the UI run |
+| RPC | `admin_set_verification_rule` | UI | called by the app during the UI run |
+| RPC | `admin_settings` | UI | called by the app during the UI run |
+| RPC | `admin_status` | UI | called by the app during the UI run |
+| RPC | `admin_taxonomy` | UI | called by the app during the UI run |
+| RPC | `admin_upsert_milestone` | UI | called by the app during the UI run |
+| RPC | `admin_upsert_node` | UI | called by the app during the UI run |
+| RPC | `admin_upsert_pack` | UI | called by the app during the UI run |
+| RPC | `admin_verification_rules` | UI | called by the app during the UI run |
+| RPC | `admin_worker_queue` | UI | called by the app during the UI run |
 | RPC | `badge_tier_for` | server | supabase/tests |
-| RPC | `call_answer` | server | supabase/tests |
-| RPC | `call_end` | server | supabase/tests |
-| RPC | `call_start` | server | supabase/tests |
-| RPC | `dev_grant_test_credits` | server | supabase/tests |
-| RPC | `feedback_config` | GAP |  |
-| RPC | `feedback_submit` | server | supabase/tests |
+| RPC | `call_answer` | UI | called by the app during the UI run |
+| RPC | `call_end` | UI | called by the app during the UI run |
+| RPC | `call_start` | UI | called by the app during the UI run |
+| RPC | `dev_grant_test_credits` | UI | called by the app during the UI run |
+| RPC | `feedback_config` | UI | called by the app during the UI run |
+| RPC | `feedback_submit` | UI | called by the app during the UI run |
 | RPC | `has_role` | server | supabase/tests |
 | RPC | `is_admin` | server | supabase/tests |
 | RPC | `is_session_party` | GAP |  |
-| RPC | `kyc_mode` | GAP |  |
+| RPC | `kyc_mode` | UI | called by the app during the UI run |
 | RPC | `mask_contact` | GAP |  |
 | RPC | `my_active_session` | GAP |  |
-| RPC | `my_bonus` | server | supabase/tests |
-| RPC | `my_current_location` | server | supabase/tests |
-| RPC | `my_data_export` | server | supabase/tests |
-| RPC | `my_earnings` | server | supabase/tests |
-| RPC | `my_feedback` | GAP |  |
-| RPC | `my_history` | server | supabase/tests |
-| RPC | `my_kyc` | server | supabase/tests |
-| RPC | `my_live_search` | GAP |  |
-| RPC | `my_locations` | GAP |  |
-| RPC | `my_privacy` | GAP |  |
-| RPC | `my_referral` | server | supabase/tests |
-| RPC | `my_verification` | server | supabase/tests |
-| RPC | `my_wallet` | server | 10 calls in run |
-| RPC | `my_wallet_ledger` | GAP |  |
-| RPC | `my_worker` | server | supabase/tests |
-| RPC | `my_worker_messages` | server | supabase/tests |
-| RPC | `my_worker_standing` | server | supabase/tests |
-| RPC | `nearest_location` | server | supabase/tests |
+| RPC | `my_bonus` | UI | called by the app during the UI run |
+| RPC | `my_current_location` | UI | called by the app during the UI run |
+| RPC | `my_data_export` | UI | called by the app during the UI run |
+| RPC | `my_earnings` | UI | called by the app during the UI run |
+| RPC | `my_feedback` | UI | called by the app during the UI run |
+| RPC | `my_history` | UI | called by the app during the UI run |
+| RPC | `my_kyc` | UI | called by the app during the UI run |
+| RPC | `my_live_search` | UI | called by the app during the UI run |
+| RPC | `my_locations` | UI | called by the app during the UI run |
+| RPC | `my_privacy` | UI | called by the app during the UI run |
+| RPC | `my_referral` | UI | called by the app during the UI run |
+| RPC | `my_verification` | UI | called by the app during the UI run |
+| RPC | `my_wallet` | UI | called by the app during the UI run |
+| RPC | `my_wallet_ledger` | UI | called by the app during the UI run |
+| RPC | `my_worker` | UI | called by the app during the UI run |
+| RPC | `my_worker_messages` | UI | called by the app during the UI run |
+| RPC | `my_worker_standing` | UI | called by the app during the UI run |
+| RPC | `nearest_location` | UI | called by the app during the UI run |
 | RPC | `node_category` | GAP |  |
-| RPC | `node_requirements_for` | server | supabase/tests |
-| RPC | `notifications_mark_read` | server | supabase/tests |
-| RPC | `payment_order_cancel` | server | supabase/tests |
+| RPC | `node_requirements_for` | UI | called by the app during the UI run |
+| RPC | `notifications_mark_read` | UI | called by the app during the UI run |
+| RPC | `payment_order_cancel` | UI | called by the app during the UI run |
 | RPC | `payment_order_new` | server | supabase/tests |
-| RPC | `payments_config` | GAP |  |
+| RPC | `payments_config` | UI | called by the app during the UI run |
 | RPC | `payout_account_submit` | server | supabase/tests |
 | RPC | `payout_next_at` | server | supabase/tests |
-| RPC | `payout_request` | server | supabase/tests |
+| RPC | `payout_request` | UI | called by the app during the UI run |
 | RPC | `presence_window` | GAP |  |
 | RPC | `public_km` | GAP |  |
-| RPC | `push_config` | server | supabase/tests |
+| RPC | `push_config` | UI | called by the app during the UI run |
 | RPC | `push_first_name` | GAP |  |
 | RPC | `push_kind_meta` | server | supabase/tests |
 | RPC | `push_pref_on` | GAP |  |
 | RPC | `push_set_lang` | server | supabase/tests |
-| RPC | `push_subscribe` | server | supabase/tests |
-| RPC | `push_test` | server | supabase/tests |
-| RPC | `push_unsubscribe` | server | supabase/tests |
-| RPC | `rate_for` | GAP |  |
+| RPC | `push_subscribe` | UI | called by the app during the UI run |
+| RPC | `push_test` | UI | called by the app during the UI run |
+| RPC | `push_unsubscribe` | UI | called by the app during the UI run |
+| RPC | `rate_for` | server | 2792 calls in run |
 | RPC | `rates_for` | server | supabase/tests |
 | RPC | `referral_check` | server | supabase/tests |
-| RPC | `referral_claim` | server | supabase/tests |
-| RPC | `request_cancel` | server | supabase/tests |
-| RPC | `request_create` | server | supabase/tests |
-| RPC | `request_expire_due` | server | supabase/tests |
-| RPC | `request_respond` | server | supabase/tests |
-| RPC | `search_cancel` | server | supabase/tests |
+| RPC | `referral_claim` | UI | called by the app during the UI run |
+| RPC | `request_cancel` | UI | called by the app during the UI run |
+| RPC | `request_create` | UI | called by the app during the UI run |
+| RPC | `request_expire_due` | UI | called by the app during the UI run |
+| RPC | `request_respond` | UI | called by the app during the UI run |
+| RPC | `search_cancel` | UI | called by the app during the UI run |
 | RPC | `search_continue` | server | supabase/tests |
-| RPC | `search_start` | server | supabase/tests |
-| RPC | `search_suggestions` | GAP |  |
-| RPC | `search_tick` | server | supabase/tests |
-| RPC | `search_workers` | server | supabase/tests |
-| RPC | `session_end` | server | supabase/tests |
-| RPC | `session_info` | server | supabase/tests |
-| RPC | `session_resume_answer` | server | supabase/tests |
-| RPC | `session_tick` | server | supabase/tests |
-| RPC | `set_current_location` | server | supabase/tests |
+| RPC | `search_start` | UI | called by the app during the UI run |
+| RPC | `search_suggestions` | UI | called by the app during the UI run |
+| RPC | `search_tick` | UI | called by the app during the UI run |
+| RPC | `search_workers` | UI | called by the app during the UI run |
+| RPC | `session_end` | UI | called by the app during the UI run |
+| RPC | `session_info` | UI | called by the app during the UI run |
+| RPC | `session_resume_answer` | UI | called by the app during the UI run |
+| RPC | `session_tick` | UI | called by the app during the UI run |
+| RPC | `set_current_location` | UI | called by the app during the UI run |
 | RPC | `setting_num` | server | supabase/tests |
 | RPC | `trusted` | server | supabase/tests |
-| RPC | `use_saved_location` | GAP |  |
-| RPC | `verification_appeal` | server | supabase/tests |
+| RPC | `use_saved_location` | UI | called by the app during the UI run |
+| RPC | `verification_appeal` | UI | called by the app during the UI run |
 | RPC | `verification_liveness_challenge` | GAP |  |
-| RPC | `verification_liveness_start` | server | supabase/tests |
-| RPC | `verification_rules_for` | server | 2 calls in run |
-| RPC | `verification_stage_liveness` | server | supabase/tests |
-| RPC | `verification_stage_qr` | server | 1 calls in run |
-| RPC | `verification_stage_selfie` | server | 1 calls in run |
-| RPC | `worker_heartbeat` | GAP |  |
+| RPC | `verification_liveness_start` | UI | called by the app during the UI run |
+| RPC | `verification_rules_for` | server | 243 calls in run |
+| RPC | `verification_stage_liveness` | UI | called by the app during the UI run |
+| RPC | `verification_stage_qr` | UI | called by the app during the UI run |
+| RPC | `verification_stage_selfie` | UI | called by the app during the UI run |
+| RPC | `worker_heartbeat` | UI | called by the app during the UI run |
 | RPC | `worker_is_blocked` | GAP |  |
 | RPC | `worker_message_read` | GAP |  |
-| RPC | `worker_message_respond` | server | supabase/tests |
-| RPC | `worker_message_send` | server | supabase/tests |
+| RPC | `worker_message_respond` | UI | called by the app during the UI run |
+| RPC | `worker_message_send` | UI | called by the app during the UI run |
 | RPC | `worker_mute_user` | server | supabase/tests |
-| RPC | `worker_public` | server | supabase/tests |
+| RPC | `worker_public` | UI | called by the app during the UI run |
 | RPC | `worker_reachable` | server | supabase/tests |
-| RPC | `worker_register` | server | supabase/tests |
-| RPC | `worker_register_guard` | server | 1 calls in run |
-| RPC | `worker_set_online` | server | supabase/tests |
-| RPC | `worker_submit` | server | supabase/tests |
+| RPC | `worker_register` | UI | called by the app during the UI run |
+| RPC | `worker_register_guard` | server | 39 calls in run |
+| RPC | `worker_set_online` | UI | called by the app during the UI run |
+| RPC | `worker_submit` | UI | called by the app during the UI run |
 | Edge function | `account-purge` | server | called by the hourly job via pg_net; driven in LR11 |
 | Edge function | `call-token` | key-only | 100ms video provider token (VITE_CALL_PROVIDER=hms + 100ms keys); WebRTC fallback used in tests |
-| Edge function | `ice-servers` | GAP |  |
-| Edge function | `kyc-aadhaar` | key-only | Aadhaar OTP provider key; mock adapter in VM-2 |
-| Edge function | `maps-geo` | key-only | Google server key; adapter + fallback tested with a routed mock (J04) |
-| Edge function | `payments-create-order` | GAP |  |
-| Edge function | `payments-mock` | GAP |  |
-| Edge function | `payments-verify` | GAP |  |
+| Edge function | `ice-servers` | UI | called by the app during the UI run |
+| Edge function | `kyc-aadhaar` | UI | called by the app during the UI run |
+| Edge function | `maps-geo` | UI | called by the app during the UI run |
+| Edge function | `payments-create-order` | UI | called by the app during the UI run |
+| Edge function | `payments-mock` | UI | called by the app during the UI run |
+| Edge function | `payments-verify` | UI | called by the app during the UI run |
 | Edge function | `payments-webhook` | server | called by Razorpay; driven in PAY-1 / LR10 |
-| Edge function | `payout-fund-account` | GAP |  |
-| Edge function | `payout-run` | server | Monday batch job + admin button; PO-1 |
+| Edge function | `payout-fund-account` | UI | called by the app during the UI run |
+| Edge function | `payout-run` | UI | called by the app during the UI run |
 | Edge function | `payout-webhook` | server | called by RazorpayX; driven in PO-1 |
-| Edge function | `push-send` | server | called by the push sweep; PU-1 |
+| Edge function | `push-send` | UI | called by the app during the UI run |
 | Edge function | `sms-hook` | server | called by Supabase Auth (Send-SMS hook); contract tested in J03 |
 | Cron | `account-purge (15 * * * *)` | UI | account_purge_kick() run by a UI scenario at the time-travel step, result checked in the UI |
 | Cron | `bonus-expire (0 19 * * *)` | UI | bonus_expire() run by a UI scenario at the time-travel step, result checked in the UI |
@@ -212,7 +212,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | Cron | `sms-outbox-sweep (0 * * * *)` | GAP |  |
 | Cron | `verify-dispatch (* * * * *)` | UI | supabase/tests |
 | Cron | `verify-rechecks (30 21 * * *)` | UI | verification_scan_rechecks() run by a UI scenario at the time-travel step, result checked in the UI |
-| Cron | `verify-retention (15 * * * *)` | server | supabase/tests |
+| Cron | `verify-retention (15 * * * *)` | UI | supabase/tests |
 | Setting | `consult · ring_seconds` | UI | admin settings editor (generic save/validate scenario) |
 | Setting | `consult · auto_ring_seconds` | UI | admin settings editor (generic save/validate scenario) |
 | Setting | `consult · auto_request_max` | UI | admin settings editor (generic save/validate scenario) |
@@ -276,7 +276,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | Setting | `verification · verify_risk_reject` | UI | admin settings editor (generic save/validate scenario) |
 | Setting | `verification · verify_name_pass` | UI | admin settings editor (generic save/validate scenario) |
 | Setting | `verification · verify_name_review` | UI | admin settings editor (generic save/validate scenario) |
-| Setting | `verification · verify_registry_live` | UI | admin settings editor (generic save/validate scenario) |
+| Setting | `verification · verify_registry_live` | UI | admin editor + behaviour scenario |
 | Setting | `verification · verify_registry_days` | UI | admin settings editor (generic save/validate scenario) |
 | Setting | `verification · verify_selfie_days` | UI | admin settings editor (generic save/validate scenario) |
 | Setting | `verification · verify_retain_days` | UI | admin settings editor (generic save/validate scenario) |
@@ -286,240 +286,240 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | Setting | `verification · kyc_edge_sends_per_hour` | UI | admin settings editor (generic save/validate scenario) |
 | Setting | `verification · verify_service_url` | UI | admin settings editor (generic save/validate scenario) |
 | Setting | `verification · verify_registry_adapters` | UI | admin settings editor (generic save/validate scenario) |
-| Notification | `account.blocked` | GAP |  |
-| Notification | `account.unblocked` | GAP |  |
+| Notification | `account.blocked` | UI | produced during the UI run |
+| Notification | `account.unblocked` | UI | produced during the UI run |
 | Notification | `admin.account_review` | GAP |  |
-| Notification | `admin.complaint` | GAP |  |
-| Notification | `admin.payout_batch` | GAP |  |
+| Notification | `admin.complaint` | UI | produced during the UI run |
+| Notification | `admin.payout_batch` | UI | produced during the UI run |
 | Notification | `admin.payout_review` | GAP |  |
-| Notification | `admin.verify_queue` | GAP |  |
+| Notification | `admin.verify_queue` | UI | produced during the UI run |
 | Notification | `appeal.upheld` | GAP |  |
-| Notification | `call.incoming` | GAP |  |
-| Notification | `chat.message` | GAP |  |
-| Notification | `feedback.reminder` | GAP |  |
-| Notification | `payment.bonus_expiring` | GAP |  |
-| Notification | `payment.failed` | GAP |  |
-| Notification | `payment.paid` | GAP |  |
+| Notification | `call.incoming` | UI | produced during the UI run |
+| Notification | `chat.message` | UI | produced during the UI run |
+| Notification | `feedback.reminder` | UI | produced during the UI run |
+| Notification | `payment.bonus_expiring` | UI | produced during the UI run |
+| Notification | `payment.failed` | UI | produced during the UI run |
+| Notification | `payment.paid` | UI | produced during the UI run |
 | Notification | `payment.refunded` | GAP |  |
 | Notification | `payout.cooled` | GAP |  |
-| Notification | `payout.failed` | GAP |  |
+| Notification | `payout.failed` | UI | produced during the UI run |
 | Notification | `payout.hold` | GAP |  |
-| Notification | `payout.paid` | GAP |  |
+| Notification | `payout.paid` | UI | produced during the UI run |
 | Notification | `payout.resumed` | GAP |  |
 | Notification | `payout.review` | GAP |  |
-| Notification | `request.accepted` | GAP |  |
-| Notification | `request.declined` | GAP |  |
-| Notification | `request.incoming` | GAP |  |
-| Notification | `request.missed` | GAP |  |
-| Notification | `reward.earned` | GAP |  |
-| Notification | `search.exhausted` | GAP |  |
+| Notification | `request.accepted` | UI | produced during the UI run |
+| Notification | `request.declined` | UI | produced during the UI run |
+| Notification | `request.incoming` | UI | produced during the UI run |
+| Notification | `request.missed` | UI | produced during the UI run |
+| Notification | `reward.earned` | UI | produced during the UI run |
+| Notification | `search.exhausted` | UI | produced during the UI run |
 | Notification | `session.credits_out` | GAP |  |
-| Notification | `session.dropped` | GAP |  |
-| Notification | `session.early_end` | GAP |  |
-| Notification | `session.resume_ask` | GAP |  |
+| Notification | `session.dropped` | UI | produced during the UI run |
+| Notification | `session.early_end` | UI | produced during the UI run |
+| Notification | `session.resume_ask` | UI | produced during the UI run |
 | Notification | `verify.approved` | UI | produced during the UI run |
-| Notification | `verify.needs_info` | GAP |  |
-| Notification | `verify.rejected` | GAP |  |
-| Notification | `worker.auto_offline` | GAP |  |
-| Notification | `worker.available_for_you` | GAP |  |
-| Notification | `worker.message` | GAP |  |
-| Notification | `worker.message_refunded` | GAP |  |
-| Auth | `phone OTP sign-in (+ wrong code)` | FAIL | L-2, LR01 |
-| Auth | `email magic link (+ reused / expired link)` | FAIL | L-3, LR01 |
-| Auth | `Google OAuth redirect` | FAIL | L-4 · real Google consent screen is production-only |
-| Auth | `session expiry → sign in again` | FAIL | LR02 |
-| Auth | `sign-out across tabs` | FAIL | LR03 |
+| Notification | `verify.needs_info` | UI | produced during the UI run |
+| Notification | `verify.rejected` | UI | produced during the UI run |
+| Notification | `worker.auto_offline` | UI | produced during the UI run |
+| Notification | `worker.available_for_you` | UI | produced during the UI run |
+| Notification | `worker.message` | UI | produced during the UI run |
+| Notification | `worker.message_refunded` | UI | produced during the UI run |
+| Auth | `phone OTP sign-in (+ wrong code)` | UI | L-2, LR01 |
+| Auth | `email magic link (+ reused / expired link)` | UI | L-3, LR01 |
+| Auth | `Google OAuth redirect` | UI | L-4 · real Google consent screen is production-only |
+| Auth | `session expiry → sign in again` | UI | LR02 |
+| Auth | `sign-out across tabs` | UI | LR03 |
 | Auth | `captcha adapter (mock)` | FAIL | MFA-2 · Turnstile/hCaptcha need a site key |
 | Admin | `admin TOTP MFA + no-MFA admin blocked` | FAIL | MFA-1 |
 | Admin | `idle sign-out` | server | AD-2 · timer covered by unit test tests/unit; UI shown in settings editor |
-| Admin | `every editor (settings validated + audited, auto-approve per category, commission, milestones, professions)` | FAIL | AD-2, AD-3 |
-| Referrals | `personal invite link, claimed once, campaign codes, admin view` | FAIL | AD-1 |
-| Districts | `districts view + CSV export` | FAIL | AD-2 |
-| i18n | `Tamil + English on every screen (crawl checks missing keys / English leftovers)` | FAIL | LOC-2, AD-3, LR01 · plus Button coverage crawl in ta |
-| PWA | `install card (Chrome beforeinstallprompt) + manifest/SW audit` | FAIL | FS01 · npm run test:pwa audits the build |
-| PWA | `first open from scratch: language choice, sign-up, onboarding` | FAIL | FS01 |
+| Admin | `every editor (settings validated + audited, auto-approve per category, commission, milestones, professions)` | UI | AD-2, AD-3 |
+| Referrals | `personal invite link, claimed once, campaign codes, admin view` | UI | AD-1 |
+| Districts | `districts view + CSV export` | UI | AD-2 |
+| i18n | `Tamil + English on every screen (crawl checks missing keys / English leftovers)` | UI | LOC-2, AD-3, LR01 · plus Button coverage crawl in ta |
+| PWA | `install card (Chrome beforeinstallprompt) + manifest/SW audit` | UI | FS01 · npm run test:pwa audits the build |
+| PWA | `first open from scratch: language choice, sign-up, onboarding` | UI | FS01 |
 | Push | `worker alerts, settings, iPhone steps, SW Accept/Decline` | FAIL | PU-1, PU-2, PU-3, PU-4 · real FCM/APNs delivery is real-phone only |
-| Location | `GPS allow, map pin, confirm` | FAIL | LOC-1 |
-| Location | `GPS denied → manual area / district search, Tamil area names` | FAIL | LOC-2 |
-| Location | `Google adapter + Nominatim fallback (mock)` | FAIL | J04 |
+| Location | `GPS allow, map pin, confirm` | UI | LOC-1 |
+| Location | `GPS denied → manual area / district search, Tamil area names` | UI | LOC-2 |
+| Location | `Google adapter + Nominatim fallback (mock)` | UI | J04 |
 | Location | `distances (<1 km, whole km), nearest first across districts, no exact coordinates sent` | FAIL | CL08, N-1, M-1 |
-| Location | `professional's location follows them when going online` | FAIL | CL09 |
-| Nearby | `search bar, Tamil suggestions, rounded km` | FAIL | N-1 |
-| Consult: request | `manual request, decline, timeout, accept` | FAIL | C-1 |
-| Consult: request | `auto request (nearest first, next on decline/miss)` | FAIL | N-2 |
-| Consult: request | `cancel while ringing; late accept after cancel` | FAIL | CL01 |
-| Consult: request | `busy professional / two clients at once` | FAIL | LR07 |
+| Location | `professional's location follows them when going online` | UI | CL09 |
+| Nearby | `search bar, Tamil suggestions, rounded km` | UI | N-1 |
+| Consult: request | `manual request, decline, timeout, accept` | UI | C-1 |
+| Consult: request | `auto request (nearest first, next on decline/miss)` | UI | N-2 |
+| Consult: request | `cancel while ringing; late accept after cancel` | UI | CL01 |
+| Consult: request | `busy professional / two clients at once` | UI | LR07 |
 | Consult: request | `double tap → one request` | FAIL | LR08 |
-| Consult: request | `3 missed rings → auto offline` | FAIL | N-6 |
-| Consult: request | `zero / low wallet` | FAIL | C-1, N-4 |
-| Consult: accept | `accept on one of two devices` | FAIL | CL02 |
+| Consult: request | `3 missed rings → auto offline` | UI | N-6 |
+| Consult: request | `zero / low wallet` | UI | C-1, N-4 |
+| Consult: accept | `accept on one of two devices` | UI | CL02 |
 | Consult: accept | `accept from the phone notification (app in background)` | FAIL | PU-4 · locked-screen ring is real-phone only |
-| Paid messages | `send, worker 'available now', connect` | FAIL | N-2 |
-| Paid messages | `24 h refund` | FAIL | N-7 |
-| Paid messages | `3 a day limit (en + ta)` | FAIL | CL03 |
-| Chat | `both ways, Tamil/English/emoji, order in history` | FAIL | CL04, C-1 |
-| Chat | `long message, invalid inputs` | FAIL | LR12 |
-| Chat | `offline → missed messages once, resend once` | FAIL | LR05 |
+| Paid messages | `send, worker 'available now', connect` | UI | N-2 |
+| Paid messages | `24 h refund` | UI | N-7 |
+| Paid messages | `3 a day limit (en + ta)` | UI | CL03 |
+| Chat | `both ways, Tamil/English/emoji, order in history` | UI | CL04, C-1 |
+| Chat | `long message, invalid inputs` | UI | LR12 |
+| Chat | `offline → missed messages once, resend once` | UI | LR05 |
 | Chat | `slow network, no double send` | FAIL | LR06 |
-| Chat | `app closed + reopened, refresh mid-session` | FAIL | LR04 |
-| Calls | `voice + video connect both ways` | FAIL | C-1 |
-| Calls | `mute, camera off/on, switch camera, end by professional` | FAIL | CL05 |
-| Calls | `camera/mic blocked → how-to message (en + ta)` | FAIL | LR09 |
-| Calls | `ICE servers fetched; fallback when the function is down` | FAIL | J01, J02 · TURN relay over real mobile networks is real-phone only |
-| Calls | `one side drops: 30 s pause, resume, 3-min end, reconnect` | FAIL | N-3 |
-| Calls | `both sides drop` | FAIL | CL06 |
-| Billing | `worker ends within 2 min → full refund` | FAIL | N-5 |
-| Billing | `low balance end + 10-min reconnect` | FAIL | N-4 |
-| Documents | `photo + PDF both ways, open by other side, type/size refused, upload failure, access control, after end` | FAIL | CL07 |
-| Payments | `packs, mock checkout success/fail/cancel, webhook idempotent, no client minting` | FAIL | PAY-1 |
-| Payments | `refresh mid-payment, late webhook credits once` | FAIL | LR10 |
-| Payments | `bonus credits: expiry date, reminder, expiry ledger line` | FAIL | J05 |
+| Chat | `app closed + reopened, refresh mid-session` | UI | LR04 |
+| Calls | `voice + video connect both ways` | UI | C-1 |
+| Calls | `mute, camera off/on, switch camera, end by professional` | UI | CL05 |
+| Calls | `camera/mic blocked → how-to message (en + ta)` | UI | LR09 |
+| Calls | `ICE servers fetched; fallback when the function is down` | UI | J01, J02 · TURN relay over real mobile networks is real-phone only |
+| Calls | `one side drops: 30 s pause, resume, 3-min end, reconnect` | UI | N-3 |
+| Calls | `both sides drop` | UI | CL06 |
+| Billing | `worker ends within 2 min → full refund` | UI | N-5 |
+| Billing | `low balance end + 10-min reconnect` | UI | N-4 |
+| Documents | `photo + PDF both ways, open by other side, type/size refused, upload failure, access control, after end` | UI | CL07 |
+| Payments | `packs, mock checkout success/fail/cancel, webhook idempotent, no client minting` | UI | PAY-1 |
+| Payments | `refresh mid-payment, late webhook credits once` | UI | LR10 |
+| Payments | `bonus credits: expiry date, reminder, expiry ledger line` | UI | J05 |
 | Payouts | `penny drop, name mismatch, Monday batch (RazorpayX mock), flagged skipped, failure returns balance` | FAIL | PO-1 |
 | Verification | `every category + every failure path through the real engine` | FAIL | V01, V02, V03, V04, V05, V06, V07, V08, V09, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20, V21, V22, V23, V24, V25, V26, V27, V28, V29 |
-| Verification | `QR photo decode, no-camera upload, appeal overturned by another admin` | FAIL | VM-1 |
-| Verification | `Aadhaar OTP via kyc-aadhaar function (mock adapter)` | FAIL | VM-2 · real Aadhaar OTP needs a KUA/ASA provider key |
+| Verification | `QR photo decode, no-camera upload, appeal overturned by another admin` | UI | VM-1 |
+| Verification | `Aadhaar OTP via kyc-aadhaar function (mock adapter)` | UI | VM-2 · real Aadhaar OTP needs a KUA/ASA provider key |
 | Verification | `registration wizard → admin approves → online` | FAIL | WR-1, M-1 |
-| Trust | `feedback, rewards, certificate, complaints → block/unblock` | FAIL | T-1 |
-| DPDP | `privacy/terms bilingual, data export, delete with typed confirm + cancel` | FAIL | DP-1, DP-2 |
-| DPDP | `account erased after the wait, old device signed out, email starts fresh` | FAIL | LR11 |
-| SMS | `send-SMS hook contract (signature, stale, bad OTP) → mock MSG91 outbox` | FAIL | J03 · API: Auth calls the hook, no screen |
-| Voice agent | `commands, follow-up, exclusion, Tamil; server STT (mock)` | FAIL | AG-1, AG-2 |
-| Voice agent | `language-model adapter (mock) for everyday phrases` | FAIL | J06 |
-| UI | `404 page, deep links, back/refresh, bottom nav` | FAIL | NAV-1 · plus crawl (every route, every role) |
-| UI | `accessibility (axe) en + ta, visual baselines, tablet screens` | FAIL | A11Y-1, A11Y-2, A11Y-3, VIS-1, VIS-2 |
+| Trust | `feedback, rewards, certificate, complaints → block/unblock` | UI | T-1 |
+| DPDP | `privacy/terms bilingual, data export, delete with typed confirm + cancel` | UI | DP-1, DP-2 |
+| DPDP | `account erased after the wait, old device signed out, email starts fresh` | UI | LR11 |
+| SMS | `send-SMS hook contract (signature, stale, bad OTP) → mock MSG91 outbox` | UI | J03 · API: Auth calls the hook, no screen |
+| Voice agent | `commands, follow-up, exclusion, Tamil; server STT (mock)` | UI | AG-1, AG-2 |
+| Voice agent | `language-model adapter (mock) for everyday phrases` | UI | J06 |
+| UI | `404 page, deep links, back/refresh, bottom nav` | UI | NAV-1 · plus crawl (every route, every role) |
+| UI | `accessibility (axe) en + ta, visual baselines, tablet screens` | UI | A11Y-1, A11Y-2, A11Y-3, VIS-1, VIS-2 |
 
 ## 2. Scenarios
 
-101 scenarios · 0 pass · 0 fail · 101 not run yet · runs: 0 pass / 0 fail / 226 pending (per project).
+101 scenarios · 86 pass · 11 fail · 3 not run yet · runs: 86 pass / 11 fail / 128 pending (per project).
 
 | ID | Scenario (steps) | Expected | Actual | Spec | Device | Lang | Date (IST) | Mode | Shots |
 |---|---|---|---|---|---|---|---|---|---|
-| A11Y-1 | public pages pass axe (en + ta) | as described; every assertion in the test holds | tablet: **not run yet**<br>desktop: **not run yet**<br>mobile: **not run yet** | `a11y.spec.ts:19` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| A11Y-2 | signed-in user pages pass axe | as described; every assertion in the test holds | tablet: **not run yet**<br>desktop: **not run yet**<br>mobile: **not run yet** | `a11y.spec.ts:28` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| A11Y-3 | admin console passes axe | as described; every assertion in the test holds | tablet: **not run yet**<br>desktop: **not run yet**<br>mobile: **not run yet** | `a11y.spec.ts:40` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| AD-1 | invite codes: personal link captured before login, claimed once, admin sees who referred whom; campaign codes | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `admin-m11.spec.ts:26` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| AD-2 | admin editors: settings (validated + audited), per-category auto-approve, commission, milestone, profession; districts view + CSV | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `admin-m11.spec.ts:78` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| AD-3 | Tamil admin: districts and settings render in Tamil | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `admin-m11.spec.ts:166` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| AG-1 | voice agent: direct command, follow-up question, exclusion, online-only, Tamil | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `voice.spec.ts:8` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| AG-2 | server speech-to-text: /agent/stt (mock adapter) transcribes, and the transcript drives the agent | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `voice.spec.ts:79` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| B-1 | Find Worker: Professionals -> Doctor -> Allopathy -> Paediatrics, breadcrumbs, themes, empty worker list | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `browse.spec.ts:24` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| B-2 | Lawyer + Engineer themes, deep link survives reload, Tamil labels, Worker tab | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `browse.spec.ts:53` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| C-1 | user ↔ lawyer: ring/decline/timeout/accept, chat + file, video + voice calls, metering, history; user ↔ doctor video | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `consult.spec.ts:12` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| CL01 | client cancels while it rings | the ring stops on the professional's side; a late Accept on a stale screen opens nothing and says it ended | desktop: **not run yet**<br>mobile: **not run yet** | `consult-live.spec.ts:36` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| CL02 | professional signed in on two devices | both ring; Accept on one → the other stops ringing and cannot accept | desktop: **not run yet**<br>mobile: **not run yet** | `consult-live.spec.ts:61` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| CL03 | professional goes offline | shown Offline, cannot be requested; paid message instead: 3 a day, the 4th is refused with a clear message (en + ta) | desktop: **not run yet**<br>mobile: **not run yet** | `consult-live.spec.ts:81` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| CL04 | chat both ways in Tamil, English and emoji; history after the end keeps everything in order | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `consult-live.spec.ts:115` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| CL05 | video call controls: mute, camera off/on, switch camera (two cameras), end by the professional | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `consult-live.spec.ts:133` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| CL06 | both sides lose the connection | billing pauses; nobody back in 3 minutes → ended at the pause, both can reconnect | desktop: **not run yet**<br>mobile: **not run yet** | `consult-live.spec.ts:168` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| CL07 | documents: photo + PDF both ways, opened by the other side; wrong type and over 20 MB refused; a third person and a signed-out visitor cannot fetch them; still there after the end | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `consult-live.spec.ts:187` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| CL08 | location: distances are whole km (or under 1 km) and nearest first across districts; exact coordinates of professionals are never sent to clients | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `consult-live.spec.ts:228` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| CL09 | professional moves: going online from a new place moves them in search; a new location while online moves them again | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `consult-live.spec.ts:255` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| DP-1 | privacy and terms pages are public, bilingual, marked DRAFT, with the grievance placeholder | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `privacy.spec.ts:8` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| DP-2 | your data: download a JSON export, schedule account deletion with typed confirm, then cancel | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `privacy.spec.ts:26` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| FS01 | first open on a new phone: Tamil chosen | phone OTP sign-up → location → name → Home with the install card → Install opens the browser prompt | desktop: **not run yet**<br>mobile: **not run yet** | `fresh.spec.ts:7` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| J01 | video call: both sides fetch ICE servers from the ice-servers function, then connect | STUN list (TURN when keys are set) used | desktop: **not run yet**<br>mobile: **not run yet** | `m11-journeys.spec.ts:29` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| J02 | ice-servers down (500) | call still connects with the built-in STUN fallback | desktop: **not run yet**<br>mobile: **not run yet** | `m11-journeys.spec.ts:45` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| J03 | SMS hook: unsigned / wrong secret / stale | 401, bad OTP → 400, signed → 200 and the OTP SMS is queued (mock MSG91) | desktop: **not run yet**<br>mobile: **not run yet** | `m11-journeys.spec.ts:66` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| J04 | maps: Google adapter (dev switch) answers search + autocomplete; when it fails the app falls back to OpenStreetMap | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `m11-journeys.spec.ts:81` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| J05 | bonus credits: shown with expiry date; a week before | reminder in the inbox; after expiry → removed with a ledger line | desktop: **not run yet**<br>mobile: **not run yet** | `m11-journeys.spec.ts:115` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| J06 | voice agent through the language-model adapter (mock): 'I can't sleep at night' (unknown to the grammar) | counselling; Tamil vet request → Tamil reply | desktop: **not run yet**<br>mobile: **not run yet** | `m11-journeys.spec.ts:142` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| L-1 | login page renders 3 options + Tamil toggle; unauthenticated / redirects to /login | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `login.spec.ts:24` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| L-2 | phone OTP: send + verify signs in (local test_otp), sign out works | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `login.spec.ts:34` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| L-3 | email magic link: link delivered to local Mailpit and signs in | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `login.spec.ts:64` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| L-4 | Google OAuth: redirects to accounts.google.com with our client + callback | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `login.spec.ts:92` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| LOC-1 | Map: auto-detects GPS on open, pin + reverse address, drag adjusts, confirm saves exact lat/lng | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `location.spec.ts:43` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| LOC-2 | Map: GPS denied -> message; seeded + Nominatim search moves map; change from header; Tamil | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `location.spec.ts:74` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| LR01 | wrong phone code and a reused / expired email link | plain-language messages (en + ta), then sign-in works | desktop: **not run yet**<br>mobile: **not run yet** | `live.spec.ts:38` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| LR02 | session expires (tokens revoked) | next screen asks to sign in again without errors; signing in brings the account back | desktop: **not run yet**<br>mobile: **not run yet** | `live.spec.ts:68` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| LR03 | two tabs: signing out in one signs out the other; signing in again in one tab works | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `live.spec.ts:86` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| LR04 | app closed during a consultation and reopened | 'back to your consultation' pill → same chat, nothing lost or doubled | desktop: **not run yet**<br>mobile: **not run yet** | `live.spec.ts:99` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| LR05 | network drops mid-chat | offline bar; a send fails with a clear message and keeps the text; back online → missed messages appear once, resend arrives once | desktop: **not run yet**<br>mobile: **not run yet** | `live.spec.ts:125` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| LR06 | slow network (3 s per request) | chat still works, the send button cannot double-send | desktop: **not run yet**<br>mobile: **not run yet** | `live.spec.ts:161` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| LR07 | two clients ask the same professional at the same moment | one rings, the other is told plainly they are busy | desktop: **not run yet**<br>mobile: **not run yet** | `live.spec.ts:177` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| LR08 | double tap on Request | exactly one request rings | desktop: **not run yet**<br>mobile: **not run yet** | `live.spec.ts:193` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| LR09 | camera and microphone blocked | video call shows how to allow them (en + ta) instead of a browser error | desktop: **not run yet**<br>mobile: **not run yet** | `live.spec.ts:207` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| LR10 | refresh in the middle of a payment | nothing charged twice; a late gateway webhook credits once | desktop: **not run yet**<br>mobile: **not run yet** | `live.spec.ts:233` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| LR11 | deleted account: after the 7-day wait the account is erased, the old device is signed out, and the same email starts fresh | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `live.spec.ts:256` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| LR12 | invalid inputs: empty / very long name, bad email, bad phone, 5000-character chat message | clear messages, nothing breaks | desktop: **not run yet**<br>mobile: **not run yet** | `live.spec.ts:285` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| M-1 | 3 workers register via real flow, admin approves, go online; user in Kanniyakumari & Chennai finds them (online first, km, show all by district) | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `marketplace.spec.ts:19` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| A11Y-1 | public pages pass axe (en + ta) | as described; every assertion in the test holds | tablet: **not run yet**<br>desktop: **not run yet**<br>mobile: **pass** | `a11y.spec.ts:19` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
+| A11Y-2 | signed-in user pages pass axe | as described; every assertion in the test holds | tablet: **not run yet**<br>desktop: **not run yet**<br>mobile: **pass** | `a11y.spec.ts:28` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| A11Y-3 | admin console passes axe | as described; every assertion in the test holds | tablet: **not run yet**<br>desktop: **not run yet**<br>mobile: **pass** | `a11y.spec.ts:40` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| AD-1 | invite codes: personal link captured before login, claimed once, admin sees who referred whom; campaign codes | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `admin-m11.spec.ts:26` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| AD-2 | admin editors: settings (validated + audited), per-category auto-approve, commission, milestone, profession; districts view + CSV | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `admin-m11.spec.ts:78` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| AD-3 | Tamil admin: districts and settings render in Tamil | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `admin-m11.spec.ts:166` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
+| AG-1 | voice agent: direct command, follow-up question, exclusion, online-only, Tamil | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `voice.spec.ts:8` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
+| AG-2 | server speech-to-text: /agent/stt (mock adapter) transcribes, and the transcript drives the agent | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `voice.spec.ts:79` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| B-1 | Find Worker: Professionals -> Doctor -> Allopathy -> Paediatrics, breadcrumbs, themes, empty worker list | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `browse.spec.ts:24` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| B-2 | Lawyer + Engineer themes, deep link survives reload, Tamil labels, Worker tab | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `browse.spec.ts:53` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
+| C-1 | user ↔ lawyer: ring/decline/timeout/accept, chat + file, video + voice calls, metering, history; user ↔ doctor video | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `consult.spec.ts:12` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| CL01 | client cancels while it rings | the ring stops on the professional's side; a late Accept on a stale screen opens nothing and says it ended | desktop: **not run yet**<br>mobile: **pass** | `consult-live.spec.ts:36` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 2 ([first](/workspace/scenario-shots/CL01-mobile-late-accept.png)) |
+| CL02 | professional signed in on two devices | both ring; Accept on one → the other stops ringing and cannot accept | desktop: **not run yet**<br>mobile: **pass** | `consult-live.spec.ts:61` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 2 ([first](/workspace/scenario-shots/CL02-mobile-both-ringing.png)) |
+| CL03 | professional goes offline | shown Offline, cannot be requested; paid message instead: 3 a day, the 4th is refused with a clear message (en + ta) | desktop: **not run yet**<br>mobile: **pass** | `consult-live.spec.ts:81` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI | 3 ([first](/workspace/scenario-shots/CL03-mobile-limit-ta.png)) |
+| CL04 | chat both ways in Tamil, English and emoji; history after the end keeps everything in order | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `consult-live.spec.ts:115` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI | 3 ([first](/workspace/scenario-shots/CL04-mobile-chat-client.png)) |
+| CL05 | video call controls: mute, camera off/on, switch camera (two cameras), end by the professional | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `consult-live.spec.ts:133` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 2 ([first](/workspace/scenario-shots/CL05-mobile-muted-camera-off.png)) |
+| CL06 | both sides lose the connection | billing pauses; nobody back in 3 minutes → ended at the pause, both can reconnect | desktop: **not run yet**<br>mobile: **pass** | `consult-live.spec.ts:168` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 2 ([first](/workspace/scenario-shots/CL06-mobile-client-ended.png)) |
+| CL07 | documents: photo + PDF both ways, opened by the other side; wrong type and over 20 MB refused; a third person and a signed-out visitor cannot fetch them; still there after the end | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `consult-live.spec.ts:187` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 3 ([first](/workspace/scenario-shots/CL07-mobile-after-end.png)) |
+| CL08 | location: distances are whole km (or under 1 km) and nearest first across districts; exact coordinates of professionals are never sent to clients | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `consult-live.spec.ts:228` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 1 ([first](/workspace/scenario-shots/CL08-mobile-distances.png)) |
+| CL09 | professional moves: going online from a new place moves them in search; a new location while online moves them again | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `consult-live.spec.ts:255` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 1 ([first](/workspace/scenario-shots/CL09-mobile-moved-near.png)) |
+| DP-1 | privacy and terms pages are public, bilingual, marked DRAFT, with the grievance placeholder | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `privacy.spec.ts:8` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| DP-2 | your data: download a JSON export, schedule account deletion with typed confirm, then cancel | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `privacy.spec.ts:26` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| FS01 | first open on a new phone: Tamil chosen | phone OTP sign-up → location → name → Home with the install card → Install opens the browser prompt | desktop: **not run yet**<br>mobile: **pass** | `fresh.spec.ts:7` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI | 6 ([first](/workspace/scenario-shots/FS01-mobile-01-first-open.png)) |
+| J01 | video call: both sides fetch ICE servers from the ice-servers function, then connect | STUN list (TURN when keys are set) used | desktop: **not run yet**<br>mobile: **pass** | `m11-journeys.spec.ts:29` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 1 ([first](/workspace/scenario-shots/J01-mobile-connected.png)) |
+| J02 | ice-servers down (500) | call still connects with the built-in STUN fallback | desktop: **not run yet**<br>mobile: **pass** | `m11-journeys.spec.ts:45` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 1 ([first](/workspace/scenario-shots/J02-mobile-connected-fallback.png)) |
+| J03 | SMS hook: unsigned / wrong secret / stale | 401, bad OTP → 400, signed → 200 and the OTP SMS is queued (mock MSG91) | desktop: **not run yet**<br>mobile: **pass** | `m11-journeys.spec.ts:66` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| J04 | maps: Google adapter (dev switch) answers search + autocomplete; when it fails the app falls back to OpenStreetMap | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `m11-journeys.spec.ts:81` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI | 3 ([first](/workspace/scenario-shots/J04-mobile-fallback-osm-ta.png)) |
+| J05 | bonus credits: shown with expiry date; a week before | reminder in the inbox; after expiry → removed with a ledger line | desktop: **not run yet**<br>mobile: **pass** | `m11-journeys.spec.ts:115` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 3 ([first](/workspace/scenario-shots/J05-mobile-bonus-chip.png)) |
+| J06 | voice agent through the language-model adapter (mock): 'I can't sleep at night' (unknown to the grammar) | counselling; Tamil vet request → Tamil reply | desktop: **not run yet**<br>mobile: **pass** | `m11-journeys.spec.ts:142` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI | 2 ([first](/workspace/scenario-shots/J06-mobile-dog-vet-ta.png)) |
+| L-1 | login page renders 3 options + Tamil toggle; unauthenticated / redirects to /login | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `login.spec.ts:24` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
+| L-2 | phone OTP: send + verify signs in (local test_otp), sign out works | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `login.spec.ts:34` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| L-3 | email magic link: link delivered to local Mailpit and signs in | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `login.spec.ts:64` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| L-4 | Google OAuth: redirects to accounts.google.com with our client + callback | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `login.spec.ts:92` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| LOC-1 | Map: auto-detects GPS on open, pin + reverse address, drag adjusts, confirm saves exact lat/lng | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `location.spec.ts:43` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| LOC-2 | Map: GPS denied -> message; seeded + Nominatim search moves map; change from header; Tamil | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `location.spec.ts:74` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
+| LR01 | wrong phone code and a reused / expired email link | plain-language messages (en + ta), then sign-in works | desktop: **not run yet**<br>mobile: **pass** | `live.spec.ts:38` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI | 3 ([first](/workspace/scenario-shots/LR01-mobile-link-reused.png)) |
+| LR02 | session expires (tokens revoked) | next screen asks to sign in again without errors; signing in brings the account back | desktop: **not run yet**<br>mobile: **pass** | `live.spec.ts:68` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 1 ([first](/workspace/scenario-shots/LR02-mobile-back-to-login.png)) |
+| LR03 | two tabs: signing out in one signs out the other; signing in again in one tab works | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `live.spec.ts:86` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 1 ([first](/workspace/scenario-shots/LR03-mobile-other-tab-signed-out.png)) |
+| LR04 | app closed during a consultation and reopened | 'back to your consultation' pill → same chat, nothing lost or doubled | desktop: **not run yet**<br>mobile: **pass** | `live.spec.ts:99` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 2 ([first](/workspace/scenario-shots/LR04-mobile-after-refresh.png)) |
+| LR05 | network drops mid-chat | offline bar; a send fails with a clear message and keeps the text; back online → missed messages appear once, resend arrives once | desktop: **not run yet**<br>mobile: **pass** | `live.spec.ts:125` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI | 3 ([first](/workspace/scenario-shots/LR05-mobile-offline-bar-ta.png)) |
+| LR06 | slow network (3 s per request) | chat still works, the send button cannot double-send | desktop: **not run yet**<br>mobile: **FAIL** (Test timeout of 240000ms exceeded.) | `live.spec.ts:161` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 1 ([first](/workspace/scenario-shots/LR06-mobile-slow-sent.png)) |
+| LR07 | two clients ask the same professional at the same moment | one rings, the other is told plainly they are busy | desktop: **not run yet**<br>mobile: **pass** | `live.spec.ts:177` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 1 ([first](/workspace/scenario-shots/LR07-mobile-busy-message.png)) |
+| LR08 | double tap on Request | exactly one request rings | desktop: **not run yet**<br>mobile: **FAIL** (TimeoutError: locator.click: Timeout 20000ms exceeded.) | `live.spec.ts:193` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 2 ([first](/workspace/scenario-shots/LR08-desktop-one-ring.png)) |
+| LR09 | camera and microphone blocked | video call shows how to allow them (en + ta) instead of a browser error | desktop: **not run yet**<br>mobile: **pass** | `live.spec.ts:207` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI | 2 ([first](/workspace/scenario-shots/LR09-mobile-blocked-ta.png)) |
+| LR10 | refresh in the middle of a payment | nothing charged twice; a late gateway webhook credits once | desktop: **not run yet**<br>mobile: **pass** | `live.spec.ts:233` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 2 ([first](/workspace/scenario-shots/LR10-mobile-after-refresh.png)) |
+| LR11 | deleted account: after the 7-day wait the account is erased, the old device is signed out, and the same email starts fresh | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `live.spec.ts:256` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 3 ([first](/workspace/scenario-shots/LR11-mobile-fresh-account.png)) |
+| LR12 | invalid inputs: empty / very long name, bad email, bad phone, 5000-character chat message | clear messages, nothing breaks | desktop: **not run yet**<br>mobile: **pass** | `live.spec.ts:285` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 4 ([first](/workspace/scenario-shots/LR12-mobile-bad-email.png)) |
+| M-1 | 3 workers register via real flow, admin approves, go online; user in Kanniyakumari & Chennai finds them (online first, km, show all by district) | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **FAIL** (Error: Timed out 5000ms waiting for expect(locator).toHaveCount(expected)) | `marketplace.spec.ts:19` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
 | MFA-1 | admin needs an authenticator: enrol with QR/secret, wrong code refused, then the console opens | as described; every assertion in the test holds | mfa-mobile: **not run yet**<br>mfa-desktop: **not run yet** | `admin-mfa.spec.ts:18` | phone (Pixel 7), desktop 1366×820 | en |  | UI |  |
 | MFA-2 | sign-in captcha adapter: mock widget must be ticked before a link is sent | as described; every assertion in the test holds | mfa-mobile: **not run yet**<br>mfa-desktop: **not run yet** | `admin-mfa.spec.ts:51` | phone (Pixel 7), desktop 1366×820 | en |  | UI |  |
-| N-1 | search bar: typed + Tamil suggestions | nearest-first list, grouped by availability, rounded km | desktop: **not run yet**<br>mobile: **not run yet** | `nearby.spec.ts:28` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| N-2 | no answer | ask-again wait + suggestions; auto request cascades to the next nearest; paid message → worker 'available now' → connect | desktop: **not run yet**<br>mobile: **not run yet** | `nearby.spec.ts:96` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| N-3 | network drop pauses billing, both say continue | resumes; long drop ends with reconnect + find someone else | desktop: **not run yet**<br>mobile: **not run yet** | `nearby.spec.ts:170` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| N-4 | low balance: warning with top up; continuing after a drop with too little ends it; top up + reconnect within 10 min | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `nearby.spec.ts:230` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| N-5 | worker ends within 2 minutes without helping | user fully refunded (note on both sides), no-show counted | desktop: **not run yet**<br>mobile: **not run yet** | `nearby.spec.ts:274` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| N-6 | 3 missed rings in a row | worker set Offline: switch flips live, banner + inbox say why; going online clears it | desktop: **not run yet**<br>mobile: **not run yet** | `nearby.spec.ts:294` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| N-7 | paid message not answered in 24 h | 5 credits back automatically, shown as refunded on both sides | desktop: **not run yet**<br>mobile: **not run yet** | `nearby.spec.ts:333` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| NAV-1 | bottom nav: Home / Conversations / Profile with active state; wallet inside Profile; not duplicated in the avatar menu; hidden in full-screen flows | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `bottomnav.spec.ts:5` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| PAY-1 | wallet: packs (GST incl.), mock checkout success / failure / cancel, idempotent webhook, no client minting; worker earnings | payout → admin marks paid | desktop: **not run yet**<br>mobile: **not run yet** | `payments.spec.ts:21` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| PO-1 | payouts: penny-drop success, name mismatch, weekly run, flagged worker skipped, failure returns the balance | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `payouts.spec.ts:23` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| PR-1 | avatar menu, profile edit + photo upload, saved locations, dark mode + Tamil persisted | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `profile.spec.ts:20` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| PU-1 | worker alerts: no prompt on load, ask card after approval, device saved, ring + test alerts delivered, SW shows it, bell + inbox | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `push.spec.ts:57` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| PU-2 | settings: category switches + quiet hours persist, turn off removes the device; Tamil screen | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `push.spec.ts:148` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| PU-3 | iPhone in a Safari tab: shows 'Add to Home Screen' steps instead of a prompt | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `push.spec.ts:194` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| PU-4 | service worker shows the phone notification with Accept / Decline, and stays quiet when the app is already open on that screen | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `push.spec.ts:210` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| N-1 | search bar: typed + Tamil suggestions | nearest-first list, grouped by availability, rounded km | desktop: **not run yet**<br>mobile: **pass** | `nearby.spec.ts:28` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
+| N-2 | no answer | ask-again wait + suggestions; auto request cascades to the next nearest; paid message → worker 'available now' → connect | desktop: **not run yet**<br>mobile: **pass** | `nearby.spec.ts:96` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| N-3 | network drop pauses billing, both say continue | resumes; long drop ends with reconnect + find someone else | desktop: **not run yet**<br>mobile: **pass** | `nearby.spec.ts:170` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| N-4 | low balance: warning with top up; continuing after a drop with too little ends it; top up + reconnect within 10 min | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `nearby.spec.ts:230` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| N-5 | worker ends within 2 minutes without helping | user fully refunded (note on both sides), no-show counted | desktop: **not run yet**<br>mobile: **pass** | `nearby.spec.ts:274` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| N-6 | 3 missed rings in a row | worker set Offline: switch flips live, banner + inbox say why; going online clears it | desktop: **not run yet**<br>mobile: **pass** | `nearby.spec.ts:294` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| N-7 | paid message not answered in 24 h | 5 credits back automatically, shown as refunded on both sides | desktop: **not run yet**<br>mobile: **pass** | `nearby.spec.ts:333` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| NAV-1 | bottom nav: Home / Conversations / Profile with active state; wallet inside Profile; not duplicated in the avatar menu; hidden in full-screen flows | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `bottomnav.spec.ts:5` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| PAY-1 | wallet: packs (GST incl.), mock checkout success / failure / cancel, idempotent webhook, no client minting; worker earnings | payout → admin marks paid | desktop: **not run yet**<br>mobile: **pass** | `payments.spec.ts:21` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| PO-1 | payouts: penny-drop success, name mismatch, weekly run, flagged worker skipped, failure returns the balance | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **FAIL** (Test timeout of 240000ms exceeded.) | `payouts.spec.ts:23` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| PR-1 | avatar menu, profile edit + photo upload, saved locations, dark mode + Tamil persisted | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `profile.spec.ts:20` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
+| PU-1 | worker alerts: no prompt on load, ask card after approval, device saved, ring + test alerts delivered, SW shows it, bell + inbox | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `push.spec.ts:57` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| PU-2 | settings: category switches + quiet hours persist, turn off removes the device; Tamil screen | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `push.spec.ts:148` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
+| PU-3 | iPhone in a Safari tab: shows 'Add to Home Screen' steps instead of a prompt | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `push.spec.ts:194` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| PU-4 | service worker shows the phone notification with Accept / Decline, and stays quiet when the app is already open on that screen | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **skipped** | `push.spec.ts:210` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
 | SCR-1 | M11 screens on tablet (en + ta) | as described; every assertion in the test holds | tablet: **not run yet** | `screens.spec.ts:8` | tablet (iPad Mini) | en + ta |  | UI |  |
-| T-1 | feedback | rewards + certificate; complaint flag auto-clears; 3 complaints → block → admin extend/unblock; admin edits rates; public profile | desktop: **not run yet**<br>mobile: **not run yet** | `trust.spec.ts:20` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V01 | doctor, everything genuine, auto-approve ON for doctors | approved automatically → can go online | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:132` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V02 | doctor genuine, auto-approve OFF (production default) | waits for admin → admin approves → goes online | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:148` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V03 | Aadhaar QR tampered | rejected automatically with a plain reason (en + ta), cannot go online, can appeal | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:166` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| V04 | Aadhaar QR forged | rejected automatically with a plain reason (en + ta), cannot go online, can appeal | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:166` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| V05 | Aadhaar QR other-person | rejected automatically with a plain reason (en + ta), cannot go online, can appeal | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:166` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| V06 | QR without a readable code (photo of something else, typed text) | review, never approved automatically | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:175` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V07 | name on Aadhaar vs profile: "Dr. Arun Kumar" vs QR other name | name fail | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:187` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V08 | name on Aadhaar vs profile: "Dr. Arun Kumar" vs QR initials | name pass | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:187` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V09 | name on Aadhaar vs profile: "டாக்டர் அருண் குமார்" vs QR | name pass | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:187` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| V10 | council register: suspended (TNMC 70002) | registry fail, worker rejected | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:203` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V11 | council register: not_found (TNMC 70003) | registry review, worker pending | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:203` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V12 | council register: timeout (TNMC 70004) | registry review, worker pending | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:203` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V13 | council register: name (TNMC 70005) | registry review, worker pending | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:203` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V14 | council register: error (TNMC 70006) | registry review, worker pending | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:203` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V15 | council number format is checked in the wizard; same number on a second account | rejected as duplicate | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:214` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V16 | same Aadhaar (same QR identity) on two accounts | second rejected as duplicate | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:226` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V17 | selfie: liveness static | face fail, worker rejected | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:244` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V18 | selfie: mismatch | face fail, worker pending | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:244` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V19 | selfie: selfie multiple faces | face review, worker pending | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:244` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V20 | selfie: selfie no face | face review, worker pending | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:244` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V21 | documents: wrong type and oversize refused in the wizard with a message (en + ta); edited PDF and blurry photo go to review | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:255` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| V22 | admin asks for more information | worker sees the note, re-uploads, resubmits → admin approves | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:280` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V23 | admin rejects with a note | worker sees it, cannot go online, is not listed to clients; appeals | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:306` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V24 | lawyer: genuine registration | registry pass, decision recorded, admin can approve | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:335` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V25 | engineer: genuine registration | registry not required, decision recorded, admin can approve | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:335` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V26 | vet: genuine registration | registry review, decision recorded, admin can approve | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:335` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V27 | physio: genuine registration | registry review, decision recorded, admin can approve | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:335` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V28 | approved doctor; 90 days later the council shows suspended | recheck takes them offline with a reason | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:350` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| V29 | 30 days after the decision the raw selfie and liveness frames are deleted; the consented public portrait stays | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `verification.spec.ts:370` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| VIS-1 | public screens look the same (en + ta) | as described; every assertion in the test holds | tablet: **not run yet**<br>desktop: **not run yet**<br>mobile: **not run yet** | `visual.spec.ts:15` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| VIS-2 | settings screen looks the same | as described; every assertion in the test holds | tablet: **not run yet**<br>desktop: **not run yet**<br>mobile: **not run yet** | `visual.spec.ts:30` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| VM-1 | QR photo is decoded in the browser; no-camera selfie upload; reject | appeal → a different admin overturns (with media audit) | desktop: **not run yet**<br>mobile: **not run yet** | `verify-m11.spec.ts:17` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| VM-2 | Aadhaar OTP through the kyc-aadhaar Edge Function (mock adapter) when kyc_provider = edge | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `verify-m11.spec.ts:74` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| WR-1 | Doctor registers (Aadhaar OTP + docs) -> pending -> admin approves -> Go Online; non-admin blocked from /admin | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **not run yet** | `worker-reg.spec.ts:27` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| T-1 | feedback | rewards + certificate; complaint flag auto-clears; 3 complaints → block → admin extend/unblock; admin edits rates; public profile | desktop: **not run yet**<br>mobile: **pass** | `trust.spec.ts:20` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| V01 | doctor, everything genuine, auto-approve ON for doctors | approved automatically → can go online | desktop: **not run yet**<br>mobile: **FAIL** (Error: expect(received).toMatchObject(expected)) | `verification.spec.ts:132` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 8 ([first](/workspace/scenario-shots/V01-mobile-01-profession.png)) |
+| V02 | doctor genuine, auto-approve OFF (production default) | waits for admin → admin approves → goes online | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:148` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 10 ([first](/workspace/scenario-shots/V02-mobile-01-profession.png)) |
+| V03 | Aadhaar QR tampered | rejected automatically with a plain reason (en + ta), cannot go online, can appeal | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:166` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI | 9 ([first](/workspace/scenario-shots/V03-mobile-01-profession.png)) |
+| V04 | Aadhaar QR forged | rejected automatically with a plain reason (en + ta), cannot go online, can appeal | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:166` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI | 9 ([first](/workspace/scenario-shots/V04-mobile-01-profession.png)) |
+| V05 | Aadhaar QR other-person | rejected automatically with a plain reason (en + ta), cannot go online, can appeal | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:166` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI | 9 ([first](/workspace/scenario-shots/V05-mobile-01-profession.png)) |
+| V06 | QR without a readable code (photo of something else, typed text) | review, never approved automatically | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:175` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 8 ([first](/workspace/scenario-shots/V06-mobile-01-profession.png)) |
+| V07 | name on Aadhaar vs profile: "Dr. Arun Kumar" vs QR other name | name fail | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:187` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 9 ([first](/workspace/scenario-shots/V07-mobile-01-profession.png)) |
+| V08 | name on Aadhaar vs profile: "Dr. Arun Kumar" vs QR initials | name pass | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:187` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 8 ([first](/workspace/scenario-shots/V08-mobile-01-profession.png)) |
+| V09 | name on Aadhaar vs profile: "டாக்டர் அருண் குமார்" vs QR | name pass | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:187` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI | 8 ([first](/workspace/scenario-shots/V09-mobile-01-profession.png)) |
+| V10 | council register: suspended (TNMC 70002) | registry fail, worker rejected | desktop: **not run yet**<br>mobile: **FAIL** (Error: expect(received).toBe(expected) // Object.is equality) | `verification.spec.ts:203` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 8 ([first](/workspace/scenario-shots/V10-mobile-01-profession.png)) |
+| V11 | council register: not_found (TNMC 70003) | registry review, worker pending | desktop: **not run yet**<br>mobile: **FAIL** (Error: expect(received).toBe(expected) // Object.is equality) | `verification.spec.ts:203` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 8 ([first](/workspace/scenario-shots/V11-mobile-01-profession.png)) |
+| V12 | council register: timeout (TNMC 70004) | registry review, worker pending | desktop: **not run yet**<br>mobile: **FAIL** (Error: expect(received).toBe(expected) // Object.is equality) | `verification.spec.ts:203` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 8 ([first](/workspace/scenario-shots/V12-mobile-01-profession.png)) |
+| V13 | council register: name (TNMC 70005) | registry review, worker pending | desktop: **not run yet**<br>mobile: **FAIL** (Test timeout of 300000ms exceeded.) | `verification.spec.ts:203` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 7 ([first](/workspace/scenario-shots/V13-mobile-01-profession.png)) |
+| V14 | council register: error (TNMC 70006) | registry review, worker pending | desktop: **not run yet**<br>mobile: **FAIL** (Error: expect(received).toBe(expected) // Object.is equality) | `verification.spec.ts:203` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 8 ([first](/workspace/scenario-shots/V14-mobile-01-profession.png)) |
+| V15 | council number format is checked in the wizard; same number on a second account | rejected as duplicate | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:214` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI | 2 ([first](/workspace/scenario-shots/V15-mobile-admin-queue.png)) |
+| V16 | same Aadhaar (same QR identity) on two accounts | second rejected as duplicate | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:226` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI | 2 ([first](/workspace/scenario-shots/V16-mobile-admin-queue.png)) |
+| V17 | selfie: liveness static | face fail, worker rejected | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:244` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI | 9 ([first](/workspace/scenario-shots/V17-mobile-01-profession.png)) |
+| V18 | selfie: mismatch | face fail, worker pending | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:244` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 9 ([first](/workspace/scenario-shots/V18-mobile-01-profession.png)) |
+| V19 | selfie: selfie multiple faces | face review, worker pending | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:244` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 9 ([first](/workspace/scenario-shots/V19-mobile-01-profession.png)) |
+| V20 | selfie: selfie no face | face review, worker pending | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:244` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 9 ([first](/workspace/scenario-shots/V20-mobile-01-profession.png)) |
+| V21 | documents: wrong type and oversize refused in the wizard with a message (en + ta); edited PDF and blurry photo go to review | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:255` | desktop 1366×820, phone (Pixel 7) | en + ta |  | UI | 11 ([first](/workspace/scenario-shots/V21-mobile-01-profession.png)) |
+| V22 | admin asks for more information | worker sees the note, re-uploads, resubmits → admin approves | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:280` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 11 ([first](/workspace/scenario-shots/V22-mobile-01-profession.png)) |
+| V23 | admin rejects with a note | worker sees it, cannot go online, is not listed to clients; appeals | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:306` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 11 ([first](/workspace/scenario-shots/V23-mobile-01-profession.png)) |
+| V24 | lawyer: genuine registration | registry pass, decision recorded, admin can approve | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:335` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 9 ([first](/workspace/scenario-shots/V24-mobile-01-profession.png)) |
+| V25 | engineer: genuine registration | registry not required, decision recorded, admin can approve | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:335` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 9 ([first](/workspace/scenario-shots/V25-mobile-01-profession.png)) |
+| V26 | vet: genuine registration | registry review, decision recorded, admin can approve | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:335` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 9 ([first](/workspace/scenario-shots/V26-mobile-01-profession.png)) |
+| V27 | physio: genuine registration | registry review, decision recorded, admin can approve | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:335` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 9 ([first](/workspace/scenario-shots/V27-mobile-01-profession.png)) |
+| V28 | approved doctor; 90 days later the council shows suspended | recheck takes them offline with a reason | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:350` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 10 ([first](/workspace/scenario-shots/V28-mobile-01-profession.png)) |
+| V29 | 30 days after the decision the raw selfie and liveness frames are deleted; the consented public portrait stays | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `verification.spec.ts:370` | desktop 1366×820, phone (Pixel 7) | en |  | UI | 10 ([first](/workspace/scenario-shots/V29-mobile-01-profession.png)) |
+| VIS-1 | public screens look the same (en + ta) | as described; every assertion in the test holds | tablet: **not run yet**<br>desktop: **not run yet**<br>mobile: **pass** | `visual.spec.ts:15` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
+| VIS-2 | settings screen looks the same | as described; every assertion in the test holds | tablet: **not run yet**<br>desktop: **not run yet**<br>mobile: **pass** | `visual.spec.ts:30` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| VM-1 | QR photo is decoded in the browser; no-camera selfie upload; reject | appeal → a different admin overturns (with media audit) | desktop: **not run yet**<br>mobile: **pass** | `verify-m11.spec.ts:17` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| VM-2 | Aadhaar OTP through the kyc-aadhaar Edge Function (mock adapter) when kyc_provider = edge | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **pass** | `verify-m11.spec.ts:74` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| WR-1 | Doctor registers (Aadhaar OTP + docs) -> pending -> admin approves -> Go Online; non-admin blocked from /admin | as described; every assertion in the test holds | desktop: **not run yet**<br>mobile: **FAIL** (Error: Timed out 5000ms waiting for expect(locator).toHaveCount(expected)) | `worker-reg.spec.ts:27` | desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
 
 ## Live readiness
 
 | # | Real-world situation | Scenarios | Result |
 |---|---|---|---|
-| 1 | Wrong or expired OTP / reused email link | LR01, L-2 | not run |
-| 2 | Offline or slow network mid-flow | LR05, LR06, CL07 | not run |
-| 3 | App closed and reopened mid-consultation | LR04 | not run |
-| 4 | Two devices or tabs (sign-out sync, worker on two devices) | LR03, CL02 | not run |
-| 5 | Back / refresh mid-payment or mid-session | LR10, LR04 | not run |
-| 6 | Permissions denied: camera/mic | LR09 | not run |
-| 7 | Permissions denied: location | LOC-2 | not run |
-| 8 | Permissions denied: notifications | PU-2 | not run · OS-level denial on a phone is real-phone only |
-| 9 | Low / zero wallet | C-1, N-4 | not run |
-| 10 | Payment fail, cancel, webhook delay | PAY-1, LR10 | not run |
-| 11 | One side or both sides disconnect | N-3, CL06 | not run |
-| 12 | Concurrent requests to one professional | LR07 | not run |
-| 13 | Double taps on request / send / save | LR08, LR05 | not run · plus crawl double-tap rows |
-| 14 | Tamil + English | LR01, LR05, LR09, CL03, CL04, J04 | not run |
-| 15 | Phone, tablet, desktop sizes | A11Y-1, VIS-1 | not run · every scenario runs on phone + desktop projects; crawl adds tablet portrait/landscape |
+| 1 | Wrong or expired OTP / reused email link | LR01, L-2 | PASS |
+| 2 | Offline or slow network mid-flow | LR05, LR06, CL07 | FAIL |
+| 3 | App closed and reopened mid-consultation | LR04 | PASS |
+| 4 | Two devices or tabs (sign-out sync, worker on two devices) | LR03, CL02 | PASS |
+| 5 | Back / refresh mid-payment or mid-session | LR10, LR04 | PASS |
+| 6 | Permissions denied: camera/mic | LR09 | PASS |
+| 7 | Permissions denied: location | LOC-2 | PASS |
+| 8 | Permissions denied: notifications | PU-2 | PASS · OS-level denial on a phone is real-phone only |
+| 9 | Low / zero wallet | C-1, N-4 | PASS |
+| 10 | Payment fail, cancel, webhook delay | PAY-1, LR10 | PASS |
+| 11 | One side or both sides disconnect | N-3, CL06 | PASS |
+| 12 | Concurrent requests to one professional | LR07 | PASS |
+| 13 | Double taps on request / send / save | LR08, LR05 | FAIL · plus crawl double-tap rows |
+| 14 | Tamil + English | LR01, LR05, LR09, CL03, CL04, J04 | PASS |
+| 15 | Phone, tablet, desktop sizes | A11Y-1, VIS-1 | PASS · every scenario runs on phone + desktop projects; crawl adds tablet portrait/landscape |
 | 16 | iPhone Safari limits (push needs Home Screen install) | PU-3 | real phone (see below) |
-| 17 | Session expiry and re-login | LR02 | not run |
+| 17 | Session expiry and re-login | LR02 | PASS |
 | 18 | Admin without MFA | MFA-1 | not run |
-| 19 | Deleted account | LR11 | not run |
-| 20 | Invalid inputs | LR12, L-2, PO-1 | not run |
+| 19 | Deleted account | LR11 | PASS |
+| 20 | Invalid inputs | LR12, L-2, PO-1 | FAIL |
 
 ## Real-phone and production-only checks
 
@@ -641,5 +641,7 @@ Screen-check notes (non-blocking):
 | 20 | LR05 / LR09 (leaving a live consultation) | The 'Return to your consultation' pill sat on top of every inner screen's header, covering the back button and the language switch. | While the pill shows, the page and sticky headers move down below it. |
 | 21 | J06 (voice agent) | None in the app: the grammar had learned 'my dog is sick', so the scenario now uses a phrase only the language-model adapter knows ('I can't sleep at night'). | Scenario updated. |
 | 22 | LR12 (bad email) | A wrong email address on the sign-in screen showed the browser's own English bubble, never the app's Tamil/English message. | Login forms use the app's validation (noValidate) so 'Enter a valid email' shows in the chosen language. |
-| 23 | Crawl (all roles) | Console error 'Blocked call to navigator.vibrate' on every page load. | ringtone.ts vibrates only after a user gesture. |
-| 24 | Crawl (ta) | <html lang> stayed 'ta' when English was chosen (screen readers, fonts). | i18n syncs document lang on init and change. |
+| 23 | V10–V14 (batch run) | Test isolation: the admin click-crawl really toggles switches in Settings (each saves at once) and left 'Look up council registers live' off, so later verification scenarios saw 'live_off'. | The admin crawl snapshots app_settings and restores them afterwards; verification.spec switches the register lookup on itself. Failed scenarios re-run. |
+| 24 | LR08 (batch run) | Environment: the box stalled for ~4.5 minutes mid-test (no browser traffic 22:11:56–22:16:21 UTC), so the ring expired before the test continued. | No app change; passes on re-run (mobile ×2, desktop). |
+| 25 | Crawl (all roles) | Console error 'Blocked call to navigator.vibrate' on every page load. | ringtone.ts vibrates only after a user gesture. |
+| 26 | Crawl (ta) | <html lang> stayed 'ta' when English was chosen (screen readers, fonts). | i18n syncs document lang on init and change. |
