@@ -51,6 +51,26 @@ export type Database = {
                   Relationships: [
                     
                   ]
+                },"bonus_grants": {
+                  Row: {
+                    "amount": number,"created_at": string,"expired_amount": number,"expires_at": string,"id": number,"reference_id": string | null,"remaining": number,"source": string,"wallet_id": string,"warned_at": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "amount": number,"created_at"?: string,"expired_amount"?: number,"expires_at": string,"id"?: never,"reference_id"?: string | null,"remaining": number,"source": string,"wallet_id": string,"warned_at"?: string | null
+                  }
+                  Update: {
+                    "amount"?: number,"created_at"?: string,"expired_amount"?: number,"expires_at"?: string,"id"?: never,"reference_id"?: string | null,"remaining"?: number,"source"?: string,"wallet_id"?: string,"warned_at"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "bonus_grants_wallet_id_fkey"
+      columns: ["wallet_id"]
+isOneToOne: false
+      referencedRelation: "wallets"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"certificates": {
                   Row: {
                     "certificate_number": string,"created_at": string,"id": string,"issued_at": string,"request_id": string,"user_id": string,"verification_code": string,"worker_id": string
@@ -1379,6 +1399,9 @@ isOneToOne: false
 "badge_tier_for":
 { Args: { "_reg": Json,"_slug": string }; Returns: string
                            },
+"bonus_expire":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "call_answer":
 { Args: { "_accept": boolean,"_call": string }; Returns: string
                            },
@@ -1539,6 +1562,9 @@ isOneToOne: false
                            },
 "my_active_session":
 { Args: Record<PropertyKey, never>; Returns: string
+                           },
+"my_bonus":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "my_current_location":
 { Args: Record<PropertyKey, never>; Returns: {

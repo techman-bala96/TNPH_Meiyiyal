@@ -44,7 +44,7 @@ DO $$ DECLARE wid uuid; r jsonb; BEGIN
 END $$;
 SELECT set_config('request.jwt.claims','{"sub":"00000000-0000-0000-0000-0000000000f9","role":"authenticated"}',true);
 DO $$ DECLARE wid uuid; BEGIN
-  SELECT id INTO wid FROM public.admin_worker_queue('pending') LIMIT 1;
+  SELECT q.id INTO wid FROM public.admin_worker_queue('pending') q WHERE q.display_name = 'Dr Test' ORDER BY q.submitted_at DESC LIMIT 1;
   BEGIN PERFORM public.admin_decide_worker(wid,'reject',''); RAISE EXCEPTION 'FAIL: reject w/o note';
   EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'FAIL%' THEN RAISE; END IF; RAISE NOTICE 'PASS: reject needs note'; END;
   PERFORM public.admin_decide_worker(wid,'approve');

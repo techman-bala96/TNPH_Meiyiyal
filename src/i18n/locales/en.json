@@ -636,8 +636,11 @@
       "pack": "{{name}} pack",
       "bonus": "Bonus · {{name}}",
       "refund": "Refund · {{name}}",
-      "consult": "{{mode}} consultation · {{min}} min"
-    }
+      "consult": "{{mode}} consultation · {{min}} min",
+      "bonusExpired": "Bonus credits expired"
+    },
+    "bonusExpiry": "{{n}} bonus credits expire on {{date}}",
+    "bonusRule": "Bonus credits are used first and expire {{days}} days after purchase. Paid credits never expire."
   },
   "pay": {
     "testMode": "Test mode",
