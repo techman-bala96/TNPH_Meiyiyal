@@ -79,7 +79,7 @@ export default function Login() {
         )}
 
         {mode === "email" && (
-          <form className="flex flex-col gap-3" onSubmit={(e) => {
+          <form noValidate className="flex flex-col gap-3" onSubmit={(e) => {
             e.preventDefault();
             if (!/^\S+@\S+\.\S+$/.test(email)) return setErr(t("auth.invalidEmail"));
             const tok = takeCap(); run(() => auth.sendEmailLink(email.trim(), tok), "email-sent");
@@ -101,7 +101,7 @@ export default function Login() {
         )}
 
         {mode === "phone" && (
-          <form className="flex flex-col gap-3" onSubmit={(e) => {
+          <form noValidate className="flex flex-col gap-3" onSubmit={(e) => {
             e.preventDefault();
             if (!/^[6-9]\d{9}$/.test(phone)) return setErr(t("auth.invalidPhone"));
             const tok = takeCap(); run(() => auth.sendPhoneOtp(e164, tok), "otp");
