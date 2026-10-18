@@ -71,52 +71,6 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"certificates": {
-                  Row: {
-                    "certificate_number": string,"created_at": string,"id": string,"issued_at": string,"request_id": string,"user_id": string,"verification_code": string,"worker_id": string
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "certificate_number": string,"created_at"?: string,"id"?: string,"issued_at"?: string,"request_id": string,"user_id": string,"verification_code": string,"worker_id": string
-                  }
-                  Update: {
-                    "certificate_number"?: string,"created_at"?: string,"id"?: string,"issued_at"?: string,"request_id"?: string,"user_id"?: string,"verification_code"?: string,"worker_id"?: string
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "certificates_request_id_fkey"
-      columns: ["request_id"]
-isOneToOne: true
-      referencedRelation: "service_requests"
-      referencedColumns: ["id"]
-    },{
-      foreignKeyName: "certificates_worker_id_fkey"
-      columns: ["worker_id"]
-isOneToOne: false
-      referencedRelation: "workers"
-      referencedColumns: ["id"]
-    }
-                  ]
-                },"chat_messages": {
-                  Row: {
-                    "created_at": string,"id": string,"is_read": boolean,"media_url": string | null,"message": string,"message_type": string,"request_id": string,"sender_id": string
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "created_at"?: string,"id"?: string,"is_read"?: boolean,"media_url"?: string | null,"message": string,"message_type"?: string,"request_id": string,"sender_id": string
-                  }
-                  Update: {
-                    "created_at"?: string,"id"?: string,"is_read"?: boolean,"media_url"?: string | null,"message"?: string,"message_type"?: string,"request_id"?: string,"sender_id"?: string
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "chat_messages_request_id_fkey"
-      columns: ["request_id"]
-isOneToOne: false
-      referencedRelation: "service_requests"
-      referencedColumns: ["id"]
-    }
-                  ]
                 },"commission_rules": {
                   Row: {
                     "node_slug": string,"pct": number
@@ -383,40 +337,6 @@ isOneToOne: true
                   Relationships: [
                     
                   ]
-                },"occupation_services": {
-                  Row: {
-                    "created_at": string,"id": string,"is_active": boolean,"occupation_id": string,"price_max": number,"price_min": number,"price_unit_en": string,"price_unit_ta": string,"service_name_en": string,"service_name_ta": string,"sort_order": number
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "created_at"?: string,"id"?: string,"is_active"?: boolean,"occupation_id": string,"price_max"?: number,"price_min"?: number,"price_unit_en"?: string,"price_unit_ta"?: string,"service_name_en": string,"service_name_ta": string,"sort_order"?: number
-                  }
-                  Update: {
-                    "created_at"?: string,"id"?: string,"is_active"?: boolean,"occupation_id"?: string,"price_max"?: number,"price_min"?: number,"price_unit_en"?: string,"price_unit_ta"?: string,"service_name_en"?: string,"service_name_ta"?: string,"sort_order"?: number
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "occupation_services_occupation_id_fkey"
-      columns: ["occupation_id"]
-isOneToOne: false
-      referencedRelation: "occupations"
-      referencedColumns: ["id"]
-    }
-                  ]
-                },"occupations": {
-                  Row: {
-                    "category": Database["public"]['Enums']["worker_category"],"created_at": string,"description": string | null,"description_ta": string | null,"icon": string | null,"id": string,"name": string,"name_ta": string | null,"payment_methodology": Database["public"]['Enums']["payment_methodology"]
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "category": Database["public"]['Enums']["worker_category"],"created_at"?: string,"description"?: string | null,"description_ta"?: string | null,"icon"?: string | null,"id"?: string,"name": string,"name_ta"?: string | null,"payment_methodology": Database["public"]['Enums']["payment_methodology"]
-                  }
-                  Update: {
-                    "category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"description"?: string | null,"description_ta"?: string | null,"icon"?: string | null,"id"?: string,"name"?: string,"name_ta"?: string | null,"payment_methodology"?: Database["public"]['Enums']["payment_methodology"]
-                  }
-                  Relationships: [
-                    
-                  ]
                 },"payment_events": {
                   Row: {
                     "event_id": string,"order_id": string | null,"outcome": string | null,"payload": Json | null,"provider": string,"received_at": string,"type": string
@@ -607,32 +527,6 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
-                },"service_requests": {
-                  Row: {
-                    "cancellation_reason": string | null,"cancelled_at": string | null,"completed_at": string | null,"created_at": string,"description": string | null,"final_price": number | null,"id": string,"occupation_id": string | null,"payment_status": Database["public"]['Enums']["payment_status"],"proposed_price": number | null,"scheduled_at": string | null,"started_at": string | null,"status": Database["public"]['Enums']["request_status"],"title": string,"updated_at": string,"user_id": string,"user_rating": number | null,"user_review": string | null,"worker_id": string,"worker_rating": number | null,"worker_review": string | null
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "cancellation_reason"?: string | null,"cancelled_at"?: string | null,"completed_at"?: string | null,"created_at"?: string,"description"?: string | null,"final_price"?: number | null,"id"?: string,"occupation_id"?: string | null,"payment_status"?: Database["public"]['Enums']["payment_status"],"proposed_price"?: number | null,"scheduled_at"?: string | null,"started_at"?: string | null,"status"?: Database["public"]['Enums']["request_status"],"title": string,"updated_at"?: string,"user_id": string,"user_rating"?: number | null,"user_review"?: string | null,"worker_id": string,"worker_rating"?: number | null,"worker_review"?: string | null
-                  }
-                  Update: {
-                    "cancellation_reason"?: string | null,"cancelled_at"?: string | null,"completed_at"?: string | null,"created_at"?: string,"description"?: string | null,"final_price"?: number | null,"id"?: string,"occupation_id"?: string | null,"payment_status"?: Database["public"]['Enums']["payment_status"],"proposed_price"?: number | null,"scheduled_at"?: string | null,"started_at"?: string | null,"status"?: Database["public"]['Enums']["request_status"],"title"?: string,"updated_at"?: string,"user_id"?: string,"user_rating"?: number | null,"user_review"?: string | null,"worker_id"?: string,"worker_rating"?: number | null,"worker_review"?: string | null
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "service_requests_occupation_id_fkey"
-      columns: ["occupation_id"]
-isOneToOne: false
-      referencedRelation: "occupations"
-      referencedColumns: ["id"]
-    },{
-      foreignKeyName: "service_requests_worker_id_fkey"
-      columns: ["worker_id"]
-isOneToOne: false
-      referencedRelation: "workers"
-      referencedColumns: ["id"]
-    }
-                  ]
                 },"session_calls": {
                   Row: {
                     "answered_at": string | null,"caller": string,"created_at": string,"ended_at": string | null,"id": string,"mode": string,"session_id": string,"status": string
@@ -731,20 +625,6 @@ isOneToOne: true
                   }
                   Update: {
                     "attempts"?: number,"code_hash"?: string,"created_at"?: string,"expires_at"?: string,"purpose"?: string,"sends"?: number,"user_id"?: string
-                  }
-                  Relationships: [
-                    
-                  ]
-                },"support_tickets": {
-                  Row: {
-                    "attachments": (string)[] | null,"category": string,"created_at": string,"description": string,"id": string,"priority": string,"resolved_at": string | null,"status": string,"subject": string,"updated_at": string,"user_id": string
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "attachments"?: (string)[] | null,"category": string,"created_at"?: string,"description": string,"id"?: string,"priority"?: string,"resolved_at"?: string | null,"status"?: string,"subject": string,"updated_at"?: string,"user_id": string
-                  }
-                  Update: {
-                    "attachments"?: (string)[] | null,"category"?: string,"created_at"?: string,"description"?: string,"id"?: string,"priority"?: string,"resolved_at"?: string | null,"status"?: string,"subject"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -971,23 +851,17 @@ isOneToOne: false
                   ]
                 },"wallet_transactions": {
                   Row: {
-                    "amount": number,"created_at": string,"description": string | null,"id": string,"reference_id": string | null,"request_id": string | null,"status": Database["public"]['Enums']["payment_status"],"type": Database["public"]['Enums']["transaction_type"],"wallet_id": string
+                    "amount": number,"created_at": string,"description": string | null,"id": string,"reference_id": string | null,"status": Database["public"]['Enums']["payment_status"],"type": Database["public"]['Enums']["transaction_type"],"wallet_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "amount": number,"created_at"?: string,"description"?: string | null,"id"?: string,"reference_id"?: string | null,"request_id"?: string | null,"status"?: Database["public"]['Enums']["payment_status"],"type": Database["public"]['Enums']["transaction_type"],"wallet_id": string
+                    "amount": number,"created_at"?: string,"description"?: string | null,"id"?: string,"reference_id"?: string | null,"status"?: Database["public"]['Enums']["payment_status"],"type": Database["public"]['Enums']["transaction_type"],"wallet_id": string
                   }
                   Update: {
-                    "amount"?: number,"created_at"?: string,"description"?: string | null,"id"?: string,"reference_id"?: string | null,"request_id"?: string | null,"status"?: Database["public"]['Enums']["payment_status"],"type"?: Database["public"]['Enums']["transaction_type"],"wallet_id"?: string
+                    "amount"?: number,"created_at"?: string,"description"?: string | null,"id"?: string,"reference_id"?: string | null,"status"?: Database["public"]['Enums']["payment_status"],"type"?: Database["public"]['Enums']["transaction_type"],"wallet_id"?: string
                   }
                   Relationships: [
                     {
-      foreignKeyName: "wallet_transactions_request_id_fkey"
-      columns: ["request_id"]
-isOneToOne: false
-      referencedRelation: "service_requests"
-      referencedColumns: ["id"]
-    },{
       foreignKeyName: "wallet_transactions_wallet_id_fkey"
       columns: ["wallet_id"]
 isOneToOne: false
@@ -1052,46 +926,6 @@ isOneToOne: false
       columns: ["session_id"]
 isOneToOne: false
       referencedRelation: "consult_sessions"
-      referencedColumns: ["id"]
-    }
-                  ]
-                },"worker_education": {
-                  Row: {
-                    "created_at": string,"degree_name": string,"document_url": string | null,"id": string,"institution": string,"worker_id": string,"year_completed": number | null
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "created_at"?: string,"degree_name": string,"document_url"?: string | null,"id"?: string,"institution": string,"worker_id": string,"year_completed"?: number | null
-                  }
-                  Update: {
-                    "created_at"?: string,"degree_name"?: string,"document_url"?: string | null,"id"?: string,"institution"?: string,"worker_id"?: string,"year_completed"?: number | null
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "worker_education_worker_id_fkey"
-      columns: ["worker_id"]
-isOneToOne: false
-      referencedRelation: "workers"
-      referencedColumns: ["id"]
-    }
-                  ]
-                },"worker_experience": {
-                  Row: {
-                    "company_name": string,"created_at": string,"description": string | null,"document_url": string | null,"end_year": number | null,"id": string,"role": string,"start_year": number | null,"worker_id": string
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "company_name": string,"created_at"?: string,"description"?: string | null,"document_url"?: string | null,"end_year"?: number | null,"id"?: string,"role": string,"start_year"?: number | null,"worker_id": string
-                  }
-                  Update: {
-                    "company_name"?: string,"created_at"?: string,"description"?: string | null,"document_url"?: string | null,"end_year"?: number | null,"id"?: string,"role"?: string,"start_year"?: number | null,"worker_id"?: string
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "worker_experience_worker_id_fkey"
-      columns: ["worker_id"]
-isOneToOne: false
-      referencedRelation: "workers"
       referencedColumns: ["id"]
     }
                   ]
@@ -1175,26 +1009,6 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"worker_portfolio": {
-                  Row: {
-                    "created_at": string,"description": string | null,"id": string,"media_type": string,"media_url": string,"title": string,"worker_id": string
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "created_at"?: string,"description"?: string | null,"id"?: string,"media_type": string,"media_url": string,"title": string,"worker_id": string
-                  }
-                  Update: {
-                    "created_at"?: string,"description"?: string | null,"id"?: string,"media_type"?: string,"media_url"?: string,"title"?: string,"worker_id"?: string
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "worker_portfolio_worker_id_fkey"
-      columns: ["worker_id"]
-isOneToOne: false
-      referencedRelation: "workers"
-      referencedColumns: ["id"]
-    }
-                  ]
                 },"worker_rewards": {
                   Row: {
                     "awarded_at": string,"cert_no": string,"id": string,"metric": number | null,"milestone": string,"worker_id": string
@@ -1223,14 +1037,14 @@ isOneToOne: false
                   ]
                 },"workers": {
                   Row: {
-                    "about": string | null,"badge_tier": string | null,"base_geog": unknown,"block_reason": string | null,"blocked_until": string | null,"category": Database["public"]['Enums']["worker_category"],"created_at": string,"decided_at": string | null,"display_name": string | null,"district_slug": string | null,"flag_active": boolean,"flag_good_needed": number,"flag_reason": string | null,"flagged_at": string | null,"hourly_rate": number | null,"id": string,"is_active": boolean,"is_online": boolean,"is_verified": boolean,"last_seen_at": string | null,"locked_category": string | null,"missed_streak": number,"noshow_count": number,"occupation_id": string | null,"payout_hold": boolean,"photo_url": string | null,"primary_node": string | null,"public_selfie_path": string | null,"rating": number | null,"reg_data": NonNullable<Json>,"review_note": string | null,"rewards_count": number,"selfie_consent_at": string | null,"status": string,"strikes_reset_at": string,"submitted_at": string | null,"total_reviews": number | null,"updated_at": string,"user_id": string,"verified_at": string | null,"years_experience": number | null,"worker_is_blocked": boolean | null,"worker_reachable": boolean | null
+                    "about": string | null,"badge_tier": string | null,"base_geog": unknown,"block_reason": string | null,"blocked_until": string | null,"category": Database["public"]['Enums']["worker_category"],"created_at": string,"decided_at": string | null,"display_name": string | null,"district_slug": string | null,"flag_active": boolean,"flag_good_needed": number,"flag_reason": string | null,"flagged_at": string | null,"hourly_rate": number | null,"id": string,"is_active": boolean,"is_online": boolean,"is_verified": boolean,"last_seen_at": string | null,"locked_category": string | null,"missed_streak": number,"noshow_count": number,"payout_hold": boolean,"photo_url": string | null,"primary_node": string | null,"public_selfie_path": string | null,"rating": number | null,"reg_data": NonNullable<Json>,"review_note": string | null,"rewards_count": number,"selfie_consent_at": string | null,"status": string,"strikes_reset_at": string,"submitted_at": string | null,"total_reviews": number | null,"updated_at": string,"user_id": string,"verified_at": string | null,"years_experience": number | null,"worker_is_blocked": boolean | null,"worker_reachable": boolean | null
                   }
                   ComputedFields: "worker_is_blocked" | "worker_reachable"
                   Insert: {
-                    "about"?: string | null,"badge_tier"?: string | null,"base_geog"?: unknown,"block_reason"?: string | null,"blocked_until"?: string | null,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"flag_active"?: boolean,"flag_good_needed"?: number,"flag_reason"?: string | null,"flagged_at"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"locked_category"?: string | null,"missed_streak"?: number,"noshow_count"?: number,"occupation_id"?: string | null,"payout_hold"?: boolean,"photo_url"?: string | null,"primary_node"?: string | null,"public_selfie_path"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"selfie_consent_at"?: string | null,"status"?: string,"strikes_reset_at"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id": string,"verified_at"?: string | null,"years_experience"?: number | null
+                    "about"?: string | null,"badge_tier"?: string | null,"base_geog"?: unknown,"block_reason"?: string | null,"blocked_until"?: string | null,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"flag_active"?: boolean,"flag_good_needed"?: number,"flag_reason"?: string | null,"flagged_at"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"locked_category"?: string | null,"missed_streak"?: number,"noshow_count"?: number,"payout_hold"?: boolean,"photo_url"?: string | null,"primary_node"?: string | null,"public_selfie_path"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"selfie_consent_at"?: string | null,"status"?: string,"strikes_reset_at"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id": string,"verified_at"?: string | null,"years_experience"?: number | null
                   }
                   Update: {
-                    "about"?: string | null,"badge_tier"?: string | null,"base_geog"?: unknown,"block_reason"?: string | null,"blocked_until"?: string | null,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"flag_active"?: boolean,"flag_good_needed"?: number,"flag_reason"?: string | null,"flagged_at"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"locked_category"?: string | null,"missed_streak"?: number,"noshow_count"?: number,"occupation_id"?: string | null,"payout_hold"?: boolean,"photo_url"?: string | null,"primary_node"?: string | null,"public_selfie_path"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"selfie_consent_at"?: string | null,"status"?: string,"strikes_reset_at"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id"?: string,"verified_at"?: string | null,"years_experience"?: number | null
+                    "about"?: string | null,"badge_tier"?: string | null,"base_geog"?: unknown,"block_reason"?: string | null,"blocked_until"?: string | null,"category"?: Database["public"]['Enums']["worker_category"],"created_at"?: string,"decided_at"?: string | null,"display_name"?: string | null,"district_slug"?: string | null,"flag_active"?: boolean,"flag_good_needed"?: number,"flag_reason"?: string | null,"flagged_at"?: string | null,"hourly_rate"?: number | null,"id"?: string,"is_active"?: boolean,"is_online"?: boolean,"is_verified"?: boolean,"last_seen_at"?: string | null,"locked_category"?: string | null,"missed_streak"?: number,"noshow_count"?: number,"payout_hold"?: boolean,"photo_url"?: string | null,"primary_node"?: string | null,"public_selfie_path"?: string | null,"rating"?: number | null,"reg_data"?: NonNullable<Json>,"review_note"?: string | null,"rewards_count"?: number,"selfie_consent_at"?: string | null,"status"?: string,"strikes_reset_at"?: string,"submitted_at"?: string | null,"total_reviews"?: number | null,"updated_at"?: string,"user_id"?: string,"verified_at"?: string | null,"years_experience"?: number | null
                   }
                   Relationships: [
                     {
@@ -1239,12 +1053,6 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "tn_districts"
       referencedColumns: ["slug"]
-    },{
-      foreignKeyName: "workers_occupation_id_fkey"
-      columns: ["occupation_id"]
-isOneToOne: false
-      referencedRelation: "occupations"
-      referencedColumns: ["id"]
     },{
       foreignKeyName: "workers_primary_node_fkey"
       columns: ["primary_node"]
@@ -1850,7 +1658,6 @@ isOneToOne: false
 "locked_category": string | null,
 "missed_streak": number,
 "noshow_count": number,
-"occupation_id": string | null,
 "payout_hold": boolean,
 "photo_url": string | null,
 "primary_node": string | null,
@@ -2850,7 +2657,7 @@ isOneToOne: false
                            }
           }
           Enums: {
-            "kyc_status": "pending"|"under_review"|"verified"|"rejected","payment_methodology": "per_session"|"task_based"|"free_service"|"hybrid","payment_status": "pending"|"authorized"|"completed"|"refunded"|"failed","request_status": "pending"|"accepted"|"rejected"|"in_progress"|"completed"|"cancelled","transaction_type": "credit"|"debit"|"refund"|"payout"|"top_up","user_role": "user"|"worker"|"admin","worker_category": "professional"|"skilled"|"freelancer"|"educator"
+            "kyc_status": "pending"|"under_review"|"verified"|"rejected","payment_status": "pending"|"authorized"|"completed"|"refunded"|"failed","transaction_type": "credit"|"debit"|"refund"|"payout"|"top_up","user_role": "user"|"worker"|"admin","worker_category": "professional"|"skilled"|"freelancer"|"educator"
           }
           CompositeTypes: {
             "geometry_dump": {
@@ -2974,7 +2781,7 @@ export const Constants = {
           }
         },"public": {
           Enums: {
-            "kyc_status": ["pending", "under_review", "verified", "rejected"],"payment_methodology": ["per_session", "task_based", "free_service", "hybrid"],"payment_status": ["pending", "authorized", "completed", "refunded", "failed"],"request_status": ["pending", "accepted", "rejected", "in_progress", "completed", "cancelled"],"transaction_type": ["credit", "debit", "refund", "payout", "top_up"],"user_role": ["user", "worker", "admin"],"worker_category": ["professional", "skilled", "freelancer", "educator"]
+            "kyc_status": ["pending", "under_review", "verified", "rejected"],"payment_status": ["pending", "authorized", "completed", "refunded", "failed"],"transaction_type": ["credit", "debit", "refund", "payout", "top_up"],"user_role": ["user", "worker", "admin"],"worker_category": ["professional", "skilled", "freelancer", "educator"]
           }
         }
 } as const

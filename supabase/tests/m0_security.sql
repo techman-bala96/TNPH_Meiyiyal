@@ -2,7 +2,6 @@
 BEGIN;
 INSERT INTO auth.users(id, email, aud, role) VALUES ('00000000-0000-0000-0000-0000000000a1','a@test.local','authenticated','authenticated');
 INSERT INTO public.wallets(user_id, balance) VALUES ('00000000-0000-0000-0000-0000000000a1', 0);
-INSERT INTO public.occupations(id, name, category) SELECT gen_random_uuid(),'Test','professional' WHERE false;
 SET LOCAL role authenticated;
 SELECT set_config('request.jwt.claims','{"sub":"00000000-0000-0000-0000-0000000000a1","role":"authenticated"}',true);
 SELECT set_config('request.jwt.claim.sub','00000000-0000-0000-0000-0000000000a1',true);

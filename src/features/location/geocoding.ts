@@ -34,7 +34,7 @@ export const postgisProvider: GeocodingProvider = {
 };
 
 const providers: GeocodingProvider[] = [];
-/** Register a higher-priority provider (e.g. Google once VITE_GOOGLE_MAPS_KEY exists). */
+/** Register a higher-priority provider (e.g. Google (see VITE_MAPS_PROVIDER in geo.ts)). */
 export function registerGeocoder(p: GeocodingProvider) { providers.unshift(p); }
 
 /** Try registered providers in order; PostGIS nearest-area is the final fallback. */
