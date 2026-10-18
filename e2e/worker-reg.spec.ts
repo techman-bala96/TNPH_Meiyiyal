@@ -50,7 +50,7 @@ test("Doctor registers (Aadhaar OTP + docs) -> pending -> admin approves -> Go O
   const aemail = await signInAt(admin, admin.request, "admin");
   grantAdmin(aemail); await admin.reload();
   await adminApprove(admin, [w.name], async (name) => {
-    if (name === "06-admin-queue") await expect(admin.getByTestId("admin-checks")).toBeVisible();
+    if (name === "06-admin-queue") await expect(admin.getByTestId("admin-checks").first()).toBeVisible();
     await shotter(admin)(name);
   });
 
