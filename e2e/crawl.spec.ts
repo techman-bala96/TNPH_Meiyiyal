@@ -73,7 +73,8 @@ test("crawl: worker pending (registered through the real wizard)", async ({ brow
   sql(`DELETE FROM auth.users WHERE email LIKE 'crawl${TAG()}-%@meiyiyal.test';`);
   const page = await ctx(browser); const rec = new Recorder("worker-pending");
   workerEmail = await signInAt(page, page.request, `crawl${TAG()}-worker`);
-  const w = { ...WORKERS[0], name: `Dr. Meena Crawl${TAG().toUpperCase()}`, at: AT };
+  // own council number per screen size: the number is unique across approved professionals, and other specs use WORKERS[0]'s
+  const w = { ...WORKERS[0], name: `Dr. Meena Crawl${TAG().toUpperCase()}`, at: AT, fields: { ...WORKERS[0].fields, reg_no: `TNMC 9${"mdtlx".indexOf(TAG()) + 1}001` } };
   workerName = w.name;
   await setProfile(page, w.name, IMG("doctor"));
   await registerWorker(page, w);
