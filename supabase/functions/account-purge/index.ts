@@ -1,6 +1,6 @@
 // DPDP account deletion, run by pg_cron (x-account-hook secret) or the service role. For each due request:
 // 1) SQL guard re-checks blockers, 2) delete the user's files in every bucket (Storage API; SQL deletes are blocked),
-// 3) anonymise rows in SQL, 4) scrub and ban the auth user (email/phone replaced, identities removed by the ban + rename).
+// 3) anonymise rows in SQL, 4) scrub and ban the auth user (email/phone replaced), then drop its identities and sessions.
 // Financial rows stay, linked to the anonymous id, because tax law requires them.
 import { admin, cors, json } from "../_shared/payments.ts";
 
@@ -53,7 +53,8 @@ Deno.serve(async (req) => {
     const u = await db.auth.admin.updateUserById(r.user_id, {
       email: `deleted-${r.user_id}@deleted.invalid`, phone: "", user_metadata: {}, app_metadata: { deleted: true }, ban_duration: "876000h",
     });
-    results.push({ id: r.request_id, files, auth: u.error ? u.error.message : "scrubbed" });
+    const ids = u.error ? null : await db.rpc("account_drop_identities", { _u: r.user_id });
+    results.push({ id: r.request_id, files, auth: u.error ? u.error.message : "scrubbed", identities: ids?.data ?? 0 });
   }
   return json({ ok: true, processed: results.length, results });
 });

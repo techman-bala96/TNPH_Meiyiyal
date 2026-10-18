@@ -1387,6 +1387,9 @@ isOneToOne: false
 "account_delete_request":
 { Args: { "_confirm": string }; Returns: Json
                            },
+"account_drop_identities":
+{ Args: { "_u": string }; Returns: number
+                           },
 "account_hook_ok":
 { Args: { "_secret": string }; Returns: boolean
                            },

@@ -187,3 +187,12 @@ END $$;
 CREATE OR REPLACE FUNCTION public.account_user_files(_u uuid) RETURNS TABLE(bucket text, path text) LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public AS $$
   SELECT 'consult-files', file_path FROM public.consult_messages WHERE sender = _u AND file_path IS NOT NULL $$;
 REVOKE ALL ON FUNCTION public.account_user_files(uuid) FROM public, anon, authenticated;
+
+-- After the auth user is scrubbed, drop its sign-in identities so the same Google account / phone can sign up afresh.
+CREATE OR REPLACE FUNCTION public.account_drop_identities(_u uuid) RETURNS int LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE n int; BEGIN
+  IF NOT EXISTS (SELECT 1 FROM public.data_requests WHERE user_id = _u AND kind = 'delete' AND status = 'done') THEN RAISE EXCEPTION 'not deleted'; END IF;
+  DELETE FROM auth.identities WHERE user_id = _u; GET DIAGNOSTICS n = ROW_COUNT;
+  DELETE FROM auth.sessions WHERE user_id = _u; DELETE FROM auth.mfa_factors WHERE user_id = _u;
+  RETURN n; END $$;
+REVOKE ALL ON FUNCTION public.account_drop_identities(uuid) FROM public, anon, authenticated;
