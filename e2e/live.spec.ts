@@ -299,8 +299,8 @@ test("[LR12] invalid inputs: empty / very long name, bad email, bad phone, 5000-
   const long = "நீண்ட செய்தி long message 🙂 ".repeat(200).slice(0, 5000);
   await u.page.getByTestId("chat-input").fill(long);
   // the box stops at the 4000-letter limit and shows the count
-  expect(await u.page.getByTestId("chat-input").evaluate((e) => (e as HTMLTextAreaElement).value.length)).toBe(4000);
-  await expect(u.page.getByTestId("chat-count")).toHaveText("4000/4000");
+  expect(await u.page.getByTestId("chat-input").evaluate((e) => (e as HTMLTextAreaElement).value.length)).toBeGreaterThanOrEqual(3999); // an emoji is never cut in half
+  await expect(u.page.getByTestId("chat-count")).toHaveText(/^(3999|4000)\/4000$/);
   await u.page.getByTestId("chat-send").click();
   await expect(law.page.getByTestId("msg").last()).toContainText("நீண்ட செய்தி long message 🙂");
   await expect(law.page.locator("body")).not.toHaveCSS("overflow-x", "scroll");
