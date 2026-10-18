@@ -45,7 +45,11 @@ export function InviteCard() {
         <button data-testid="invite-share-user" onClick={() => share(links.user)} className="tap flex items-center justify-center gap-2 rounded-xl bg-primary px-3 text-sm font-semibold text-primary-foreground"><Share2 className="h-4 w-4" />{t("invite.shareUser")}</button>
         <button data-testid="invite-share-worker" onClick={() => share(links.worker)} className="tap flex items-center justify-center gap-2 rounded-xl border px-3 text-sm font-semibold"><UserPlus className="h-4 w-4" />{t("invite.shareWorker")}</button>
       </div>
-      <p data-testid="invite-link" className="break-all font-mono text-[10px] text-muted-foreground">{links.user}</p>
+      <div className="flex items-center gap-2 rounded-xl bg-muted/60 py-1 pl-3 pr-1">
+        <span className="shrink-0 text-[11px] font-semibold text-muted-foreground">{t("invite.link")}</span>
+        <span data-testid="invite-link" title={links.user} className="min-w-0 flex-1 truncate text-xs">{links.user.replace(/^https?:\/\//, "")}</span>
+        <button data-testid="invite-copy-link" onClick={() => copy(links.user)} aria-label={t("invite.copyLink")} className="grid h-8 w-8 shrink-0 place-items-center rounded-lg hover:bg-background"><Copy className="h-3.5 w-3.5" /></button>
+      </div>
       <p data-testid="invite-joined" data-n={q.data.joined} className="text-xs">{t("invite.joined", { count: Number(q.data.joined), workers: Number(q.data.joined_workers) })}</p>
       <p className="text-[11px] text-muted-foreground">{t("invite.noRewards")}</p>
       {q.data.referred_by ? <p data-testid="invite-referred-by" className="text-xs text-muted-foreground">{t("invite.referredBy", { code: q.data.referred_by })}</p>

@@ -1014,7 +1014,8 @@
       "pending": "Pending",
       "approved": "Approved",
       "rejected": "Rejected"
-    }
+    },
+    "swipe": "Swipe sideways for more columns →"
   },
   "refAdmin": {
     "hint": "Who joined with whose code. No rewards are given in this version.",
@@ -1067,6 +1068,8 @@
       "expired": "That code has expired",
       "full": "That code has been used up",
       "too_late": "Invite codes can only be added by new accounts"
-    }
+    },
+    "link": "Link",
+    "copyLink": "Copy link"
   }
 }

@@ -11,7 +11,15 @@ async function fresh(browser: Browser, lang = "en") {
   await page.addInitScript((l) => localStorage.setItem("i18nextLng", l), lang);
   return page;
 }
-const shot = (page: Page, name: string) => page.screenshot({ path: `${SHOTS}/${test.info().project.name}-${name}.png`, fullPage: true });
+/** Viewport screenshot (what a person actually sees): toasts cleared, the given element scrolled to the top under the sticky header. */
+async function shot(page: Page, name: string, focus?: string) {
+  const hide = await page.addStyleTag({ content: "[data-sonner-toaster]{visibility:hidden!important}" });
+  if (focus) await page.getByTestId(focus).first().evaluate((el) => window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 64, behavior: "instant" as ScrollBehavior }));
+  else await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(150);
+  await page.screenshot({ path: `${SHOTS}/${test.info().project.name}-${name}.png` });
+  await hide.evaluate((el) => el.remove());
+}
 
 test.setTimeout(180_000);
 
@@ -31,7 +39,7 @@ test("invite codes: personal link captured before login, claimed once, admin see
   // own code is refused
   await a.getByTestId("invite-enter").fill(code); await a.getByTestId("invite-apply").click();
   await expect(a.getByText("You can't use your own code")).toBeVisible();
-  await shot(a, "invite-card");
+  await shot(a, "invite-card", "invite-card");
 
   // B opens A's worker invite link as a guest → redirected to login with the invite banner → signs in → claimed.
   const b = await fresh(browser);
@@ -138,7 +146,9 @@ test("admin editors: settings (validated + audited), per-category auto-approve, 
     await page.getByTestId("districts-prof-veterinary").click();
     await page.getByTestId("districts-status-approved").click();
     await expect(page.getByTestId("districts-table")).toBeVisible();
-    await shot(page, "admin-districts");
+    await shot(page, "admin-districts", "districts-view");
+    await page.getByTestId("districts-table").locator("..").evaluate((el) => { el.scrollLeft = 400; });
+    await shot(page, "admin-districts-scrolled", "districts-table");
     const dl = page.waitForEvent("download");
     await page.getByTestId("districts-csv").click();
     const file = await (await dl).path();
@@ -161,7 +171,7 @@ test("Tamil admin: districts and settings render in Tamil", async ({ browser }) 
   await page.goto("/admin#districts");
   await expect(page.getByText("மாவட்ட வாரியான நிபுணர்கள்").first()).toBeVisible();
   await expect(page.getByTestId("districts-table")).toContainText("அரியலூர்");
-  await shot(page, "admin-districts-ta");
+  await shot(page, "admin-districts-ta", "districts-view");
   await page.getByTestId("admin-tab-settings").click();
   await expect(page.getByTestId("settings-editor")).toContainText("சரிபார்ப்பு");
   await shot(page, "admin-settings-ta");
