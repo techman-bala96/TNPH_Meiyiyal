@@ -109,6 +109,10 @@ test("[CL03] professional goes offline → shown Offline, cannot be requested; p
   await snap(u.page, "CL03", "limit-ta");
   await w.page.goto("/messages");
   await expect(w.page.getByTestId("message-row")).toHaveCount(3);
+  // opening them marks them read, and the sender sees "read"
+  await expect(w.page.locator('[data-testid="message-row"][data-status="read"]')).toHaveCount(3, { timeout: 15_000 });
+  await u.page.goto("/messages");
+  await expect(u.page.locator('[data-testid="message-row"][data-status="read"]')).toHaveCount(3);
   await w.ctx.close(); await u.ctx.close();
 });
 

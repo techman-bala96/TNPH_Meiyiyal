@@ -42,7 +42,7 @@ export default function Messages() {
 function Row({ m, i }: { m: WorkerMessage; i: number }) {
   const { t } = useTranslation(); const qc = useQueryClient(); const [audio, setAudio] = useState<string | null>(null); const [busy, setBusy] = useState(false);
   useEffect(() => { if (m.voice_path) void supabase.storage.from("voice-notes").createSignedUrl(m.voice_path, 3600).then(({ data }) => setAudio(data?.signedUrl ?? null)); }, [m.voice_path]);
-  useEffect(() => { if (m.role === "worker" && m.status === "sent") void supabase.rpc("worker_message_read", { _id: m.id }); }, [m.id, m.role, m.status]);
+  useEffect(() => { if (m.role === "worker" && m.status === "sent") void supabase.rpc("worker_message_read", { _id: m.id }).then(({ error }) => { if (!error) void qc.invalidateQueries({ queryKey: ["worker-messages"] }); }); }, [m.id, m.role, m.status]); // eslint-disable-line react-hooks/exhaustive-deps
   const ready = m.role === "user" && m.status === "responded" && m.reserved_until && new Date(m.reserved_until).getTime() > Date.now();
   const act = async (fn: "worker_message_respond" | "worker_mute_user") => {
     setBusy(true); const { error } = await supabase.rpc(fn, fn === "worker_mute_user" ? { _message: m.id } : { _id: m.id }); setBusy(false);
