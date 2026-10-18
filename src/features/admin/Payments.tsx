@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { rpcErr } from "@/features/consult/api";
 import { inr, usePacks, type Pack } from "@/features/payments/api";
 
-const chip = (s: string) => s === "paid" ? "bg-emerald-500/15 text-emerald-700" : s === "failed" || s === "rejected" ? "bg-destructive/10 text-destructive" : s === "refunded" ? "bg-sky-500/15 text-sky-700" : s === "requested" ? "bg-amber-500/15 text-amber-700" : "bg-muted text-muted-foreground";
+const chip = (s: string) => s === "paid" || s === "verified" ? "bg-emerald-500/15 text-emerald-700" : s === "failed" || s === "rejected" || s === "reversed" ? "bg-destructive/10 text-destructive" : s === "refunded" || s === "review" ? "bg-sky-500/15 text-sky-700" : s === "requested" || s === "queued" || s === "processing" ? "bg-amber-500/15 text-amber-700" : "bg-muted text-muted-foreground";
 
 export function PacksEditor() {
   const { t } = useTranslation(); const qc = useQueryClient(); const packs = usePacks(true);
@@ -64,27 +64,79 @@ export function PaymentsView() {
   );
 }
 
-type PayoutRow = { id: string; worker_name: string; amount: number; status: string; reference: string | null; admin_note: string | null; requested_at: string; items: number };
+type PayoutRow = { id: string; worker_user_id: string; worker_name: string; amount: number; status: string; reference: string | null; admin_note: string | null; requested_at: string; items: number; review_reason: string | null; failure_reason: string | null; account_mask: string | null; payout_hold: boolean };
+type AccountRow = { worker_user_id: string; worker_name: string; kind: string; account_mask: string; ifsc: string | null; status: string; registered_name: string | null; failure_reason: string | null; duplicate: boolean; cooling_until: string | null; payout_hold: boolean; flag_active: boolean };
 export function PayoutsAdmin() {
-  const { t } = useTranslation(); const qc = useQueryClient(); const [ref, setRef] = useState<Record<string, string>>({});
+  const { t } = useTranslation(); const qc = useQueryClient(); const [ref, setRef] = useState<Record<string, string>>({}); const [busy, setBusy] = useState(false);
   const q = useQuery({ queryKey: ["admin-payouts"], queryFn: async () => { const { data, error } = await supabase.rpc("admin_payouts"); if (error) throw error; return data as unknown as PayoutRow[]; } });
+  const accounts = useQuery({ queryKey: ["admin-payout-accounts"], queryFn: async () => { const { data, error } = await supabase.rpc("admin_payout_accounts"); if (error) throw error; return data as unknown as AccountRow[]; } });
+  const auto = useQuery({ queryKey: ["payouts-auto"], queryFn: async () => {
+    const { data, error } = await supabase.from("app_settings").select("value").eq("key", "payouts_auto").maybeSingle();
+    if (error) throw error; return data?.value === true;
+  } });
+  const refresh = () => { qc.invalidateQueries({ queryKey: ["admin-payouts"] }); qc.invalidateQueries({ queryKey: ["admin-payout-accounts"] }); qc.invalidateQueries({ queryKey: ["payouts-auto"] }); };
   const decide = async (id: string, paid: boolean) => {
     const v = ref[id] ?? "";
     const { error } = await supabase.rpc("admin_payout_decide", { _id: id, _paid: paid, _reference: paid ? v : "", _note: paid ? "" : v });
-    if (error) toast.error(rpcErr(error)); else { toast.success(t(paid ? "admin.payout.markedPaid" : "admin.payout.rejected")); qc.invalidateQueries({ queryKey: ["admin-payouts"] }); }
+    if (error) toast.error(rpcErr(error)); else { toast.success(t(paid ? "admin.payout.markedPaid" : "admin.payout.rejected")); refresh(); }
   };
+  const pause = async () => {
+    setBusy(true); const { error } = await supabase.rpc("admin_payout_pause", { _paused: auto.data === true }); setBusy(false);
+    if (error) toast.error(rpcErr(error)); else { toast.success(t(auto.data ? "admin.payout.paused" : "admin.payout.live")); refresh(); }
+  };
+  const run = async () => {
+    setBusy(true); const { error } = await supabase.functions.invoke("payout-run", { body: {} }); setBusy(false);
+    if (error) toast.error(rpcErr(error)); else { toast.success(t("admin.payout.ran")); refresh(); }
+  };
+  const hold = async (user: string, on: boolean) => {
+    const { error } = await supabase.rpc("admin_payout_hold", { _user: user, _hold: on });
+    if (error) toast.error(rpcErr(error)); else { toast.success(t(on ? "admin.payout.held" : "admin.payout.released")); refresh(); }
+  };
+  const release = async (user: string) => {
+    const { error } = await supabase.rpc("admin_payout_release_cooling", { _user: user });
+    if (error) toast.error(rpcErr(error)); else { toast.success(t("admin.payout.coolingReleased")); refresh(); }
+  };
+  const approve = async (id: string) => {
+    const { error } = await supabase.rpc("admin_payout_approve", { _id: id });
+    if (error) toast.error(rpcErr(error)); else { toast.success(t("admin.payout.sent")); refresh(); }
+  };
+  const open = (s: string) => s === "requested" || s === "queued" || s === "processing";
   return (
-    <div className="space-y-2" data-testid="payouts-admin">
-      {q.data?.length === 0 && <p className="card-soft p-4 text-center text-sm text-muted-foreground">{t("admin.payout.none")}</p>}
-      {q.data?.map((r) => (
-        <div key={r.id} data-testid="payout-admin-row" data-status={r.status} data-name={r.worker_name} className="card-soft space-y-2 p-3 text-sm">
-          <div className="flex items-center justify-between gap-2"><b>{r.worker_name} · {inr(Number(r.amount), 2)}</b><span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${chip(r.status)}`}>{t(`earn.status.${r.status}`)}</span></div>
-          <p className="text-[11px] text-muted-foreground">{new Date(r.requested_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })} · {t("admin.payout.items", { n: r.items })}{r.reference ? ` · ${r.reference}` : ""}{r.admin_note ? ` · ${r.admin_note}` : ""}</p>
-          {r.status === "requested" && <div className="flex gap-2">
-            <input data-testid="payout-ref" placeholder={t("admin.payout.refOrReason")} value={ref[r.id] ?? ""} onChange={(e) => setRef((x) => ({ ...x, [r.id]: e.target.value }))} className="min-w-0 flex-1 rounded-lg border bg-background px-2 py-1.5 text-xs" />
-            <button data-testid="payout-paid" disabled={!ref[r.id]?.trim()} onClick={() => decide(r.id, true)} className="flex items-center gap-1 rounded-lg bg-emerald-600 px-2.5 py-1.5 text-xs font-semibold text-white disabled:opacity-40"><Check className="h-3.5 w-3.5" />{t("admin.payout.paid")}</button>
-            <button data-testid="payout-reject" disabled={!ref[r.id]?.trim()} onClick={() => decide(r.id, false)} className="grid place-items-center rounded-lg border px-2 text-destructive disabled:opacity-40" aria-label={t("admin.payout.reject")}><X className="h-3.5 w-3.5" /></button></div>}
-        </div>))}
+    <div className="space-y-3" data-testid="payouts-admin">
+      <section className="card-soft space-y-2 p-3">
+        <p data-testid="payout-policy" className="text-[11px] text-muted-foreground">{t("admin.payout.policy")}</p>
+        <p data-testid="payout-auto" data-paused={auto.data === true ? "false" : "true"} className="text-sm font-semibold">{auto.data ? t("admin.payout.live") : t("admin.payout.paused")}</p>
+        <div className="flex flex-wrap gap-2">
+          <button data-testid="payout-pause" disabled={busy || auto.isLoading} onClick={pause} className="rounded-lg border px-3 py-1.5 text-xs font-semibold">{auto.data ? t("admin.payout.pause") : t("admin.payout.resume")}</button>
+          <button data-testid="payout-run" disabled={busy || auto.data !== true} onClick={run} className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-40">{t("admin.payout.run")}</button>
+        </div>
+      </section>
+      <section className="space-y-2">
+        <h2 className="px-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("admin.payout.accounts")}</h2>
+        {accounts.data?.length === 0 && <p className="card-soft p-4 text-center text-sm text-muted-foreground">{t("admin.payout.noAccounts")}</p>}
+        {accounts.data?.map((a) => (
+          <div key={a.worker_user_id} data-testid="payout-account-admin" data-status={a.status} data-name={a.worker_name} className="card-soft space-y-2 p-3 text-sm">
+            <div className="flex items-center justify-between gap-2"><b>{a.worker_name}</b><span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${chip(a.status)}`}>{t(`earn.status.${a.status}`)}</span></div>
+            <p className="text-[11px] text-muted-foreground">{a.account_mask}{a.ifsc ? ` · ${a.ifsc}` : ""}{a.registered_name ? ` · ${a.registered_name}` : ""}{a.duplicate ? ` · ${t("admin.payout.duplicate")}` : ""}{a.failure_reason ? ` · ${a.failure_reason}` : ""}{a.flag_active ? " · flagged" : ""}</p>
+            <div className="flex flex-wrap gap-2">
+              <button data-testid="payout-hold" onClick={() => hold(a.worker_user_id, !a.payout_hold)} className="rounded-lg border px-2 py-1 text-xs font-semibold">{a.payout_hold ? t("admin.payout.releaseHold") : t("admin.payout.hold")}</button>
+              {a.status === "verified" && a.cooling_until && new Date(a.cooling_until).getTime() > Date.now() && <button data-testid="payout-release" onClick={() => release(a.worker_user_id)} className="rounded-lg border px-2 py-1 text-xs font-semibold">{t("admin.payout.releaseCooling")}</button>}
+            </div>
+          </div>))}
+      </section>
+      <section className="space-y-2">
+        {q.data?.length === 0 && <p className="card-soft p-4 text-center text-sm text-muted-foreground">{t("admin.payout.none")}</p>}
+        {q.data?.map((r) => (
+          <div key={r.id} data-testid="payout-admin-row" data-status={r.status} data-name={r.worker_name} data-reason={r.review_reason ?? ""} className="card-soft space-y-2 p-3 text-sm">
+            <div className="flex items-center justify-between gap-2"><b>{r.worker_name} · {inr(Number(r.amount), 2)}</b><span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${chip(r.status)}`}>{t(`earn.status.${r.status}`)}</span></div>
+            <p className="text-[11px] text-muted-foreground">{new Date(r.requested_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })} · {t("admin.payout.items", { n: r.items })}{r.account_mask ? ` · ${r.account_mask}` : ""}{r.reference ? ` · ${r.reference}` : ""}{r.admin_note ? ` · ${r.admin_note}` : ""}{r.failure_reason ? ` · ${r.failure_reason}` : ""}{r.review_reason ? ` · ${t("admin.payout.reviewReason", { reason: r.review_reason })}` : ""}</p>
+            {r.status === "review" && <button data-testid="payout-approve" onClick={() => approve(r.id)} className="rounded-lg bg-primary px-2.5 py-1.5 text-xs font-semibold text-primary-foreground">{t("admin.payout.send")}</button>}
+            {(open(r.status) || r.status === "review") && <div className="flex gap-2">
+              <input data-testid="payout-ref" placeholder={t("admin.payout.refOrReason")} value={ref[r.id] ?? ""} onChange={(e) => setRef((x) => ({ ...x, [r.id]: e.target.value }))} className="min-w-0 flex-1 rounded-lg border bg-background px-2 py-1.5 text-xs" />
+              {open(r.status) && <button data-testid="payout-paid" disabled={!ref[r.id]?.trim()} onClick={() => decide(r.id, true)} className="flex items-center gap-1 rounded-lg bg-emerald-600 px-2.5 py-1.5 text-xs font-semibold text-white disabled:opacity-40"><Check className="h-3.5 w-3.5" />{t("admin.payout.paid")}</button>}
+              <button data-testid="payout-reject" disabled={!ref[r.id]?.trim()} onClick={() => decide(r.id, false)} className="grid place-items-center rounded-lg border px-2 text-destructive disabled:opacity-40" aria-label={t("admin.payout.reject")}><X className="h-3.5 w-3.5" /></button></div>}
+          </div>))}
+      </section>
     </div>
   );
 }

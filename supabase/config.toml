@@ -446,3 +446,10 @@ verify_jwt = false
 verify_jwt = false
 [functions.payments-webhook]
 verify_jwt = false
+# M8 payouts: the functions check the caller; the webhook is authenticated by its HMAC signature.
+[functions.payout-fund-account]
+verify_jwt = false
+[functions.payout-run]
+verify_jwt = false
+[functions.payout-webhook]
+verify_jwt = false
