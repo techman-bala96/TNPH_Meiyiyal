@@ -792,7 +792,8 @@
       "muted": "Muted",
       "respondedToast": "We told them you're free. They have 5 minutes to connect.",
       "voice": "Voice note · {{s}}s",
-      "open": "Messages"
+      "open": "Messages",
+      "refunded": "{{n}} credits returned to your wallet"
     },
     "session": {
       "paused": "Connection lost with {{name}}. Waiting for them to come back.",

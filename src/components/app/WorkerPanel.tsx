@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
-import { BadgeCheck, Clock, FileWarning, Hourglass, Power, ShieldAlert, UserRoundPlus, Banknote, ChevronRight } from "lucide-react";
+import { BadgeCheck, Clock, FileWarning, Hourglass, Power, PowerOff, ShieldAlert, UserRoundPlus, Banknote, ChevronRight } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,10 +12,12 @@ import { useMyVerification, useMyWorker } from "@/features/worker/api";
 import { MyRewards, StandingBanners } from "@/features/rewards/WorkerStanding";
 import { useStanding } from "@/features/rewards/standing";
 import { PushAskCard, PushOffBanner } from "@/features/push/PushAskCard";
+import { markRead, useNotifications } from "@/features/push/api";
+import { renderText } from "@/features/push/text";
 
 export function WorkerPanel() {
   const { t, i18n } = useTranslation(); const lang = i18n.language?.startsWith("ta") ? "ta" : "en";
-  const { data: w, isLoading } = useMyWorker(); const verify = useMyVerification(!!w); const { data: standing } = useStanding(); const tax = useTaxonomy(); const qc = useQueryClient();
+  const { data: w, isLoading } = useMyWorker(); const verify = useMyVerification(!!w); const { data: standing } = useStanding(); const tax = useTaxonomy(); const qc = useQueryClient(); const notes = useNotifications(20);
   const [appeal, setAppeal] = useState(""); const [appealErr, setAppealErr] = useState<string | null>(null);
   if (isLoading) return <div className="h-40 animate-pulse rounded-3xl bg-muted" />;
 
@@ -35,9 +37,12 @@ export function WorkerPanel() {
   };
   const M = meta[w.status];
   const blocked = !!standing?.blocked;
+  // set Offline by the server after missed rings: say why, right above the switch, until they go online again
+  const autoOff = !w.is_online ? notes.data?.find((n) => n.kind === "worker.auto_offline" && !n.read_at) : undefined;
   async function toggle(on: boolean) {
     const { error } = await supabase.rpc("worker_set_online", { _online: on });
     if (error) toast.error(error.message);
+    else if (on && autoOff) { await markRead([autoOff.id]); await qc.invalidateQueries({ queryKey: ["notifications"] }); }
     await qc.invalidateQueries({ queryKey: ["my-worker"] }); await qc.invalidateQueries({ queryKey: ["standing"] });
   }
   return (
@@ -75,6 +80,9 @@ export function WorkerPanel() {
         </div>
       </div>
       {standing && <StandingBanners s={standing} />}
+      {autoOff && w.status === "approved" && !blocked && (() => { const r = renderText(autoOff, lang); return (
+        <div data-testid="auto-offline-banner" className="flex items-start gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-3 text-sm text-amber-800 animate-in fade-in slide-in-from-top-1 dark:text-amber-200">
+          <PowerOff className="mt-0.5 h-5 w-5 shrink-0" /><div><p className="font-semibold">{r.title}</p><p className="text-xs opacity-90">{r.body}</p></div></div>); })()}
       <div className={`card-soft flex items-center gap-3 p-4 transition ${w.status === "approved" && !blocked ? "" : "opacity-50"}`}>
         <span className={`grid h-11 w-11 place-items-center rounded-full ${w.is_online ? "bg-emerald-500 text-white shadow-[0_0_0_6px_rgba(16,185,129,.18)]" : "bg-muted text-muted-foreground"} transition`}><Power className="h-5 w-5" /></span>
         <div className="flex-1"><p className="font-semibold">{t(w.is_online ? "worker.online" : "worker.goOnline")}</p>

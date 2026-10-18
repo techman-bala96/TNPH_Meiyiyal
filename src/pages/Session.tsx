@@ -121,7 +121,7 @@ export default function Session() {
       </header>
       <div className="flex items-center justify-between bg-muted/50 px-4 py-1.5 text-xs">
         <span className="flex items-center gap-1"><Coins className="h-3.5 w-3.5 text-amber-500" />{s.role === "user" ? t("consult.spent") : t("consult.earning")} <b data-testid="credits-used" className="tabular-nums">{used}</b></span>
-        {s.role === "user" && meter?.balance != null && <span>{t("consult.balance")} <b data-testid="session-balance" className="tabular-nums">{Number(meter.balance).toFixed(0)}</b></span>}
+        {s.role === "user" && active && meter?.balance != null && <span>{t("consult.balance")} <b data-testid="session-balance" className="tabular-nums">{Number(meter.balance).toFixed(0)}</b></span>}
         <span className="text-muted-foreground">{t("consult.perMin", { rate: meter?.rate ?? s.rates[s.mode]?.rate })}</span>
       </div>
       {lowBal && <div data-testid="low-balance" className="flex items-center justify-center gap-3 bg-amber-500/15 px-4 py-1.5 text-center text-xs font-semibold text-amber-700 dark:text-amber-300">

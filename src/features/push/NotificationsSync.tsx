@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
@@ -6,18 +6,29 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { markRead, useUnreadCount } from "./api";
 import { syncPush } from "./webPush";
+import { toast } from "sonner";
+import { renderText } from "./text";
 
 /** App-wide glue: live inbox updates, taps coming from the service worker, device language, app-icon badge. */
 export function NotificationsSync() {
   const { user } = useAuth(); const uid = user?.id; const qc = useQueryClient(); const nav = useNavigate(); const loc = useLocation();
   const { i18n } = useTranslation(); const lang = i18n.language?.startsWith("ta") ? "ta" : "en";
+  const langRef = useRef<"en" | "ta">(lang); langRef.current = lang;
   const unread = useUnreadCount();
 
   // new / updated rows for me → refresh the bell and the list
   useEffect(() => {
     if (!uid) return;
     const ch = supabase.channel(`notes:${uid}`)
-      .on("postgres_changes", { event: "*", schema: "public", table: "notifications", filter: `user_id=eq.${uid}` }, () => qc.invalidateQueries({ queryKey: ["notifications"] }))
+      .on("postgres_changes", { event: "*", schema: "public", table: "notifications", filter: `user_id=eq.${uid}` }, (p) => {
+        qc.invalidateQueries({ queryKey: ["notifications"] });
+        // the server switched this worker Offline (missed rings): update the switch everywhere and say why
+        const n = p.new as { kind?: string; params?: Record<string, unknown> } | null;
+        if (p.eventType === "INSERT" && n?.kind === "worker.auto_offline") {
+          qc.invalidateQueries({ queryKey: ["my-worker"] });
+          const r = renderText({ kind: n.kind, params: n.params }, langRef.current); toast.warning(r.title, { id: "auto-offline", description: r.body, duration: 10_000 });
+        }
+      })
       .subscribe();
     return () => { void supabase.removeChannel(ch); };
   }, [uid, qc]);

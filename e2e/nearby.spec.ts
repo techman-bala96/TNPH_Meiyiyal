@@ -10,7 +10,7 @@ const at = (km: number) => ({ latitude: CHENNAI.latitude + km / 111.2, longitude
 const snap = async (page: Page, name: string, tag?: string) => { await page.waitForTimeout(700); await page.screenshot({ path: `${SHOTS}/${tag ?? test.info().project.name}-${name}.png` }); };
 const trusted = (q: string) => sql(`SELECT set_config('meiyiyal.trusted','on',false); ${q}`);
 const reset = () => {
-  sql(`DELETE FROM auth.users WHERE email ~ '^n[sap]-.*@meiyiyal\\.test$';`);
+  sql(`DELETE FROM auth.users WHERE email ~ '^n[a-z]-.*@meiyiyal\\.test$';`);
   // only this spec's lawyers may be found for the family-law specialty
   trusted(`UPDATE public.workers SET is_online = false WHERE primary_node = '${FAMILY}';`);
 };
@@ -214,4 +214,154 @@ test("network drop pauses billing, both say continue → resumes; long drop ends
   await u.page.getByTestId("reconnect").click();
   await expect(w.page.getByTestId("incoming-ring")).toBeVisible({ timeout: 10_000 });
   await w.page.getByTestId("ring-decline").click();
+});
+
+/** User requests chat from the worker's card, the worker accepts; returns the session id. */
+async function startChat(u: { page: Page }, w: { page: Page; id: string }) {
+  await u.page.goto(`/browse/${FAMILY}`);
+  await cardOf(u.page, w.id).click();
+  await u.page.getByTestId("request-sheet").getByTestId("req-chat").click();
+  await w.page.getByTestId("ring-accept").click();
+  await expect(u.page.getByTestId("session-page")).toBeVisible({ timeout: 10_000 });
+  await expect(w.page.getByTestId("session-page")).toBeVisible();
+  return new URL(u.page.url()).pathname.split("/").pop()!;
+}
+
+test("low balance: warning with top up; continuing after a drop with too little ends it; top up + reconnect within 10 min", async ({ browser }) => {
+  reset();
+  const w = await makeWorker(browser, "nl-law1", "Adv. Kavitha Raman", IMG("lawyer"), FAMILY, CHENNAI, "chennai");
+  const u = await user(browser, "nl-user", "Priya Natarajan");
+  credits(u.email, 100);
+  const sid = await startChat(u, w);
+  await expect(u.page.getByTestId("credits-used")).toHaveText("10");
+
+  // one minute of balance left → warning with a Top up link (checked by the 10 s meter)
+  credits(u.email, 15);
+  await expect(u.page.getByTestId("low-balance")).toBeVisible({ timeout: 20_000 });
+  await expect(u.page.getByTestId("low-topup")).toHaveAttribute("href", "/wallet");
+  await snap(u.page, "14-low-balance");
+
+  // network drop; on return the user says continue but has less than 2 minutes → ended, reconnect offered
+  await u.page.goto("about:blank");
+  trusted(`UPDATE public.consult_sessions SET user_seen_at = now() - interval '40 seconds' WHERE id='${sid}';`);
+  await expect(w.page.getByTestId("session-paused")).toBeVisible({ timeout: 25_000 });
+  await u.page.goto(`/session/${sid}`);
+  await expect(u.page.getByTestId("resume-ask")).toBeVisible({ timeout: 20_000 });
+  await u.page.getByTestId("resume-yes").click();
+  await expect(u.page.getByTestId("end-title")).toHaveAttribute("data-reason", "low_balance", { timeout: 15_000 });
+  await expect(u.page.getByTestId("reconnect-topup")).toBeVisible();
+  await expect(u.page.getByTestId("reconnect")).toBeVisible();
+  await expect(w.page.getByTestId("session-summary")).toBeVisible({ timeout: 15_000 });
+  await snap(u.page, "15-low-balance-ended");
+
+  // top up through the real (mock) checkout, come back, reconnect to the same worker
+  await u.page.getByTestId("reconnect-topup").click();
+  await expect(u.page).toHaveURL(/\/wallet/);
+  await u.page.locator('[data-testid="pack"][data-id="value"]').click();
+  await expect(u.page.getByTestId("mock-checkout")).toBeVisible();
+  await u.page.getByTestId("mock-pay").click();
+  await expect(u.page.getByTestId("pay-result")).toHaveAttribute("data-status", "paid", { timeout: 15_000 });
+  await u.page.goBack();
+  await expect(u.page.getByTestId("reconnect")).toBeVisible({ timeout: 10_000 });
+  await u.page.getByTestId("reconnect").click();
+  await expect(w.page.getByTestId("incoming-ring")).toBeVisible({ timeout: 10_000 });
+  await w.page.getByTestId("ring-accept").click();
+  await expect(u.page).toHaveURL(/\/session\//, { timeout: 10_000 });
+  await expect.poll(() => new URL(u.page.url()).pathname.split("/").pop()).not.toBe(sid);
+  await expect(u.page.getByTestId("session-other")).toHaveText("Adv. Kavitha Raman");
+});
+
+test("worker ends within 2 minutes without helping → user fully refunded (note on both sides), no-show counted", async ({ browser }) => {
+  reset();
+  const w = await makeWorker(browser, "ne-law1", "Adv. Kavitha Raman", IMG("lawyer"), FAMILY, CHENNAI, "chennai");
+  const u = await user(browser, "ne-user", "Priya Natarajan");
+  credits(u.email, 100);
+  const sid = await startChat(u, w);
+  await expect(u.page.getByTestId("credits-used")).toHaveText("10");
+  expect(balance(u.email)).toBe(90);
+  await w.page.getByTestId("end-session").click();
+  await expect(u.page.getByTestId("end-title")).toHaveAttribute("data-reason", "early_end", { timeout: 15_000 });
+  await expect(u.page.getByTestId("refund-note")).toContainText("10");
+  await expect(u.page.getByTestId("find-other")).toBeVisible();
+  await expect(u.page.getByTestId("reconnect")).toHaveCount(0);
+  await expect(w.page.getByTestId("refund-note")).toBeVisible({ timeout: 10_000 });
+  await expect.poll(() => balance(u.email)).toBe(100);
+  expect(sql(`SELECT noshow_count FROM public.workers WHERE id='${w.id}'`)).toBe("1");
+  expect(sql(`SELECT count(*) FROM public.notifications n JOIN public.consult_sessions s ON s.user_id=n.user_id WHERE s.id='${sid}' AND n.kind='session.early_end'`)).toBe("1");
+  await snap(u.page, "16-early-end-refund"); await snap(w.page, "16-early-end-worker");
+});
+
+test("3 missed rings in a row → worker set Offline: switch flips live, banner + inbox say why; going online clears it", async ({ browser }) => {
+  reset();
+  const w = await makeWorker(browser, "no-law1", "Adv. Kavitha Raman", IMG("lawyer"), FAMILY, CHENNAI, "chennai");
+  const u = await user(browser, "no-user", "Priya Natarajan");
+  credits(u.email, 500);
+  await u.page.goto(`/browse/${FAMILY}`);
+  for (let i = 1; i <= 3; i++) {
+    await cardOf(u.page, w.id).click();
+    await u.page.getByTestId("request-sheet").getByTestId("req-chat").click();
+    await expect(w.page.getByTestId("incoming-ring")).toBeVisible({ timeout: 10_000 });
+    trusted(`UPDATE public.consult_requests SET expires_at = now() - interval '1 second' WHERE status='ringing' AND worker_id='${w.id}';`);
+    await expect(u.page.getByTestId("no-answer-panel")).toHaveAttribute("data-reason", "timeout", { timeout: 15_000 });
+    await expect(w.page.getByTestId("incoming-ring")).toHaveCount(0, { timeout: 10_000 });
+    await u.page.getByTestId("no-answer-close").click();
+    if (i < 3) {
+      expect(sql(`SELECT is_online::text || '/' || missed_streak FROM public.workers WHERE id='${w.id}'`)).toBe(`true/${i}`);
+      // step past the ask-again rules (1 min wait, 2 misses / 30 min) — covered in the test above
+      trusted(`UPDATE public.consult_requests SET created_at = created_at - interval '31 minutes', responded_at = responded_at - interval '31 minutes', expires_at = expires_at - interval '31 minutes' WHERE worker_id='${w.id}';`);
+    }
+  }
+  // worker side: no reload — the switch flips, a banner explains, and it's in the inbox
+  await expect(w.page.getByTestId("go-online")).not.toBeChecked({ timeout: 15_000 });
+  await expect(w.page.getByTestId("auto-offline-banner")).toBeVisible();
+  await expect(w.page.getByTestId("auto-offline-banner")).toContainText("3");
+  await snap(w.page, "17-auto-offline");
+  await w.page.getByTestId("bell").click();
+  await expect(w.page.locator('[data-testid="inbox-item"][data-kind="worker.auto_offline"]')).toBeVisible();
+  await w.page.goto("/?tab=worker");
+  await expect(w.page.getByTestId("auto-offline-banner")).toBeVisible();
+  // user side: now shown as offline
+  await u.page.reload();
+  await expect(cardOf(u.page, w.id)).toHaveAttribute("data-availability", "offline", { timeout: 10_000 });
+  // back online clears the banner and the streak
+  await w.page.getByTestId("go-online").click();
+  await expect(w.page.getByTestId("go-online")).toBeChecked();
+  await expect(w.page.getByTestId("auto-offline-banner")).toHaveCount(0);
+  expect(sql(`SELECT is_online::text || '/' || missed_streak FROM public.workers WHERE id='${w.id}'`)).toBe("true/0");
+});
+
+test("paid message not answered in 24 h → 5 credits back automatically, shown as refunded on both sides", async ({ browser }) => {
+  reset();
+  const w = await makeWorker(browser, "nm-law1", "Adv. Kavitha Raman", IMG("lawyer"), FAMILY, CHENNAI, "chennai");
+  await w.page.getByTestId("go-online").click(); await expect(w.page.getByTestId("go-online")).not.toBeChecked();
+  const u = await user(browser, "nm-user", "Priya Natarajan");
+  credits(u.email, 100);
+  await u.page.goto(`/w/${w.id}`);
+  await u.page.getByTestId("wp-message").click();
+  const ms = u.page.getByTestId("message-sheet");
+  await ms.getByTestId("message-body").fill("Please call me tomorrow about a divorce petition.");
+  await ms.getByTestId("message-send").click();
+  await expect(ms).toHaveCount(0, { timeout: 10_000 });
+  await expect.poll(() => balance(u.email)).toBe(95);
+  await u.page.goto("/messages");
+  await expect(u.page.getByTestId("message-row").first()).toHaveAttribute("data-status", "sent");
+  await expect(u.page.getByTestId("message-row").first().getByTestId("message-refund-on")).toBeVisible();
+
+  // a day passes with no reply → the 5-second sweep refunds it
+  trusted(`UPDATE public.worker_messages SET created_at = created_at - interval '25 hours' WHERE user_id = (SELECT id FROM auth.users WHERE email='${u.email}');`);
+  await expect.poll(() => balance(u.email), { timeout: 20_000 }).toBe(100);
+  await u.page.reload();
+  const row = u.page.getByTestId("message-row").first();
+  await expect(row).toHaveAttribute("data-status", "refunded");
+  await expect(row.getByTestId("message-refunded")).toContainText("5");
+  await expect(row.getByTestId("message-refund-on")).toHaveCount(0);
+  await expect(row.getByTestId("message-connect")).toHaveCount(0);
+  await snap(u.page, "18-message-refunded");
+  await u.page.goto("/notifications");
+  await expect(u.page.locator('[data-testid="inbox-item"][data-kind="worker.message_refunded"]')).toBeVisible();
+  // worker: shown as refunded, nothing left to answer
+  await w.page.goto("/messages");
+  const wr = w.page.getByTestId("message-row").first();
+  await expect(wr).toHaveAttribute("data-status", "refunded");
+  await expect(wr.getByTestId("message-respond")).toHaveCount(0);
 });
