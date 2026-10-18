@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { pendingReferral } from "@/features/referral/capture";
@@ -126,7 +127,8 @@ export default function Login() {
         {err && <p data-testid="auth-error" role="alert" className="mt-3 text-sm text-destructive">{err}</p>}
       </section>
 
-      <p className="mt-auto pt-8 text-center text-xs text-muted-foreground">{t("auth.terms")}</p>
+      <p className="mt-auto pt-8 text-center text-xs text-muted-foreground">{t("auth.terms")}{" "}
+        <Link data-testid="login-terms" to="/terms" className="underline">{t("legal.terms")}</Link> · <Link data-testid="login-privacy" to="/privacy" className="underline">{t("legal.privacy")}</Link></p>
     </main>
   );
 }

@@ -275,6 +275,20 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"data_requests": {
+                  Row: {
+                    "created_at": string,"done_at": string | null,"due_at": string | null,"id": number,"kind": string,"reason": string | null,"status": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"done_at"?: string | null,"due_at"?: string | null,"id"?: never,"kind": string,"reason"?: string | null,"status"?: string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"done_at"?: string | null,"due_at"?: string | null,"id"?: never,"kind"?: string,"reason"?: string | null,"status"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"identity_fingerprints": {
                   Row: {
                     "blocked": boolean,"created_at": string,"hash": string,"id": string,"kind": string,"worker_id": string | null
@@ -1267,7 +1281,10 @@ isOneToOne: false
                 }
           }
           Functions: {
-            "_payout_account_apply":
+            "_account_blockers":
+{ Args: { "_u": string }; Returns: (string)[]
+                           },
+"_payout_account_apply":
 { Args: { "_account": string,"_contact_id"?: string,"_fail": string,"_fund_account_id": string,"_ifsc": string,"_kind": string,"_mock": string,"_pan": string,"_pending"?: boolean,"_provider": string,"_registered": string,"_u": string,"_validation_ref"?: string }; Returns: Json
                            },
 "_payout_account_ratelimit":
@@ -1360,6 +1377,31 @@ isOneToOne: false
                            },
 "aadhaar_verify_otp":
 { Args: { "_otp": string }; Returns: Json
+                           },
+"account_anonymize":
+{ Args: { "_request": number }; Returns: Json
+                           },
+"account_delete_cancel":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"account_delete_request":
+{ Args: { "_confirm": string }; Returns: Json
+                           },
+"account_hook_ok":
+{ Args: { "_secret": string }; Returns: boolean
+                           },
+"account_purge_due":
+{ Args: { "_limit"?: number }; Returns: {
+              "blockers": (string)[],"request_id": number,"user_id": string
+            }[]
+                           },
+"account_purge_kick":
+{ Args: Record<PropertyKey, never>; Returns: undefined
+                           },
+"account_user_files":
+{ Args: { "_u": string }; Returns: {
+              "bucket": string,"path": string
+            }[]
                            },
 "addauth":
 { Args: { "": string }; Returns: boolean
@@ -1718,6 +1760,9 @@ isOneToOne: false
               "area_id": number,"area_name": string,"area_name_ta": string,"district_name": Json,"district_slug": string,"id": string,"lat": number,"lng": number,"source": string
             }[]
                            },
+"my_data_export":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "my_earnings":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
@@ -1739,6 +1784,9 @@ isOneToOne: false
 { Args: Record<PropertyKey, never>; Returns: {
               "address": string,"area_id": number,"area_name": string,"area_name_ta": string,"created_at": string,"district_name": Json,"district_slug": string,"id": string,"is_current": boolean,"lat": number,"lng": number
             }[]
+                           },
+"my_privacy":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "my_referral":
 { Args: Record<PropertyKey, never>; Returns: Json

@@ -1071,5 +1071,42 @@
     },
     "link": "Link",
     "copyLink": "Copy link"
+  },
+  "legal": {
+    "draft": "DRAFT — this document has not been reviewed by a lawyer yet and may change before launch.",
+    "updated": "Last updated {{date}}",
+    "grievance": "Grievance Officer",
+    "gName": "Name",
+    "gEmail": "Email",
+    "gPhone": "Phone",
+    "gAddress": "Address",
+    "tba": "To be appointed before launch. Until then, write to us from the app's Help section.",
+    "privacy": "Privacy policy",
+    "terms": "Terms of use"
+  },
+  "privacy": {
+    "title": "Your data",
+    "intro": "Download a copy of everything we hold about you, or delete your account.",
+    "download": "Download my data",
+    "downloaded": "Your data file is downloading",
+    "tooMany": "You've reached today's download limit. Try again tomorrow.",
+    "delete": "Delete my account",
+    "explain": "Your account will be deleted in {{days}} days. You can cancel any time before that. After deletion your name, phone, email, location, messages and files are removed.",
+    "keeps": "Payment and tax records are kept, without your name, as the law requires.",
+    "wallet": "Your wallet balance of ₹{{amount}} will be lost. Ask for a refund first if you want it back.",
+    "typeWord": "Type {{word}} to confirm",
+    "keep": "Keep my account",
+    "confirm": "Delete account",
+    "scheduled": "Account deletion scheduled",
+    "pending": "Your account will be deleted on {{due}}.",
+    "waiting": "Waiting for",
+    "cancel": "Cancel deletion",
+    "cancelled": "Deletion cancelled. Your account stays.",
+    "b": {
+      "active_consultation": "an active consultation to end",
+      "payout_in_progress": "a payout in progress",
+      "unpaid_earnings": "your unpaid earnings to be paid out",
+      "admin_account": "admin access to be removed"
+    }
   }
 }

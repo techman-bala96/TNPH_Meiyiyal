@@ -24,6 +24,7 @@ import { BottomNav } from "@/components/app/BottomNav";
 import { VoiceProvider } from "@/features/voice/VoiceProvider";
 import Notifications from "@/pages/Notifications";
 import Messages from "@/pages/Messages";
+import Legal from "@/pages/Legal";
 import { NotificationsSync } from "@/features/push/NotificationsSync";
 import { ReferralClaimer } from "@/features/referral/ReferralClaimer";
 
@@ -43,6 +44,8 @@ export default function App() {
           <VoiceProvider>
           <Routes>
             <Route element={<GuestOnly />}><Route path="/login" element={<Login />} /></Route>
+            <Route path="/privacy" element={<Legal kind="privacy" />} />
+            <Route path="/terms" element={<Legal kind="terms" />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route element={<RequireAuth />}>
               <Route path="/location" element={<LocationPage />} />
