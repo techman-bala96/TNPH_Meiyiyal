@@ -84,7 +84,7 @@ export default function Session() {
   const paused = active && !!meter?.paused;
   const lowBal = s.role === "user" && meter?.minutes_left != null && meter.minutes_left <= 2 && active && !paused;
   const resumeLeft = paused && meter?.paused_at ? Math.max(0, RESUME_MIN * 60 - (now - new Date(meter.paused_at).getTime()) / 1000) : 0;
-  const answer = async (yes: boolean) => { const { data, error } = await supabase.rpc("session_resume_answer" as never, { _sid: id, _yes: yes } as never);
+  const answer = async (yes: boolean) => { const { data, error } = await supabase.rpc("session_resume_answer", { _sid: id, _yes: yes });
     if (error) toast.error(error.message); else { setMeter(data as unknown as SessionState); qc.invalidateQueries({ queryKey: ["session", id] }); } };
   const reconnectUntil = s.reconnect_until ? new Date(s.reconnect_until).getTime() : 0; const canReconnect = s.role === "user" && reconnectUntil > now && !!s.worker_id;
   const target = { id: s.worker_id ?? "", display_name: s.other.name, photo_url: s.other.photo, spec: prof, node: s.node_slug };

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
@@ -7,7 +8,7 @@ import { BellOff, CheckCircle2, Clock, Mail, Mic, Undo2, Zap } from "lucide-reac
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PageShell } from "@/components/app/PageShell";
 import { initials } from "@/features/profile/useProfile";
-import { db, errText, useMyMessages, type WorkerMessage } from "@/features/nearby/api";
+import { errText, useMyMessages, type WorkerMessage } from "@/features/nearby/api";
 
 const STATUS_STYLE: Record<WorkerMessage["status"], string> = {
   sent: "bg-amber-500/15 text-amber-700 dark:text-amber-300", read: "bg-sky-500/15 text-sky-700 dark:text-sky-300",
@@ -39,11 +40,11 @@ export default function Messages() {
 
 function Row({ m, i }: { m: WorkerMessage; i: number }) {
   const { t } = useTranslation(); const qc = useQueryClient(); const [audio, setAudio] = useState<string | null>(null); const [busy, setBusy] = useState(false);
-  useEffect(() => { if (m.voice_path) void db.storage.from("voice-notes").createSignedUrl(m.voice_path, 3600).then(({ data }) => setAudio(data?.signedUrl ?? null)); }, [m.voice_path]);
-  useEffect(() => { if (m.role === "worker" && m.status === "sent") void db.rpc("worker_message_read", { _id: m.id }); }, [m.id, m.role, m.status]);
+  useEffect(() => { if (m.voice_path) void supabase.storage.from("voice-notes").createSignedUrl(m.voice_path, 3600).then(({ data }) => setAudio(data?.signedUrl ?? null)); }, [m.voice_path]);
+  useEffect(() => { if (m.role === "worker" && m.status === "sent") void supabase.rpc("worker_message_read", { _id: m.id }); }, [m.id, m.role, m.status]);
   const ready = m.role === "user" && m.status === "responded" && m.reserved_until && new Date(m.reserved_until).getTime() > Date.now();
   const act = async (fn: "worker_message_respond" | "worker_mute_user") => {
-    setBusy(true); const { error } = await db.rpc(fn, fn === "worker_mute_user" ? { _message: m.id } : { _id: m.id }); setBusy(false);
+    setBusy(true); const { error } = await supabase.rpc(fn, fn === "worker_mute_user" ? { _message: m.id } : { _id: m.id }); setBusy(false);
     if (error) toast.error(errText(error)); else { if (fn === "worker_message_respond") toast.success(t("nearby.messages.respondedToast")); qc.invalidateQueries({ queryKey: ["worker-messages"] }); qc.invalidateQueries({ queryKey: ["my-worker"] }); }
   };
   return (

@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { db } from "@/features/push/db";
+import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile, useUpdateProfile, type Prefs } from "@/features/profile/useProfile";
 import type { Mode, Rates } from "@/features/consult/api";
 
 /** M10 RPCs are newer than the generated DB types, so this feature uses the untyped client view (same as push). */
-export { db };
 
 export type I18n = { en: string; ta?: string };
 export type SearchView = {
@@ -37,12 +36,12 @@ export function useNearbyPrefs() {
 export function useMyMessages() {
   const { user } = useAuth();
   return useQuery({ queryKey: ["worker-messages", user?.id], enabled: !!user, refetchInterval: 20_000, queryFn: async () => {
-    const { data, error } = await db.rpc("my_worker_messages"); if (error) throw error; return (data ?? []) as WorkerMessage[];
+    const { data, error } = await supabase.rpc("my_worker_messages"); if (error) throw error; return (data ?? []) as WorkerMessage[];
   } });
 }
 
 export async function fetchSuggestions(node: string, lat: number, lng: number, exclude: string[]): Promise<SuggestedWorker[]> {
-  const { data, error } = await db.rpc("search_suggestions", { _node: node, _lat: lat, _lng: lng, _exclude: exclude, _n: 3 });
+  const { data, error } = await supabase.rpc("search_suggestions", { _node: node, _lat: lat, _lng: lng, _exclude: exclude, _n: 3 });
   if (error) return [];
   return (data ?? []) as SuggestedWorker[];
 }

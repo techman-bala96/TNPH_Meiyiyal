@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -8,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { initials } from "@/features/profile/useProfile";
 import { useAuth } from "@/hooks/useAuth";
 import { WalletChip } from "@/features/consult/RequestSheet";
-import { db, errText } from "./api";
+import { errText } from "./api";
 import type { MsgTarget } from "./AutoSearchScreen";
 
 const COST = 5; const MAX_S = 30; const MAX_CHARS = 300;
@@ -42,10 +43,10 @@ export function MessageSheet({ target, onClose }: { target: MsgTarget | null; on
       if (blob) {
         const ext = blob.type.includes("mp4") ? "m4a" : blob.type.includes("ogg") ? "ogg" : "webm";
         path = `${user.id}/${crypto.randomUUID()}.${ext}`;
-        const up = await db.storage.from("voice-notes").upload(path, blob, { contentType: blob.type || "audio/webm" });
+        const up = await supabase.storage.from("voice-notes").upload(path, blob, { contentType: blob.type || "audio/webm" });
         if (up.error) throw up.error;
       }
-      const { error } = await db.rpc("worker_message_send", { _worker: target.id, _body: body.trim() || null, _voice_path: path, _voice_seconds: blob ? secs : null });
+      const { error } = await supabase.rpc("worker_message_send", { _worker: target.id, _body: body.trim() || null, _voice_path: path, _voice_seconds: blob ? secs : null });
       if (error) throw error;
       toast.success(t("nearby.msg.sent")); qc.invalidateQueries({ queryKey: ["wallet"] }); qc.invalidateQueries({ queryKey: ["worker-messages"] }); onClose();
     } catch (e) { toast.error(errText(e as { message?: string })); } finally { setSending(false); }

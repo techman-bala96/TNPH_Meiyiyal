@@ -12,7 +12,7 @@ import { initials } from "@/features/profile/useProfile";
 import { startRing, stopRing } from "./ringtone";
 import { closeNotifications, REQUESTED_KEY } from "@/features/push/webPush";
 import type { ConsultRequest, Mode } from "./api";
-import { db, errText, type SearchView } from "@/features/nearby/api";
+import { errText, type SearchView } from "@/features/nearby/api";
 import { AutoSearchScreen, type MsgTarget } from "@/features/nearby/AutoSearchScreen";
 import { NoAnswerPanel, type NoAnswer } from "@/features/nearby/NoAnswerPanel";
 import { MessageSheet } from "@/features/nearby/MessageSheet";
@@ -59,12 +59,12 @@ export function ConsultProvider({ children }: { children: ReactNode }) {
   }, [nav, qc]);
   useEffect(() => {
     if (!uid) { setSearch(null); return; }
-    void db.rpc("my_live_search").then(({ data }) => { if (data) applySearch(data as SearchView); });
+    void supabase.rpc("my_live_search").then(({ data }) => { if (data) applySearch(data as SearchView); });
   }, [uid, applySearch]);
   const searchId = search?.v.id; const searching = search?.v.status === "searching";
   useEffect(() => {
     if (!searchId || !searching) return;
-    const tick = () => void db.rpc("search_tick", { _sid: searchId }).then(({ data }) => { if (data && searchRef.current?.v.id === searchId) applySearch(data as SearchView); });
+    const tick = () => void supabase.rpc("search_tick", { _sid: searchId }).then(({ data }) => { if (data && searchRef.current?.v.id === searchId) applySearch(data as SearchView); });
     const ch = supabase.channel(`search:${searchId}`)
       .on("postgres_changes", { event: "UPDATE", schema: "public", table: "consult_searches", filter: `id=eq.${searchId}` }, () => tick()).subscribe();
     const id = setInterval(tick, 3000);
@@ -74,14 +74,14 @@ export function ConsultProvider({ children }: { children: ReactNode }) {
 
   const startSearch = useCallback(async (a: SearchArgs) => {
     setNoAnswer(null);
-    const { data, error } = await db.rpc("search_start", { _node: a.node, _mode: a.mode, _lat: a.lat, _lng: a.lng, _all: false });
+    const { data, error } = await supabase.rpc("search_start", { _node: a.node, _mode: a.mode, _lat: a.lat, _lng: a.lng, _all: false });
     if (error) { creditError(errText(error)); return; }
     try { localStorage.setItem(REQUESTED_KEY, "1"); } catch { /* private mode */ }
     applySearch(data as SearchView, a.nodeLabel);
   }, [applySearch]); // eslint-disable-line react-hooks/exhaustive-deps
   const searchCall = async (fn: "search_cancel" | "search_continue", extra: Record<string, unknown> = {}) => {
     const cur = searchRef.current; if (!cur) return;
-    const { data, error } = await db.rpc(fn, { _sid: cur.v.id, ...extra });
+    const { data, error } = await supabase.rpc(fn, { _sid: cur.v.id, ...extra });
     if (error) { creditError(errText(error)); return; }
     applySearch(data as SearchView);
   };
