@@ -298,7 +298,8 @@ test("[LR12] invalid inputs: empty / very long name, bad email, bad phone, 5000-
   await startChat(u.page, law);
   const long = "நீண்ட செய்தி long message 🙂 ".repeat(200).slice(0, 5000);
   await u.page.getByTestId("chat-input").fill(long);
-  await expect(u.page.getByTestId("chat-input")).toHaveValue(long.slice(0, 4000)); // the box stops at the 4000-letter limit
+  // the box stops at the 4000-letter limit and shows the count
+  expect(await u.page.getByTestId("chat-input").evaluate((e) => (e as HTMLTextAreaElement).value.length)).toBe(4000);
   await expect(u.page.getByTestId("chat-count")).toHaveText("4000/4000");
   await u.page.getByTestId("chat-send").click();
   await expect(law.page.getByTestId("msg").last()).toContainText("நீண்ட செய்தி long message 🙂");
@@ -306,6 +307,10 @@ test("[LR12] invalid inputs: empty / very long name, bad email, bad phone, 5000-
   const overflow = await law.page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1);
   expect(overflow).toBe(false);
   await snap(law.page, "LR12", "long-message");
+  // the session pill no longer covers the page header: back and language stay tappable
+  await u.page.goto("/settings"); await expect(u.page.getByTestId("active-session-pill")).toBeVisible();
+  await u.page.getByTestId("page-back").click({ trial: true });
+  await snap(u.page, "LR12", "pill-header-clear");
   await law.page.getByTestId("end-session").click();
   const g = await browser.newContext(test.info().project.use); const gp = await g.newPage();
   await gp.goto("/login"); await gp.getByTestId("btn-email").click(); await gp.getByTestId("input-email").fill("not-an-email"); await gp.getByTestId("btn-send-link").click();

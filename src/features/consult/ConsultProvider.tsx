@@ -197,6 +197,9 @@ export function ConsultProvider({ children }: { children: ReactNode }) {
     if (accept && data) nav(`/session/${data}`);
   };
 
+  // the pill sits over the top of the screen: push the page (and sticky headers) down so back / language stay tappable
+  const pill = !!active.data && !onSessionPage && !incoming && !outgoing && !search && !/^\/(login|auth)/.test(loc.pathname);
+  useEffect(() => { document.documentElement.classList.toggle("has-session-pill", pill); return () => document.documentElement.classList.remove("has-session-pill"); }, [pill]);
   return (
     <C.Provider value={{ request, startSearch, messageWorker: setMsgTarget }}>
       {children}
@@ -208,7 +211,7 @@ export function ConsultProvider({ children }: { children: ReactNode }) {
         onMessage={() => { setMsgTarget(noAnswer.target); setNoAnswer(null); }}
         onAskAgain={() => void request({ ...noAnswer.target, node: noAnswer.node }, lastMode.current)} />}
       <MessageSheet target={msgTarget} onClose={() => setMsgTarget(null)} />
-      {active.data && !onSessionPage && !incoming && !outgoing && !search && !/^\/(login|auth)/.test(loc.pathname) && (
+      {pill && (
         <button data-testid="active-session-pill" data-paused={active.paused} onClick={() => nav(`/session/${active.data!.id}`)}
           className={`fixed inset-x-3 top-[calc(0.5rem+env(safe-area-inset-top))] z-[70] mx-auto flex max-w-sm items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-white shadow-xl animate-in slide-in-from-top-2 ${active.paused ? "bg-amber-600" : "bg-emerald-600"}`}>
           {active.paused ? <PauseCircle className="h-4 w-4" /> : <span className="relative flex h-2.5 w-2.5"><span className="absolute inset-0 animate-ping rounded-full bg-white/70" /><span className="relative h-2.5 w-2.5 rounded-full bg-white" /></span>}

@@ -72,6 +72,8 @@
   }
 }
 @layer components {
+  html.has-session-pill body { padding-top: calc(3.25rem + env(safe-area-inset-top)); }
+  html.has-session-pill .sticky.top-0 { top: calc(3.25rem + env(safe-area-inset-top)); }
   .tap { @apply min-h-11 active:scale-[0.98] transition-transform; }
   .card-soft { @apply rounded-2xl bg-card shadow-[0_1px_2px_rgba(0,0,0,.04),0_4px_16px_rgba(16,80,70,.06)] dark:shadow-none dark:ring-1 dark:ring-border; }
   /* dark map tiles */
