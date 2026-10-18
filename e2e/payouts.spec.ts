@@ -158,6 +158,8 @@ test("payouts: penny-drop success, name mismatch, weekly run, flagged worker ski
     await admin.ctx.close();
     await w.ctx.close();
   } finally {
-    sql(`UPDATE public.app_settings SET value = 'false'::jsonb WHERE key = 'payouts_auto';`);
+    // clean up: the bank accounts registered here would otherwise stay in the DB (and could match other tests' accounts)
+    sql(`UPDATE public.app_settings SET value = 'false'::jsonb WHERE key = 'payouts_auto';
+         DELETE FROM auth.users WHERE email LIKE 'po-%@meiyiyal.test';`);
   }
 });

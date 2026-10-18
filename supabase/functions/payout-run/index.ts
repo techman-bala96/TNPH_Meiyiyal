@@ -22,5 +22,6 @@ Deno.serve(async (req) => {
   if (error) return json({ error: error.message }, 500);
   const { data: dispatch, error: dispatchError } = await db.rpc("payout_dispatch_mock", {});
   if (dispatchError) return json({ error: dispatchError.message }, 500);
+  await db.rpc("push_payout_batch_done", { _run: run, _dispatch: dispatch }); // A3: tell admins (best effort)
   return json({ ok: true, run, dispatch });
 });

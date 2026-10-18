@@ -110,9 +110,58 @@
     "notify": {
       "requests": "New requests & calls",
       "chat": "Chat messages",
-      "promos": "Offers & updates"
+      "money": "Payments & payouts",
+      "account": "Account & verification",
+      "promos": "Offers & reminders",
+      "admin": "Admin alerts"
     },
-    "notifyNote": "Push notifications arrive with the request/ring update."
+    "notifyNote": "Choose which alerts come to your phone. Everything also shows in the 🔔 bell."
+  },
+  "push": {
+    "askTitle": {
+      "worker": "Don't miss paid requests",
+      "client": "Know when they reply",
+      "admin": "Admin alerts"
+    },
+    "askBody": {
+      "worker": "Get an alert with sound when a client requests you, even when Meiyiyal is closed.",
+      "client": "Get an alert when your doctor, lawyer or engineer replies or calls you.",
+      "admin": "Get an alert when a payout or verification needs your review."
+    },
+    "allow": "Turn on alerts",
+    "notNow": "Not now",
+    "installTitle": "Add Meiyiyal to your Home Screen",
+    "installBody": "On iPhone, alerts work only in the Home Screen app (iOS 16.4 or later).",
+    "installStep1": "In Safari, tap the Share button",
+    "installStep2": "Choose “Add to Home Screen”",
+    "installStep3": "Open Meiyiyal from the new icon and turn on alerts",
+    "deniedHint": "Alerts are blocked for Meiyiyal in this browser. Allow them in your browser or phone settings, then come back.",
+    "unsupported": "This browser can't show alerts. Use Chrome on Android, or the Home Screen app on iPhone.",
+    "noKey": "Alerts are not set up on this server yet.",
+    "on": "Alerts are on for this device",
+    "statusOff": "Alerts are off for this device",
+    "offBanner": "Alerts are off. You may miss requests when the app is closed.",
+    "turnOn": "Turn on",
+    "turnOff": "Turn off on this device",
+    "turnedOn": "Alerts turned on",
+    "turnedOff": "Alerts turned off for this device",
+    "test": "Send a test alert",
+    "testSent": "Test alert sent",
+    "quiet": "Quiet hours",
+    "quietNow": "On now",
+    "from": "From",
+    "to": "To",
+    "quietHint": "During these hours alerts wait and come as one summary in the morning. New requests and calls still ring while you are online.",
+    "alwaysNote": "Safety and account notices (account paused, application not approved, payout failed) always come.",
+    "mockNote": "Test mode: alerts are saved here but not sent to phones."
+  },
+  "inbox": {
+    "title": "Notifications",
+    "bell": "Notifications",
+    "empty": "No notifications yet",
+    "markAll": "Mark all as read",
+    "unread_one": "{{count}} unread",
+    "unread_other": "{{count}} unread"
   },
   "worker": {
     "registerTitle": "Register as expert",

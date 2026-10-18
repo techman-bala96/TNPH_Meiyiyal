@@ -4,6 +4,7 @@ import { ChevronDown, MapPin } from "lucide-react";
 import { UserMenu } from "@/components/app/UserMenu";
 import { LangToggle } from "@/components/app/LangToggle";
 import { MicButton } from "@/features/voice/MicButton";
+import { NotificationBell } from "@/features/push/NotificationBell";
 import { placeLabel, useCurrentLocation } from "@/features/location/useCurrentLocation";
 
 /** Location chip + language toggle, shared by Home and Browse. */
@@ -19,6 +20,7 @@ export function HomeHeader({ from = "/" }: { from?: string }) {
       </Link>
       <MicButton />
       <LangToggle compact />
+      <NotificationBell />
       <UserMenu />
     </header>
   );

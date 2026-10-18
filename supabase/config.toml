@@ -453,3 +453,6 @@ verify_jwt = false
 verify_jwt = false
 [functions.payout-webhook]
 verify_jwt = false
+# M9 push: callers are checked in code (service role, pg_net hook secret, or a signed-in user).
+[functions.push-send]
+verify_jwt = false

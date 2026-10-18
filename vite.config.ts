@@ -8,7 +8,13 @@ export default defineConfig(() => ({
   plugins: [
     react(),
     VitePWA({
+      // M9: our own worker (src/sw.ts) so it can show Web Push notifications; caching stays the same.
+      strategies: "injectManifest",
+      srcDir: "src",
+      filename: "sw.ts",
       registerType: "autoUpdate",
+      injectRegister: false,          // registered in src/main.tsx (production) and on demand in dev (src/features/push/webPush.ts)
+      devOptions: { enabled: true, type: "module", navigateFallback: "index.html" },
       includeAssets: ["favicon.png", "icon-180.png"],
       manifest: {
         name: "Meiyiyal",
@@ -27,7 +33,7 @@ export default defineConfig(() => ({
           { src: "/icon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
         ],
       },
-      workbox: { navigateFallback: "/index.html", globPatterns: ["**/*.{js,css,html,png,svg,woff2}"] },
+      injectManifest: { globPatterns: ["**/*.{js,css,html,png,svg,woff2}"] },
     }),
   ],
   resolve: { alias: { "@": path.resolve(__dirname, "./src") } },

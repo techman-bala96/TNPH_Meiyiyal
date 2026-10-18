@@ -1,10 +1,10 @@
 import { useTheme } from "next-themes";
 import { useTranslation } from "react-i18next";
 import { Monitor, Moon, Sun } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
 import { PageShell, Section } from "@/components/app/PageShell";
 import { WorkerBadge } from "@/components/app/WorkerBadge";
 import { useProfile, useUpdateProfile, type Prefs } from "@/features/profile/useProfile";
+import { PushSettings } from "@/features/push/PushSettings";
 
 export default function Settings() {
   const { t, i18n } = useTranslation();
@@ -15,7 +15,6 @@ export default function Settings() {
   const lang = i18n.language?.startsWith("ta") ? "ta" : "en";
   const seg = "tap flex flex-1 items-center justify-center gap-1.5 rounded-xl text-sm font-medium transition";
   const on = "bg-card text-foreground shadow"; const off = "text-muted-foreground";
-  const notify = prefs.notify ?? { requests: true, chat: true, promos: false };
 
   return (
     <PageShell title={t("menu.settings")} testId="settings-page">
@@ -37,15 +36,8 @@ export default function Settings() {
         </div>
       </Section>
       <Section title={t("settings.notifications")}>
-        <ul className="divide-y">
-          {(["requests", "chat", "promos"] as const).map((k) => (
-            <li key={k} className="flex min-h-12 items-center justify-between gap-3">
-              <span className="text-sm">{t(`settings.notify.${k}`)}</span>
-              <Switch data-testid={`notify-${k}`} checked={!!notify[k]} onCheckedChange={(v) => savePrefs({ notify: { ...notify, [k]: v } })} />
-            </li>
-          ))}
-        </ul>
-        <p className="mt-2 text-xs text-muted-foreground">{t("settings.notifyNote")}</p>
+        <PushSettings prefs={prefs} savePrefs={savePrefs} />
+        <p className="mt-3 text-xs text-muted-foreground">{t("settings.notifyNote")}</p>
       </Section>
     </PageShell>
   );

@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { disablePush } from "@/features/push/webPush";
 
 type Result = { error: Error | null };
 interface AuthCtx {
@@ -49,7 +50,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { error } = await supabase.auth.verifyOtp({ phone, token, type: "sms" });
       return { error };
     },
-    signOut: async () => { await supabase.auth.signOut(); },
+    // a shared phone must not keep showing the previous person's alerts
+    signOut: async () => { await disablePush().catch(() => undefined); await supabase.auth.signOut(); },
   };
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
