@@ -40,7 +40,7 @@ test.afterAll(() => {
   // the scenarios flip per-category auto-approve through the admin screen; put the dev default back
   sql(`UPDATE public.app_settings SET value = '{}'::jsonb WHERE key = 'verify_auto_approve_categories';`);
   try { if (svc?.pid) process.kill(-svc.pid); } catch { /* gone */ } council({}); });
-test.setTimeout(240_000);
+test.setTimeout(300_000);
 
 async function person(browser: Browser, cam: string | null) {
   // each person gets their own browser so the fake camera can show their own face

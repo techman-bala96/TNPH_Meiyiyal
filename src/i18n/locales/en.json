@@ -1216,5 +1216,11 @@
   "net": {
     "offline": "You're offline. Messages and calls will continue when the network is back.",
     "back": "Back online"
+  },
+  "pwa": {
+    "title": "Add Meiyiyal to your phone",
+    "body": "Opens like an app, rings for calls, works on slow networks.",
+    "install": "Install",
+    "later": "Not now"
   }
 }
