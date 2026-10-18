@@ -1,7 +1,7 @@
 /**
  * Click crawl + screen checks for every role and route (mobile / tablet / tablet landscape / desktop, en + ta).
  * Every visible clickable is clicked once on a fresh copy of the screen; results go to
- * test-results/crawl/*.json and docs/TEST-SCENARIOS.md ("Button coverage"). Screens → /workspace/scenario-shots/CRAWL-*.png
+ * .cache/crawl/*.json and docs/TEST-SCENARIOS.md ("Button coverage"). Screens → /workspace/scenario-shots/CRAWL-*.png
  */
 import { expect, test, type Browser, type Page } from "@playwright/test";
 import { mockMapNetwork } from "./mocks";
