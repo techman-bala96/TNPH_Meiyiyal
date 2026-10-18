@@ -254,6 +254,7 @@ for (const [id, cam, face, decision, reason] of [
 
 test("[V21] documents: wrong type and oversize refused in the wizard with a message (en + ta); edited PDF and blurry photo go to review", async ({ browser }) => {
   await autoApprove(browser, "professionals--doctor", "on");
+  test.setTimeout(600_000); // two full registrations
   const r = await register(browser, { id: "V21", name: n("Dr. Arun Kumar"), doc: `${FX}/cert-edited.pdf`, beforeDocs: async (p: Page) => {
     await p.getByTestId("doc-degree_cert").setInputFiles(`${FX}/notes.txt`);
     await expect(p.getByTestId("reg-error")).toContainText(/PDF or a photo/);
@@ -287,10 +288,12 @@ test("[V22] admin asks for more information → worker sees the note, re-uploads
   await expect(r.page.getByTestId("review-note")).toContainText("blurry");
   await snap(r.page, "V22", "needs-info");
   await r.page.getByTestId("btn-continue-reg").click();
-  for (let i = 0; i < 8 && !(await r.page.getByTestId("doc-degree_cert").count()); i++) {
-    const next = r.page.locator('[data-testid="reg-next"], [data-testid="reg-save-details"], [data-testid="reg-verify-otp"], [data-testid="reg-qr-save"], [data-testid="reg-selfie-next"]').first();
-    if (await next.isVisible().catch(() => false)) await next.click(); else await r.page.waitForTimeout(500);
-  }
+  // only the document was asked for: details stay, Aadhaar is already verified, the QR and selfie sent before are kept
+  await r.page.getByTestId("reg-next").click();
+  await r.page.getByTestId("reg-save-details").click();
+  await r.page.getByTestId("reg-keep-qr").click();
+  await snap(r.page, "V22", "keep-selfie");
+  await r.page.getByTestId("reg-keep-selfie").click();
   await r.page.getByTestId("doc-degree_cert").setInputFiles(`${FX}/cert-arun.pdf`);
   await r.page.getByTestId("reg-docs-next").click(); await r.page.getByTestId("reg-submit").click();
   await expect(r.page.getByTestId("worker-status")).toHaveAttribute("data-status", "pending");

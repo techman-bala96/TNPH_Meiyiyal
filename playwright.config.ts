@@ -8,7 +8,7 @@ export default defineConfig({
   globalTeardown: "./e2e/global-teardown.ts",
   reporter: [["list"]],
   expect: { toHaveScreenshot: { maxDiffPixelRatio: 0.01, animations: "disabled" } },
-  use: { baseURL: "http://localhost:8080", trace: "retain-on-failure", navigationTimeout: 30_000,
+  use: { baseURL: "http://localhost:8080", trace: "retain-on-failure", navigationTimeout: 30_000, actionTimeout: 20_000,
     // fake camera/mic so WebRTC calls can be tested end-to-end
     launchOptions: { args: ["--use-fake-ui-for-media-stream", "--use-fake-device-for-media-stream", "--autoplay-policy=no-user-gesture-required"] } },
   webServer: [

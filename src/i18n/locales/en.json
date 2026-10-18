@@ -214,6 +214,7 @@
     "selfieFile": "Choose a photo",
     "selfieConsent": "I agree this photo can be shown on my public profile. My Aadhaar photo is never public.",
     "upload": "Upload",
+    "keepPrev": "Keep the one I sent before",
     "replace": "Replace",
     "docsNote": "PDF or photo, up to 10 MB. Documents are private and seen only by our verification team.",
     "submit": "Submit for verification",

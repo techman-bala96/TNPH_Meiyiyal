@@ -42,6 +42,8 @@ export default function WorkerRegister() {
   const [qr, setQr] = useState(""); const [liveDone, setLiveDone] = useState(false); const [noCamera, setNoCamera] = useState(false);
   const [selfie, setSelfie] = useState<File | null>(null); const [consent, setConsent] = useState(false);
   const req = useRequirements(node);
+  // Asked for more information: the QR and selfie sent last time are still on the case, so they can be kept.
+  const fixing = w?.status === "needs_info";
 
   // resume a draft
   useEffect(() => {
@@ -226,13 +228,14 @@ export default function WorkerRegister() {
             </>
           )}
           {err && <p data-testid="reg-error" className="text-sm text-destructive">{err}</p>}
-          {kyc.data?.aadhaar_verified && <Button className="tap w-full rounded-xl" onClick={() => setStep("qr")}>{t("worker.next")}</Button>}
+          {kyc.data?.aadhaar_verified && <Button data-testid="reg-aadhaar-next" className="tap w-full rounded-xl" onClick={() => setStep("qr")}>{t("worker.next")}</Button>}
         </div>
       )}
 
       {step === "qr" && (
         <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2">
           <div className="card-soft flex gap-3 p-4"><QrCode className="h-6 w-6 shrink-0 text-primary" /><p className="text-sm text-muted-foreground">{t("worker.qrWhy")}</p></div>
+          {fixing && <Button data-testid="reg-keep-qr" variant="outline" className="tap w-full rounded-xl" onClick={() => { setErr(null); setStep("selfie"); }}>{t("worker.keepPrev")}</Button>}
           <QrScanner value={qr} onChange={setQr} />
           {err && <p data-testid="reg-error" className="text-sm text-destructive">{err}</p>}
           <Button data-testid="reg-qr-save" className="tap w-full rounded-xl" disabled={busy === "qr" || qr.trim().length < 8} onClick={saveQr}>
@@ -243,6 +246,7 @@ export default function WorkerRegister() {
       {step === "selfie" && (
         <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2">
           <div className="card-soft flex gap-3 p-4"><Camera className="h-6 w-6 shrink-0 text-primary" /><p className="text-sm text-muted-foreground">{t("worker.selfieWhy")}</p></div>
+          {fixing && <Button data-testid="reg-keep-selfie" variant="outline" className="tap w-full rounded-xl" onClick={() => { setErr(null); setStep("documents"); }}>{t("worker.keepPrev")}</Button>}
           {user && !noCamera && <LivenessCapture userId={user.id} onDone={(r) => { setSelfie(r.portrait); setLiveDone(true); }} onNoCamera={() => { setNoCamera(true); setLiveDone(false); }} />}
           {noCamera && (<>
             <p data-testid="reg-no-camera" className="rounded-xl bg-muted p-3 text-sm text-muted-foreground">{t("worker.liveNoCamera")}</p>
