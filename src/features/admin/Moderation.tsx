@@ -58,6 +58,8 @@ function ModCard({ m }: { m: M }) {
   );
 }
 
+const short = (v: unknown) => { const s = v == null ? "—" : JSON.stringify(v); return s.length > 80 ? s.slice(0, 77) + "…" : s; };
+
 export function AuditLog() {
   const { t } = useTranslation();
   const q = useQuery({ queryKey: ["admin-audit"], queryFn: async () => { const { data, error } = await supabase.rpc("admin_audit_log", { _limit: 100 }); if (error) throw error; return data as unknown as A[]; } });
@@ -70,6 +72,7 @@ export function AuditLog() {
           <p className="text-xs text-muted-foreground">{a.actor_name} · {new Date(a.created_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</p>
           {a.note && <p className="text-xs">{a.note}</p>}
           {a.action === "rate.set" && a.data && <p className="text-xs text-muted-foreground">{String(a.data.old_rate ?? "—")} → {String(a.data.rate)} cr/min · min {String(a.data.min)}</p>}
+          {(a.action === "setting.set" || a.action === "commission.set") && a.data && <p data-testid="audit-change" className="break-all font-mono text-[11px] text-muted-foreground">{short(a.data.old)} → {short(a.data.new)}</p>}
         </li>))}
     </ol>
   );
