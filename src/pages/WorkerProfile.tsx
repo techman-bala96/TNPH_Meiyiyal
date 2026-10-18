@@ -52,8 +52,8 @@ export default function WorkerProfile() {
         </div>
       </section>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        {stats.map((s, i) => (
-          <div key={s.id} style={{ animationDelay: `${i * 50}ms` }} className="card-soft flex flex-col items-center p-3 text-center animate-in fade-in slide-in-from-bottom-1 fill-mode-both">
+        {stats.map((s) => (
+          <div key={s.id} className="card-soft flex flex-col items-center p-3 text-center">
             <s.icon className="h-5 w-5 text-primary" /><b data-testid={s.id} className="mt-1 text-lg">{s.value}</b><span className="text-[11px] text-muted-foreground">{s.label}</span></div>))}
       </div>
       <button data-testid="wp-consult" onClick={() => setOpen(true)} className="w-full rounded-2xl bg-primary py-3 font-semibold text-primary-foreground shadow-md transition active:scale-[.98]">
