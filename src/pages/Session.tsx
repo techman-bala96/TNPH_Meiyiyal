@@ -127,7 +127,7 @@ export default function Session() {
   return (
     <div className="mx-auto flex h-dvh max-w-2xl flex-col bg-background" data-testid="session-page" data-status={s.status}>
       <header className="flex items-center gap-3 border-b bg-card/80 px-3 py-2.5 backdrop-blur">
-        <button onClick={() => nav(-1)} aria-label="back" className="rounded-full p-1.5 hover:bg-muted"><ArrowLeft className="h-5 w-5" /></button>
+        <button onClick={() => nav(-1)} aria-label={t("auth.back")} className="rounded-full p-1.5 hover:bg-muted"><ArrowLeft className="h-5 w-5" /></button>
         <Avatar className="h-10 w-10">{s.other.photo && <AvatarImage src={s.other.photo} className="object-cover" />}<AvatarFallback className="bg-primary/10 text-primary">{initials(s.other.name)}</AvatarFallback></Avatar>
         <div className="min-w-0 flex-1"><p className="truncate font-semibold" data-testid="session-other">{s.other.name}</p>
           <p className="flex items-center gap-1 truncate text-xs text-muted-foreground"><ModeIcon mode={s.mode} className="h-3 w-3" />{prof} · <span data-testid="session-timer" className="tabular-nums">{elapsed}</span></p></div>
@@ -161,7 +161,8 @@ export default function Session() {
         <footer className="flex items-end gap-2 border-t bg-card p-2">
           <input ref={fileRef} type="file" accept={FILE_TYPES.join(",")} data-testid="file-input" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) void upload(f); e.target.value = ""; }} />
           <button data-testid="attach" onClick={() => fileRef.current?.click()} disabled={uploading} className="rounded-full p-2.5 text-muted-foreground hover:bg-muted">{uploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Paperclip className="h-5 w-5" />}</button>
-          <textarea data-testid="chat-input" rows={1} value={text} onChange={(e) => setText(e.target.value)} placeholder={t("consult.typeMsg")}
+          {text.length > 3500 && <span data-testid="chat-count" aria-live="polite" className="self-center text-[10px] tabular-nums text-muted-foreground">{text.length}/4000</span>}
+          <textarea data-testid="chat-input" rows={1} maxLength={4000} aria-label={t("consult.typeMsg")} value={text} onChange={(e) => setText(e.target.value)} placeholder={t("consult.typeMsg")}
             onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); void send(); } }}
             className="max-h-32 flex-1 resize-none rounded-2xl border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/40" />
           <button data-testid="chat-send" onClick={send} disabled={!text.trim()} className="grid h-10 w-10 place-items-center rounded-full bg-primary text-primary-foreground transition active:scale-90 disabled:opacity-40"><Send className="h-4 w-4" /></button>

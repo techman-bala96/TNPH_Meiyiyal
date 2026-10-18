@@ -152,8 +152,8 @@ test("[J06] voice agent through the language-model adapter (mock): 'I can't slee
   expect(body.source).toBe("llm:mock"); // the grammar alone did not know it; the language-model adapter answered
   await expect(p).toHaveURL(/\/browse\/professionals--doctor--psychology-counselling/);
   await snap(p, "J06", "sleep-counselling");
-  await p.goto("/");
-  await p.getByTestId("lang-toggle").first().click();
+  await p.goto("/"); await p.getByTestId("lang-toggle").first().click();
+  await p.getByTestId("mic-toggle").click();
   await say(p, "என் நாய்க்கு உடம்பு சரியில்லை");
   await expect(p).toHaveURL(/\/browse\/professionals--doctor--veterinary/);
   await expect(p.getByTestId("voice-reply")).toContainText(/[\u0B80-\u0BFF]/);

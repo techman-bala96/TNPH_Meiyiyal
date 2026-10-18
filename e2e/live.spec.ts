@@ -147,7 +147,9 @@ test("[LR05] network drops mid-chat → offline bar; a send fails with a clear m
   await expect(msgs(law.page, "Sent while offline")).toHaveCount(1);
   await expect(msgs(u.page, "Sent while offline")).toHaveCount(1);
   await snap(u.page, "LR05", "reconnected");
-  await u.page.getByTestId("lang-toggle").first().click().catch(() => undefined);
+  const sessionUrl = u.page.url();
+  await u.page.goto("/settings"); await u.page.getByTestId("lang-toggle").first().click(); await u.page.goto(sessionUrl);
+  await expect(u.page.getByTestId("chat-input")).toBeVisible();
   await u.ctx.setOffline(true);
   await expect(u.page.getByTestId("net-offline")).toHaveText(/[\u0B80-\u0BFF]/);
   await snap(u.page, "LR05", "offline-bar-ta");
@@ -217,7 +219,7 @@ test("[LR09] camera and microphone blocked → video call shows how to allow the
   await u.page.getByTestId("call-hangup").click();
   // switch to Tamil from Home and come back to the consultation
   const sessionUrl = u.page.url();
-  await u.page.goto("/"); await u.page.getByTestId("lang-toggle").first().click(); await u.page.goto(sessionUrl);
+  await u.page.goto("/settings"); await u.page.getByTestId("lang-toggle").first().click(); await u.page.goto(sessionUrl);
   await expect(u.page.getByTestId("chat-input")).toBeVisible();
   await law.page.getByTestId("start-voice").click();
   await u.page.getByTestId("call-accept").click();
@@ -296,6 +298,8 @@ test("[LR12] invalid inputs: empty / very long name, bad email, bad phone, 5000-
   await startChat(u.page, law);
   const long = "நீண்ட செய்தி long message 🙂 ".repeat(200).slice(0, 5000);
   await u.page.getByTestId("chat-input").fill(long);
+  await expect(u.page.getByTestId("chat-input")).toHaveValue(long.slice(0, 4000)); // the box stops at the 4000-letter limit
+  await expect(u.page.getByTestId("chat-count")).toHaveText("4000/4000");
   await u.page.getByTestId("chat-send").click();
   await expect(law.page.getByTestId("msg").last()).toContainText("நீண்ட செய்தி long message 🙂");
   await expect(law.page.locator("body")).not.toHaveCSS("overflow-x", "scroll");
