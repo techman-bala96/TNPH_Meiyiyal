@@ -141,6 +141,8 @@ export const FINDINGS = [
   { by: "LR01 (login)", problem: "Wrong OTP showed Auth's raw 'Token has expired or is invalid'.", fix: "Login uses friendlyError; rate limits map to 'too many tries'." },
   { by: "CL09 (location)", problem: "A professional's searchable location never changed after registration.", fix: "Migration 20261019130000: going online (and confirming a new place while online) moves it; clients still get only rounded km + district." },
   { by: "FS01 (fresh start)", problem: "No install prompt in the app.", fix: "InstallCard on Home (beforeinstallprompt), 30-day 'Not now', hidden when installed." },
+  { by: "V22 (needs more information)", problem: "A professional asked to re-upload one certificate had to scan the Aadhaar QR and redo the selfie + liveness again; the wizard could not skip them.", fix: "When the case is 'needs information', the QR and selfie steps offer 'Keep the one I sent before' (the case keeps the earlier QR/selfie; they are not purged while waiting)." },
+  { by: "V21 (registration in Tamil)", problem: "No language switch inside the registration wizard or any inner screen (settings, wallet, history, …): switching meant leaving the page.", fix: "EN | த switch in every inner screen header (PageShell)." },
   { by: "Crawl (all roles)", problem: "Console error 'Blocked call to navigator.vibrate' on every page load.", fix: "ringtone.ts vibrates only after a user gesture." },
   { by: "Crawl (ta)", problem: "<html lang> stayed 'ta' when English was chosen (screen readers, fonts).", fix: "i18n syncs document lang on init and change." },
 ];
