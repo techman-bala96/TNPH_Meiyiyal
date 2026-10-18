@@ -115,12 +115,23 @@ export async function crawl(page: Page, rec: Recorder, route: string, lang: stri
   page.on("pageerror", (e) => errors.push("pageerror: " + e.message.slice(0, 200)));
   await open();
   const items = await stamp(page);
+  // Long lists of the same control (catalog rows, admin queue cards, area chips): click the first 3 of each family,
+  // record the rest as sampled. Every distinct control is still clicked.
+  const fam = (k: string) => { const [tid, kind] = k.split("|"); return `${tid.replace(/(-|_)[0-9a-f]{8}-[0-9a-f-]{27,}$|--.*$|-\d+$/i, "")}|${kind}`; };
+  const famSize = new Map<string, number>(); for (const it of items) famSize.set(fam(it.key), (famSize.get(fam(it.key)) ?? 0) + 1);
+  const famDone = new Map<string, number>();
   for (const it of items) {
     const key = `${route}|${it.key}`;
     if (seen.has(key)) continue; seen.add(key);
     const row: Row = { role: rec.role, route, lang, size, key: it.key, label: it.label, kind: it.kind, result: "" };
     rec.rows.push(row);
     if (it.disabled) { row.result = "disabled"; continue; }
+    const f = fam(it.key);
+    if ((famSize.get(f) ?? 0) > 5) {
+      const n = famDone.get(f) ?? 0;
+      if (n >= 3) { row.result = "sampled"; row.detail = `same control as ${famSize.get(f)} siblings; 3 clicked`; continue; }
+      famDone.set(f, n + 1);
+    }
     if (SKIP.test(it.key)) { row.result = "covered-by-scenario"; continue; }
     if (it.href && /^(https?:|mailto:|tel:)/.test(it.href) && !it.href.startsWith("http://localhost")) { row.result = "external-link"; row.detail = it.href; continue; }
     try {

@@ -23,7 +23,7 @@ async function ctx(browser: Browser) {
   return page;
 }
 async function settle(page: Page) {
-  await page.waitForLoadState("networkidle", { timeout: 6000 }).catch(() => undefined);
+  await page.waitForLoadState("networkidle", { timeout: 2500 }).catch(() => undefined);
   await page.waitForTimeout(300);
 }
 /** Switch language the way a person does: the EN | தமிழ் toggle (saved to the profile when signed in). */
