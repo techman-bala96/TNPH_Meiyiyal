@@ -15,7 +15,7 @@ import type { Reward } from "@/features/rewards/types";
 
 export type WorkerCard = { id: string; display_name: string; photo_url: string | null; rating: number; feedback_count: number; rewards_count: number; years_experience: number;
   primary_node: string; specialty: { en: string; ta?: string } | null; is_online: boolean; distance_km: number; district_slug: string | null; district_name: { en: string; ta?: string } | null;
-  is_busy?: boolean; rates?: Rates; badges?: Reward[] };
+  is_busy?: boolean; rates?: Rates; badges?: Reward[]; badge_tier?: "licence" | "degree" | null; verified_at?: string | null };
 
 export function WorkerList({ node, nodeLabel, tile, where }: { node: string; nodeLabel: string; tile: string; where: string }) {
   const { t, i18n } = useTranslation(); const ta = i18n.language?.startsWith("ta");
@@ -115,7 +115,8 @@ function Card({ w }: { w: WorkerCard }) {
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-start justify-between gap-2">
-          <p className="flex min-w-0 items-center gap-1 font-semibold"><span className="truncate">{w.display_name}</span><BadgeCheck className="h-4 w-4 shrink-0 text-primary" /></p>
+          <p className="flex min-w-0 items-center gap-1 font-semibold"><span className="truncate">{w.display_name}</span><BadgeCheck className="h-4 w-4 shrink-0 text-primary" />
+            {w.badge_tier && <span data-testid="badge-tier" data-tier={w.badge_tier} className="shrink-0 text-[10px] font-semibold uppercase text-primary">{t(`worker.badge.${w.badge_tier}`)}</span>}</p>
           <span data-testid="distance" className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[11px] font-semibold">{w.distance_km.toFixed(1)} km</span>
         </div>
         <p className="truncate text-xs text-muted-foreground">{spec}{w.is_busy && <span className="ml-1 font-semibold text-amber-600">· {t("consult.busy")}</span>}</p>

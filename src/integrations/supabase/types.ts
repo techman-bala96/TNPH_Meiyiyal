@@ -1915,6 +1915,21 @@ isOneToOne: false
                            },
 "worker_submit":
 { Args: Record<PropertyKey, never>; Returns: string
+                           },
+"verification_liveness_challenge":
+{ Args: Record<PropertyKey, never>; Returns: string
+                           },
+"verification_stage_qr":
+{ Args: { "_path": string }; Returns: string
+                           },
+"verification_stage_selfie":
+{ Args: { "_raw_path": string; "_public_url": string; "_consent": boolean; "_did_challenge": boolean }; Returns: string
+                           },
+"my_verification":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"verification_appeal":
+{ Args: { "_note": string }; Returns: string
                            }
           }
           Enums: {

@@ -80,6 +80,24 @@ export async function registerWorker(page: Page, w: WorkerSpec, shot?: (n: strin
   await page.getByTestId("reg-aadhaar-otp").fill("123456");
   await shot?.("03-aadhaar");
   await page.getByTestId("reg-verify-otp").click();
+  // Aadhaar QR (stored as text in the private kyc bucket; not required by the SQL submit RPC)
+  await expect(page.getByTestId("reg-qr")).toBeVisible();
+  await page.getByTestId("reg-qr").fill("MYQR1.review-only-test-payload");
+  const qrUp = page.waitForResponse((r) => r.url().includes("/storage/v1/object/kyc/") && r.request().method() === "POST");
+  await page.getByTestId("reg-qr-save").click();
+  expect((await qrUp).ok()).toBeTruthy();
+  await shot?.("03b-qr");
+  // Selfie: raw file is private; a consented portrait is the public profile photo.
+  await expect(page.getByTestId("reg-liveness")).toBeVisible();
+  await page.getByTestId("reg-liveness-done").check();
+  await page.getByTestId("reg-selfie-consent").check();
+  await page.getByTestId("reg-selfie-file").setInputFiles(IMG("certificate"));
+  const rawUp = page.waitForResponse((r) => r.url().includes("/storage/v1/object/kyc/") && r.request().method() === "POST");
+  const portraitUp = page.waitForResponse((r) => r.url().includes("/storage/v1/object/avatars/") && r.request().method() === "POST");
+  await page.getByTestId("reg-selfie-next").click();
+  expect((await rawUp).ok()).toBeTruthy();
+  expect((await portraitUp).ok()).toBeTruthy();
+  await shot?.("03c-selfie");
   // documents
   await expect(page.getByTestId("reg-docs-next")).toBeDisabled();
   for (const d of w.docs) {
