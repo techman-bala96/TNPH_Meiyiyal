@@ -96,7 +96,16 @@ export async function stageSelfie(userId: string, file: File, didChallenge: bool
   if (error) throw error;
 }
 
-export function useIsAdmin() {
+export type AdminStatus = { role: boolean; mfa_required: boolean; aal: string; ok: boolean; idle_minutes: number };
+/** Admin role and whether this session has passed the second factor. `ok` is what the database enforces. */
+export function useAdminStatus() {
   const { user } = useAuth();
-  return useQuery({ queryKey: ["is-admin", user?.id], enabled: !!user, queryFn: async () => (await supabase.rpc("is_admin")).data === true });
+  return useQuery({ queryKey: ["admin-status", user?.id], enabled: !!user, queryFn: async () => {
+    const { data, error } = await supabase.rpc("admin_status"); if (error) throw error; return data as unknown as AdminStatus;
+  } });
+}
+/** True when the user holds the admin role (menu entry); admin pages still need `useAdminStatus().ok`. */
+export function useIsAdmin() {
+  const s = useAdminStatus();
+  return { ...s, data: s.data ? s.data.role : s.data };
 }

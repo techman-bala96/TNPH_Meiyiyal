@@ -212,10 +212,13 @@ token_verifications = 30
 web3 = 30
 
 # Configure one of the supported captcha providers: `hcaptcha`, `turnstile`.
+# M11 captcha (go-live): pick turnstile or hcaptcha, set the secret here / in the hosted dashboard (Auth → Bot protection)
+# and the matching VITE_CAPTCHA_PROVIDER + VITE_CAPTCHA_SITE_KEY in the web build. Off locally; the app's "mock" widget
+# sends a token that Auth ignores while this section is disabled.
 # [auth.captcha]
 # enabled = true
-# provider = "hcaptcha"
-# secret = ""
+# provider = "turnstile"
+# secret = "env(SUPABASE_AUTH_CAPTCHA_SECRET)"
 
 [auth.email]
 # Allow/disallow new user signups via email to your project.
@@ -298,6 +301,14 @@ max_frequency = "5s"
 # enabled = true
 # uri = "pg-functions://<database>/<schema>/<hook_name>"
 
+# M11 SMS (go-live): Auth sends phone OTPs through the sms-hook Edge Function → MSG91 (DLT template).
+# Hosted: Authentication → Hooks → Send SMS → HTTPS, URL https://<project-ref>.supabase.co/functions/v1/sms-hook,
+# copy the generated "v1,whsec_…" secret into the function secret SEND_SMS_HOOK_SECRET. Kept off locally (test_otp below).
+# [auth.hook.send_sms]
+# enabled = true
+# uri = "https://<project-ref>.supabase.co/functions/v1/sms-hook"
+# secrets = "env(SEND_SMS_HOOK_SECRET)"
+
 # Configure one of the supported SMS providers: `twilio`, `twilio_verify`, `messagebird`, `textlocal`, `vonage`.
 # Dummy provider so GoTrue accepts phone auth locally; test_otp numbers never reach it.
 [auth.sms.twilio]
@@ -314,8 +325,9 @@ max_enrolled_factors = 10
 
 # Control MFA via App Authenticator (TOTP)
 [auth.mfa.totp]
-enroll_enabled = false
-verify_enabled = false
+# M11: admins need TOTP (public.admin_mfa_required). Enable the same in the hosted project: Auth → MFA → TOTP.
+enroll_enabled = true
+verify_enabled = true
 
 # Configure MFA via Phone Messaging
 [auth.mfa.phone]

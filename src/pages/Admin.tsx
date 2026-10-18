@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { BadgeCheck, ExternalLink, Loader2, ShieldX } from "lucide-react";
@@ -9,7 +9,11 @@ import { PacksEditor, PaymentsView, PayoutsAdmin } from "@/features/admin/Paymen
 import { PageShell } from "@/components/app/PageShell";
 import { supabase } from "@/integrations/supabase/client";
 import { Splash } from "@/components/app/Guards";
-import { useIsAdmin } from "@/features/worker/api";
+import { useAdminStatus } from "@/features/worker/api";
+import { AdminMfa } from "@/features/admin/security/AdminMfa";
+import { AdminsCard } from "@/features/admin/security/AdminsCard";
+import { useIdleSignOut } from "@/features/admin/security/useIdleSignOut";
+import { adminHostRedirect } from "@/features/admin/security/totp";
 import { AuditLog, Moderation } from "@/features/admin/Moderation";
 import { RatesEditor } from "@/features/admin/Rates";
 import { Appeals, CaseMedia } from "@/features/admin/Appeals";
@@ -24,7 +28,7 @@ const TAB_GROUPS = [
   ["review", ["queue", "appeals", "districts"]],
   ["people", ["moderation", "referrals"]],
   ["money", ["payments", "payouts", "packs", "rates", "commission"]],
-  ["setup", ["settings", "catalog", "milestones"]],
+  ["setup", ["settings", "catalog", "milestones", "security"]],
   ["records", ["audit"]],
 ] as const;
 type Tab = (typeof TAB_GROUPS)[number][1][number];
@@ -38,15 +42,30 @@ type Row = { id: string; display_name: string; primary_node: string; node_name: 
   checks?: Check[]; deep_link?: string | null; reason_codes?: string[] | null };
 
 
+/** Admin entry: admin host check → role → second factor → console. The database enforces the same (has_role needs aal2). */
 export default function Admin() {
-  const { t } = useTranslation(); const admin = useIsAdmin(); const qc = useQueryClient();
+  const s = useAdminStatus(); const nav = useNavigate();
+  const go = adminHostRedirect(import.meta.env.VITE_ADMIN_HOST as string | undefined, window.location);
+  useEffect(() => { if (go) window.location.replace(go); }, [go]);
+  useEffect(() => {
+    const m = document.createElement("meta"); m.name = "robots"; m.content = "noindex, nofollow"; document.head.appendChild(m);
+    return () => m.remove();
+  }, []);
+  const out = useCallback(() => nav("/login", { replace: true }), [nav]);
+  if (go || s.isLoading) return <Splash />;
+  if (!s.data?.role) return <Navigate to="/" replace />;
+  if (!s.data.ok) return <AdminMfa />;
+  return <><IdleGuard minutes={s.data.idle_minutes} onOut={out} /><AdminConsole /></>;
+}
+function IdleGuard({ minutes, onOut }: { minutes: number; onOut: () => void }) { useIdleSignOut(minutes, onOut); return null; }
+
+function AdminConsole() {
+  const { t } = useTranslation(); const qc = useQueryClient();
   const [status, setStatus] = useState("pending"); const [tab, setTabState] = useState<Tab>(() => { const h = window.location.hash.slice(1) as Tab; return TABS.includes(h) ? h : "queue"; });
   const setTab = (k: Tab) => { setTabState(k); window.history.replaceState(null, "", `#${k}`); };
-  const q = useQuery({ queryKey: ["admin-queue", status], enabled: admin.data === true, queryFn: async () => {
+  const q = useQuery({ queryKey: ["admin-queue", status], queryFn: async () => {
     const { data, error } = await supabase.rpc("admin_worker_queue", { _status: status }); if (error) throw error; return data as unknown as Row[];
   } });
-  if (admin.isLoading) return <Splash />;
-  if (!admin.data) return <Navigate to="/" replace />;
 
   return (
     <PageShell title={`${t("admin.title")} · ${t(`admin.heading.${tab}`)}`} testId="admin-page" wide>
@@ -75,6 +94,7 @@ export default function Admin() {
       {tab === "settings" && <SettingsEditor />}
       {tab === "catalog" && <CatalogEditor />}
       {tab === "milestones" && <MilestonesEditor />}
+      {tab === "security" && <AdminsCard />}
       {tab === "queue" && <>
       <div className="flex gap-1 overflow-x-auto rounded-2xl bg-muted p-1 [scrollbar-width:none]">
         {["pending", "needs_info", "approved", "rejected", "all"].map((s) => (

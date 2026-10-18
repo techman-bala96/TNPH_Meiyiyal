@@ -305,7 +305,8 @@
       "commission": "Commission by category",
       "settings": "App settings",
       "catalog": "Professions & requirements",
-      "milestones": "Reward milestones"
+      "milestones": "Reward milestones",
+      "security": "Admins & security"
     },
     "empty": "Nothing here",
     "note": "Note to worker (required for reject / more info)",
@@ -336,7 +337,8 @@
       "commission": "Commission",
       "settings": "Settings",
       "catalog": "Professions",
-      "milestones": "Milestones"
+      "milestones": "Milestones",
+      "security": "Security"
     },
     "save": "Save",
     "saved": "Saved",
@@ -1108,5 +1110,28 @@
       "unpaid_earnings": "your unpaid earnings to be paid out",
       "admin_account": "admin access to be removed"
     }
+  },
+  "mfa": {
+    "title": "Admin sign-in check",
+    "enrolIntro": "Admin access needs an authenticator app (Google Authenticator, Microsoft Authenticator, Authy…). Scan this code once.",
+    "qrAlt": "QR code for your authenticator app",
+    "manual": "Can't scan? Type this key into the app:",
+    "prompt": "Open your authenticator app and enter the 6-digit code for Meiyiyal.",
+    "code": "6-digit code",
+    "verify": "Verify",
+    "wrong": "That code didn't work. Check the time on your phone and try the newest code.",
+    "lost": "Lost your phone? Ask another admin to reset your authenticator from Admin → Security.",
+    "signOut": "Sign out",
+    "admins": "Admins and authenticators",
+    "hasFactor": "Authenticator set up",
+    "noFactor": "No authenticator yet",
+    "reset": "Reset",
+    "resetNote": "Why? (e.g. lost phone, confirmed by call)",
+    "resetConfirm": "Reset authenticator",
+    "resetDone": "Authenticator reset. They will set it up again at next sign-in."
+  },
+  "captcha": {
+    "mock": "I'm not a robot (test mode)",
+    "failed": "The security check didn't load. Check your connection and reload."
   }
 }

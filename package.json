@@ -11,7 +11,7 @@
     "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.sw.json --noEmit",
     "test:e2e": "playwright test",
     "test:unit": "node --experimental-strip-types --test tests/unit/*.test.mjs",
-    "test:db": "for f in supabase/tests/*.sql; do docker exec -i supabase_db_meyiyal-local psql -U postgres -v ON_ERROR_STOP=1 < $f || exit 1; done",
+    "test:db": "bash scripts/test-db.sh",
     "preview": "vite preview",
     "agent:dev": "services/agent/run.sh",
     "test:agent": "cd services/agent && .venv/bin/python -m pytest -q && .venv/bin/ruff check .",

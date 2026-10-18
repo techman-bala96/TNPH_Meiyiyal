@@ -1449,6 +1449,14 @@ isOneToOne: false
 "admin_guard":
 { Args: Record<PropertyKey, never>; Returns: undefined
                            },
+"admin_list_admins":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "email": string,"factors": number,"last_verified": string,"name": string,"user_id": string
+            }[]
+                           },
+"admin_mfa_ok":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
 "admin_milestones":
 { Args: Record<PropertyKey, never>; Returns: {
               "active": boolean,
@@ -1532,6 +1540,12 @@ isOneToOne: false
 "admin_refund":
 { Args: { "_id": string,"_note": string }; Returns: Json
                            },
+"admin_reset_mfa":
+{ Args: { "_note": string,"_user": string }; Returns: number
+                           },
+"admin_security_event":
+{ Args: { "_event": string }; Returns: undefined
+                           },
 "admin_set_commission":
 { Args: { "_node": string,"_pct": number }; Returns: undefined
                            },
@@ -1554,6 +1568,9 @@ isOneToOne: false
 { Args: Record<PropertyKey, never>; Returns: {
               "grp": string,"key": string,"kind": string,"label_i18n": Json,"max": number,"min": number,"options": (string)[],"prod_hint": string,"sort": number,"value": Json
             }[]
+                           },
+"admin_status":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "admin_taxonomy":
 { Args: Record<PropertyKey, never>; Returns: {
@@ -1723,6 +1740,9 @@ isOneToOne: false
 { Args: Record<PropertyKey, never>; Returns: unknown
                            },
 "has_role":
+{ Args: { "_role": Database["public"]['Enums']["user_role"],"_uid": string }; Returns: boolean
+                           },
+"has_role_raw":
 { Args: { "_role": Database["public"]['Enums']["user_role"],"_uid": string }; Returns: boolean
                            },
 "is_admin":

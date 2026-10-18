@@ -4,6 +4,8 @@ export default defineConfig({
   testDir: "e2e",
   timeout: 60_000,
   workers: 1,
+  globalSetup: "./e2e/global-setup.ts",
+  globalTeardown: "./e2e/global-teardown.ts",
   reporter: [["list"]],
   use: { baseURL: "http://localhost:8080", trace: "retain-on-failure",
     // fake camera/mic so WebRTC calls can be tested end-to-end

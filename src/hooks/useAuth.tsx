@@ -9,8 +9,8 @@ interface AuthCtx {
   session: Session | null;
   loading: boolean;
   signInWithGoogle: () => Promise<Result>;
-  sendEmailLink: (email: string) => Promise<Result>;
-  sendPhoneOtp: (phoneE164: string) => Promise<Result>;
+  sendEmailLink: (email: string, captchaToken?: string) => Promise<Result>;
+  sendPhoneOtp: (phoneE164: string, captchaToken?: string) => Promise<Result>;
   verifyPhoneOtp: (phoneE164: string, token: string) => Promise<Result>;
   signOut: () => Promise<void>;
 }
@@ -38,12 +38,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { error } = await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: callbackUrl() } });
       return { error };
     },
-    sendEmailLink: async (email) => {
-      const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: callbackUrl(), shouldCreateUser: true } });
+    sendEmailLink: async (email, captchaToken) => {
+      const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: callbackUrl(), shouldCreateUser: true, captchaToken } });
       return { error };
     },
-    sendPhoneOtp: async (phone) => {
-      const { error } = await supabase.auth.signInWithOtp({ phone });
+    sendPhoneOtp: async (phone, captchaToken) => {
+      const { error } = await supabase.auth.signInWithOtp({ phone, options: { captchaToken } });
       return { error };
     },
     verifyPhoneOtp: async (phone, token) => {

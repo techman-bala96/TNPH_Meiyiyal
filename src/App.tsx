@@ -2,7 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/hooks/useAuth";
-import { GuestOnly, RequireAuth, RequireLocation } from "@/components/app/Guards";
+import { GuestOnly, RequireAuth, RequireLocation, Splash } from "@/components/app/Guards";
 import Login from "@/pages/Login";
 import AuthCallback from "@/pages/AuthCallback";
 import Home from "@/pages/Home";
@@ -10,7 +10,9 @@ import Browse from "@/pages/Browse";
 import Profile from "@/pages/Profile";
 import Settings from "@/pages/Settings";
 import WorkerRegister from "@/pages/WorkerRegister";
-import Admin from "@/pages/Admin";
+import { lazy, Suspense } from "react";
+// Admin code is a separate chunk: ordinary users never download it.
+const Admin = lazy(() => import("@/pages/Admin"));
 import { ThemeProvider } from "next-themes";
 import { PrefsSync } from "@/components/app/PrefsSync";
 import LocationPage from "@/pages/LocationPage";
@@ -51,7 +53,7 @@ export default function App() {
               <Route path="/location" element={<LocationPage />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/admin" element={<Admin />} />
+              <Route path="/admin" element={<Suspense fallback={<Splash />}><Admin /></Suspense>} />
               <Route path="/session/:id" element={<Session />} />
               <Route path="/history" element={<History />} />
               <Route path="/notifications" element={<Notifications />} />
