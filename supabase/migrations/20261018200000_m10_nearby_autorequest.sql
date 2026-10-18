@@ -647,7 +647,11 @@ BEGIN
   IF _q.id IS NOT NULL THEN SELECT * INTO _w FROM public.workers WHERE id = _q.worker_id; END IF;
   RETURN jsonb_build_object('id', _s.id, 'status', _s.status, 'reason', _s.reason, 'node', _s.node_slug, 'mode', _s.mode, 'all_tn', _s.all_tn,
     'attempts', _s.attempts, 'round_attempts', _s.round_attempts, 'max', public.setting_num('auto_request_max', 5), 'session_id', _s.session_id,
-    'max_rate', _s.max_rate, 'tried', to_jsonb(_s.tried),
+    'max_rate', _s.max_rate,
+    -- people already rung (for "send a message instead"), nearest first
+    'tried', COALESCE((SELECT jsonb_agg(jsonb_build_object('id', w.id, 'name', w.display_name, 'photo', w.photo_url,
+        'distance_km', public.public_km(ST_Distance(w.base_geog, _s.geog))) ORDER BY ST_Distance(w.base_geog, _s.geog))
+      FROM public.workers w WHERE w.id = ANY(_s.tried)), '[]'::jsonb),
     'current', CASE WHEN _q.id IS NOT NULL AND _q.status = 'ringing' THEN jsonb_build_object('request_id', _q.id, 'expires_at', _q.expires_at, 'rate', _q.rate,
       'worker', jsonb_build_object('id', _w.id, 'name', _w.display_name, 'photo', _w.photo_url,
         'specialty', (SELECT name_i18n FROM public.taxonomy_nodes WHERE slug = _w.primary_node),
