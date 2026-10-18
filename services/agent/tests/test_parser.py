@@ -230,3 +230,49 @@ def test_radius_bounds(lex):
 def test_unknown_name_never_becomes_profession(lex):
     r = parse("Ramasamy", lex)
     assert r["action"] == "ask" and r["node"] is None
+
+
+# ---------------- everyday words (search bar + mic share this grammar) ----------------
+PET = "professionals--doctor--veterinary--pet-small-animal"
+LIVESTOCK = "professionals--doctor--veterinary--livestock"
+STRUCT = "professionals--engineer--civil--structural"
+CIVIL_LAW = "professionals--lawyer--civil"
+
+
+@pytest.mark.parametrize("text,node", [
+    ("civil lawyer for divorce case", DIV),
+    ("my dog is sick", PET),
+    ("wall crack", STRUCT),
+    ("crack in my house wall", STRUCT),
+    ("my cow is not eating", LIVESTOCK),
+    ("விவாகரத்து வழக்குக்கு வக்கீல்", DIV),
+    ("என் நாய்க்கு உடம்பு சரியில்லை", PET),
+    ("எங்க மாட்டுக்கு உடம்பு சரியில்லை", LIVESTOCK),
+    ("சுவர் விரிசல்", STRUCT),
+    ("naai ku udambu sari illa", PET),
+    ("kozhi ku noi", "professionals--doctor--veterinary--poultry"),
+    ("patta name change", "professionals--lawyer--property-land"),
+])
+def test_everyday_words_route_without_asking(lex, text, node):
+    r = parse(text, lex)
+    assert r["action"] == "navigate" and r["node"] == node, r
+
+
+def test_exact_area_beats_generic_and_offers_it(lex):
+    r = parse("civil lawyer for divorce case", lex)
+    assert r["node"] == DIV and [a["value"] for a in r["alternatives"]] == [CIVIL_LAW]
+    assert r["alternatives"][0]["label"]["ta"]
+
+
+def test_generic_alone_still_works(lex):
+    r = parse("civil lawyer", lex)
+    assert r["node"] == CIVIL_LAW and r["alternatives"] == []
+
+
+def test_two_exact_areas_still_ask(lex):
+    r = parse("divorce or property lawyer", lex)
+    assert r["action"] == "ask" and r["question"]["slot"] == "node_choice"
+
+
+def test_will_is_not_a_property_word(lex):
+    assert parse("I will need a child doctor", lex)["node"] == "professionals--doctor--allopathy--paediatrics"

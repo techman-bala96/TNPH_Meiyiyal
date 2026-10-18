@@ -32,6 +32,9 @@ ORDINALS = [("first", "1", "one", "முதல்", "முதலாவது",
             ("third", "3", "three", "மூன்றாவது", "மூன்று", "மூணு", "moonu"), ("fourth", "4", "four", "நான்காவது", "நாலு", "naalu"), ("fifth", "5", "five", "ஐந்தாவது", "அஞ்சு", "anju")]
 FILLER = {"dr", "doctor", "adv", "advocate", "er", "the", "a", "an", "please", "show", "me", "find", "need", "want", "i", "ones", "one", "who", "is", "are", "those", "with",
           "named", "called", "mr", "mrs", "ms", "sir", "madam", "எனக்கு", "வேணும்", "வேண்டும்", "காட்டு", "காட்டுங்க", "யார்", "அவர்", "அவங்க", "doctor-ah", "ah", "la", "le", "ku"}
+# Broad "catch-all" areas: when the user also names a more exact sibling ("civil lawyer for a divorce case"),
+# the exact one wins and the broad one is offered as an alternative instead of asking.
+GENERIC_AREAS = {"professionals--lawyer--civil"}
 LEGAL_RANKING_NOTE = {"en": "Advocates can't be ranked by rating (Bar Council rules), so I'm showing them by distance.",
                       "ta": "வழக்கறிஞர்களை மதிப்பீட்டின்படி வரிசைப்படுத்த முடியாது (பார் கவுன்சில் விதி). தூரத்தின்படி காட்டுகிறேன்."}
 
@@ -80,6 +83,16 @@ def _scan(text: str, lex: Lexicon) -> Found:
 def _collapse(nodes: list[str], lex: Lexicon) -> list[str]:
     """Keep the most specific node of each ancestor chain ("doctor" + "paediatrics" -> paediatrics)."""
     return [n for n in nodes if not any(o != n and lex.is_ancestor(n, o) for o in nodes)]
+
+
+def _category(slug: str) -> str:
+    return "--".join(slug.split("--")[:2])
+
+
+def _prefer_exact(nodes: list[str]) -> tuple[list[str], list[str]]:
+    """Drop generic areas that sit next to a more exact one in the same profession. Returns (kept, dropped)."""
+    dropped = [n for n in nodes if n in GENERIC_AREAS and any(o != n and o not in GENERIC_AREAS and _category(o) == _category(n) for o in nodes)]
+    return [n for n in nodes if n not in dropped], dropped
 
 
 def _clauses(text: str, lex: Lexicon | None = None) -> tuple[list[str], list[str]]:
@@ -205,9 +218,12 @@ def parse(text: str, lex: Lexicon, lang: str | None = None, pending: dict | None
     context = context or {}
     turn = Turn(lex, lang)
 
+    alternatives: list[str] = []
+
     def out(action: str, reply: dict, node: str | None = None, question: dict | None = None, pend: dict | None = None):
+        alts = [{"value": a, "label": lex.label(a)} for a in alternatives if a in lex.nodes and a != node]
         return {"action": action, "node": node, "node_name": lex.label(node) if node in lex.nodes else None, "filters": turn.filters, "question": question,
-                "pending": pend, "reply": reply, "lang": lang, "notes": turn.notes, "transcript": raw, "source": "rules"}
+                "pending": pend, "reply": reply, "lang": lang, "notes": turn.notes, "transcript": raw, "source": "rules", "alternatives": alts}
 
     if not t:
         return out("none", _bi("I didn't hear anything.", "எதுவும் கேட்கவில்லை."))
@@ -228,7 +244,7 @@ def parse(text: str, lex: Lexicon, lang: str | None = None, pending: dict | None
     pos_text = " ".join(pos)
     turn.apply_filters(t, pos_text)
     found = _scan(pos_text, lex)
-    nodes = _collapse(found.nodes, lex)
+    nodes, alternatives[:] = _prefer_exact(_collapse(found.nodes, lex))
     for c in neg:
         fx = _scan(c, lex)
         exn = _collapse(fx.nodes, lex)

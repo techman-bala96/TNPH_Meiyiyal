@@ -878,10 +878,13 @@ END $$;
 -- =====================================================================================
 CREATE OR REPLACE FUNCTION pg_temp.addsyn(_slug text, _words text[]) RETURNS void LANGUAGE sql AS $$
   UPDATE public.taxonomy_nodes SET synonyms = ARRAY(SELECT DISTINCT unnest(COALESCE(synonyms,'{}') || _words)) WHERE slug = _slug $$;
-SELECT pg_temp.addsyn('professionals--doctor--veterinary--pet-small-animal', ARRAY['dog','dogs','puppy','cat','kitten','pet','my pet','pet sick','dog sick','sick dog','நாய்','நாய்க்குட்டி','பூனை','செல்லப்பிராணி','naai','nai','poonai']);
-SELECT pg_temp.addsyn('professionals--doctor--veterinary--livestock', ARRAY['cow','cows','buffalo','goat','goats','sheep','calf','cattle','மாடு','பசு','எருமை','ஆடு','கன்று','maadu','pasu','aadu','erumai']);
+SELECT pg_temp.addsyn('professionals--doctor--veterinary--pet-small-animal', ARRAY['dog','dogs','puppy','cat','kitten','pet','my pet','pet sick','dog sick','sick dog','நாய்','நாய்க்குட்டி','பூனை','செல்லப்பிராணி','naai','poonai']);
+SELECT pg_temp.addsyn('professionals--doctor--veterinary--livestock', ARRAY['cow','cows','buffalo','goat','goats','sheep','calf','cattle','மாடு','மாட்டு','பசு','எருமை','ஆடு','ஆட்டு','கன்று','maadu','pasu','aadu','erumai']);
 SELECT pg_temp.addsyn('professionals--doctor--veterinary--poultry', ARRAY['hen','hens','chicken','poultry farm','கோழி','koli','kozhi']);
 SELECT pg_temp.addsyn('professionals--engineer--civil--structural', ARRAY['wall crack','cracks in wall','crack','cracks','wall cracked','roof leak','leakage','seepage','pillar crack','சுவர் விரிசல்','விரிசல்','ஒழுகுது','கசிவு','suvar virisal','virisal']);
 SELECT pg_temp.addsyn('professionals--doctor--allopathy--paediatrics', ARRAY['child fever','kid fever','baby fever','baby doctor','child doctor','kids doctor','குழந்தைக்கு காய்ச்சல்','குழந்தை காய்ச்சல்','kulanthai','kuzhanthai','pillai doctor']);
 SELECT pg_temp.addsyn('professionals--lawyer--family-divorce', ARRAY['divorce case','separation','husband wife problem','dowry','domestic violence','talaq','மனைவி பிரச்சனை','கணவன் மனைவி','வரதட்சணை','விவாகரத்து வழக்கு','vivakarathu','vivaagarathu']);
-SELECT pg_temp.addsyn('professionals--lawyer--property-land', ARRAY['land case','land problem','patta name change','patta transfer','boundary dispute','encroachment','inheritance','partition','நில பிரச்சனை','பட்டா மாற்றம்','எல்லை பிரச்சனை','உயில்','பாகப்பிரிவினை','nila prachanai','patta maatram']);
+SELECT pg_temp.addsyn('professionals--lawyer--property-land', ARRAY['land case','land problem','patta name change','patta transfer','boundary dispute','encroachment','inheritance','partition','நில பிரச்சனை','பட்டா மாற்றம்','எல்லை பிரச்சனை','பாகப்பிரிவினை','nila prachanai','patta maatram']);
+-- "will" alone matched "I will need a doctor" → only the full phrases now
+UPDATE public.taxonomy_nodes SET synonyms = array_remove(synonyms, 'will') WHERE 'will' = ANY(synonyms);
+SELECT pg_temp.addsyn('professionals--lawyer--documentation-registration', ARRAY['write a will','will writing','my will','will deed','உயில் எழுத']);
