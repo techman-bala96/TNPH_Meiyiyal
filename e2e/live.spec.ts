@@ -31,6 +31,7 @@ async function startChat(u: Page, law: { page: Page; id: string }) {
   await u.getByTestId("req-chat").click();
   await law.page.getByTestId("ring-accept").click();
   await u.waitForURL(/\/session\//); await law.page.waitForURL(/\/session\//);
+  await expect(u.getByTestId("chat-input")).toBeVisible(); await expect(law.page.getByTestId("chat-input")).toBeVisible();
 }
 const msgs = (p: Page, text: string) => p.getByTestId("msg").filter({ hasText: text });
 
@@ -40,7 +41,7 @@ test("[LR01] wrong phone code and a reused / expired email link → plain-langua
   await page.getByTestId("btn-phone").click();
   await page.getByTestId("input-phone").fill("9876543210");
   await page.getByTestId("btn-send-otp").click();
-  await page.keyboard.type("000000"); await page.getByTestId("btn-verify").click();
+  await page.getByTestId("input-otp").focus(); await page.keyboard.type("000000"); await page.getByTestId("btn-verify").click();
   await expect(page.getByTestId("auth-error")).toHaveText(/code (is not right|has expired)/);
   await snap(page, "LR01", "wrong-code");
   await page.getByTestId("lang-toggle").first().click();
@@ -68,7 +69,7 @@ test("[LR02] session expires (tokens revoked) → next screen asks to sign in ag
   clean("02");
   const u = await client(browser, "02", "Revoked User");
   // all refresh tokens revoked server-side and the access token has run out
-  sql(`DELETE FROM auth.refresh_tokens WHERE user_id = (SELECT id FROM auth.users WHERE email = '${u.email}'); DELETE FROM auth.sessions WHERE user_id = (SELECT id FROM auth.users WHERE email = '${u.email}');`);
+  sql(`DELETE FROM auth.refresh_tokens WHERE user_id = (SELECT id::text FROM auth.users WHERE email = '${u.email}'); DELETE FROM auth.sessions WHERE user_id = (SELECT id FROM auth.users WHERE email = '${u.email}');`);
   await u.page.evaluate(() => { const k = Object.keys(localStorage).find((x) => x.startsWith("sb-") && x.endsWith("-auth-token"))!; const s = JSON.parse(localStorage.getItem(k)!); s.expires_at = Math.floor(Date.now() / 1000) - 60; localStorage.setItem(k, JSON.stringify(s)); });
   const errors: string[] = []; u.page.on("pageerror", (e) => errors.push(e.message));
   await u.page.goto("/wallet");
@@ -214,7 +215,10 @@ test("[LR09] camera and microphone blocked → video call shows how to allow the
   await expect(u.page.getByTestId("call-error")).toContainText("Camera or microphone is blocked");
   await snap(u.page, "LR09", "blocked");
   await u.page.getByTestId("call-hangup").click();
-  await u.page.getByTestId("lang-toggle").first().click().catch(() => undefined);
+  // switch to Tamil from Home and come back to the consultation
+  const sessionUrl = u.page.url();
+  await u.page.goto("/"); await u.page.getByTestId("lang-toggle").first().click(); await u.page.goto(sessionUrl);
+  await expect(u.page.getByTestId("chat-input")).toBeVisible();
   await law.page.getByTestId("start-voice").click();
   await u.page.getByTestId("call-accept").click();
   await expect(u.page.getByTestId("call-error")).toHaveText(/[\u0B80-\u0BFF]/);

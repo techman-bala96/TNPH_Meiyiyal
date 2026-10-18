@@ -100,7 +100,10 @@ test("[CL03] professional goes offline → shown Offline, cannot be requested; p
   }
   await expect(u.page.getByText("You have sent 3 messages to this professional today.")).toBeVisible();
   await snap(u.page, "CL03", "limit");
-  await u.page.getByTestId("lang-toggle").first().click().catch(() => undefined);
+  await u.page.keyboard.press("Escape"); await expect(u.page.getByTestId("message-sheet")).toHaveCount(0);
+  await u.page.getByTestId("lang-toggle").first().click();
+  await u.page.getByTestId("wp-message").click();
+  await u.page.getByTestId("message-sheet").getByTestId("message-body").fill("ஐந்தாவது கேள்வி");
   await u.page.getByTestId("message-send").click();
   await expect(u.page.getByText(/இன்று இவருக்கு 3 செய்திகள்/)).toBeVisible();
   await snap(u.page, "CL03", "limit-ta");

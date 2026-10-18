@@ -24,7 +24,7 @@ export default function Profile() {
   const [name, setName] = useState(""); const [phone, setPhone] = useState(""); const [dob, setDob] = useState("");
   const [busy, setBusy] = useState<"save" | "photo" | null>(null); const [err, setErr] = useState<string | null>(null);
   const file = useRef<HTMLInputElement>(null);
-  useEffect(() => { if (p) { setName(p.full_name ?? ""); setPhone(p.phone_number?.replace(/^\+91/, "") ?? ""); setDob(p.dob ?? ""); } }, [p]);
+  useEffect(() => { if (p) { setName(p.full_name ?? ""); setPhone(p.phone_number?.replace(/^\+?91(?=\d{10}$)/, "") ?? ""); setDob(p.dob ?? ""); } }, [p]);
 
   const locs = useQuery({ queryKey: ["my-locations", user?.id], enabled: !!user, queryFn: async () => {
     const { data, error } = await supabase.rpc("my_locations"); if (error) throw error; return data as unknown as Saved[];

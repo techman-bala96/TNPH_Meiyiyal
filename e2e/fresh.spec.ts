@@ -41,7 +41,10 @@ test("[FS01] first open on a new phone: Tamil chosen → phone OTP sign-up → l
   await expect(p.getByTestId("install-card")).toHaveCount(0);
   await p.getByTestId("nav-profile").click();
   await p.getByTestId("input-name").fill("முதல் பயனர்");
+  await expect(p.getByTestId("input-phone-profile")).toHaveValue("9000000001"); // the number used to sign up, without +91
   await p.getByTestId("btn-save-profile").click();
+  await expect(p.getByTestId("profile-error")).toHaveCount(0);
+  await expect(p.getByText("சுயவிவரம் சேமிக்கப்பட்டது").or(p.getByText("Profile saved"))).toBeVisible();
   await snap(p, "FS01", "06-profile-ta");
   await p.reload();
   await expect(p.locator("html")).toHaveAttribute("lang", "ta"); // language remembered

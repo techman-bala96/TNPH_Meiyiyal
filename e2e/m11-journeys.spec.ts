@@ -139,19 +139,20 @@ test("[J05] bonus credits: shown with expiry date; a week before → reminder in
   await u.ctx.close();
 });
 
-test("[J06] voice agent through the language-model adapter (mock): 'my dog is sick' → veterinary; Tamil → Tamil reply", async ({ browser }) => {
+test("[J06] voice agent through the language-model adapter (mock): 'I can't sleep at night' (unknown to the grammar) → counselling; Tamil vet request → Tamil reply", async ({ browser }) => {
   lang("en + ta");
   const u = await open(browser); const p = u.page; await mockSpeech(p);
   await signInAt(p, p.request, `j${tag()}-j06`);
   await p.goto("/");
   const parse = p.waitForResponse((r) => r.url().includes("/agent/parse"));
   await p.getByTestId("mic-toggle").click();
-  await say(p, "my dog is sick");
+  await say(p, "I can't sleep at night");
   const body = await (await parse).json();
-  expect(JSON.stringify(body)).toMatch(/veterinary/);
+  expect(JSON.stringify(body)).toMatch(/psychology-counselling/);
   expect(body.source).toBe("llm:mock"); // the grammar alone did not know it; the language-model adapter answered
-  await expect(p).toHaveURL(/\/browse\/professionals--doctor--veterinary/);
-  await snap(p, "J06", "dog-vet");
+  await expect(p).toHaveURL(/\/browse\/professionals--doctor--psychology-counselling/);
+  await snap(p, "J06", "sleep-counselling");
+  await p.goto("/");
   await p.getByTestId("lang-toggle").first().click();
   await say(p, "என் நாய்க்கு உடம்பு சரியில்லை");
   await expect(p).toHaveURL(/\/browse\/professionals--doctor--veterinary/);
