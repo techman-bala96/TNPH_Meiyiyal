@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/hooks/useAuth";
@@ -27,6 +27,7 @@ import { VoiceProvider } from "@/features/voice/VoiceProvider";
 import Notifications from "@/pages/Notifications";
 import Messages from "@/pages/Messages";
 import Legal from "@/pages/Legal";
+import NotFound from "@/pages/NotFound";
 import { NotificationsSync } from "@/features/push/NotificationsSync";
 import { ReferralClaimer } from "@/features/referral/ReferralClaimer";
 
@@ -67,7 +68,7 @@ export default function App() {
                 <Route path="/worker/register" element={<WorkerRegister />} />
               </Route>
             </Route>
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
           <BottomNav />
           </VoiceProvider>

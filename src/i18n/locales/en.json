@@ -23,7 +23,10 @@
     "invalidEmail": "Enter a valid email",
     "signingIn": "Signing you in…",
     "signedInAs": "Signed in as",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "linkExpired": "This sign-in link has expired or was already used.",
+    "linkFailed": "Sign-in did not complete.",
+    "signInAgain": "Sign in again"
   },
   "common": {
     "error": "Something went wrong"
@@ -1133,5 +1136,37 @@
   "captcha": {
     "mock": "I'm not a robot (test mode)",
     "failed": "The security check didn't load. Check your connection and reload."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "This link is wrong or the page has moved.",
+    "home": "Go to home"
+  },
+  "errors": {
+    "thisPerson": "This professional",
+    "busy": "{{name}} is with someone else right now. Try again soon or pick another professional.",
+    "offline": "{{name}} just went offline.",
+    "unavailable": "This professional is not available.",
+    "alreadyRinging": "You are already calling someone. Wait for the answer or cancel first.",
+    "searchRunning": "An automatic search is already running.",
+    "tooMany": "Too many tries in a short time. Please wait a few minutes.",
+    "askedTwice": "You asked twice already. Send a message or try someone else.",
+    "waitMinute": "Please wait a minute before asking again.",
+    "self": "You cannot request yourself.",
+    "noRate": "Prices for this service are not set yet.",
+    "sessionEnded": "This consultation has already ended.",
+    "signIn": "Your sign-in has expired. Please sign in again.",
+    "otpExpired": "The code has expired. Ask for a new one.",
+    "badCode": "That code is not right. Check it and try again.",
+    "ifsc": "Enter a valid IFSC code (like SBIN0001234).",
+    "upi": "Enter a valid UPI ID (like name@bank).",
+    "account": "Enter a valid bank account number.",
+    "aadhaar": "Enter a valid 12-digit Aadhaar number.",
+    "pan": "Enter a valid PAN (like ABCDE1234F).",
+    "payoutPending": "A payout is already on its way.",
+    "fileTooBig": "The file is too big.",
+    "fileType": "This file type is not allowed.",
+    "network": "No connection. Check your internet and try again.",
+    "generic": "Something went wrong. Please try again."
   }
 }

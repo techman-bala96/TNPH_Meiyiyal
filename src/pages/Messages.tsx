@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { friendlyError } from "@/lib/friendlyError";
 import { BellOff, CheckCircle2, Clock, Mail, Mic, Undo2, Zap } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PageShell } from "@/components/app/PageShell";
@@ -45,7 +46,7 @@ function Row({ m, i }: { m: WorkerMessage; i: number }) {
   const ready = m.role === "user" && m.status === "responded" && m.reserved_until && new Date(m.reserved_until).getTime() > Date.now();
   const act = async (fn: "worker_message_respond" | "worker_mute_user") => {
     setBusy(true); const { error } = await supabase.rpc(fn, fn === "worker_mute_user" ? { _message: m.id } : { _id: m.id }); setBusy(false);
-    if (error) toast.error(errText(error)); else { if (fn === "worker_message_respond") toast.success(t("nearby.messages.respondedToast")); qc.invalidateQueries({ queryKey: ["worker-messages"] }); qc.invalidateQueries({ queryKey: ["my-worker"] }); }
+    if (error) toast.error(friendlyError(t, errText(error))); else { if (fn === "worker_message_respond") toast.success(t("nearby.messages.respondedToast")); qc.invalidateQueries({ queryKey: ["worker-messages"] }); qc.invalidateQueries({ queryKey: ["my-worker"] }); }
   };
   return (
     <li data-testid="message-row" data-status={m.status} data-role={m.role} style={{ animationDelay: `${i * 40}ms` }} className="card-soft space-y-2 p-3 animate-in fade-in slide-in-from-bottom-2 fill-mode-both">

@@ -6,10 +6,16 @@ import { sms } from "../_shared/smsSink.ts";
 
 const reply = (status: number, body: unknown) => new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
 
+// Local stack only: with the mock SMS provider and no secret set, a fixed dev secret lets e2e sign hook calls.
+// Never used once SEND_SMS_HOOK_SECRET is set or SMS_PROVIDER is a real provider.
+export const LOCAL_DEV_SECRET = "v1,whsec_" + btoa("meiyiyal-local-sms-hook-secret");
+const hookSecret = () => Deno.env.get("SEND_SMS_HOOK_SECRET")
+  || ((Deno.env.get("SMS_PROVIDER") ?? "mock").toLowerCase() === "mock" && /^http:\/\/(kong|127\.0\.0\.1|localhost)[:/]/.test(Deno.env.get("SUPABASE_URL") ?? "") ? LOCAL_DEV_SECRET : "");
+
 Deno.serve(async (req) => {
   if (req.method !== "POST") return reply(405, { error: { http_code: 405, message: "method" } });
   const raw = await req.text();
-  if (!await verifyStandardWebhook(Deno.env.get("SEND_SMS_HOOK_SECRET") ?? "", req.headers, raw)) {
+  if (!await verifyStandardWebhook(hookSecret(), req.headers, raw)) {
     return reply(401, { error: { http_code: 401, message: "invalid signature" } });
   }
   let p: { user?: { phone?: string }; sms?: { otp?: string } };

@@ -5,7 +5,9 @@
  */
 import { nominatimReverse, nominatimSearch, type NominatimPlace } from "./nominatim";
 
-export const MAPS_PROVIDER = import.meta.env.VITE_MAPS_PROVIDER === "google" ? "google" : "osm";
+// Dev builds only: localStorage "meiyiyal-maps" = "google" exercises the Google path + fallback without a key.
+const devOverride = (() => { try { return import.meta.env.DEV ? localStorage.getItem("meiyiyal-maps") : null; } catch { return null; } })();
+export const MAPS_PROVIDER = (devOverride ?? import.meta.env.VITE_MAPS_PROVIDER) === "google" ? "google" : "osm";
 export const geoAutocompleteEnabled = MAPS_PROVIDER === "google";
 export type Suggestion = { place_id: string; text: string };
 

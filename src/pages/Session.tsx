@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { friendlyError } from "@/lib/friendlyError";
 import { ArrowLeft, Coins, FileText, Loader2, Paperclip, PauseCircle, Phone, PhoneOff, Radar, RotateCcw, Send, Undo2, Video, WifiOff } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { supabase } from "@/integrations/supabase/client";
@@ -85,7 +86,7 @@ export default function Session() {
   const lowBal = s.role === "user" && meter?.minutes_left != null && meter.minutes_left <= 2 && active && !paused;
   const resumeLeft = paused && meter?.paused_at ? Math.max(0, RESUME_MIN * 60 - (now - new Date(meter.paused_at).getTime()) / 1000) : 0;
   const answer = async (yes: boolean) => { const { data, error } = await supabase.rpc("session_resume_answer", { _sid: id, _yes: yes });
-    if (error) toast.error(error.message); else { setMeter(data as unknown as SessionState); qc.invalidateQueries({ queryKey: ["session", id] }); } };
+    if (error) toast.error(friendlyError(t, error.message)); else { setMeter(data as unknown as SessionState); qc.invalidateQueries({ queryKey: ["session", id] }); } };
   const reconnectUntil = s.reconnect_until ? new Date(s.reconnect_until).getTime() : 0; const canReconnect = s.role === "user" && reconnectUntil > now && !!s.worker_id;
   const target = { id: s.worker_id ?? "", display_name: s.other.name, photo_url: s.other.photo, spec: prof, node: s.node_slug };
   const reason = s.end_reason ?? "";
@@ -93,7 +94,7 @@ export default function Session() {
   const send = async () => {
     const body = text.trim(); if (!body) return; setText("");
     const { error } = await supabase.from("consult_messages").insert({ session_id: id, sender: user.id, body, kind: "text" });
-    if (error) { toast.error(error.message); setText(body); }
+    if (error) { toast.error(friendlyError(t, error.message)); setText(body); }
   };
   const upload = async (f: File) => {
     if (f.size > MAX) { toast.error(t("consult.tooBig")); return; }
@@ -102,10 +103,10 @@ export default function Session() {
     const up = await supabase.storage.from("consult-files").upload(path, f, { contentType: f.type || "application/octet-stream" });
     if (up.error) { setUploading(false); toast.error(up.error.message); return; }
     const { error } = await supabase.from("consult_messages").insert({ session_id: id, sender: user.id, kind: "file", file_path: path, file_name: f.name, mime: f.type, size_bytes: f.size });
-    setUploading(false); if (error) toast.error(error.message);
+    setUploading(false); if (error) toast.error(friendlyError(t, error.message));
   };
-  const startCall = async (m: "voice" | "video") => { const { error } = await supabase.rpc("call_start", { _sid: id, _mode: m }); if (error) toast.error(error.message); };
-  const end = async () => { const { error } = await supabase.rpc("session_end", { _sid: id }); if (error) toast.error(error.message); qc.invalidateQueries({ queryKey: ["session", id] }); };
+  const startCall = async (m: "voice" | "video") => { const { error } = await supabase.rpc("call_start", { _sid: id, _mode: m }); if (error) toast.error(friendlyError(t, error.message)); };
+  const end = async () => { const { error } = await supabase.rpc("session_end", { _sid: id }); if (error) toast.error(friendlyError(t, error.message)); qc.invalidateQueries({ queryKey: ["session", id] }); };
 
   return (
     <div className="mx-auto flex h-dvh max-w-2xl flex-col bg-background" data-testid="session-page" data-status={s.status}>
@@ -191,7 +192,7 @@ export default function Session() {
           <span className="relative grid h-12 w-12 place-items-center rounded-full bg-primary"><span className="absolute inset-0 animate-ping rounded-full bg-primary/50" /><ModeIcon mode={live.mode as Mode} className="relative h-5 w-5" /></span>
           <div className="flex-1"><p className="font-semibold">{s.other.name}</p><p className="text-xs text-white/70">{t(`consult.incoming.${live.mode}`)}</p></div>
           <button data-testid="call-decline" onClick={() => void supabase.rpc("call_answer", { _call: live.id, _accept: false }).then()} className="grid h-11 w-11 place-items-center rounded-full bg-red-500"><PhoneOff className="h-5 w-5" /></button>
-          <button data-testid="call-accept" onClick={async () => { const { error } = await supabase.rpc("call_answer", { _call: live.id, _accept: true }); if (error) toast.error(error.message); }}
+          <button data-testid="call-accept" onClick={async () => { const { error } = await supabase.rpc("call_answer", { _call: live.id, _accept: true }); if (error) toast.error(friendlyError(t, error.message)); }}
             className="grid h-11 w-11 place-items-center rounded-full bg-emerald-500 ring-4 ring-emerald-500/30 animate-pulse"><ModeIcon mode={live.mode as Mode} className="h-5 w-5" /></button>
         </div>
       )}

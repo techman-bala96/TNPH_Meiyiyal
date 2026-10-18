@@ -18,6 +18,7 @@ import { NoAnswerPanel, type NoAnswer } from "@/features/nearby/NoAnswerPanel";
 import { MessageSheet } from "@/features/nearby/MessageSheet";
 import { useCurrentLocation } from "@/features/location/useCurrentLocation";
 import { nodeName, useTaxonomy } from "@/features/taxonomy/useTaxonomy";
+import { friendlyError } from "@/lib/friendlyError";
 
 import { ConsultCtx as C, type SearchArgs, type Target } from "./context";
 export function ModeIcon({ mode, className }: { mode: Mode; className?: string }) {
@@ -87,7 +88,7 @@ export function ConsultProvider({ children }: { children: ReactNode }) {
   };
   function creditError(msg: string) {
     if (/insufficient credits/i.test(msg)) toast.error(t("nearby.auto.needCredits", { n: msg.match(/need ([\d.]+)/)?.[1] ?? "" }), { action: { label: t("nearby.auto.topUp"), onClick: () => nav("/wallet") } });
-    else toast.error(msg);
+    else toast.error(friendlyError(t, msg));
   }
 
   // ---- presence: any open screen keeps the active consultation alive (the session page also ticks)
@@ -192,7 +193,7 @@ export function ConsultProvider({ children }: { children: ReactNode }) {
   const respond = async (accept: boolean) => {
     if (!incoming) return; const r = incoming; setIncoming(null);
     const { data, error } = await supabase.rpc("request_respond", { _id: r.id, _accept: accept });
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(friendlyError(t, error.message)); return; }
     if (accept && data) nav(`/session/${data}`);
   };
 

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { BadgeCheck, Coins, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
+import { friendlyError } from "@/lib/friendlyError";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,7 +27,7 @@ export function WalletChip() {
       {import.meta.env.DEV && w.dev_test_credits ? (
         <button data-testid="get-test-credits" disabled={busy} className="flex items-center gap-1 rounded-full bg-amber-500/15 px-3 py-1 text-xs font-semibold text-amber-800 dark:text-amber-300"
           onClick={async () => { setBusy(true); const { error } = await supabase.rpc("dev_grant_test_credits"); setBusy(false);
-            if (error) toast.error(error.message); else { toast.success(t("consult.creditsAdded")); qc.invalidateQueries({ queryKey: ["wallet"] }); } }}>
+            if (error) toast.error(friendlyError(t, error.message)); else { toast.success(t("consult.creditsAdded")); qc.invalidateQueries({ queryKey: ["wallet"] }); } }}>
           <Sparkles className="h-3.5 w-3.5" />{t("consult.testCredits")}</button>
       ) : (
         <Link to="/wallet" data-testid="topup-link" className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">{t("wallet.topUp")}</Link>)}
@@ -35,6 +36,7 @@ export function WalletChip() {
 }
 
 export function RequestSheet({ w, open, onOpenChange }: { w: SheetWorker; open: boolean; onOpenChange: (o: boolean) => void }) {
+  const inFlight = useRef(false); // a double tap must not send two requests
   const { t } = useTranslation(); const { request } = useConsult(); const { data: wallet } = useWallet(); const [sending, setSending] = useState<Mode | null>(null);
   const available = w.is_online && !w.is_busy;
   return (
@@ -54,7 +56,7 @@ export function RequestSheet({ w, open, onOpenChange }: { w: SheetWorker; open: 
             {MODES.map((m) => { const r = w.rates?.[m]; const need = r ? r.rate * r.min_minutes : 0; const short = !!wallet && Number(wallet.balance) < need;
               return (
                 <button key={m} data-testid={`req-${m}`} disabled={!available || !r || !!sending || short}
-                  onClick={async () => { setSending(m); await request(w, m); setSending(null); onOpenChange(false); }}
+                  onClick={async () => { if (inFlight.current) return; inFlight.current = true; setSending(m); try { await request(w, m); } finally { inFlight.current = false; setSending(null); } onOpenChange(false); }}
                   className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${tint[m]} p-3 text-left text-white shadow-md transition hover:-translate-y-0.5 active:scale-95 disabled:opacity-40 disabled:hover:translate-y-0`}>
                   {sending === m ? <Loader2 className="h-5 w-5 animate-spin" /> : <ModeIcon mode={m} className="h-5 w-5" />}
                   <p className="mt-2 text-sm font-bold">{t(`consult.mode.${m}`)}</p>

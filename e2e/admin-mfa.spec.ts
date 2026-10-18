@@ -16,7 +16,7 @@ test.setTimeout(120_000);
 test.describe.configure({ mode: "serial" });
 
 test("admin needs an authenticator: enrol with QR/secret, wrong code refused, then the console opens", async ({ browser }) => {
-  const tag = test.info().project.name === "mobile" ? "m" : "d";
+  const tag = test.info().project.name.endsWith("mobile") ? "m" : "d";
   sql(`DELETE FROM auth.users WHERE email LIKE 'mfa${tag}%@meiyiyal.test';`);
   sql(`UPDATE public.app_settings SET value = 'true' WHERE key = 'admin_mfa_required'`);
   try {
