@@ -467,3 +467,6 @@ verify_jwt = false
 verify_jwt = false
 [functions.call-token]
 verify_jwt = false
+# M11 maps: Google geocoding proxy (public, key server-side); app falls back to Nominatim when unset.
+[functions.maps-geo]
+verify_jwt = false
