@@ -24,7 +24,7 @@ export default function setup() {
       CREATE TRIGGER e2e_note_kind AFTER INSERT ON public.notifications FOR EACH ROW EXECUTE FUNCTION e2e.note_kind();`);
     // statistics settings need the local superuser (supabase_admin); ALTER SYSTEM cannot share a call with other statements
     const su = (q: string) => execSync("docker exec -i supabase_db_meyiyal-local psql -U supabase_admin -d postgres -tA -v ON_ERROR_STOP=1", { input: q });
-    su(`ALTER SYSTEM SET track_functions = 'pl';`); su(`SELECT pg_reload_conf();`); su(`SELECT pg_stat_reset();`);
+    su(`ALTER SYSTEM SET track_functions = 'pl';`); su(`SELECT pg_reload_conf();`); if (process.env.E2E_COVERAGE_RESET) su(`SELECT pg_stat_reset();`); // batches keep adding to one count
     writeFileSync(".cache/coverage-start.txt", new Date().toISOString());
   }
 }
