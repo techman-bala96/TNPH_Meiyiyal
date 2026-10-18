@@ -77,7 +77,7 @@ function specFor(c: Case): WorkerSpec {
     case "vet": return { key: "vet", name: c.name, photo: `${FX}/face-a.jpg`, at: AT, cat: "professionals--doctor", sub: "professionals--doctor--veterinary",
       fields: { degree: "BVSc", council: "Tamil Nadu State Veterinary Council", reg_no: c.reg ?? "TNVC 5501", reg_year: "2012" }, years: "11", docs };
     case "physio": return { key: "physio", name: c.name, photo: `${FX}/face-a.jpg`, at: AT, cat: "professionals--doctor", sub: "professionals--doctor--physiotherapy",
-      fields: { degree: "BPT", council: "Tamil Nadu State Allied & Healthcare Council", reg_no: c.reg ?? "TNPT 3301", reg_year: "2012" }, years: "6", docs: ["council_cert"] };
+      fields: { degree: "BPT", council: "Tamil Nadu State Allied & Healthcare Council", reg_no: c.reg ?? "TNPT 3301", reg_year: "2012" }, years: "6", docs };
     default: return { key: "doctor", name: c.name, photo: `${FX}/face-a.jpg`, at: AT, cat: "professionals--doctor", sub: "professionals--doctor--allopathy", spec: "professionals--doctor--allopathy--paediatrics",
       fields: { degree: "MBBS + MD", council: "Tamil Nadu Medical Council (TNMC)", reg_no: c.reg ?? "TNMC 70001", reg_year: "2012", pg: "MD Paediatrics" }, years: "12", docs };
   }
@@ -352,8 +352,10 @@ test("[V28] approved doctor; 90 days later the council shows suspended → reche
   await r.page.reload(); await r.page.getByTestId("go-online").click(); await expect(r.page.getByTestId("go-online")).toBeChecked();
   council({ "TNMC 70001": { html: "<table>\n<tr><td>TNMC 70001</td><td>Dr. Arun Kumar</td><td>Removed from register</td></tr>\n</table>" } });
   // TIME TRAVEL (cron 03:00 IST job): pretend the last check was 91 days ago, then run the daily recheck scan
-  sql(`UPDATE public.verification_cases c SET created_at = now() - interval '91 days' FROM public.workers w JOIN auth.users u ON u.id = w.user_id WHERE c.worker_id = w.id AND u.email = '${r.email}';
+  sql(`SELECT set_config('meiyiyal.trusted','on',false);
+       UPDATE public.verification_cases c SET created_at = now() - interval '91 days' FROM public.workers w JOIN auth.users u ON u.id = w.user_id WHERE c.worker_id = w.id AND u.email = '${r.email}';
        UPDATE public.workers w SET verified_at = now() - interval '91 days' FROM auth.users u WHERE u.id = w.user_id AND u.email = '${r.email}';
+       SELECT set_config('meiyiyal.trusted','off',false);
        SELECT public.verification_scan_rechecks();`);
   await expect.poll(async () => { await r.page.reload(); return r.page.getByTestId("worker-status").getAttribute("data-status"); }, { timeout: 90_000, intervals: [2000] }).toBe("rejected");
   await expect(r.page.getByTestId("go-online")).not.toBeChecked();
