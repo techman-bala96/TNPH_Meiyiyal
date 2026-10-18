@@ -16,7 +16,8 @@
     "agent:dev": "services/agent/run.sh",
     "test:agent": "cd services/agent && .venv/bin/python -m pytest -q && .venv/bin/ruff check .",
     "verify:dev": "services/verify/run.sh",
-    "test:verify": "cd services/verify && .venv/bin/python -m pytest -q && .venv/bin/ruff check ."
+    "test:verify": "cd services/verify && .venv/bin/python -m pytest -q && .venv/bin/ruff check .",
+    "test:pwa": "npm run build && node scripts/pwa-audit.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

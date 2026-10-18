@@ -210,7 +210,7 @@ export default function LocationPage() {
 
       {/* bottom sheet */}
       <section data-testid="confirm-sheet" className="absolute inset-x-0 bottom-0 z-[600] rounded-t-3xl bg-card p-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(0,0,0,.12)]">
-        <button data-testid="btn-locate" onClick={() => locate()} aria-label={t("location.useCurrent")}
+        <button data-testid="btn-locate" onClick={() => locate()} title={t("location.useCurrent")}
           className="tap absolute -top-14 right-3 flex items-center gap-1.5 rounded-full bg-card px-3 text-sm font-semibold text-primary shadow-lg">
           {locating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Crosshair className="h-4 w-4" />}{t("location.locateMe")}
         </button>

@@ -12,7 +12,7 @@ export default function Legal({ kind }: { kind: "privacy" | "terms" }) {
   return (
     <PageShell title={doc.title} testId={`legal-${kind}`} back={history.length > 1 ? "/settings" : "/login"}>
       <div role="note" data-testid="legal-draft" className="flex gap-2 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-3 text-sm">
-        <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" aria-hidden />
+        <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" aria-hidden />
         <p>{t("legal.draft")}</p>
       </div>
       <p className="px-1 text-xs text-muted-foreground">{t("legal.updated", { date: doc.updated })} · {LEGAL_VERSION}</p>

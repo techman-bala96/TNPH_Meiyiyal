@@ -32,7 +32,7 @@ export function WorkerPanel() {
 
   const path = pathTo(tax.data ?? [], w.primary_node); const th = themeFor(path);
   const meta: Record<string, { icon: typeof Clock; tone: string }> = {
-    draft: { icon: FileWarning, tone: "text-amber-600" }, pending: { icon: Hourglass, tone: "text-amber-600" }, needs_info: { icon: FileWarning, tone: "text-amber-600" },
+    draft: { icon: FileWarning, tone: "text-amber-700" }, pending: { icon: Hourglass, tone: "text-amber-700" }, needs_info: { icon: FileWarning, tone: "text-amber-700" },
     approved: { icon: BadgeCheck, tone: "text-primary" }, rejected: { icon: ShieldAlert, tone: "text-destructive" }, blocked: { icon: ShieldAlert, tone: "text-destructive" },
   };
   const M = meta[w.status];

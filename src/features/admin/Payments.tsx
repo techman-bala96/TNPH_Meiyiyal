@@ -8,7 +8,7 @@ import { rpcErr } from "@/features/consult/api";
 import { inr, usePacks, type Pack } from "@/features/payments/api";
 import { formatIst } from "@/lib/payoutSchedule";
 
-const chip = (s: string) => s === "paid" || s === "verified" ? "bg-emerald-500/15 text-emerald-700" : s === "failed" || s === "rejected" || s === "reversed" ? "bg-destructive/10 text-destructive" : s === "refunded" || s === "review" ? "bg-sky-500/15 text-sky-700" : s === "requested" || s === "queued" || s === "processing" ? "bg-amber-500/15 text-amber-700" : "bg-muted text-muted-foreground";
+const chip = (s: string) => s === "paid" || s === "verified" ? "bg-emerald-500/15 text-emerald-700" : s === "failed" || s === "rejected" || s === "reversed" ? "bg-destructive/10 text-destructive" : s === "refunded" || s === "review" ? "bg-sky-500/15 text-sky-700" : s === "requested" || s === "queued" || s === "processing" ? "bg-amber-500/15 text-amber-800" : "bg-muted text-muted-foreground";
 const returnedStatus = (s: string) => s === "failed" || s === "reversed" || s === "rejected";
 
 export function PacksEditor() {

@@ -62,7 +62,7 @@ function SettingRow({ s, label }: { s: Spec; label: string }) {
         {s.kind === "bool" && <Switch id={`set-${s.key}`} data-testid="setting-switch" checked={val === "true"} disabled={busy} onCheckedChange={(c) => { setVal(String(c)); commit(String(c)); }} />}
       </div>
       <p className="font-mono text-[10px] text-muted-foreground">{s.key}{s.kind === "number" && s.min != null && ` · ${s.min}–${s.max}`}</p>
-      {s.prod_hint && <p className="flex items-center gap-1 text-[11px] text-amber-700 dark:text-amber-300"><Info className="h-3 w-3 shrink-0" />{t("adminSet.prod")}: {s.prod_hint}</p>}
+      {s.prod_hint && <p className="flex items-center gap-1 text-[11px] text-amber-800 dark:text-amber-300"><Info className="h-3 w-3 shrink-0" />{t("adminSet.prod")}: {s.prod_hint}</p>}
       {s.kind !== "bool" && <div className="flex items-start gap-2">
         {s.kind === "enum" ? (
           <select id={`set-${s.key}`} data-testid="setting-input" value={val} onChange={(e) => setVal(e.target.value)} className="min-w-0 flex-1 rounded-lg border bg-card px-2 py-1.5 text-sm">

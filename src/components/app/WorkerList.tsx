@@ -144,7 +144,7 @@ function Card({ w }: { w: WorkerCard }) {
             {w.badge_tier && <span data-testid="badge-tier" data-tier={w.badge_tier} className="shrink-0 text-[10px] font-semibold uppercase text-primary">{t(`worker.badge.${w.badge_tier}`)}</span>}</p>
           <span data-testid="distance" className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[11px] font-semibold">{kmLabel(w.distance_km, ta ? "ta" : "en")}</span>
         </div>
-        <p className="truncate text-xs text-muted-foreground">{spec}{w.is_busy && <span className="ml-1 font-semibold text-amber-600">· {t("consult.busy")}</span>}</p>
+        <p className="truncate text-xs text-muted-foreground">{spec}{w.is_busy && <span className="ml-1 font-semibold text-amber-700">· {t("consult.busy")}</span>}</p>
         <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
           <span className="flex items-center gap-0.5 font-semibold" data-testid="rating"><Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />{w.feedback_count > 0 ? Number(w.rating).toFixed(1) : t("list.new")}</span>
           <span className="flex items-center gap-0.5 text-muted-foreground"><Briefcase className="h-3.5 w-3.5" />{t("list.yrs", { count: w.years_experience })}</span>

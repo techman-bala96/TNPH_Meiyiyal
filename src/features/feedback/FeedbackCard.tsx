@@ -18,7 +18,7 @@ export function FeedbackCard({ sessionId, workerName }: { sessionId: string; wor
   if (mine.isLoading || cfg.isLoading) return <div className="h-40 animate-pulse rounded-2xl bg-muted" />;
   if (mine.data) return (
     <div data-testid="feedback-done" className="flex flex-col items-center gap-1 rounded-2xl bg-emerald-500/10 p-4 text-center animate-in zoom-in-95">
-      <CheckCircle2 className="h-8 w-8 text-emerald-600" /><p className="font-semibold">{t("feedback.thanks")}</p>
+      <CheckCircle2 className="h-8 w-8 text-emerald-700" /><p className="font-semibold">{t("feedback.thanks")}</p>
       <p className="flex gap-0.5">{[1, 2, 3, 4, 5].map((i) => <Star key={i} className={`h-4 w-4 ${i <= mine.data!.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/40"}`} />)}</p>
       {mine.data.is_complaint && <p className="text-xs text-muted-foreground">{t("feedback.complaintLogged")}</p>}
     </div>);

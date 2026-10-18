@@ -11,7 +11,7 @@ import { initials } from "@/features/profile/useProfile";
 import { errText, useMyMessages, type WorkerMessage } from "@/features/nearby/api";
 
 const STATUS_STYLE: Record<WorkerMessage["status"], string> = {
-  sent: "bg-amber-500/15 text-amber-700 dark:text-amber-300", read: "bg-sky-500/15 text-sky-700 dark:text-sky-300",
+  sent: "bg-amber-500/15 text-amber-800 dark:text-amber-300", read: "bg-sky-500/15 text-sky-700 dark:text-sky-300",
   responded: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300", refunded: "bg-muted text-muted-foreground" };
 
 /** Paid messages: users see what they sent and when it's refunded; workers can say "I'm available now" or mute. */

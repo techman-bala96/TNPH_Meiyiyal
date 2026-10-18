@@ -71,7 +71,7 @@ export default function Wallet() {
               {p.popular && <span className="absolute -top-2 right-3 rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold uppercase text-primary-foreground">{t("wallet.popular")}</span>}
               <span className="text-xs font-semibold text-muted-foreground">{(ta && p.name_i18n.ta) || p.name_i18n.en}</span>
               <span className="mt-1 flex items-baseline gap-1"><Coins className="h-4 w-4 self-center text-amber-500" /><b className="text-2xl tabular-nums" data-testid="pack-credits">{Number(p.credits) + Number(p.bonus)}</b></span>
-              {Number(p.bonus) > 0 ? <span className="mt-0.5 flex items-center gap-1 text-[11px] font-semibold text-emerald-600"><Gift className="h-3 w-3" />{t("wallet.bonus", { n: Number(p.bonus) })}</span> : <span className="mt-0.5 text-[11px] text-muted-foreground">&nbsp;</span>}
+              {Number(p.bonus) > 0 ? <span className="mt-0.5 flex items-center gap-1 text-[11px] font-semibold text-emerald-700"><Gift className="h-3 w-3" />{t("wallet.bonus", { n: Number(p.bonus) })}</span> : <span className="mt-0.5 text-[11px] text-muted-foreground">&nbsp;</span>}
               <span className="mt-2 flex w-full items-center justify-between">
                 <span><b data-testid="pack-price" className="text-base">{inr(Number(p.price_inr))}</b><span className="block text-[10px] text-muted-foreground" data-testid="pack-gst">{t("wallet.inclGst", { gst: inr(gstPart(Number(p.price_inr), gst), 2), pct: gst })}</span></span>
                 {busy === p.id ? <Loader2 className="h-4 w-4 animate-spin text-primary" /> : <Sparkles className="h-4 w-4 text-primary opacity-60" />}
@@ -87,10 +87,10 @@ export default function Wallet() {
           {ledger.data?.map((r) => { const pos = Number(r.amount) > 0; const Icon = r.type === "refund" ? RotateCcw : pos ? ArrowDownLeft : ArrowUpRight;
             return (
               <div key={r.id} data-testid="ledger-row" data-type={r.type} className="flex items-center gap-3 p-3">
-                <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-full ${pos ? "bg-emerald-500/10 text-emerald-600" : "bg-muted text-muted-foreground"}`}><Icon className="h-4 w-4" /></span>
+                <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-full ${pos ? "bg-emerald-500/10 text-emerald-700" : "bg-muted text-muted-foreground"}`}><Icon className="h-4 w-4" /></span>
                 <div className="min-w-0 flex-1"><p className="truncate text-sm font-medium">{label(r)}</p>
                   <p className="text-[11px] text-muted-foreground">{new Date(r.created_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</p></div>
-                <b data-testid="ledger-amount" className={`tabular-nums ${pos ? "text-emerald-600" : ""}`}>{pos ? "+" : ""}{Number(r.amount).toFixed(0)}</b>
+                <b data-testid="ledger-amount" className={`tabular-nums ${pos ? "text-emerald-700" : ""}`}>{pos ? "+" : ""}{Number(r.amount).toFixed(0)}</b>
               </div>); })}
         </div>
       </section>

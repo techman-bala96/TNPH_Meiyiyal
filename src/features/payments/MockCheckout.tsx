@@ -20,7 +20,7 @@ export function MockCheckout({ order, onDone }: { order: CheckoutOrder | null; o
       <SheetContent side="bottom" className="mx-auto max-w-md rounded-t-3xl [&>button]:hidden" data-testid="mock-checkout">
         <SheetHeader className="text-left">
           <div className="flex items-center justify-between">
-            <span className="flex items-center gap-1.5 rounded-full bg-amber-500/15 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-amber-700 dark:text-amber-300">{t("pay.testMode")}</span>
+            <span className="flex items-center gap-1.5 rounded-full bg-amber-500/15 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-amber-800 dark:text-amber-300">{t("pay.testMode")}</span>
             <button data-testid="mock-cancel" aria-label={t("pay.cancel")} disabled={!!busy} onClick={() => onDone({ kind: "cancelled" })} className="grid h-9 w-9 place-items-center rounded-full hover:bg-muted"><X className="h-4 w-4" /></button>
           </div>
           <SheetTitle className="pt-2 text-3xl font-bold tabular-nums" data-testid="mock-amount">{order ? inr(order.amount / 100) : ""}</SheetTitle>

@@ -14,7 +14,7 @@ type Week = { week: string; sessions: number; gross: number; commission: number;
 type Account = { kind: "bank" | "upi"; mask: string; ifsc: string | null; status: string; registered_name: string | null; reason: string | null; duplicate: boolean; cooling_until: string | null; verified_at: string | null };
 type Earn = { is_worker: boolean; commission_pct: number | null; lifetime_gross: number; lifetime_net: number; on_hold: number; available: number; requested: number; paid: number; payout_min: number; hold_hours: number; payouts_auto: boolean; next_batch: string | null; wait_reason: string | null; wait_until: string | null; cooling_days: number; account: Account | null; weeks: Week[]; payouts: Payout[] };
 
-const chip = (s: string) => s === "paid" || s === "verified" ? "bg-emerald-500/15 text-emerald-700" : s === "failed" || s === "rejected" || s === "reversed" ? "bg-destructive/10 text-destructive" : s === "review" ? "bg-sky-500/15 text-sky-700" : "bg-amber-500/15 text-amber-700";
+const chip = (s: string) => s === "paid" || s === "verified" ? "bg-emerald-500/15 text-emerald-700" : s === "failed" || s === "rejected" || s === "reversed" ? "bg-destructive/10 text-destructive" : s === "review" ? "bg-sky-500/15 text-sky-700" : "bg-amber-500/15 text-amber-800";
 const DATED_WAIT = ["cooling", "on_hold", "blocked"];
 
 async function fnMessage(error: unknown): Promise<string> {

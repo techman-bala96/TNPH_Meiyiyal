@@ -27,8 +27,8 @@ export function StandingBanners({ s }: { s: Standing }) {
       </div>)}
     {!s.blocked && s.flag_active && (
       <div data-testid="worker-flag" data-needed={s.flag_good_needed} className="flex gap-3 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4 animate-in fade-in">
-        <Flag className="h-6 w-6 shrink-0 text-amber-600" />
-        <div className="text-sm"><p className="font-semibold text-amber-700 dark:text-amber-300">{t("standing.flagged")}</p>
+        <Flag className="h-6 w-6 shrink-0 text-amber-700" />
+        <div className="text-sm"><p className="font-semibold text-amber-800 dark:text-amber-300">{t("standing.flagged")}</p>
           <p>{reasonText(s.flag_reason, t)}</p>
           <p className="text-xs text-muted-foreground">{t("standing.flagHint", { n: s.flag_good_needed, neg: s.negatives, max: s.block_negatives })}</p></div>
       </div>)}

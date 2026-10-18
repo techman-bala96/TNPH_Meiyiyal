@@ -62,5 +62,5 @@ export function PushAskCard({ reason, className = "" }: { reason: AskReason; cla
 export function PushOffBanner() {
   const { t } = useTranslation(); const { support, enabled, loading } = usePushState();
   if (loading || enabled || !(support.supported || support.needsInstall) || canAsk()) return null;
-  return <p data-testid="push-off-banner" className="rounded-xl bg-amber-500/10 px-3 py-2 text-xs font-medium text-amber-700 dark:text-amber-400">{t("push.offBanner")} <Link to="/settings" className="underline">{t("menu.settings")}</Link></p>;
+  return <p data-testid="push-off-banner" className="rounded-xl bg-amber-500/10 px-3 py-2 text-xs font-medium text-amber-800 dark:text-amber-400">{t("push.offBanner")} <Link to="/settings" className="underline">{t("menu.settings")}</Link></p>;
 }

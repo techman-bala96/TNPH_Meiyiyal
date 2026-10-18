@@ -34,7 +34,7 @@ function ModCard({ m }: { m: M }) {
         <Avatar className="h-11 w-11">{m.photo_url && <AvatarImage src={m.photo_url} />}<AvatarFallback>{initials(m.display_name)}</AvatarFallback></Avatar>
         <div className="min-w-0 flex-1"><p className="font-semibold">{m.display_name}</p><p className="text-xs text-muted-foreground">{m.node_name?.en} · ★ {Number(m.rating).toFixed(1)} ({m.reviews})</p></div>
         {m.blocked ? <span className="flex items-center gap-1 rounded-full bg-rose-500/15 px-2 py-0.5 text-[11px] font-bold text-rose-600"><ShieldBan className="h-3 w-3" />{t("mod.blocked")}</span>
-          : m.flag_active ? <span className="flex items-center gap-1 rounded-full bg-amber-500/15 px-2 py-0.5 text-[11px] font-bold text-amber-700"><Flag className="h-3 w-3" />{t("mod.flagged")}</span>
+          : m.flag_active ? <span className="flex items-center gap-1 rounded-full bg-amber-500/15 px-2 py-0.5 text-[11px] font-bold text-amber-800"><Flag className="h-3 w-3" />{t("mod.flagged")}</span>
           : <span className="rounded-full bg-muted px-2 py-0.5 text-[11px]">{t("mod.clear")}</span>}
       </div>
       <div className="grid grid-cols-2 gap-2 text-xs">

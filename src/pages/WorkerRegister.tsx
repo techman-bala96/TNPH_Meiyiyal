@@ -132,7 +132,7 @@ export default function WorkerRegister() {
         {STEPS.map((s, i) => <li key={s} className={`h-1.5 flex-1 rounded-full transition-colors ${i <= idx ? "bg-primary" : "bg-muted"}`} />)}
       </ol>
       <p className="text-xs font-medium text-muted-foreground">{t("worker.stepOf", { n: idx + 1, total: STEPS.length })} · {t(`worker.step.${step}`)}</p>
-      {w?.status === "needs_info" && w.review_note && <p data-testid="review-note" className="rounded-xl bg-amber-500/10 p-3 text-sm text-amber-700 dark:text-amber-300">{w.review_note}</p>}
+      {w?.status === "needs_info" && w.review_note && <p data-testid="review-note" className="rounded-xl bg-amber-500/10 p-3 text-sm text-amber-800 dark:text-amber-300">{w.review_note}</p>}
 
       {step === "profession" && (
         <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2">

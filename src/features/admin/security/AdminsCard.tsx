@@ -25,7 +25,7 @@ export function AdminsCard() {
         {q.data?.map((a) => (
           <li key={a.user_id} data-testid="admin-row" className="space-y-2 py-2">
             <div className="flex items-center gap-2">
-              {a.factors > 0 ? <ShieldCheck className="h-4 w-4 shrink-0 text-primary" aria-hidden /> : <ShieldAlert className="h-4 w-4 shrink-0 text-amber-600" aria-hidden />}
+              {a.factors > 0 ? <ShieldCheck className="h-4 w-4 shrink-0 text-primary" aria-hidden /> : <ShieldAlert className="h-4 w-4 shrink-0 text-amber-700" aria-hidden />}
               <div className="min-w-0 flex-1"><p className="truncate font-medium">{a.name || a.email}</p>
                 <p className="truncate text-xs text-muted-foreground">{a.factors > 0 ? t("mfa.hasFactor") : t("mfa.noFactor")}{a.last_verified ? ` · ${new Date(a.last_verified).toLocaleString()}` : ""}</p></div>
               {a.user_id !== user?.id && a.factors > 0 && <button onClick={() => setResetting(resetting === a.user_id ? null : a.user_id)} className="rounded-lg border px-2 py-1 text-xs">{t("mfa.reset")}</button>}

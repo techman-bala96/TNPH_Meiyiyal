@@ -115,7 +115,7 @@ export default function Session() {
         <div className="min-w-0 flex-1"><p className="truncate font-semibold" data-testid="session-other">{s.other.name}</p>
           <p className="flex items-center gap-1 truncate text-xs text-muted-foreground"><ModeIcon mode={s.mode} className="h-3 w-3" />{prof} · <span data-testid="session-timer" className="tabular-nums">{elapsed}</span></p></div>
         {active && <>
-          <button data-testid="start-voice" onClick={() => startCall("voice")} disabled={!!live || paused} className="rounded-full p-2 text-emerald-600 hover:bg-emerald-500/10 disabled:opacity-40"><Phone className="h-5 w-5" /></button>
+          <button data-testid="start-voice" onClick={() => startCall("voice")} disabled={!!live || paused} className="rounded-full p-2 text-emerald-700 hover:bg-emerald-500/10 disabled:opacity-40"><Phone className="h-5 w-5" /></button>
           <button data-testid="start-video" onClick={() => startCall("video")} disabled={!!live || paused} className="rounded-full p-2 text-violet-600 hover:bg-violet-500/10 disabled:opacity-40"><Video className="h-5 w-5" /></button>
           <button data-testid="end-session" onClick={end} className="rounded-full bg-red-500 px-3 py-1.5 text-xs font-semibold text-white">{t("consult.end")}</button></>}
       </header>
@@ -124,7 +124,7 @@ export default function Session() {
         {s.role === "user" && active && meter?.balance != null && <span>{t("consult.balance")} <b data-testid="session-balance" className="tabular-nums">{Number(meter.balance).toFixed(0)}</b></span>}
         <span className="text-muted-foreground">{t("consult.perMin", { rate: meter?.rate ?? s.rates[s.mode]?.rate })}</span>
       </div>
-      {lowBal && <div data-testid="low-balance" className="flex items-center justify-center gap-3 bg-amber-500/15 px-4 py-1.5 text-center text-xs font-semibold text-amber-700 dark:text-amber-300">
+      {lowBal && <div data-testid="low-balance" className="flex items-center justify-center gap-3 bg-amber-500/15 px-4 py-1.5 text-center text-xs font-semibold text-amber-800 dark:text-amber-300">
         <span className="animate-pulse">{t("consult.lowBalance", { n: meter?.minutes_left })}</span>
         <Link to="/wallet" data-testid="low-topup" className="rounded-full bg-amber-500 px-2.5 py-0.5 text-white">{t("nearby.session.lowTopUp")}</Link></div>}
       {paused && !meter?.resume_ask && (

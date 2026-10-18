@@ -7,6 +7,7 @@ export default defineConfig({
   globalSetup: "./e2e/global-setup.ts",
   globalTeardown: "./e2e/global-teardown.ts",
   reporter: [["list"]],
+  expect: { toHaveScreenshot: { maxDiffPixelRatio: 0.01, animations: "disabled" } },
   use: { baseURL: "http://localhost:8080", trace: "retain-on-failure",
     // fake camera/mic so WebRTC calls can be tested end-to-end
     launchOptions: { args: ["--use-fake-ui-for-media-stream", "--use-fake-device-for-media-stream", "--autoplay-policy=no-user-gesture-required"] } },
@@ -18,7 +19,9 @@ export default defineConfig({
     { command: "services/agent/run.sh", url: "http://127.0.0.1:8787/agent/health", reuseExistingServer: true, timeout: 120_000, env: { AGENT_STT_PROVIDER: "mock" } },
   ],
   projects: [
-    { name: "mobile", use: { ...devices["Pixel 7"] } },
-    { name: "desktop", use: { viewport: { width: 1366, height: 820 } } },
+    { name: "mobile", use: { ...devices["Pixel 7"] }, testIgnore: /screens\.spec\.ts/ },
+    { name: "desktop", use: { viewport: { width: 1366, height: 820 } }, testIgnore: /screens\.spec\.ts/ },
+    // tablet (iPad Mini size, Chromium): a11y, visual and the screenshot tour only
+    { name: "tablet", use: { ...devices["iPad Mini"], browserName: "chromium" }, testMatch: /(a11y|visual|screens)\.spec\.ts/ },
   ],
 });

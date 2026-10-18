@@ -128,7 +128,7 @@ function AdminCard({ r, onDone }: { r: Row; onDone: () => void }) {
       <div className="flex items-start justify-between gap-2">
         <div><p className="font-semibold">{r.display_name}</p><p className="text-xs text-muted-foreground">{r.node_name?.en} · {r.years_experience} yrs · {r.district_slug}</p>
           <p className="text-xs text-muted-foreground">{r.email || r.phone}</p></div>
-        {r.status === "pending" && <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${hrs > 24 ? "bg-destructive/15 text-destructive" : "bg-amber-500/15 text-amber-700 dark:text-amber-300"}`}>{Math.floor(hrs)}h / 24h</span>}
+        {r.status === "pending" && <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${hrs > 24 ? "bg-destructive/15 text-destructive" : "bg-amber-500/15 text-amber-800 dark:text-amber-300"}`}>{Math.floor(hrs)}h / 24h</span>}
       </div>
       <p className={`flex items-center gap-1 text-xs font-medium ${r.aadhaar_verified ? "text-primary" : "text-destructive"}`}>{r.aadhaar_verified ? <BadgeCheck className="h-4 w-4" /> : <ShieldX className="h-4 w-4" />}Aadhaar {r.aadhaar_masked ?? "—"}</p>
       <div className="flex flex-wrap items-center gap-2 text-[11px]">
