@@ -21,9 +21,10 @@ export default function setup() {
       CREATE OR REPLACE FUNCTION e2e.note_kind() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
         INSERT INTO e2e.notif_seen(kind) VALUES (NEW.kind) ON CONFLICT DO NOTHING; RETURN NEW; END $$;
       DROP TRIGGER IF EXISTS e2e_note_kind ON public.notifications;
-      CREATE TRIGGER e2e_note_kind AFTER INSERT ON public.notifications FOR EACH ROW EXECUTE FUNCTION e2e.note_kind();
-      SELECT pg_stat_reset();`);
-    sql(`ALTER SYSTEM SET track_functions = 'pl';`); sql(`SELECT pg_reload_conf();`); // ALTER SYSTEM cannot run inside a multi-statement call
+      CREATE TRIGGER e2e_note_kind AFTER INSERT ON public.notifications FOR EACH ROW EXECUTE FUNCTION e2e.note_kind();`);
+    // statistics settings need the local superuser (supabase_admin); ALTER SYSTEM cannot share a call with other statements
+    const su = (q: string) => execSync("docker exec -i supabase_db_meyiyal-local psql -U supabase_admin -d postgres -tA -v ON_ERROR_STOP=1", { input: q });
+    su(`ALTER SYSTEM SET track_functions = 'pl';`); su(`SELECT pg_reload_conf();`); su(`SELECT pg_stat_reset();`);
     writeFileSync(".cache/coverage-start.txt", new Date().toISOString());
   }
 }
