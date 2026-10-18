@@ -462,3 +462,8 @@ verify_jwt = false
 # M11 SMS: Supabase Auth Send-SMS hook (signature checked in code). Locally phone login uses test_otp, so the hook stays off.
 [functions.sms-hook]
 verify_jwt = false
+# M11 calls: ICE (STUN/TURN REST creds) and the optional 100ms token; both check the user's JWT in code.
+[functions.ice-servers]
+verify_jwt = false
+[functions.call-token]
+verify_jwt = false

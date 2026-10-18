@@ -1,8 +1,7 @@
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { getIceServers } from "./ice";
 import type { CallProvider, CallState } from "./types";
-
-const ICE: RTCIceServer[] = (import.meta.env.VITE_ICE_SERVERS ? JSON.parse(import.meta.env.VITE_ICE_SERVERS) : [{ urls: "stun:stun.l.google.com:19302" }]);
 
 /** P2P WebRTC. Signaling over a private Realtime broadcast channel "call:<sessionId>" (RLS: only the two parties). */
 export function createWebRtcProvider(): CallProvider {
@@ -15,12 +14,20 @@ export function createWebRtcProvider(): CallProvider {
     async join({ sessionId, callId: cid, isCaller, video, onState, onRemote }) {
       callId = cid; onState("connecting");
       local = await navigator.mediaDevices.getUserMedia({ audio: true, video: video ? { width: 640, height: 480 } : false });
-      pc = new RTCPeerConnection({ iceServers: ICE });
+      const ice = await getIceServers();
+      pc = new RTCPeerConnection({ iceServers: ice.servers });
+      let restarted = false;
       local.getTracks().forEach((t) => pc!.addTrack(t, local!));
       pc.ontrack = (e) => onRemote(e.streams[0]);
       pc.onicecandidate = (e) => { if (e.candidate) send("ice", { c: e.candidate.toJSON() }); };
       pc.onconnectionstatechange = () => {
         const s = pc?.connectionState; const map: Record<string, CallState> = { connected: "connected", failed: "failed", closed: "ended", disconnected: "connecting" };
+        // one ICE restart before giving up (network change, NAT rebinding); the caller re-offers with iceRestart
+        if (s === "failed" && !restarted && pc) {
+          restarted = true; onState("connecting");
+          if (isCaller) void pc.createOffer({ iceRestart: true }).then(async (o) => { await pc?.setLocalDescription(o); send("offer", { sdp: o, restart: true }); }).catch(() => onState("failed"));
+          return;
+        }
         if (s && map[s]) onState(map[s]);
       };
       const makeOffer = async () => {
@@ -33,7 +40,7 @@ export function createWebRtcProvider(): CallProvider {
       ch = supabase.channel(`call:${sessionId}`, { config: { private: true, broadcast: { self: false } } });
       ch.on("broadcast", { event: "ready" }, ({ payload }) => { if (payload.callId === callId && isCaller) void makeOffer(); })
         .on("broadcast", { event: "offer" }, async ({ payload }) => {
-          if (payload.callId !== callId || isCaller || !pc || pc.signalingState !== "stable" || pc.remoteDescription) return;
+          if (payload.callId !== callId || isCaller || !pc || pc.signalingState !== "stable" || (pc.remoteDescription && !payload.restart)) return;
           await pc.setRemoteDescription(payload.sdp); const a = await pc.createAnswer(); await pc.setLocalDescription(a); send("answer", { sdp: a });
           while (pending.length) await pc.addIceCandidate(pending.shift()!);
         })
