@@ -18,17 +18,28 @@ const IST = (iso) => new Date(iso).toLocaleString("en-IN", { timeZone: "Asia/Cal
 const esc = (s) => String(s ?? "").replace(/\|/g, "\\|").replace(/\n/g, " ");
 
 // ---------- Playwright results ----------
-const res = JSON.parse(readFileSync(".cache/pw-results.json", "utf8"));
-const tests = []; // one row per (spec test, project)
-(function walk(suite, file) {
+// Runs come in batches (detached, one JSON reporter file each) so results survive interruptions:
+// every *.json in $M11_LOGS (default /workspace/m11-logs) plus .cache/pw-results.json; the latest result per (test, project) wins.
+// list.json (from `playwright test --list --reporter=json`) adds the tests that have not run yet.
+const LOGS = process.env.M11_LOGS ?? "/workspace/m11-logs";
+const files = [...(existsSync(LOGS) ? readdirSync(LOGS).filter((f) => f.endsWith(".json") && f !== "list.json").map((f) => `${LOGS}/${f}`) : []), ".cache/pw-results.json"].filter(existsSync);
+const latest = new Map(); let firstStart = null;
+const walkInto = (res, listOnly) => (function walk(suite, file) {
   for (const s of suite.suites ?? []) walk(s, s.file ?? file);
   for (const sp of suite.specs ?? []) for (const t of sp.tests) {
-    const r = t.results.at(-1) ?? {};
+    const r = t.results?.at(-1) ?? {};
     const steps = []; (function st(list) { for (const x of list ?? []) { if (!/^(expect|locator|page|browser|apiRequest|Before|After|fixture)/.test(x.title)) steps.push(x.title); st(x.steps); } })(r.steps);
-    tests.push({ file: sp.file ?? file, line: sp.line, title: sp.title, project: t.projectName, status: r.status === "passed" && t.status !== "unexpected" ? (t.status === "flaky" ? "pass (retry)" : "pass") : r.status === "skipped" ? "skipped" : "FAIL",
-      start: r.startTime, ms: r.duration, steps, ann: [...(t.annotations ?? []), ...(r.annotations ?? [])], error: r.error?.message?.split("\n")[0] });
+    const row = { file: sp.file ?? file, line: sp.line, title: sp.title, project: t.projectName,
+      status: listOnly ? "not run yet" : r.status === "passed" && t.status !== "unexpected" ? (t.status === "flaky" ? "pass (retry)" : "pass") : r.status === "skipped" ? "skipped" : r.status ? "FAIL" : "not run yet",
+      start: r.startTime, ms: r.duration, steps, ann: [...(t.annotations ?? []), ...(r.annotations ?? [])], error: r.error?.message?.split("\n")[0]?.replace(/\x1b\[[0-9;]*m/g, "") };
+    const k = `${row.file}::${row.title}::${row.project}`; const prev = latest.get(k);
+    if (!prev || (row.start && (!prev.start || row.start > prev.start))) latest.set(k, row);
   }
 })(res, "");
+if (existsSync(`${LOGS}/list.json`)) walkInto(JSON.parse(readFileSync(`${LOGS}/list.json`, "utf8")), true);
+for (const f of files) { try { const j = JSON.parse(readFileSync(f, "utf8")); walkInto(j, false); if (j.stats?.startTime && (!firstStart || j.stats.startTime < firstStart)) firstStart = j.stats.startTime; } catch { /* a batch still running */ } }
+const tests = [...latest.values()];
+const res = { stats: { startTime: firstStart } };
 const runStart = res.stats?.startTime ?? new Date().toISOString();
 const shots = existsSync(SHOTS) ? readdirSync(SHOTS).filter((f) => f.endsWith(".png")) : [];
 const PREFIX = { "consult.spec.ts": "C", "nearby.spec.ts": "N", "payments.spec.ts": "PAY", "payouts.spec.ts": "PO", "login.spec.ts": "L", "push.spec.ts": "PU", "location.spec.ts": "LOC",
@@ -53,7 +64,7 @@ const scenarios = [...byTitle.values()].map((s) => {
   const api = s.ann.find((a) => a.type === "mode")?.description;
   return { id, what, expected, file: base, line: s.line, title: s.title, runs: s.runs, steps: s.steps, ann: s.ann, shots: myShots, lang: ta ? "en + ta" : "en", mode: api ?? "UI" };
 });
-const status = (sc) => sc.runs.every((r) => r.status.startsWith("pass")) ? "pass" : sc.runs.some((r) => r.status === "FAIL") ? "FAIL" : "skipped";
+const status = (sc) => sc.runs.some((r) => r.status === "FAIL") ? "FAIL" : sc.runs.every((r) => r.status.startsWith("pass")) ? "pass" : sc.runs.some((r) => r.status.startsWith("pass")) ? "pass (partial)" : sc.runs.every((r) => r.status === "not run yet") ? "not run yet" : "skipped";
 const deviceOf = (p) => ({ mobile: "phone (Pixel 7)", desktop: "desktop 1366×820", tablet: "tablet (iPad Mini)", "tablet-land": "tablet landscape", "mfa-mobile": "phone (Pixel 7)", "mfa-desktop": "desktop 1366×820" })[p] ?? p;
 const scById = new Map(scenarios.map((s) => [s.id, s]));
 
@@ -111,7 +122,7 @@ for (const [key, grp] of settings) cov.push({ area: "Setting", item: `${grp} · 
 for (const k of notifKinds) cov.push({ area: "Notification", item: k, status: notifSeen.has(k) ? "UI" : KEY_ONLY[k] || SERVER_ONLY[k] ? "server" : "GAP", evidence: notifSeen.has(k) ? "produced during the UI run" : KEY_ONLY[k] ?? SERVER_ONLY[k] ?? "" });
 for (const f of FEATURES) {
   const ids = f.tests.filter((i) => scById.has(i));
-  const st = f.status ?? (ids.length && ids.every((i) => status(scById.get(i)) === "pass") ? "UI" : ids.length ? "FAIL" : "GAP");
+  const st = f.status ?? (ids.length && ids.every((i) => status(scById.get(i)).startsWith("pass")) ? "UI" : ids.length ? "FAIL" : "GAP");
   cov.push({ area: f.area, item: f.item, status: st, evidence: [ids.join(", "), f.note].filter(Boolean).join(" · ") });
 }
 const counts = cov.reduce((a, c) => ((a[c.status] = (a[c.status] ?? 0) + 1), a), {});
@@ -120,7 +131,7 @@ const covered = cov.filter((c) => c.status !== "GAP" && c.status !== "FAIL").len
 // ---------- write ----------
 const L = [];
 L.push("# Meiyiyal: test scenarios and coverage", "",
-  `Generated by \`node scripts/test-scenarios.mjs\` from the full run that started ${IST(runStart)}. Do not edit by hand; edit the specs or scripts/test-scenarios.data.mjs and re-run.`, "",
+  `Generated by \`node scripts/test-scenarios.mjs\` from the Playwright runs since ${IST(runStart)} (batched; latest result per test and project). Do not edit by hand; edit the specs or scripts/test-scenarios.data.mjs and re-run.`, "",
   "Every scenario below runs in Playwright against the local Supabase stack, driving the real app in Chromium (two or more browser contexts for two-sided flows).",
   "The database is only read to confirm a result, except for the marked **time-travel** steps (a cron job a person cannot click) and test cleanup.",
   `Screenshots: \`${SHOTS}/<scenario-id>-<project>-<step>.png\` (crawl screens: \`CRAWL-<project>-<role>-<screen>-<lang>.png\`).`, "",
@@ -130,7 +141,7 @@ L.push("## 1. Coverage matrix (feature inventory from the code)", "",
   "Status: **UI** = exercised through the app's UI in a passing scenario · **server** = runs server-side inside a UI journey or by a DB test (no screen of its own) · **key-only** = needs a production key/account, mock adapter tested instead · **GAP** = not covered.", "",
   "| Area | Item | Status | Evidence |", "|---|---|---|---|");
 for (const c of cov) L.push(`| ${c.area} | \`${esc(c.item)}\` | ${c.status} | ${esc(c.evidence)} |`);
-L.push("", "## 2. Scenarios", "", `${scenarios.length} scenarios · ${scenarios.filter((s) => status(s) === "pass").length} pass · ${scenarios.filter((s) => status(s) === "FAIL").length} fail.`, "",
+L.push("", "## 2. Scenarios", "", `${scenarios.length} scenarios · ${scenarios.filter((s) => status(s).startsWith("pass")).length} pass · ${scenarios.filter((s) => status(s) === "FAIL").length} fail · ${scenarios.filter((s) => status(s) === "not run yet").length} not run yet · runs: ${tests.filter((t) => t.status.startsWith("pass")).length} pass / ${tests.filter((t) => t.status === "FAIL").length} fail / ${tests.filter((t) => t.status === "not run yet").length} pending (per project).`, "",
   "| ID | Scenario (steps) | Expected | Actual | Spec | Device | Lang | Date (IST) | Mode | Shots |", "|---|---|---|---|---|---|---|---|---|---|");
 for (const s of scenarios.sort((a, b) => a.id.localeCompare(b.id, "en", { numeric: true }))) {
   const act = s.runs.map((r) => `${r.project}: **${r.status}**${r.status === "FAIL" && r.error ? ` (${esc(r.error).slice(0, 120)})` : ""}`).join("<br>");
@@ -142,7 +153,7 @@ for (const s of scenarios.sort((a, b) => a.id.localeCompare(b.id, "en", { numeri
 L.push("", "## Live readiness", "", "| # | Real-world situation | Scenarios | Result |", "|---|---|---|---|");
 LIVE.forEach((x, i) => {
   const st = x.ids.map((id) => (scById.has(id) ? status(scById.get(id)) : "missing"));
-  const r = x.realPhone ? "real phone (see below)" : st.length && st.every((v) => v === "pass") ? "PASS" : st.includes("FAIL") ? "FAIL" : "not run";
+  const r = x.realPhone ? "real phone (see below)" : st.length && st.every((v) => v.startsWith("pass")) ? "PASS" : st.includes("FAIL") ? "FAIL" : "not run";
   L.push(`| ${i + 1} | ${esc(x.what)} | ${x.ids.join(", ")} | ${r}${x.note ? ` · ${esc(x.note)}` : ""} |`);
 });
 L.push("", "## Real-phone and production-only checks", "", "Cannot be proven in a desktop browser or without production keys. Do these on real devices before launch:", "",
