@@ -112,6 +112,17 @@ export const REAL_PHONE = [
 
 /** RPCs / functions / notification kinds with no screen of their own, or that need a key. */
 export const SERVER_ONLY = {
+  is_session_party: "SQL helper: checked inside every session RPC (session_tick, session_end, …) and RLS; exercised by every consult scenario",
+  mask_contact: "SQL helper: masks phone/email inside chat messages (consult_messages trigger); CL04/LR12 send text through it",
+  node_category: "SQL helper: category lookup inside worker/search RPCs and the category lock",
+  presence_window: "SQL helper: online window used inside search_workers / nearby",
+  public_km: "SQL helper: rounds distances inside search_workers (privacy)",
+  push_first_name: "SQL helper: first name in push text, inside notify()",
+  push_pref_on: "SQL helper: per-kind push preference, inside notify()",
+  worker_is_blocked: "SQL helper: block check inside consult/message RPCs and RLS",
+  admin_mfa_ok: "SQL helper: inside has_role() so admin rights need MFA (aal2); driven by the mfa-* projects",
+  my_active_session: "legacy RPC (M3), not called by the app any more (session pill uses consult_sessions directly); safe to drop",
+  verification_liveness_challenge: "legacy RPC (M7), replaced by the M11 liveness flow in the verify service; safe to drop",
   "sms-hook": "called by Supabase Auth (Send-SMS hook); contract tested in J03",
   "account-purge": "called by the hourly job via pg_net; driven in LR11",
   "payments-webhook": "called by Razorpay; driven in PAY-1 / LR10",
