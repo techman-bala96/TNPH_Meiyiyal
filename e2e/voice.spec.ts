@@ -101,3 +101,20 @@ test("voice agent: direct command, follow-up question, exclusion, online-only, T
 
   for (const s of [a, b, c, u]) await s.ctx.close();
 });
+
+test("server speech-to-text: /agent/stt (mock adapter) transcribes, and the transcript drives the agent", async ({ page }) => {
+  sql(`DELETE FROM auth.users WHERE email LIKE 'v-stt%@meiyiyal.test';`);
+  await page.addInitScript(() => localStorage.setItem("i18nextLng", "en"));
+  await page.context().grantPermissions(["geolocation"]); await page.context().setGeolocation({ latitude: 13.0317, longitude: 80.27 });
+  const { mockMapNetwork } = await import("./mocks"); await mockMapNetwork(page);
+  await signInAt(page, page.request, "v-stt");
+  const out = await page.evaluate(async () => {
+    const m = await import("/src/features/voice/agent.ts");
+    const text = await m.transcribeAudio(new Blob(["MOCK:child doctor online"], { type: "audio/webm" }), "en");
+    const r = await m.askAgent(text, "en", null, {});
+    let refused = "";
+    try { await m.transcribeAudio(new Blob([new Uint8Array(1_000_001)], { type: "audio/webm" }), "en"); } catch (e) { refused = (e as Error).message; }
+    return { text, action: r.action, node: r.node, online: r.filters.online_only, refused };
+  });
+  expect(out).toEqual({ text: "child doctor online", action: "navigate", node: "professionals--doctor--allopathy--paediatrics", online: true, refused: "stt 413" });
+});

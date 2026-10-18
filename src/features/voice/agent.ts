@@ -18,6 +18,16 @@ export async function askAgent(text: string, lang: "en" | "ta", pending: Record<
   return res.json();
 }
 
+/** Server speech-to-text (agent /agent/stt). Throws "rate" on 429 and "stt <status>" otherwise. */
+export async function transcribeAudio(audio: Blob, lang: "en" | "ta"): Promise<string> {
+  const { data } = await supabase.auth.getSession();
+  const res = await fetch(`${BASE}/agent/stt?lang=${lang}`, {
+    method: "POST", headers: { "content-type": audio.type || "audio/webm", authorization: `Bearer ${data.session?.access_token ?? ""}` }, body: audio,
+  });
+  if (!res.ok) throw new Error(res.status === 429 ? "rate" : `stt ${res.status}`);
+  return String((await res.json()).text ?? "").trim();
+}
+
 /** Worker-list URL that encodes the agent's filters (the list reads them back from the query string). */
 export function browseUrl(node: string, f: AgentFilters): string {
   const q = new URLSearchParams({ list: "1" });

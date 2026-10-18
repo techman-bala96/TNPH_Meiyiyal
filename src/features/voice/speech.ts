@@ -1,4 +1,6 @@
-/** Speech-to-text behind an interface: browser Web Speech API today; a server STT (streaming to the agent service) can replace it. */
+/** Speech-to-text behind an interface: the browser Web Speech API, or the agent service's /agent/stt (VITE_STT=server|auto). */
+import { transcribeAudio } from "./agent";
+import { SpeechGate, rms } from "./speechGate";
 export type SttLang = "en" | "ta";
 export interface Recognizer {
   readonly name: string;
@@ -49,9 +51,57 @@ export class WebSpeechRecognizer implements Recognizer {
   stop() { this.want = false; const r = this.rec; this.rec = null; try { r?.abort(); } catch { /* already stopped */ } }
 }
 
-export function createRecognizer(): Recognizer {
-  // if (import.meta.env.VITE_STT === "server") return new ServerRecognizer(); // streams audio to the agent's /agent/stt (future)
-  return new WebSpeechRecognizer();
+/** Records one utterance at a time (voice-activity gate), uploads it to /agent/stt and reports the transcript. Audio is never stored. */
+export class ServerRecognizer implements Recognizer {
+  readonly name = "server";
+  onInterim?: (text: string) => void; onFinal?: (text: string) => void; onError?: (code: string) => void; onEnd?: () => void;
+  private want = false; private stream: MediaStream | null = null; private ctx: AudioContext | null = null; private timer: number | null = null;
+  private rec: MediaRecorder | null = null; private chunks: Blob[] = [];
+  get supported() { return typeof window !== "undefined" && !!navigator.mediaDevices?.getUserMedia && typeof MediaRecorder !== "undefined"; }
+  async start(lang: SttLang) {
+    if (!this.supported) { this.onError?.("unsupported"); return; }
+    this.stop(); this.want = true;
+    try { this.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }); }
+    catch { this.want = false; this.onError?.("not-allowed"); this.onEnd?.(); return; }
+    if (!this.want) { this.release(); return; }
+    const AC = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    this.ctx = new AC(); const an = this.ctx.createAnalyser(); an.fftSize = 1024;
+    this.ctx.createMediaStreamSource(this.stream).connect(an);
+    const buf = new Float32Array(an.fftSize); const gate = new SpeechGate();
+    const mime = ["audio/webm;codecs=opus", "audio/ogg;codecs=opus", "audio/mp4"].find((m) => MediaRecorder.isTypeSupported?.(m)) ?? "";
+    this.timer = window.setInterval(() => {
+      an.getFloatTimeDomainData(buf);
+      const ev = gate.feed(rms(buf), performance.now());
+      if (ev === "start") {
+        this.chunks = []; this.rec = new MediaRecorder(this.stream!, mime ? { mimeType: mime } : undefined);
+        this.rec.ondataavailable = (e) => { if (e.data.size) this.chunks.push(e.data); };
+        this.rec.start(250); this.onInterim?.("…");
+      } else if (ev === "end" || ev === "drop") {
+        const r = this.rec; this.rec = null; if (!r) return;
+        r.onstop = () => {
+          if (ev === "drop" || !this.chunks.length) return;
+          const blob = new Blob(this.chunks, { type: r.mimeType || mime || "audio/webm" });
+          transcribeAudio(blob, lang).then((t) => { if (t) this.onFinal?.(t); }).catch((e: Error) => this.onError?.(e.message === "rate" ? "rate" : "network"));
+        };
+        try { r.stop(); } catch { /* already stopped */ }
+      }
+    }, 100);
+  }
+  private release() {
+    if (this.timer != null) window.clearInterval(this.timer); this.timer = null;
+    if (this.rec) { this.rec.onstop = null; try { this.rec.stop(); } catch { /* ignore */ } } this.rec = null;
+    this.stream?.getTracks().forEach((t) => t.stop()); this.stream = null;
+    void this.ctx?.close().catch(() => undefined); this.ctx = null;
+  }
+  stop() { const was = this.want; this.want = false; this.release(); if (was) this.onEnd?.(); }
+}
+
+/** VITE_STT: "browser" (default) | "server" | "auto" (browser when it has Web Speech, else server). */
+export function createRecognizer(mode: string = (import.meta.env.VITE_STT as string | undefined) ?? "browser"): Recognizer {
+  const web = new WebSpeechRecognizer();
+  if (mode === "server") { const s = new ServerRecognizer(); return s.supported ? s : web; }
+  if (mode === "auto" && !web.supported) { const s = new ServerRecognizer(); if (s.supported) return s; }
+  return web;
 }
 
 /** Speaks a reply; resolves when done (or immediately when TTS is unavailable). */
