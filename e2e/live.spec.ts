@@ -159,13 +159,14 @@ test("[LR05] network drops mid-chat → offline bar; a send fails with a clear m
 });
 
 test("[LR06] slow network (3 s per request) → chat still works, the send button cannot double-send", async ({ browser }) => {
+  test.setTimeout(120_000);
   clean("06");
   const law = await lawyer(browser, "06", "Adv. Slow Net");
   const u = await client(browser, "06", "Slow Client");
   await startChat(u.page, law);
   await u.page.route("**/rest/v1/consult_messages**", async (r) => { await new Promise((x) => setTimeout(x, 3000)); await r.continue(); });
   await u.page.getByTestId("chat-input").fill("Slow but steady");
-  await u.page.getByTestId("chat-send").click(); await u.page.getByTestId("chat-send").click().catch(() => undefined);
+  await u.page.getByTestId("chat-send").click(); await u.page.getByTestId("chat-send").click({ timeout: 2000 }).catch(() => undefined); // second tap while sending
   await expect(msgs(law.page, "Slow but steady")).toHaveCount(1, { timeout: 20_000 });
   await u.page.waitForTimeout(4000);
   await expect(msgs(law.page, "Slow but steady")).toHaveCount(1);
