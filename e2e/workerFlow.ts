@@ -48,7 +48,7 @@ export async function setProfile(page: Page, name: string, photo: string) {
 }
 
 /** Full real registration wizard. `shot` optional for screenshots. */
-export type RegOpts = { qrImage?: string; uploadSelfie?: boolean };
+export type RegOpts = { qrImage?: string; uploadSelfie?: boolean; kycEdge?: boolean };
 export async function registerWorker(page: Page, w: WorkerSpec, shot?: (n: string) => Promise<unknown>, opts: RegOpts = {}) {
   await page.goto("/?tab=worker");
   await page.getByTestId("btn-register-worker").click();
@@ -74,7 +74,8 @@ export async function registerWorker(page: Page, w: WorkerSpec, shot?: (n: strin
   await expect(page.getByTestId("reg-error")).toBeVisible();
   await page.getByTestId("reg-aadhaar").fill("987654321098");
   await page.getByTestId("reg-send-otp").click();
-  await expect(page.getByTestId("stub-hint")).toBeVisible();
+  if (opts.kycEdge) await expect(page.getByTestId("reg-aadhaar-otp")).toBeVisible(); // kyc-aadhaar Edge Function (mock adapter)
+  else await expect(page.getByTestId("stub-hint")).toBeVisible();
   await page.getByTestId("reg-aadhaar-otp").fill("111111");
   await page.getByTestId("reg-verify-otp").click();
   await expect(page.getByTestId("reg-error")).toBeVisible();

@@ -70,3 +70,22 @@ test("QR photo is decoded in the browser; no-camera selfie upload; reject → ap
   await page.reload();
   await expect(page.getByTestId("worker-status")).toHaveAttribute("data-status", "approved");
 });
+
+test("Aadhaar OTP through the kyc-aadhaar Edge Function (mock adapter) when kyc_provider = edge", async ({ browser }) => {
+  const tag = test.info().project.name === "mobile" ? "m" : "d";
+  const w = { ...WORKERS[0], name: `Dr. Edge KYC ${tag.toUpperCase()}`, fields: { ...WORKERS[0].fields, reg_no: `TNMC 7${tag === "m" ? "3" : "4"}001` } };
+  sql(`DELETE FROM auth.users WHERE email LIKE 'm11${tag}k%@meiyiyal.test';`);
+  sql(`UPDATE public.app_settings SET value = '"edge"' WHERE key = 'kyc_provider';`);
+  try {
+    const page = await fresh(browser, w.at);
+    const email = await signInAt(page, page.request, `m11${tag}k`);
+    await setProfile(page, w.name, w.photo);
+    const fnCalls: number[] = [];
+    page.on("response", (r) => { if (r.url().includes("/functions/v1/kyc-aadhaar")) fnCalls.push(r.status()); });
+    await registerWorker(page, w, undefined, { kycEdge: true, uploadSelfie: true });
+    expect(fnCalls.filter((s) => s === 200).length).toBeGreaterThanOrEqual(2);
+    expect(sql(`SELECT k.provider || ':' || k.aadhaar_last4 FROM public.kyc_verification k JOIN public.workers w ON w.id = k.worker_id JOIN auth.users u ON u.id = w.user_id WHERE u.email = '${email}'`)).toBe("mock:1098");
+  } finally {
+    sql(`UPDATE public.app_settings SET value = '"stub"' WHERE key = 'kyc_provider';`);
+  }
+});
