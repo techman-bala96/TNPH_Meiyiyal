@@ -5,7 +5,7 @@ _This file replaces the 16 Oct HANDOFF.md. It is self-contained: you can rebuild
 
 > **⚠️ இனிமே எல்லா வேலையும் இந்த branch-ல மட்டும் தான் / All work continues ONLY on this branch:** [`techman-bala96/TNPH_Meiyiyal` → `meyiyal-v1`](https://github.com/techman-bala96/TNPH_Meiyiyal/tree/meyiyal-v1). Clone it with `git clone -b meyiyal-v1 https://github.com/techman-bala96/TNPH_Meiyiyal.git`, commit and push to `meyiyal-v1`. Do **not** work on `main`, which is the old Lovable code with the leaked `.env`. Do **not** push from the build-box `/workspace/TNPH_Meiyiyal`, whose history still holds `.env`. Later, `meyiyal-v1` becomes the default branch (Appendix D).
 
-> **Public copy:** test phone numbers, OTPs and the preview URL are replaced with `<placeholders>`. The full version is kept privately on the build box (`/workspace/meyiyal/docs/HANDOFF.md`).
+> **Public copy:** test phone numbers, OTPs and the preview URL are replaced with `<placeholders>` (`<TEST_PHONE_n>` = number as stored with the 91 prefix, `<TEST_PHONE_n_LOCAL>` = the 10-digit number typed in the app). The full version is kept privately on the build box (`/workspace/meyiyal/docs/HANDOFF.md`).
 
 > **Spelling:** the product is **Meiyiyal**. The older spelling "meyiyal" still shows in a few technical names: the branch `meyiyal-v1`, the docs folder `/workspace/meyiyal`, the Docker project id `meyiyal-local` and the container names `supabase_*_meyiyal-local`. These are cosmetic and work as they are.
 
@@ -576,8 +576,8 @@ Prerequisites: Linux/macOS, **Docker**, **Node 20** (box: v20.19.2), **Supabase 
 ### 5.1 Test accounts (local / preview only; no real SMS)
 | Login | Value | OTP / how |
 |---|---|---|
-| Phone 1 | `987<TEST_OTP_2>0` (stored as <TEST_PHONE_1>) | `<TEST_OTP>` |
-| Phone 2 | `<TEST_PHONE_2>` (<TEST_PHONE_2>) | `<TEST_OTP_2>` |
+| Phone 1 | `<TEST_PHONE_1_LOCAL>` (10 digits; stored as `<TEST_PHONE_1>`) | `<TEST_OTP>` |
+| Phone 2 | `<TEST_PHONE_2_LOCAL>` (10 digits; stored as `<TEST_PHONE_2>`) | `<TEST_OTP_2>` |
 | Email | any address | open the link in Mailpit http://127.0.0.1:54324 (works on the ngrok URL too since `2c2d7f1`) |
 | Google | the user's Gmail (verified 17 Oct on the ngrok URL) | needs the real OAuth client in `supabase/.env` |
 | Aadhaar (worker wizard) | any 12 digits | stub OTP `<TEST_OTP>` |
