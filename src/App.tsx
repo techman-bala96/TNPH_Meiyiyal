@@ -25,6 +25,7 @@ import { VoiceProvider } from "@/features/voice/VoiceProvider";
 import Notifications from "@/pages/Notifications";
 import Messages from "@/pages/Messages";
 import { NotificationsSync } from "@/features/push/NotificationsSync";
+import { ReferralClaimer } from "@/features/referral/ReferralClaimer";
 
 const qc = new QueryClient();
 
@@ -37,6 +38,7 @@ export default function App() {
         <AuthProvider>
           <PrefsSync />
           <NotificationsSync />
+          <ReferralClaimer />
           <ConsultProvider>
           <VoiceProvider>
           <Routes>

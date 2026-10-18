@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { InviteCard } from "@/features/referral/InviteCard";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Camera, Check, ChevronRight, Coins, Loader2, MapPin, Plus } from "lucide-react";
 import { useWallet } from "@/features/consult/api";
@@ -104,6 +105,7 @@ export default function Profile() {
         </ul>
         <Link to="/location" state={{ from: "/profile" }} data-testid="add-location" className="tap mt-1 flex items-center gap-2 text-sm font-semibold text-primary"><Plus className="h-4 w-4" />{t("profile.addLocation")}</Link>
       </Section>
+      <InviteCard />
     </PageShell>
   );
 }

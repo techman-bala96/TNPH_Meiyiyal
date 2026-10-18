@@ -14,6 +14,21 @@ import { AuditLog, Moderation } from "@/features/admin/Moderation";
 import { RatesEditor } from "@/features/admin/Rates";
 import { Appeals, CaseMedia } from "@/features/admin/Appeals";
 import { PushAskCard } from "@/features/push/PushAskCard";
+import { SettingsEditor } from "@/features/admin/Settings";
+import { CatalogEditor } from "@/features/admin/Catalog";
+import { CommissionEditor, MilestonesEditor } from "@/features/admin/Milestones";
+import { DistrictsView } from "@/features/admin/Districts";
+import { ReferralsAdmin } from "@/features/admin/Referrals";
+
+const TAB_GROUPS = [
+  ["review", ["queue", "appeals", "districts"]],
+  ["people", ["moderation", "referrals"]],
+  ["money", ["payments", "payouts", "packs", "rates", "commission"]],
+  ["setup", ["settings", "catalog", "milestones"]],
+  ["records", ["audit"]],
+] as const;
+type Tab = (typeof TAB_GROUPS)[number][1][number];
+const TABS = TAB_GROUPS.flatMap(([, l]) => l) as readonly Tab[];
 
 type Check = { check: string; status: string; score?: number | null; reason?: string | null; provider?: string | null };
 type Row = { id: string; display_name: string; primary_node: string; node_name: { en: string; ta?: string } | null; years_experience: number; about: string | null;
@@ -25,7 +40,8 @@ type Row = { id: string; display_name: string; primary_node: string; node_name: 
 
 export default function Admin() {
   const { t } = useTranslation(); const admin = useIsAdmin(); const qc = useQueryClient();
-  const [status, setStatus] = useState("pending"); const [tab, setTab] = useState<"queue" | "moderation" | "rates" | "audit" | "packs" | "payments" | "payouts" | "appeals">("queue");
+  const [status, setStatus] = useState("pending"); const [tab, setTabState] = useState<Tab>(() => { const h = window.location.hash.slice(1) as Tab; return TABS.includes(h) ? h : "queue"; });
+  const setTab = (k: Tab) => { setTabState(k); window.history.replaceState(null, "", `#${k}`); };
   const q = useQuery({ queryKey: ["admin-queue", status], enabled: admin.data === true, queryFn: async () => {
     const { data, error } = await supabase.rpc("admin_worker_queue", { _status: status }); if (error) throw error; return data as unknown as Row[];
   } });
@@ -33,12 +49,19 @@ export default function Admin() {
   if (!admin.data) return <Navigate to="/" replace />;
 
   return (
-    <PageShell title={`${t("admin.title")} · ${t(`admin.heading.${tab}`)}`} testId="admin-page">
+    <PageShell title={`${t("admin.title")} · ${t(`admin.heading.${tab}`)}`} testId="admin-page" wide>
       <PushAskCard reason="admin" />
-      <div className="grid grid-cols-4 gap-1 rounded-2xl bg-primary/10 p-1">
-        {(["queue", "appeals", "moderation", "rates", "audit", "packs", "payments", "payouts"] as const).map((k) => (
-          <button key={k} data-testid={`admin-tab-${k}`} onClick={() => setTab(k)} className={`rounded-xl py-2 text-xs font-semibold transition ${tab === k ? "bg-primary text-primary-foreground shadow" : "text-primary"}`}>{t(`admin.tab.${k}`)}</button>))}
-      </div>
+      <div className="lg:grid lg:grid-cols-[13rem_1fr] lg:gap-6">
+      <nav aria-label={t("admin.title")} data-testid="admin-nav" className="mb-4 space-y-2 lg:sticky lg:top-16 lg:mb-0 lg:self-start">
+        {TAB_GROUPS.map(([g, list]) => (
+          <div key={g} className="flex flex-wrap items-center gap-1 lg:flex-col lg:items-stretch">
+            <span className="w-16 shrink-0 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground lg:w-auto lg:px-2 lg:pt-2">{t(`admin.group.${g}`)}</span>
+            {list.map((k) => (
+              <button key={k} data-testid={`admin-tab-${k}`} aria-current={tab === k ? "page" : undefined} onClick={() => setTab(k)}
+                className={`rounded-xl px-3 py-1.5 text-xs font-semibold transition lg:py-2 lg:text-left lg:text-sm ${tab === k ? "bg-primary text-primary-foreground shadow" : "bg-primary/10 text-primary hover:bg-primary/15 lg:bg-transparent"}`}>{t(`admin.tab.${k}`)}</button>))}
+          </div>))}
+      </nav>
+      <div className="min-w-0 space-y-4">
       {tab === "appeals" && <Appeals />}
       {tab === "moderation" && <Moderation />}
       {tab === "rates" && <RatesEditor />}
@@ -46,6 +69,12 @@ export default function Admin() {
       {tab === "packs" && <PacksEditor />}
       {tab === "payments" && <PaymentsView />}
       {tab === "payouts" && <PayoutsAdmin />}
+      {tab === "districts" && <DistrictsView />}
+      {tab === "referrals" && <ReferralsAdmin />}
+      {tab === "commission" && <CommissionEditor />}
+      {tab === "settings" && <SettingsEditor />}
+      {tab === "catalog" && <CatalogEditor />}
+      {tab === "milestones" && <MilestonesEditor />}
       {tab === "queue" && <>
       <div className="flex gap-1 overflow-x-auto rounded-2xl bg-muted p-1 [scrollbar-width:none]">
         {["pending", "needs_info", "approved", "rejected", "all"].map((s) => (
@@ -54,8 +83,10 @@ export default function Admin() {
       </div>
       {q.isLoading && <div className="h-32 animate-pulse rounded-2xl bg-muted" />}
       {q.data?.length === 0 && <p data-testid="admin-empty" className="py-10 text-center text-sm text-muted-foreground">{t("admin.empty")}</p>}
-      <ul className="space-y-3">{q.data?.map((r) => <AdminCard key={r.id} r={r} onDone={() => qc.invalidateQueries({ queryKey: ["admin-queue"] })} />)}</ul>
+      <ul className="grid gap-3 xl:grid-cols-2">{q.data?.map((r) => <AdminCard key={r.id} r={r} onDone={() => qc.invalidateQueries({ queryKey: ["admin-queue"] })} />)}</ul>
       </>}
+      </div>
+      </div>
     </PageShell>
   );
 }

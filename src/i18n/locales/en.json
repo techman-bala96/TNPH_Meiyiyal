@@ -299,7 +299,13 @@
       "packs": "Credit packs",
       "payments": "Payments",
       "payouts": "Payouts",
-      "appeals": "Verification appeals"
+      "appeals": "Verification appeals",
+      "districts": "Professionals by district",
+      "referrals": "Referrals & invite codes",
+      "commission": "Commission by category",
+      "settings": "App settings",
+      "catalog": "Professions & requirements",
+      "milestones": "Reward milestones"
     },
     "empty": "Nothing here",
     "note": "Note to worker (required for reject / more info)",
@@ -324,7 +330,13 @@
       "packs": "Packs",
       "payments": "Payments",
       "payouts": "Payouts",
-      "appeals": "Appeals"
+      "appeals": "Appeals",
+      "districts": "Districts",
+      "referrals": "Referrals",
+      "commission": "Commission",
+      "settings": "Settings",
+      "catalog": "Professions",
+      "milestones": "Milestones"
     },
     "save": "Save",
     "saved": "Saved",
@@ -404,6 +416,13 @@
       "steps": "Actions",
       "inWindow": "done in time",
       "noWindow": "no timed check"
+    },
+    "group": {
+      "review": "Review",
+      "people": "People",
+      "money": "Money",
+      "setup": "Setup",
+      "records": "Records"
     }
   },
   "menu2": {
@@ -574,7 +593,17 @@
     "worker_clear_flag": "Flag cleared",
     "worker_flag_auto_cleared": "Flag auto-cleared",
     "rate_set": "Rate changed",
-    "rate_delete": "Rate override removed"
+    "rate_delete": "Rate override removed",
+    "setting_set": "Setting changed",
+    "milestone_upsert": "Milestone saved",
+    "commission_set": "Commission changed",
+    "taxonomy_add": "Profession added",
+    "taxonomy_update": "Profession updated",
+    "requirements_set": "Requirements changed",
+    "verify_rule_set": "Verification rule changed",
+    "referral_campaign_create": "Campaign code created",
+    "referral_enable": "Invite code enabled",
+    "referral_disable": "Invite code disabled"
   },
   "voice": {
     "on": "Turn on voice assistant",
@@ -873,6 +902,171 @@
       "reconnect": "Reconnect with {{name}}",
       "reconnectLeft": "Reconnect within {{t}}",
       "findOther": "Find someone else now"
+    }
+  },
+  "adminSet": {
+    "hint": "Every change is checked against safe limits and written to the audit log. Secret keys are never shown here.",
+    "filter": "Search settings",
+    "badJson": "That isn't valid JSON",
+    "undo": "Undo",
+    "prod": "Production",
+    "catHint": "Inherit follows the all-categories switch above. On or Off overrides it for that profession.",
+    "cat": {
+      "inherit": "Inherit",
+      "on": "On",
+      "off": "Off"
+    },
+    "grp": {
+      "verification": "Verification",
+      "money": "Money",
+      "consult": "Consultations",
+      "moderation": "Moderation",
+      "notifications": "Notifications",
+      "referrals": "Referrals",
+      "security": "Security",
+      "dev": "Developer"
+    }
+  },
+  "catalog": {
+    "hint": "Rename, hide or add sub-categories. New top-level professions need a verification review and are added by migration.",
+    "kind": {
+      "category": "Profession",
+      "subcategory": "Sub-category",
+      "specialty": "Specialty",
+      "group": "Group"
+    },
+    "workers": "{{n}} professionals",
+    "hidden": "Hidden",
+    "nameEn": "Name (English)",
+    "nameTa": "Name (Tamil)",
+    "synonyms": "Search words (comma separated)",
+    "sort": "Order",
+    "visible": "Visible to users",
+    "docs": "Documents asked at registration",
+    "addChild": "Add a sub-category",
+    "add": "Add",
+    "added": "Added",
+    "rules": "Council register check",
+    "baseRules": "Checks for every professional",
+    "inherits": "Inherits from the parent profession.",
+    "required": "Required",
+    "weight": "Weight",
+    "check": {
+      "identity": "Aadhaar",
+      "face": "Face match",
+      "registry": "Council",
+      "degree": "Degree",
+      "name": "Name match",
+      "forensics": "Document check",
+      "duplicates": "Duplicates"
+    }
+  },
+  "ms": {
+    "hint": "Badges professionals earn. Turn one off to stop new awards; earned badges stay.",
+    "add": "Add milestone",
+    "active": "Active",
+    "titleEn": "Title (English)",
+    "titleTa": "Title (Tamil)",
+    "descEn": "Description (English)",
+    "descTa": "Description (Tamil)",
+    "kind": "Measure",
+    "threshold": "Target",
+    "minReviews": "Min reviews",
+    "color": "Colour",
+    "k": {
+      "sessions_served": "Sessions served",
+      "rating_avg": "Average rating",
+      "positive_streak": "Positive streak",
+      "five_stars": "Five-star reviews"
+    }
+  },
+  "commission": {
+    "hint": "Platform commission for a profession or sub-category (15–20%). Others use the default in Settings › Money.",
+    "none": "No overrides yet.",
+    "pick": "Choose a profession…",
+    "add": "Add override",
+    "remove": "Remove override"
+  },
+  "districts": {
+    "hint": "Registered professionals in each of the 38 Tamil Nadu districts. Districts with nobody yet show 0.",
+    "profession": "Profession",
+    "status": "Status",
+    "search": "Search district",
+    "hideZero": "Hide zero",
+    "sort": "Sort",
+    "sortName": "District order",
+    "sortTotal": "Most first",
+    "caption": "Professionals per district by status and profession",
+    "district": "District",
+    "total": "Total",
+    "allDistricts": "{{n}} districts",
+    "note": "Submitted = past draft. Pending includes ‘more info’. Doctor includes veterinary, which is also shown on its own.",
+    "p": {
+      "all": "All",
+      "doctor": "Doctor",
+      "veterinary": "Veterinary",
+      "lawyer": "Lawyer",
+      "engineer": "Engineer"
+    },
+    "s": {
+      "all": "All",
+      "submitted": "Submitted",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    }
+  },
+  "refAdmin": {
+    "hint": "Who joined with whose code. No rewards are given in this version.",
+    "v": {
+      "top": "Top referrers",
+      "campaign": "Campaign codes",
+      "list": "All referrals"
+    },
+    "kind": {
+      "personal": "Personal",
+      "campaign": "Campaign"
+    },
+    "joined": "joined",
+    "deleted": "Deleted account",
+    "workers": "{{n}} professionals",
+    "last": "last",
+    "max": "max {{n}}",
+    "expires": "Expires",
+    "see": "See who joined",
+    "active": "Active",
+    "none": "Nothing yet",
+    "pro": "Professional",
+    "newCampaign": "New campaign code",
+    "label": "Label, e.g. Facebook Diwali post",
+    "code": "Code (blank = auto)",
+    "maxUses": "Max uses (optional)",
+    "create": "Create",
+    "created": "Created {{code}}"
+  },
+  "invite": {
+    "title": "Invite friends",
+    "body": "Share your code. When someone signs up with it, they appear here.",
+    "copyCode": "Copy code",
+    "copied": "Copied",
+    "shareUser": "Invite a friend",
+    "shareWorker": "Invite a professional",
+    "shareText": "Join me on Meiyiyal, verified professionals in Tamil Nadu. My invite code: {{code}}",
+    "joined_one": "{{count}} person joined with your code ({{workers}} professionals)",
+    "joined_other": "{{count}} people joined with your code ({{workers}} professionals)",
+    "noRewards": "Invites are not rewarded yet.",
+    "referredBy": "You joined with code {{code}}",
+    "enter": "Have an invite code?",
+    "apply": "Apply",
+    "applied": "Invite code {{code}} applied",
+    "willApply": "Invite code {{code}} will be applied when you sign in",
+    "r": {
+      "invalid": "That code isn't valid",
+      "self": "You can't use your own code",
+      "already": "You already used an invite code",
+      "expired": "That code has expired",
+      "full": "That code has been used up",
+      "too_late": "Invite codes can only be added by new accounts"
     }
   }
 }

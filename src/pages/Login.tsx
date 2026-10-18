@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { pendingReferral } from "@/features/referral/capture";
 import { Mail, Phone, ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,7 @@ const GoogleIcon = () => (
 );
 
 export default function Login() {
+  const invite = pendingReferral();
   const { t } = useTranslation();
   const auth = useAuth();
   const [mode, setMode] = useState<Mode>("choose");
@@ -51,6 +53,7 @@ export default function Login() {
 
       <section className="card-soft mt-10 p-5">
         <h1 className="mb-4 text-lg font-semibold">{t("auth.title")}</h1>
+        {invite && <p data-testid="login-invite" className="mb-3 rounded-xl bg-primary/10 px-3 py-2 text-xs font-medium text-primary">{t("invite.willApply", { code: invite.code })}</p>}
 
         {mode === "choose" && (
           <div className="flex flex-col gap-3">

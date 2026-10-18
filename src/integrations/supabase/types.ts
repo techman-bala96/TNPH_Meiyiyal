@@ -531,6 +531,40 @@ isOneToOne: false
       referencedColumns: ["slug"]
     }
                   ]
+                },"referral_codes": {
+                  Row: {
+                    "active": boolean,"code": string,"created_at": string,"created_by": string | null,"expires_at": string | null,"kind": string,"label": string | null,"max_uses": number | null,"owner_user": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "active"?: boolean,"code": string,"created_at"?: string,"created_by"?: string | null,"expires_at"?: string | null,"kind": string,"label"?: string | null,"max_uses"?: number | null,"owner_user"?: string | null
+                  }
+                  Update: {
+                    "active"?: boolean,"code"?: string,"created_at"?: string,"created_by"?: string | null,"expires_at"?: string | null,"kind"?: string,"label"?: string | null,"max_uses"?: number | null,"owner_user"?: string | null
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"referrals": {
+                  Row: {
+                    "code": string,"created_at": string,"id": number,"kind": string,"landing": string,"referred_user": string,"referrer_user": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "code": string,"created_at"?: string,"id"?: never,"kind": string,"landing"?: string,"referred_user": string,"referrer_user"?: string | null
+                  }
+                  Update: {
+                    "code"?: string,"created_at"?: string,"id"?: never,"kind"?: string,"landing"?: string,"referred_user"?: string,"referrer_user"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "referrals_code_fkey"
+      columns: ["code"]
+isOneToOne: false
+      referencedRelation: "referral_codes"
+      referencedColumns: ["code"]
+    }
+                  ]
                 },"registry_cache": {
                   Row: {
                     "cache_key": string,"fetched_at": string,"payload": NonNullable<Json>,"source": string
@@ -623,6 +657,26 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "consult_sessions"
       referencedColumns: ["id"]
+    }
+                  ]
+                },"setting_specs": {
+                  Row: {
+                    "grp": string,"key": string,"kind": string,"label_i18n": NonNullable<Json>,"max": number | null,"min": number | null,"options": (string)[] | null,"prod_hint": string | null,"sort": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "grp": string,"key": string,"kind": string,"label_i18n": NonNullable<Json>,"max"?: number | null,"min"?: number | null,"options"?: (string)[] | null,"prod_hint"?: string | null,"sort"?: number
+                  }
+                  Update: {
+                    "grp"?: string,"key"?: string,"kind"?: string,"label_i18n"?: NonNullable<Json>,"max"?: number | null,"min"?: number | null,"options"?: (string)[] | null,"prod_hint"?: string | null,"sort"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "setting_specs_key_fkey"
+      columns: ["key"]
+isOneToOne: true
+      referencedRelation: "app_settings"
+      referencedColumns: ["key"]
     }
                   ]
                 },"sms_outbox": {
@@ -1237,6 +1291,9 @@ isOneToOne: false
 "_postgis_stats":
 { Args: { ""?: string,"att_name": string,"tbl": unknown }; Returns: string
                            },
+"_referral_new_code":
+{ Args: Record<PropertyKey, never>; Returns: string
+                           },
 "_st_3dintersects":
 { Args: { "geom1": unknown,"geom2": unknown }; Returns: boolean
                            },
@@ -1327,6 +1384,14 @@ isOneToOne: false
 "admin_case_media":
 { Args: { "_case": string }; Returns: Json
                            },
+"admin_commission_rules":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "depth": number,"node_name": Json,"node_slug": string,"pct": number
+            }[]
+                           },
+"admin_create_campaign_code":
+{ Args: { "_code": string,"_expires_at"?: string,"_label": string,"_max_uses"?: number }; Returns: string
+                           },
 "admin_decide_appeal":
 { Args: { "_case": string,"_decision": string,"_note": string }; Returns: string
                            },
@@ -1336,6 +1401,28 @@ isOneToOne: false
 "admin_delete_rate":
 { Args: { "_mode": string,"_node": string }; Returns: undefined
                            },
+"admin_guard":
+{ Args: Record<PropertyKey, never>; Returns: undefined
+                           },
+"admin_milestones":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "active": boolean,
+"color": string,
+"desc_i18n": NonNullable<Json>,
+"icon": string,
+"kind": string,
+"min_reviews": number,
+"slug": string,
+"sort": number,
+"threshold": number,
+"title_i18n": NonNullable<Json>
+            }[]
+                          SetofOptions: {
+        from: "*"
+        to: "reward_milestones"
+        isOneToOne: false
+        isSetofReturn: true
+      } },
 "admin_moderate":
 { Args: { "_action": string,"_days"?: number,"_note": string,"_worker": string }; Returns: Json
                            },
@@ -1377,20 +1464,80 @@ isOneToOne: false
               "account_mask": string,"account_status": string,"admin_note": string,"amount": number,"attempt_count": number,"decided_at": string,"failure_reason": string,"flag_active": boolean,"id": string,"items": number,"payout_hold": boolean,"provider": string,"reference": string,"requested_at": string,"review_reason": string,"status": string,"worker_name": string,"worker_user_id": string
             }[]
                            },
+"admin_professionals_by_district":
+{ Args: { "_profession"?: string,"_status"?: string }; Returns: {
+              "approved": number,"district_slug": string,"doctor": number,"engineer": number,"lawyer": number,"name_i18n": Json,"pending": number,"rejected": number,"sort": number,"submitted": number,"total": number,"veterinary": number
+            }[]
+                           },
 "admin_rate_cards":
 { Args: Record<PropertyKey, never>; Returns: {
               "band_max": number,"band_min": number,"credits_per_min": number,"depth": number,"min_minutes": number,"mode": string,"node_name": Json,"node_slug": string,"updated_at": string
             }[]
                            },
+"admin_referral_codes":
+{ Args: { "_kind"?: string }; Returns: {
+              "active": boolean,"code": string,"created_at": string,"expires_at": string,"kind": string,"label": string,"last_at": string,"max_uses": number,"owner_name": string,"uses": number,"worker_uses": number
+            }[]
+                           },
+"admin_referrals":
+{ Args: { "_code"?: string,"_limit"?: number }; Returns: {
+              "code": string,"created_at": string,"id": number,"kind": string,"landing": string,"referred_is_worker": boolean,"referred_name": string,"referrer_name": string,"worker_status": string
+            }[]
+                           },
 "admin_refund":
 { Args: { "_id": string,"_note": string }; Returns: Json
+                           },
+"admin_set_commission":
+{ Args: { "_node": string,"_pct": number }; Returns: undefined
                            },
 "admin_set_rate":
 { Args: { "_min": number,"_mode": string,"_node": string,"_rate": number }; Returns: undefined
                            },
+"admin_set_referral_code_active":
+{ Args: { "_active": boolean,"_code": string }; Returns: undefined
+                           },
+"admin_set_requirements":
+{ Args: { "_doc_types": (string)[],"_node": string,"_schema"?: Json }; Returns: undefined
+                           },
+"admin_set_setting":
+{ Args: { "_key": string,"_note"?: string,"_value": Json }; Returns: Json
+                           },
+"admin_set_verification_rule":
+{ Args: { "_cat": string,"_check": string,"_params"?: Json,"_required": boolean,"_weight": number }; Returns: undefined
+                           },
+"admin_settings":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "grp": string,"key": string,"kind": string,"label_i18n": Json,"max": number,"min": number,"options": (string)[],"prod_hint": string,"sort": number,"value": Json
+            }[]
+                           },
+"admin_taxonomy":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "doc_types": (string)[],"is_active": boolean,"kind": string,"name_i18n": Json,"parent_slug": string,"req_schema": Json,"slug": string,"sort": number,"synonyms": (string)[],"workers": number
+            }[]
+                           },
+"admin_upsert_milestone":
+{ Args: { "_active"?: boolean,"_color"?: string,"_desc": Json,"_icon"?: string,"_kind": string,"_min_reviews": number,"_slug": string,"_sort"?: number,"_threshold": number,"_title": Json }; Returns: undefined
+                           },
+"admin_upsert_node":
+{ Args: { "_active"?: boolean,"_name": Json,"_parent": string,"_sort"?: number,"_suffix": string,"_synonyms"?: (string)[] }; Returns: string
+                           },
 "admin_upsert_pack":
 { Args: { "_active": boolean,"_bonus": number,"_credits": number,"_id": string,"_name": Json,"_popular": boolean,"_price": number,"_sort": number }; Returns: undefined
                            },
+"admin_verification_rules":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "category_slug": string,
+"check_name": string,
+"params": NonNullable<Json>,
+"required": boolean,
+"weight": number
+            }[]
+                          SetofOptions: {
+        from: "*"
+        to: "verification_rules"
+        isOneToOne: false
+        isSetofReturn: true
+      } },
 "admin_worker_queue":
 { Args: { "_status"?: string }; Returns: {
               "aadhaar_masked": string,"aadhaar_verified": boolean,"about": string,"badge_tier": string,"case_id": string,"case_status": string,"checks": Json,"deep_link": string,"display_name": string,"district_slug": string,"docs": Json,"email": string,"id": string,"node_name": Json,"phone": string,"photo_url": string,"primary_node": string,"reason_codes": (string)[],"reg_data": Json,"risk": number,"sla_due_at": string,"status": string,"submitted_at": string,"years_experience": number
@@ -1592,6 +1739,9 @@ isOneToOne: false
 { Args: Record<PropertyKey, never>; Returns: {
               "address": string,"area_id": number,"area_name": string,"area_name_ta": string,"created_at": string,"district_name": Json,"district_slug": string,"id": string,"is_current": boolean,"lat": number,"lng": number
             }[]
+                           },
+"my_referral":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "my_verification":
 { Args: Record<PropertyKey, never>; Returns: Json
@@ -1915,6 +2065,12 @@ isOneToOne: false
                            },
 "recent_request_count":
 { Args: { "_uid": string }; Returns: number
+                           },
+"referral_check":
+{ Args: { "_code": string }; Returns: Json
+                           },
+"referral_claim":
+{ Args: { "_code": string,"_landing"?: string }; Returns: string
                            },
 "registry_cache_get":
 { Args: { "_key": string,"_max_age": string,"_source": string }; Returns: Json
@@ -2561,6 +2717,9 @@ isOneToOne: false
                            },
 "verification_write_check":
 { Args: { "_case": string,"_check": string,"_evidence": Json,"_provider": string,"_score": number,"_status": string }; Returns: string
+                           },
+"verify_auto_for":
+{ Args: { "_cat": string }; Returns: boolean
                            },
 "wallet_id_for":
 { Args: { "_uid": string }; Returns: string
