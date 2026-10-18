@@ -32,7 +32,7 @@ ALTER TABLE public.consult_sessions
   ADD COLUMN IF NOT EXISTS refunded_credits numeric(10,2) NOT NULL DEFAULT 0,
   ADD COLUMN IF NOT EXISTS search_id uuid;
 
--- Bills the open segment up to _at (per started minute). Nothing is billed for a segment that has not started by _at.
+-- Bills the open segment up to _at (per started minute).
 CREATE OR REPLACE FUNCTION public.session_bill_at(_sid uuid, _close boolean, _at timestamptz) RETURNS void LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
 DECLARE _s public.consult_sessions; _g public.session_segments; _mins int; _due numeric; _bal numeric; _uw uuid; _pay numeric; _exhausted boolean := false; _end timestamptz;
 BEGIN
@@ -40,8 +40,9 @@ BEGIN
   SELECT * INTO _g FROM public.session_segments WHERE session_id=_sid AND ended_at IS NULL ORDER BY id DESC LIMIT 1 FOR UPDATE;
   IF _s.status <> 'active' OR _g.id IS NULL THEN RETURN; END IF;
   _end := GREATEST(_g.started_at, LEAST(_at, now()));
-  _mins := CASE WHEN _end <= _g.started_at THEN _g.minutes_billed
-                ELSE GREATEST(_g.minutes_billed, ceil(extract(epoch FROM (_end - _g.started_at)) / 60.0)::int) END;
+  -- the first minute is billed when a segment opens (as before); a stop point before the segment began bills nothing
+  _mins := CASE WHEN _at < _g.started_at THEN _g.minutes_billed
+                ELSE GREATEST(_g.minutes_billed, 1, ceil(extract(epoch FROM (_end - _g.started_at)) / 60.0)::int) END;
   _due := (_mins - _g.minutes_billed) * _g.rate;
   IF _due > 0 THEN
     _uw := public.wallet_id_for(_s.user_id);
@@ -192,7 +193,7 @@ CREATE OR REPLACE FUNCTION public.session_early_end_refund() RETURNS trigger LAN
 DECLARE _amt numeric; _uw uuid; _worker_left boolean;
 BEGIN
   IF NOT (OLD.status = 'active' AND NEW.status = 'ended') THEN RETURN NULL; END IF;
-  _worker_left := NEW.ended_by = NEW.worker_user_id OR (NEW.end_reason = 'dropped' AND NEW.pause_side = 'worker');
+  _worker_left := COALESCE(NEW.ended_by = NEW.worker_user_id, false) OR COALESCE(NEW.end_reason = 'dropped' AND NEW.pause_side = 'worker', false);
   IF NOT _worker_left OR COALESCE(NEW.ended_at, now()) > NEW.started_at + make_interval(mins => public.setting_num('early_end_refund_minutes', 2)::int)
      OR EXISTS (SELECT 1 FROM public.consult_messages m WHERE m.session_id = NEW.id AND m.sender = NEW.worker_user_id AND m.kind <> 'system') THEN
     RETURN NULL;
