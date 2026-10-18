@@ -10,7 +10,7 @@ const TABLE: [RegExp, string][] = [
   [/worker unavailable|worker not found|not approved yet/i, "unavailable"],
   [/already have a ringing request/i, "alreadyRinging"],
   [/already have a search running/i, "searchRunning"],
-  [/too many (requests|attempts|OTP requests|account checks)/i, "tooMany"],
+  [/too many (requests|attempts|OTP requests|account checks)|rate limit|only request this after/i, "tooMany"],
   [/asked twice already/i, "askedTwice"],
   [/wait a minute before asking again/i, "waitMinute"],
   [/cannot request yourself/i, "self"],

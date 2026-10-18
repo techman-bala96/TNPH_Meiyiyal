@@ -31,6 +31,7 @@ export function createHmsProvider(): CallProvider {
     },
     setMuted(m) { void actions?.setLocalAudioEnabled(!m); },
     setCamera(on) { void actions?.setLocalVideoEnabled(on); },
+    async switchCamera() { await actions?.switchCamera?.(); return null; },
     async leave() { unsub?.(); local?.getTracks().forEach((t) => t.stop()); local = null; await actions?.leave(); actions = null; },
   };
 }

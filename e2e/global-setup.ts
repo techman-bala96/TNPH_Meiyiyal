@@ -12,4 +12,18 @@ export default function setup() {
   if (!existsSync(".cache/verify-fixtures/cam-a.y4m") || process.env.REBUILD_VERIFY_FIXTURES) {
     execSync("services/verify/.venv/bin/python scripts/verify-fixtures.py && node scripts/qr-png.mjs", { stdio: "inherit" });
   }
+  // Coverage evidence for docs/TEST-SCENARIOS.md (scripts/test-scenarios.mjs), local test DB only:
+  // which notification kinds were produced (rows vanish when test accounts are deleted, so record kinds as they appear),
+  // and per-function call counts. Neither changes app behaviour.
+  if (process.env.E2E_COVERAGE) {
+    sql(`CREATE SCHEMA IF NOT EXISTS e2e;
+      CREATE TABLE IF NOT EXISTS e2e.notif_seen(kind text PRIMARY KEY, first_at timestamptz DEFAULT now());
+      CREATE OR REPLACE FUNCTION e2e.note_kind() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
+        INSERT INTO e2e.notif_seen(kind) VALUES (NEW.kind) ON CONFLICT DO NOTHING; RETURN NEW; END $$;
+      DROP TRIGGER IF EXISTS e2e_note_kind ON public.notifications;
+      CREATE TRIGGER e2e_note_kind AFTER INSERT ON public.notifications FOR EACH ROW EXECUTE FUNCTION e2e.note_kind();
+      SELECT pg_stat_reset();`);
+    sql(`ALTER SYSTEM SET track_functions = 'pl';`); sql(`SELECT pg_reload_conf();`); // ALTER SYSTEM cannot run inside a multi-statement call
+    writeFileSync(".cache/coverage-start.txt", new Date().toISOString());
+  }
 }

@@ -8,7 +8,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 export const SHOTS = process.env.SCENARIO_SHOTS ?? "/workspace/scenario-shots";
 mkdirSync(SHOTS, { recursive: true });
-mkdirSync("test-results/crawl", { recursive: true });
+mkdirSync(".cache/crawl", { recursive: true });
 
 function flatKeys(o: Record<string, unknown>, pre = "", out = new Set<string>()) {
   for (const [k, v] of Object.entries(o)) {
@@ -30,7 +30,7 @@ export class Recorder {
   constructor(role: string) { this.role = role; }
   save() {
     const p = test.info().project.name;
-    writeFileSync(`test-results/crawl/${p}-${this.role}.json`, JSON.stringify({ project: p, role: this.role, rows: this.rows, issues: this.issues, shots: this.shots }, null, 1));
+    writeFileSync(`.cache/crawl/${p}-${this.role}.json`, JSON.stringify({ project: p, role: this.role, rows: this.rows, issues: this.issues, shots: this.shots }, null, 1));
   }
 }
 

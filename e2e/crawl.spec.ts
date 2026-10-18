@@ -107,12 +107,15 @@ test("crawl: worker approved", async ({ browser }) => {
 
 test("crawl: client", async ({ browser }) => {
   const page = await ctx(browser); const rec = new Recorder("client");
-  await signInAt(page, page.request, `crawl${TAG()}-client`);
+  const clientEmail = await signInAt(page, page.request, `crawl${TAG()}-client`);
   await setProfile(page, "Karthik Crawl", IMG("user"));
+  // a finished consultation to open read-only (the live session screen is driven end to end by consult/nearby/consult-live specs)
+  const { endedSession } = await import("./consultFlow");
+  const sid = endedSession(clientEmail, workerEmail);
   await run(page, rec, [
     { path: "/" }, { path: "/?tab=worker" }, { path: "/browse/professionals" }, { path: "/browse/professionals--doctor--allopathy--paediatrics", dbl: ["worker-card"] },
     { path: `/w/${workerId}` }, { path: "/profile", dbl: ["btn-save-profile"] }, { path: "/settings" }, { path: "/wallet", dbl: ["pack"] },
-    { path: "/history" }, { path: "/notifications" }, { path: "/messages" }, { path: "/location" }, { path: "/worker/register" }, { path: "/no-such-page" },
+    { path: "/history" }, { path: "/notifications" }, { path: "/messages" }, { path: "/location" }, { path: "/worker/register" }, { path: `/session/${sid}` }, { path: "/no-such-page" },
   ]);
   assertClean(rec);
 });

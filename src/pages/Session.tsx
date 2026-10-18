@@ -40,8 +40,18 @@ export default function Session() {
 
   // realtime: messages, calls, session row
   useEffect(() => {
-    void supabase.from("consult_messages").select("*").eq("session_id", id).order("created_at").then(({ data }) => setMsgs((data ?? []) as unknown as Message[]));
-    void supabase.from("session_calls").select("*").eq("session_id", id).order("created_at").then(({ data }) => setCalls((data ?? []) as unknown as Call[]));
+    // (re)load merges by id: called on open, whenever the realtime channel (re)subscribes, when the network comes back
+    // and when the app returns to the foreground, so nothing sent while this side was offline or closed is missed or doubled
+    const merge = <T extends { id: string; created_at?: string }>(cur: T[], rows: T[]) => {
+      const byId = new Map(cur.map((x) => [x.id, x])); for (const r of rows) byId.set(r.id, r);
+      return [...byId.values()].sort((a, b) => String(a.created_at ?? "").localeCompare(String(b.created_at ?? "")));
+    };
+    const load = () => {
+      void supabase.from("consult_messages").select("*").eq("session_id", id).order("created_at").then(({ data }) => { if (data) setMsgs((m) => merge(m, data as unknown as Message[])); });
+      void supabase.from("session_calls").select("*").eq("session_id", id).order("created_at").then(({ data }) => { if (data) setCalls((c) => merge(c, data as unknown as Call[])); });
+      void qc.invalidateQueries({ queryKey: ["session", id] });
+    };
+    load();
     const ch = supabase.channel(`session:${id}`)
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "consult_messages", filter: `session_id=eq.${id}` },
         (p) => setMsgs((m) => (m.some((x) => x.id === (p.new as Message).id) ? m : [...m, p.new as Message])))
@@ -49,8 +59,10 @@ export default function Session() {
         const c = p.new as Call; setCalls((cs) => [...cs.filter((x) => x.id !== c.id), c]);
       })
       .on("postgres_changes", { event: "UPDATE", schema: "public", table: "consult_sessions", filter: `id=eq.${id}` }, () => qc.invalidateQueries({ queryKey: ["session", id] }))
-      .subscribe();
-    return () => { void supabase.removeChannel(ch); };
+      .subscribe((st) => { if (st === "SUBSCRIBED") load(); });
+    const vis = () => { if (document.visibilityState === "visible") load(); };
+    window.addEventListener("online", load); document.addEventListener("visibilitychange", vis);
+    return () => { void supabase.removeChannel(ch); window.removeEventListener("online", load); document.removeEventListener("visibilitychange", vis); };
   }, [id, qc]);
 
   // metering tick (server-authoritative, idempotent)

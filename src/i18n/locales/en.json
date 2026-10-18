@@ -504,7 +504,16 @@
       "connecting": "Connecting…",
       "connected": "Connected",
       "failed": "Connection failed",
-      "ended": "Call ended"
+      "ended": "Call ended",
+      "mute": "Mute microphone",
+      "unmute": "Unmute microphone",
+      "camOff": "Turn camera off",
+      "camOn": "Turn camera on",
+      "flip": "Switch camera",
+      "hangup": "End call",
+      "permVideo": "Camera or microphone is blocked. Allow them for this site in your browser settings, then call again.",
+      "permVoice": "Microphone is blocked. Allow it for this site in your browser settings, then call again.",
+      "noDevice": "No working camera or microphone was found on this device."
     },
     "notFound": "Session not found",
     "home": "Home",
@@ -1196,5 +1205,9 @@
     "fileType": "This file type is not allowed.",
     "network": "No connection. Check your internet and try again.",
     "generic": "Something went wrong. Please try again."
+  },
+  "net": {
+    "offline": "You're offline. Messages and calls will continue when the network is back.",
+    "back": "Back online"
   }
 }

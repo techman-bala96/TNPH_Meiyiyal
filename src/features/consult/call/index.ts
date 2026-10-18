@@ -19,6 +19,7 @@ export function createCallProvider(): CallProvider {
     },
     setMuted: (m) => active.setMuted(m),
     setCamera: (on) => active.setCamera(on),
+    switchCamera: () => active.switchCamera(),
     leave: () => active.leave(),
   };
 }

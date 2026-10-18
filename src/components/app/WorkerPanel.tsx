@@ -59,7 +59,7 @@ export function WorkerPanel() {
           <p className="text-sm text-muted-foreground">{t(`worker.statusHint.${w.status}`)}</p>
           {w.review_note && w.status !== "approved" && (() => {
             // automatic decisions store a code ("identity:bad_signature"); admins write sentences. Codes become plain words.
-            const code = /^([a-z_]+):([a-z_]+)$/.exec(w.review_note) ?? (/^(risk|verification failed)$/.test(w.review_note) ? ["", "risk", "high"] : null);
+            const code = /^([a-z_]+):([a-z0-9_]+)$/.exec(w.review_note) ?? (/^(risk|verification failed)$/.test(w.review_note) ? ["", "risk", "high"] : null);
             return code
               ? <div data-testid="review-note" data-code={`${code[1]}:${code[2]}`} className="mt-2 space-y-1 rounded-lg bg-muted p-2 text-sm">
                   <p className="font-medium">{t(`worker.reject.${code[1]}_${code[2]}`, { defaultValue: t(`worker.reject.${code[1]}`, { defaultValue: t("worker.reject.generic") }) })}</p>

@@ -127,7 +127,7 @@ async function adminSees(browser: Browser, id: string, name: string) {
 }
 const n = (s: string) => s; // names must match the Aadhaar QR name, so no per-project suffix; beforeEach clears old vf- accounts
 
-test.beforeEach(() => { sql(`DELETE FROM auth.users WHERE email LIKE 'vf_-v%@meiyiyal.test'; DELETE FROM public.identity_fingerprints WHERE worker_id IS NULL AND NOT blocked;`); council({}); });
+test.beforeEach(() => { sql(`DELETE FROM auth.users WHERE email LIKE 'vf_-v%@meiyiyal.test'; DELETE FROM public.identity_fingerprints WHERE worker_id IS NULL;`); council({}); });
 
 test("[V01] doctor, everything genuine, auto-approve ON for doctors → approved automatically → can go online", async ({ browser }) => {
   await autoApprove(browser, "professionals--doctor", "on");

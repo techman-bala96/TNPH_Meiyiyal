@@ -60,6 +60,17 @@ export function createWebRtcProvider(): CallProvider {
     },
     setMuted(m) { local?.getAudioTracks().forEach((t) => (t.enabled = !m)); },
     setCamera(on) { local?.getVideoTracks().forEach((t) => (t.enabled = on)); },
+    async switchCamera() {
+      const cur = local?.getVideoTracks()[0]; if (!cur || !local) return null;
+      const cams = (await navigator.mediaDevices.enumerateDevices()).filter((d) => d.kind === "videoinput");
+      if (cams.length < 2) return null;
+      const now = cur.getSettings().deviceId; const next = cams[(cams.findIndex((d) => d.deviceId === now) + 1) % cams.length];
+      const fresh = (await navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: next.deviceId }, width: 640, height: 480 } })).getVideoTracks()[0];
+      fresh.enabled = cur.enabled;
+      await pc?.getSenders().find((x) => x.track?.kind === "video")?.replaceTrack(fresh); // no renegotiation needed
+      local.removeTrack(cur); cur.stop(); local.addTrack(fresh);
+      return local;
+    },
     async leave() {
       if (again) clearInterval(again);
       local?.getTracks().forEach((t) => t.stop()); local = null;

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { friendlyError } from "@/lib/friendlyError";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { pendingReferral } from "@/features/referral/capture";
@@ -38,7 +39,7 @@ export default function Login() {
     setBusy(true); setErr(null);
     const { error } = await fn();
     setBusy(false);
-    if (error) setErr(error.message || t("common.error"));
+    if (error) setErr(friendlyError(t, error.message)); // never the raw Auth text ("Token has expired or is invalid")
     else if (next) setMode(next);
   };
 

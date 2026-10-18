@@ -5,5 +5,7 @@ export interface CallProvider {
   join(opts: { sessionId: string; callId: string; isCaller: boolean; video: boolean; onState: (s: CallState) => void; onRemote: (s: MediaStream) => void }): Promise<MediaStream>;
   setMuted(m: boolean): void;
   setCamera(on: boolean): void;
+  /** Front ↔ back camera on phones. Resolves to the new local stream, or null when there is only one camera. */
+  switchCamera(): Promise<MediaStream | null>;
   leave(): Promise<void>;
 }
