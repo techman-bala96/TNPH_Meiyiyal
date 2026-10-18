@@ -889,5 +889,401 @@
   },
   "icon": "sun",
   "sort": 7
+ },
+ {
+  "slug": "professionals--doctor--allopathy--radiology",
+  "parent": "professionals--doctor--allopathy",
+  "kind": "specialty",
+  "name": {
+   "en": "Radiology (report review)",
+   "ta": "கதிரியக்க அறிக்கை"
+  },
+  "icon": null,
+  "sort": 17
+ },
+ {
+  "slug": "professionals--doctor--allopathy--rheumatology",
+  "parent": "professionals--doctor--allopathy",
+  "kind": "specialty",
+  "name": {
+   "en": "Rheumatology",
+   "ta": "மூட்டு வாத மருத்துவம்"
+  },
+  "icon": null,
+  "sort": 18
+ },
+ {
+  "slug": "professionals--doctor--allopathy--geriatrics",
+  "parent": "professionals--doctor--allopathy",
+  "kind": "specialty",
+  "name": {
+   "en": "Geriatrics",
+   "ta": "முதியோர் மருத்துவம்"
+  },
+  "icon": null,
+  "sort": 19
+ },
+ {
+  "slug": "professionals--doctor--allopathy--infectious-diseases",
+  "parent": "professionals--doctor--allopathy",
+  "kind": "specialty",
+  "name": {
+   "en": "Infectious Diseases",
+   "ta": "தொற்று நோய்"
+  },
+  "icon": null,
+  "sort": 20
+ },
+ {
+  "slug": "professionals--doctor--allopathy--hematology",
+  "parent": "professionals--doctor--allopathy",
+  "kind": "specialty",
+  "name": {
+   "en": "Hematology",
+   "ta": "இரத்த மருத்துவம்"
+  },
+  "icon": null,
+  "sort": 21
+ },
+ {
+  "slug": "professionals--doctor--allopathy--allergy-immunology",
+  "parent": "professionals--doctor--allopathy",
+  "kind": "specialty",
+  "name": {
+   "en": "Allergy & Immunology",
+   "ta": "ஒவ்வாமை"
+  },
+  "icon": null,
+  "sort": 22
+ },
+ {
+  "slug": "professionals--doctor--unani--general-unani",
+  "parent": "professionals--doctor--unani",
+  "kind": "specialty",
+  "name": {
+   "en": "General Unani",
+   "ta": "பொது யுனானி"
+  },
+  "icon": null,
+  "sort": 0
+ },
+ {
+  "slug": "professionals--doctor--homeopathy--general-homeopathy",
+  "parent": "professionals--doctor--homeopathy",
+  "kind": "specialty",
+  "name": {
+   "en": "General Homoeopathy",
+   "ta": "பொது ஹோமியோபதி"
+  },
+  "icon": null,
+  "sort": 0
+ },
+ {
+  "slug": "professionals--doctor--yoga-naturopathy--therapeutic-yoga",
+  "parent": "professionals--doctor--yoga-naturopathy",
+  "kind": "specialty",
+  "name": {
+   "en": "Therapeutic Yoga",
+   "ta": "சிகிச்சை யோகா"
+  },
+  "icon": null,
+  "sort": 0
+ },
+ {
+  "slug": "professionals--doctor--yoga-naturopathy--naturopathy",
+  "parent": "professionals--doctor--yoga-naturopathy",
+  "kind": "specialty",
+  "name": {
+   "en": "Naturopathy",
+   "ta": "இயற்கை மருத்துவம்"
+  },
+  "icon": null,
+  "sort": 1
+ },
+ {
+  "slug": "professionals--doctor--nutrition-diet--clinical-diet",
+  "parent": "professionals--doctor--nutrition-diet",
+  "kind": "specialty",
+  "name": {
+   "en": "Clinical Diet",
+   "ta": "மருத்துவ உணவியல்"
+  },
+  "icon": null,
+  "sort": 0
+ },
+ {
+  "slug": "professionals--doctor--nutrition-diet--diabetes-diet",
+  "parent": "professionals--doctor--nutrition-diet",
+  "kind": "specialty",
+  "name": {
+   "en": "Diabetes Diet",
+   "ta": "சர்க்கரை உணவு"
+  },
+  "icon": null,
+  "sort": 1
+ },
+ {
+  "slug": "professionals--doctor--nutrition-diet--sports-nutrition",
+  "parent": "professionals--doctor--nutrition-diet",
+  "kind": "specialty",
+  "name": {
+   "en": "Sports Nutrition",
+   "ta": "விளையாட்டு உணவியல்"
+  },
+  "icon": null,
+  "sort": 2
+ },
+ {
+  "slug": "professionals--doctor--veterinary",
+  "parent": "professionals--doctor",
+  "kind": "subcategory",
+  "name": {
+   "en": "Veterinary",
+   "ta": "கால்நடை மருத்துவம்"
+  },
+  "icon": "stethoscope",
+  "sort": 10
+ },
+ {
+  "slug": "professionals--doctor--veterinary--pet-small-animal",
+  "parent": "professionals--doctor--veterinary",
+  "kind": "specialty",
+  "name": {
+   "en": "Pet & Small Animal",
+   "ta": "செல்லப் பிராணி"
+  },
+  "icon": null,
+  "sort": 0
+ },
+ {
+  "slug": "professionals--doctor--veterinary--livestock",
+  "parent": "professionals--doctor--veterinary",
+  "kind": "specialty",
+  "name": {
+   "en": "Livestock",
+   "ta": "கால்நடை"
+  },
+  "icon": null,
+  "sort": 1
+ },
+ {
+  "slug": "professionals--doctor--veterinary--poultry",
+  "parent": "professionals--doctor--veterinary",
+  "kind": "specialty",
+  "name": {
+   "en": "Poultry",
+   "ta": "கோழி வளர்ப்பு"
+  },
+  "icon": null,
+  "sort": 2
+ },
+ {
+  "slug": "professionals--doctor--veterinary--veterinary-nutrition",
+  "parent": "professionals--doctor--veterinary",
+  "kind": "specialty",
+  "name": {
+   "en": "Veterinary Nutrition",
+   "ta": "கால்நடை உணவியல்"
+  },
+  "icon": null,
+  "sort": 3
+ },
+ {
+  "slug": "professionals--lawyer--intellectual-property",
+  "parent": "professionals--lawyer",
+  "kind": "subcategory",
+  "name": {
+   "en": "Intellectual Property",
+   "ta": "அறிவுசார் சொத்து"
+  },
+  "icon": "file-text",
+  "sort": 12
+ },
+ {
+  "slug": "professionals--lawyer--insurance-claims",
+  "parent": "professionals--lawyer",
+  "kind": "subcategory",
+  "name": {
+   "en": "Insurance Claims",
+   "ta": "காப்பீட்டு கோரிக்கை"
+  },
+  "icon": "shield",
+  "sort": 13
+ },
+ {
+  "slug": "professionals--lawyer--insolvency-bankruptcy",
+  "parent": "professionals--lawyer",
+  "kind": "subcategory",
+  "name": {
+   "en": "Insolvency & Bankruptcy",
+   "ta": "திவால் & நொடிப்பு"
+  },
+  "icon": "landmark",
+  "sort": 14
+ },
+ {
+  "slug": "professionals--lawyer--medical-negligence",
+  "parent": "professionals--lawyer",
+  "kind": "subcategory",
+  "name": {
+   "en": "Medical Negligence",
+   "ta": "மருத்துவ அலட்சியம்"
+  },
+  "icon": "stethoscope",
+  "sort": 15
+ },
+ {
+  "slug": "professionals--lawyer--rera-housing",
+  "parent": "professionals--lawyer",
+  "kind": "subcategory",
+  "name": {
+   "en": "RERA & Housing",
+   "ta": "ரெரா & குடியிருப்பு"
+  },
+  "icon": "home",
+  "sort": 16
+ },
+ {
+  "slug": "professionals--lawyer--banking-debt",
+  "parent": "professionals--lawyer",
+  "kind": "subcategory",
+  "name": {
+   "en": "Banking & Debt Recovery",
+   "ta": "வங்கி & கடன்"
+  },
+  "icon": "receipt",
+  "sort": 17
+ },
+ {
+  "slug": "professionals--engineer--structural",
+  "parent": "professionals--engineer",
+  "kind": "subcategory",
+  "name": {
+   "en": "Structural",
+   "ta": "கட்டமைப்புப் பொறியியல்"
+  },
+  "icon": "building",
+  "sort": 8
+ },
+ {
+  "slug": "professionals--engineer--structural--building-plans",
+  "parent": "professionals--engineer--structural",
+  "kind": "specialty",
+  "name": {
+   "en": "Building Plans",
+   "ta": "கட்டிட வரைபடம்"
+  },
+  "icon": null,
+  "sort": 0
+ },
+ {
+  "slug": "professionals--engineer--structural--structural-audit",
+  "parent": "professionals--engineer--structural",
+  "kind": "specialty",
+  "name": {
+   "en": "Structural Audit",
+   "ta": "கட்டமைப்பு தணிக்கை"
+  },
+  "icon": null,
+  "sort": 1
+ },
+ {
+  "slug": "professionals--engineer--chemical",
+  "parent": "professionals--engineer",
+  "kind": "subcategory",
+  "name": {
+   "en": "Chemical",
+   "ta": "வேதியியல் பொறியியல்"
+  },
+  "icon": "flask",
+  "sort": 9
+ },
+ {
+  "slug": "professionals--engineer--instrumentation",
+  "parent": "professionals--engineer",
+  "kind": "subcategory",
+  "name": {
+   "en": "Instrumentation",
+   "ta": "கருவிப் பொறியியல்"
+  },
+  "icon": "cpu",
+  "sort": 10
+ },
+ {
+  "slug": "professionals--engineer--environmental",
+  "parent": "professionals--engineer",
+  "kind": "subcategory",
+  "name": {
+   "en": "Environmental",
+   "ta": "சுற்றுச்சூழல் பொறியியல்"
+  },
+  "icon": "leaf",
+  "sort": 11
+ },
+ {
+  "slug": "professionals--engineer--biomedical",
+  "parent": "professionals--engineer",
+  "kind": "subcategory",
+  "name": {
+   "en": "Biomedical",
+   "ta": "உயிரி மருத்துவப் பொறியியல்"
+  },
+  "icon": "activity",
+  "sort": 12
+ },
+ {
+  "slug": "professionals--engineer--aeronautical",
+  "parent": "professionals--engineer",
+  "kind": "subcategory",
+  "name": {
+   "en": "Aeronautical",
+   "ta": "வானூர்திப் பொறியியல்"
+  },
+  "icon": "sun",
+  "sort": 13
+ },
+ {
+  "slug": "professionals--engineer--automobile",
+  "parent": "professionals--engineer",
+  "kind": "subcategory",
+  "name": {
+   "en": "Automobile",
+   "ta": "தானியங்கிப் பொறியியல்"
+  },
+  "icon": "car",
+  "sort": 14
+ },
+ {
+  "slug": "professionals--engineer--agricultural",
+  "parent": "professionals--engineer",
+  "kind": "subcategory",
+  "name": {
+   "en": "Agricultural",
+   "ta": "வேளாண் பொறியியல்"
+  },
+  "icon": "sprout",
+  "sort": 15
+ },
+ {
+  "slug": "professionals--engineer--mining",
+  "parent": "professionals--engineer",
+  "kind": "subcategory",
+  "name": {
+   "en": "Mining",
+   "ta": "சுரங்கப் பொறியியல்"
+  },
+  "icon": "hard-hat",
+  "sort": 16
+ },
+ {
+  "slug": "professionals--engineer--marine",
+  "parent": "professionals--engineer",
+  "kind": "subcategory",
+  "name": {
+   "en": "Marine",
+   "ta": "கடல் பொறியியல்"
+  },
+  "icon": "droplet",
+  "sort": 17
  }
 ]

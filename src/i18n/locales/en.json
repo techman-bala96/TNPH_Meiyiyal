@@ -124,6 +124,8 @@
       "profession": "Profession",
       "details": "Details",
       "aadhaar": "Aadhaar",
+      "qr": "Aadhaar QR",
+      "selfie": "Photo",
       "documents": "Documents",
       "review": "Review"
     },
@@ -142,6 +144,15 @@
     "aadhaarNo": "Aadhaar number",
     "otpSentTo": "OTP sent to the mobile linked with {{masked}}",
     "stubHint": "Test mode: use OTP 123456",
+    "qrWhy": "Paste the text from your Aadhaar QR. We check the signature and keep only the last 4 digits. The QR itself is deleted 30 days after a decision.",
+    "qrLabel": "Aadhaar QR text",
+    "qrPlaceholder": "Paste the QR payload",
+    "selfieWhy": "Take a photo while you do the action below. The raw photo is private and deleted 30 days after a decision. A separate copy is your public profile photo only if you agree.",
+    "liveness": "Do this now: {{challenge}}",
+    "livenessDid": "I did this action in the photo",
+    "challenge": { "blink": "blink", "turn-left": "turn your head left", "turn-right": "turn your head right" },
+    "selfieFile": "Choose a photo",
+    "selfieConsent": "I agree this photo can be shown on my public profile. My Aadhaar photo is never public.",
     "upload": "Upload",
     "replace": "Replace",
     "docsNote": "PDF or photo, up to 10 MB. Documents are private and seen only by our verification team.",
@@ -173,11 +184,21 @@
       "format": "Check the format",
       "aadhaar": "Enter a valid 12-digit Aadhaar",
       "otp": "Wrong OTP",
+      "qr": "Paste the QR text",
       "tooBig": "File is larger than 10 MB",
       "upload": "Upload failed"
     },
     "locked": "Profession locked",
-    "lockedNote": "Your profession is locked after registration. You can still change your field within it."
+    "lockedNote": "Your profession is locked after registration. You can still change your field within it.",
+    "badge": { "licence": "Licence verified", "degree": "Degree verified" },
+    "verifiedOn": "Verified {{date}}",
+    "check": {
+      "identity": "Identity", "face": "Photo", "registry": "Register", "degree": "Certificate",
+      "name": "Name", "forensics": "Document", "duplicates": "Duplicates"
+    },
+    "checkStatus": { "pass": "passed", "review": "needs a person", "fail": "failed", "error": "could not check" },
+    "appealNote": "Why should this be reviewed again?",
+    "appealSubmit": "Request a review"
   },
   "admin": {
     "title": "Verification",
@@ -186,6 +207,9 @@
     "approve": "Approve",
     "needsInfo": "More info",
     "reject": "Reject",
+    "risk": "Risk",
+    "sla": "Review by",
+    "registry": "Open register",
     "f": {
       "pending": "Pending",
       "needs_info": "More info",

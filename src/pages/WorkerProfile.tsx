@@ -15,6 +15,7 @@ import type { Rates } from "@/features/consult/api";
 
 type P = { id: string; display_name: string; photo_url: string | null; about: string | null; years_experience: number; specialty: I18n | null; category: I18n | null; district: I18n | null;
   is_online: boolean; is_busy: boolean; joined_at: string; rating: number; reviews: number; sessions_served: number; users_served: number; rates: Rates; council: string | null;
+  badge_tier?: "licence" | "degree" | null; verified_at?: string | null;
   rewards: Reward[]; feedback: { rating: number; tags: string[]; comment: string | null; created_at: string; by_name: string }[] };
 
 export default function WorkerProfile() {
@@ -42,6 +43,8 @@ export default function WorkerProfile() {
             {w.is_online && <span className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-emerald-400 ring-4 ring-primary" />}</div>
           <div className="min-w-0">
             <h2 className="flex items-center gap-1 text-xl font-bold" data-testid="wp-name">{w.display_name}<BadgeCheck className="h-5 w-5" /></h2>
+            {w.badge_tier && <p data-testid="badge-tier" data-tier={w.badge_tier} className="text-xs font-semibold">{t(`worker.badge.${w.badge_tier}`)}</p>}
+            {w.verified_at && <p data-testid="verified-on" className="text-xs opacity-80">{t("worker.verifiedOn", { date: new Date(w.verified_at).toLocaleDateString() })}</p>}
             <p className="text-sm opacity-90" data-testid="wp-specialty">{[tr(w.category, lang), tr(w.specialty, lang)].filter(Boolean).join(" · ")}</p>
             {w.district && <p className="mt-1 flex items-center gap-1 text-xs opacity-80"><MapPin className="h-3.5 w-3.5" />{tr(w.district, lang)}</p>}
             {w.council && <p className="mt-1 flex items-center gap-1 text-xs opacity-80"><ShieldCheck className="h-3.5 w-3.5" />{w.council}</p>}
@@ -49,8 +52,8 @@ export default function WorkerProfile() {
         </div>
       </section>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        {stats.map((s, i) => (
-          <div key={s.id} style={{ animationDelay: `${i * 50}ms` }} className="card-soft flex flex-col items-center p-3 text-center animate-in fade-in slide-in-from-bottom-1 fill-mode-both">
+        {stats.map((s) => (
+          <div key={s.id} className="card-soft flex flex-col items-center p-3 text-center">
             <s.icon className="h-5 w-5 text-primary" /><b data-testid={s.id} className="mt-1 text-lg">{s.value}</b><span className="text-[11px] text-muted-foreground">{s.label}</span></div>))}
       </div>
       <button data-testid="wp-consult" onClick={() => setOpen(true)} className="w-full rounded-2xl bg-primary py-3 font-semibold text-primary-foreground shadow-md transition active:scale-[.98]">

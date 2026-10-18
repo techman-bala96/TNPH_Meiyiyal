@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { BadgeCheck, Clock, FileWarning, Hourglass, Power, ShieldAlert, UserRoundPlus, Banknote, ChevronRight } from "lucide-react";
@@ -7,13 +8,14 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { nodeName, pathTo, useTaxonomy } from "@/features/taxonomy/useTaxonomy";
 import { patternStyle, themeFor } from "@/features/taxonomy/themes";
-import { useMyWorker } from "@/features/worker/api";
+import { useMyVerification, useMyWorker } from "@/features/worker/api";
 import { MyRewards, StandingBanners } from "@/features/rewards/WorkerStanding";
 import { useStanding } from "@/features/rewards/standing";
 
 export function WorkerPanel() {
   const { t, i18n } = useTranslation(); const lang = i18n.language?.startsWith("ta") ? "ta" : "en";
-  const { data: w, isLoading } = useMyWorker(); const { data: standing } = useStanding(); const tax = useTaxonomy(); const qc = useQueryClient();
+  const { data: w, isLoading } = useMyWorker(); const verify = useMyVerification(!!w); const { data: standing } = useStanding(); const tax = useTaxonomy(); const qc = useQueryClient();
+  const [appeal, setAppeal] = useState(""); const [appealErr, setAppealErr] = useState<string | null>(null);
   if (isLoading) return <div className="h-40 animate-pulse rounded-3xl bg-muted" />;
 
   if (!w || (w.status === "draft" && !w.primary_node)) return (
@@ -50,8 +52,25 @@ export function WorkerPanel() {
           <p data-testid="worker-status" data-status={w.status} className="font-semibold">{t(`worker.status.${w.status}`)}</p>
           <p className="text-sm text-muted-foreground">{t(`worker.statusHint.${w.status}`)}</p>
           {w.review_note && w.status !== "approved" && <p data-testid="review-note" className="mt-2 rounded-lg bg-muted p-2 text-sm">{w.review_note}</p>}
-          {(w.status === "draft" || w.status === "needs_info" || w.status === "rejected") && w.status !== "rejected" && (
+          {verify.data?.badge_tier && <p data-testid="badge-tier" data-tier={verify.data.badge_tier} className="mt-1 text-xs font-semibold">{t(`worker.badge.${verify.data.badge_tier}`)}{verify.data.verified_at ? ` · ${t("worker.verifiedOn", { date: new Date(verify.data.verified_at).toLocaleDateString() })}` : ""}</p>}
+          {(verify.data?.checks?.length ?? 0) > 0 && (
+            <ul data-testid="verify-checks" className="mt-2 space-y-1">
+              {verify.data!.checks.map((c) => <li key={c.check} data-testid="verify-check" data-check={c.check} data-status={c.status} className="text-xs">{t(`worker.check.${c.check}`, { defaultValue: c.check })} · {t(`worker.checkStatus.${c.status}`, { defaultValue: c.status })}</li>)}
+            </ul>
+          )}
+          {(w.status === "draft" || w.status === "needs_info") && (
             <Link to="/worker/register" data-testid="btn-continue-reg" className="mt-2 inline-block text-sm font-semibold text-primary">{t("worker.continue")}</Link>)}
+          {verify.data?.can_appeal && (
+            <form className="mt-3 space-y-2" onSubmit={async (e) => { e.preventDefault(); setAppealErr(null);
+              const { error } = await supabase.rpc("verification_appeal", { _note: appeal });
+              if (error) setAppealErr(error.message);
+              else { setAppeal(""); await qc.invalidateQueries({ queryKey: ["my-worker"] }); await qc.invalidateQueries({ queryKey: ["my-verification"] }); }
+            }}>
+              <textarea data-testid="appeal-note" value={appeal} onChange={(e) => setAppeal(e.target.value)} placeholder={t("worker.appealNote")} rows={2} className="w-full rounded-xl border bg-background p-2 text-sm" />
+              {appealErr && <p className="text-xs text-destructive">{appealErr}</p>}
+              <button data-testid="appeal-submit" type="submit" disabled={!appeal.trim()} className="rounded-xl bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground">{t("worker.appealSubmit")}</button>
+            </form>
+          )}
         </div>
       </div>
       {standing && <StandingBanners s={standing} />}

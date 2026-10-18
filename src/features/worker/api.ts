@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { uploadAvatar } from "@/features/profile/useProfile";
 import type { I18nName } from "@/features/taxonomy/useTaxonomy";
 
 export type ReqField = { key: string; label: I18nName; type: "text" | "select" | "year" | "date"; required: boolean; options?: string[]; pattern?: string; placeholder?: string; hint?: string };
@@ -58,6 +59,40 @@ export async function uploadDoc(userId: string, workerId: string, docType: strin
   if (up.error) throw up.error;
   await supabase.from("worker_documents").delete().eq("worker_id", workerId).eq("doc_type", docType);
   const { error } = await supabase.from("worker_documents").insert({ worker_id: workerId, doc_type: docType, path, mime: file.type, size_bytes: file.size });
+  if (error) throw error;
+}
+
+export type VerifyCheck = { check: string; status: string };
+export type VerifyView = {
+  worker_status: string; badge_tier: "licence" | "degree" | null; verified_at: string | null;
+  case_status: string | null; decision: string | null; sla_due_at: string | null; hard_fail: string | null;
+  checks: VerifyCheck[]; can_appeal: boolean;
+} | null;
+
+export function useMyVerification(enabled = true) {
+  const { user } = useAuth();
+  return useQuery({ queryKey: ["my-verification", user?.id], enabled: !!user && enabled, queryFn: async () => {
+    const { data, error } = await supabase.rpc("my_verification"); if (error) throw error; return data as unknown as VerifyView;
+  } });
+}
+
+/** QR payload and the raw selfie stay in the private kyc bucket. The public portrait is a separate consented photo. */
+export async function stageQr(userId: string, payload: string) {
+  const path = `${userId}/qr-${Date.now()}.txt`;
+  const up = await supabase.storage.from("kyc").upload(path, new Blob([payload], { type: "text/plain" }), { contentType: "text/plain", upsert: false });
+  if (up.error) throw up.error;
+  const { error } = await supabase.rpc("verification_stage_qr", { _path: path });
+  if (error) throw error;
+}
+
+export async function stageSelfie(userId: string, file: File, didChallenge: boolean) {
+  if (file.size > 5 * 1024 * 1024) throw new Error("too_big");
+  const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+  const rawPath = `${userId}/selfie-${Date.now()}.${ext}`;
+  const raw = await supabase.storage.from("kyc").upload(rawPath, file, { contentType: file.type || "image/jpeg", upsert: false });
+  if (raw.error) throw raw.error;
+  const portrait = await uploadAvatar(userId, file);
+  const { error } = await supabase.rpc("verification_stage_selfie", { _raw_path: rawPath, _public_url: portrait, _consent: true, _did_challenge: didChallenge });
   if (error) throw error;
 }
 
