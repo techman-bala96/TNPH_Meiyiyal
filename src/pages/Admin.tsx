@@ -12,6 +12,7 @@ import { Splash } from "@/components/app/Guards";
 import { useIsAdmin } from "@/features/worker/api";
 import { AuditLog, Moderation } from "@/features/admin/Moderation";
 import { RatesEditor } from "@/features/admin/Rates";
+import { Appeals, CaseMedia } from "@/features/admin/Appeals";
 import { PushAskCard } from "@/features/push/PushAskCard";
 
 type Check = { check: string; status: string; score?: number | null; reason?: string | null; provider?: string | null };
@@ -24,7 +25,7 @@ type Row = { id: string; display_name: string; primary_node: string; node_name: 
 
 export default function Admin() {
   const { t } = useTranslation(); const admin = useIsAdmin(); const qc = useQueryClient();
-  const [status, setStatus] = useState("pending"); const [tab, setTab] = useState<"queue" | "moderation" | "rates" | "audit" | "packs" | "payments" | "payouts">("queue");
+  const [status, setStatus] = useState("pending"); const [tab, setTab] = useState<"queue" | "moderation" | "rates" | "audit" | "packs" | "payments" | "payouts" | "appeals">("queue");
   const q = useQuery({ queryKey: ["admin-queue", status], enabled: admin.data === true, queryFn: async () => {
     const { data, error } = await supabase.rpc("admin_worker_queue", { _status: status }); if (error) throw error; return data as unknown as Row[];
   } });
@@ -35,9 +36,10 @@ export default function Admin() {
     <PageShell title={`${t("admin.title")} · ${t(`admin.heading.${tab}`)}`} testId="admin-page">
       <PushAskCard reason="admin" />
       <div className="grid grid-cols-4 gap-1 rounded-2xl bg-primary/10 p-1">
-        {(["queue", "moderation", "rates", "audit", "packs", "payments", "payouts"] as const).map((k) => (
+        {(["queue", "appeals", "moderation", "rates", "audit", "packs", "payments", "payouts"] as const).map((k) => (
           <button key={k} data-testid={`admin-tab-${k}`} onClick={() => setTab(k)} className={`rounded-xl py-2 text-xs font-semibold transition ${tab === k ? "bg-primary text-primary-foreground shadow" : "text-primary"}`}>{t(`admin.tab.${k}`)}</button>))}
       </div>
+      {tab === "appeals" && <Appeals />}
       {tab === "moderation" && <Moderation />}
       {tab === "rates" && <RatesEditor />}
       {tab === "audit" && <AuditLog />}
@@ -90,6 +92,7 @@ function AdminCard({ r, onDone }: { r: Row; onDone: () => void }) {
         </ul>
       )}
       <dl className="grid grid-cols-2 gap-x-3 gap-y-1 text-xs">{Object.entries(r.reg_data).map(([k, v]) => <div key={k} className="contents"><dt className="text-muted-foreground">{k}</dt><dd className="font-medium">{v}</dd></div>)}</dl>
+      {r.case_id && <CaseMedia caseId={r.case_id} />}
       <div className="flex flex-wrap gap-2">{r.docs.map((d) => <button key={d.type} onClick={() => open(d.path)} className="flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs">{d.type}<ExternalLink className="h-3 w-3" /></button>)}</div>
       {r.status !== "approved" && (<>
         <Textarea data-testid="admin-note" value={note} onChange={(e) => setNote(e.target.value)} placeholder={t("admin.note")} rows={2} className="rounded-xl text-sm" />

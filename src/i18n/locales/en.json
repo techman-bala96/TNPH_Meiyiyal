@@ -193,14 +193,18 @@
     "aadhaarNo": "Aadhaar number",
     "otpSentTo": "OTP sent to the mobile linked with {{masked}}",
     "stubHint": "Test mode: use OTP 123456",
-    "qrWhy": "Paste the text from your Aadhaar QR. We check the signature and keep only the last 4 digits. The QR itself is deleted 30 days after a decision.",
+    "qrWhy": "Scan the QR on your Aadhaar card or e-Aadhaar PDF. We check UIDAI's signature and keep only the last 4 digits. The QR is deleted 30 days after a decision.",
     "qrLabel": "Aadhaar QR text",
     "qrPlaceholder": "Paste the QR payload",
-    "selfieWhy": "Take a photo while you do the action below. The raw photo is private and deleted 30 days after a decision. A separate copy is your public profile photo only if you agree.",
+    "selfieWhy": "We'll ask you to do 3 quick actions in front of the camera. The raw frames are private and deleted 30 days after a decision. A separate photo is your public profile photo only if you agree.",
     "liveness": "Do this now: {{challenge}}",
     "livenessDid": "I did this action in the photo",
     "challenge": {
-      "blink": "blink",
+      "blink": "blink twice",
+      "turn_left": "turn your head left",
+      "turn_right": "turn your head right",
+      "smile": "smile",
+      "look_up": "look up",
       "turn-left": "turn your head left",
       "turn-right": "turn your head right"
     },
@@ -264,7 +268,26 @@
       "error": "could not check"
     },
     "appealNote": "Why should this be reviewed again?",
-    "appealSubmit": "Request a review"
+    "appealSubmit": "Request a review",
+    "qrMode": {
+      "camera": "Scan with camera",
+      "image": "Upload a photo",
+      "paste": "Paste text"
+    },
+    "qrScanning": "Point the camera at the large QR on your Aadhaar. Hold steady.",
+    "qrFound": "QR read. Check it below and continue.",
+    "qrNoCamera": "Camera not available. Upload a photo of the QR or paste its text.",
+    "qrImageFail": "Couldn't find a QR in that photo. Try a sharper, well-lit photo.",
+    "qrImagePick": "Choose a photo of the QR",
+    "liveStart": "Start camera check",
+    "liveStep": "Step {{n}} of {{total}}: {{challenge}}",
+    "liveHold": "Hold… {{s}}",
+    "liveDone": "Camera check done",
+    "liveRetry": "Try again",
+    "liveExpired": "That took too long. Start again.",
+    "liveNoCamera": "No camera found. You can upload a photo instead — a reviewer will check it by hand, which takes longer.",
+    "livePortrait": "This photo will be your profile picture",
+    "liveUseUpload": "Upload a photo instead"
   },
   "admin": {
     "title": "Admin",
@@ -275,7 +298,8 @@
       "audit": "Audit log",
       "packs": "Credit packs",
       "payments": "Payments",
-      "payouts": "Payouts"
+      "payouts": "Payouts",
+      "appeals": "Verification appeals"
     },
     "empty": "Nothing here",
     "note": "Note to worker (required for reject / more info)",
@@ -299,7 +323,8 @@
       "audit": "Audit",
       "packs": "Packs",
       "payments": "Payments",
-      "payouts": "Payouts"
+      "payouts": "Payouts",
+      "appeals": "Appeals"
     },
     "save": "Save",
     "saved": "Saved",
@@ -359,6 +384,26 @@
         "invalid_account": "invalid account",
         "beneficiary": "bank rejected the beneficiary"
       }
+    },
+    "appeals": {
+      "f": {
+        "open": "Open",
+        "upheld": "Upheld",
+        "overturned": "Overturned",
+        "all": "All"
+      },
+      "empty": "No appeals here.",
+      "rejection": "Rejection note",
+      "otherAdmin": "You rejected this case, so another admin must decide the appeal.",
+      "overturn": "Overturn & approve",
+      "uphold": "Uphold rejection"
+    },
+    "media": {
+      "open": "View selfie & liveness frames",
+      "purged": "Raw photos already deleted (30-day retention).",
+      "steps": "Actions",
+      "inWindow": "done in time",
+      "noWindow": "no timed check"
     }
   },
   "menu2": {

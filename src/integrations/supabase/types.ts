@@ -755,14 +755,14 @@ isOneToOne: false
                   ]
                 },"verification_cases": {
                   Row: {
-                    "created_at": string,"decided_at": string | null,"decided_by": string | null,"decision": string | null,"hard_fail": string | null,"id": string,"kind": string,"purge_after": string | null,"qr_path": string | null,"raw_selfie_path": string | null,"reason_codes": (string)[],"risk": number | null,"sla_due_at": string | null,"sla_paused_at": string | null,"status": string,"worker_id": string
+                    "created_at": string,"decided_at": string | null,"decided_by": string | null,"decision": string | null,"hard_fail": string | null,"id": string,"kind": string,"live_frames": Json | null,"live_steps": (string)[] | null,"live_window_ok": boolean | null,"purge_after": string | null,"qr_path": string | null,"raw_selfie_path": string | null,"reason_codes": (string)[],"risk": number | null,"sla_due_at": string | null,"sla_paused_at": string | null,"status": string,"worker_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"decision"?: string | null,"hard_fail"?: string | null,"id"?: string,"kind"?: string,"purge_after"?: string | null,"qr_path"?: string | null,"raw_selfie_path"?: string | null,"reason_codes"?: (string)[],"risk"?: number | null,"sla_due_at"?: string | null,"sla_paused_at"?: string | null,"status"?: string,"worker_id": string
+                    "created_at"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"decision"?: string | null,"hard_fail"?: string | null,"id"?: string,"kind"?: string,"live_frames"?: Json | null,"live_steps"?: (string)[] | null,"live_window_ok"?: boolean | null,"purge_after"?: string | null,"qr_path"?: string | null,"raw_selfie_path"?: string | null,"reason_codes"?: (string)[],"risk"?: number | null,"sla_due_at"?: string | null,"sla_paused_at"?: string | null,"status"?: string,"worker_id": string
                   }
                   Update: {
-                    "created_at"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"decision"?: string | null,"hard_fail"?: string | null,"id"?: string,"kind"?: string,"purge_after"?: string | null,"qr_path"?: string | null,"raw_selfie_path"?: string | null,"reason_codes"?: (string)[],"risk"?: number | null,"sla_due_at"?: string | null,"sla_paused_at"?: string | null,"status"?: string,"worker_id"?: string
+                    "created_at"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"decision"?: string | null,"hard_fail"?: string | null,"id"?: string,"kind"?: string,"live_frames"?: Json | null,"live_steps"?: (string)[] | null,"live_window_ok"?: boolean | null,"purge_after"?: string | null,"qr_path"?: string | null,"raw_selfie_path"?: string | null,"reason_codes"?: (string)[],"risk"?: number | null,"sla_due_at"?: string | null,"sla_paused_at"?: string | null,"status"?: string,"worker_id"?: string
                   }
                   Relationships: [
                     {
@@ -795,14 +795,14 @@ isOneToOne: false
                   ]
                 },"verification_intake": {
                   Row: {
-                    "liveness_challenge": string | null,"liveness_ok": boolean | null,"public_portrait_url": string | null,"qr_path": string | null,"raw_selfie_path": string | null,"selfie_consent_at": string | null,"updated_at": string,"worker_id": string
+                    "liveness_challenge": string | null,"liveness_done_at": string | null,"liveness_frames": Json | null,"liveness_issued_at": string | null,"liveness_nonce": string | null,"liveness_ok": boolean | null,"liveness_steps": (string)[] | null,"public_portrait_url": string | null,"qr_path": string | null,"raw_selfie_path": string | null,"selfie_consent_at": string | null,"updated_at": string,"worker_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "liveness_challenge"?: string | null,"liveness_ok"?: boolean | null,"public_portrait_url"?: string | null,"qr_path"?: string | null,"raw_selfie_path"?: string | null,"selfie_consent_at"?: string | null,"updated_at"?: string,"worker_id": string
+                    "liveness_challenge"?: string | null,"liveness_done_at"?: string | null,"liveness_frames"?: Json | null,"liveness_issued_at"?: string | null,"liveness_nonce"?: string | null,"liveness_ok"?: boolean | null,"liveness_steps"?: (string)[] | null,"public_portrait_url"?: string | null,"qr_path"?: string | null,"raw_selfie_path"?: string | null,"selfie_consent_at"?: string | null,"updated_at"?: string,"worker_id": string
                   }
                   Update: {
-                    "liveness_challenge"?: string | null,"liveness_ok"?: boolean | null,"public_portrait_url"?: string | null,"qr_path"?: string | null,"raw_selfie_path"?: string | null,"selfie_consent_at"?: string | null,"updated_at"?: string,"worker_id"?: string
+                    "liveness_challenge"?: string | null,"liveness_done_at"?: string | null,"liveness_frames"?: Json | null,"liveness_issued_at"?: string | null,"liveness_nonce"?: string | null,"liveness_ok"?: boolean | null,"liveness_steps"?: (string)[] | null,"public_portrait_url"?: string | null,"qr_path"?: string | null,"raw_selfie_path"?: string | null,"selfie_consent_at"?: string | null,"updated_at"?: string,"worker_id"?: string
                   }
                   Relationships: [
                     {
@@ -1260,10 +1260,18 @@ isOneToOne: false
                            } |
 { Args: { "column_name": string,"new_dim": number,"new_srid": number,"new_type": string,"table_name": string,"use_typmod"?: boolean }; Returns: string
                            },
+"admin_appeals":
+{ Args: { "_status"?: string }; Returns: {
+              "appeal_id": string,"case_id": string,"checks": Json,"created_at": string,"decided_at": string,"display_name": string,"note": string,"primary_node": string,"reason_codes": (string)[],"rejected_by": string,"rejected_by_me": boolean,"rejection_note": string,"sla_due_at": string,"status": string,"worker_id": string
+            }[]
+                           },
 "admin_audit_log":
 { Args: { "_limit"?: number }; Returns: {
               "action": string,"actor_name": string,"created_at": string,"data": Json,"id": number,"note": string,"target": string,"target_name": string
             }[]
+                           },
+"admin_case_media":
+{ Args: { "_case": string }; Returns: Json
                            },
 "admin_decide_appeal":
 { Args: { "_case": string,"_decision": string,"_note": string }; Returns: string
@@ -1473,6 +1481,18 @@ isOneToOne: false
                            },
 "is_session_party":
 { Args: { "_sid": string }; Returns: boolean
+                           },
+"kyc_edge_can_send":
+{ Args: { "_user": string }; Returns: boolean
+                           },
+"kyc_edge_confirm":
+{ Args: { "_legal_name": string,"_ok": boolean,"_user": string }; Returns: Json
+                           },
+"kyc_edge_session":
+{ Args: { "_user": string }; Returns: Json
+                           },
+"kyc_edge_start":
+{ Args: { "_aadhaar": string,"_provider": string,"_ref": string,"_user": string }; Returns: Json
                            },
 "kyc_mode":
 { Args: Record<PropertyKey, never>; Returns: string
@@ -2388,23 +2408,46 @@ isOneToOne: false
 "verification_decide":
 { Args: { "_case": string }; Returns: string
                            },
+"verification_dispatch":
+{ Args: Record<PropertyKey, never>; Returns: number
+                           },
 "verification_enqueue_recheck":
 { Args: { "_why": string,"_worker": string }; Returns: string
+                           },
+"verification_job_finish":
+{ Args: { "_error": string,"_job": string,"_ok": boolean }; Returns: string
+                           },
+"verification_kick":
+{ Args: { "_path"?: string }; Returns: undefined
                            },
 "verification_liveness_challenge":
 { Args: Record<PropertyKey, never>; Returns: string
                            },
+"verification_liveness_start":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "verification_observe_fingerprint":
 { Args: { "_hash": string,"_kind": string,"_worker": string }; Returns: string
                            },
+"verification_purge_due":
+{ Args: { "_limit"?: number }; Returns: {
+              "case_id": string,"paths": (string)[]
+            }[]
+                           },
 "verification_purge_expired":
 { Args: Record<PropertyKey, never>; Returns: number
+                           },
+"verification_purge_mark":
+{ Args: { "_case": string }; Returns: undefined
                            },
 "verification_rules_for":
 { Args: { "_slug": string }; Returns: Json
                            },
 "verification_scan_rechecks":
 { Args: Record<PropertyKey, never>; Returns: number
+                           },
+"verification_stage_liveness":
+{ Args: { "_frames": Json,"_nonce": string }; Returns: string
                            },
 "verification_stage_qr":
 { Args: { "_path": string }; Returns: string

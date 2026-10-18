@@ -48,7 +48,8 @@ export async function setProfile(page: Page, name: string, photo: string) {
 }
 
 /** Full real registration wizard. `shot` optional for screenshots. */
-export async function registerWorker(page: Page, w: WorkerSpec, shot?: (n: string) => Promise<unknown>) {
+export type RegOpts = { qrImage?: string; uploadSelfie?: boolean };
+export async function registerWorker(page: Page, w: WorkerSpec, shot?: (n: string) => Promise<unknown>, opts: RegOpts = {}) {
   await page.goto("/?tab=worker");
   await page.getByTestId("btn-register-worker").click();
   await page.getByTestId(`reg-cat-${w.cat}`).click();
@@ -81,17 +82,33 @@ export async function registerWorker(page: Page, w: WorkerSpec, shot?: (n: strin
   await shot?.("03-aadhaar");
   await page.getByTestId("reg-verify-otp").click();
   // Aadhaar QR (stored as text in the private kyc bucket; not required by the SQL submit RPC)
-  await expect(page.getByTestId("reg-qr")).toBeVisible();
-  await page.getByTestId("reg-qr").fill("MYQR1.review-only-test-payload");
+  await expect(page.getByTestId("reg-qr-mode-camera")).toBeVisible();
+  if (opts.qrImage) {
+    // photo of the QR → decoded in the browser (jsQR / BarcodeDetector) → shown for review
+    await page.getByTestId("reg-qr-mode-image").click();
+    await page.getByTestId("reg-qr-image").setInputFiles(opts.qrImage);
+    await expect(page.getByTestId("reg-qr")).toHaveValue(/^MYQR1\./);
+  } else {
+    await page.getByTestId("reg-qr-mode-paste").click();
+    await expect(page.getByTestId("reg-qr")).toBeVisible();
+    await page.getByTestId("reg-qr").fill("MYQR1.review-only-test-payload");
+  }
   await shot?.("03b-qr");
   const qrUp = page.waitForResponse((r) => r.url().includes("/storage/v1/object/kyc/") && r.request().method() === "POST");
   await page.getByTestId("reg-qr-save").click();
   expect((await qrUp).ok()).toBeTruthy();
   // Selfie: raw file is private; a consented portrait is the public profile photo.
-  await expect(page.getByTestId("reg-liveness")).toBeVisible();
-  await page.getByTestId("reg-liveness-done").check();
+  // Active liveness on Chrome's fake camera: 3 server-chosen actions, frames to the private kyc bucket.
+  if (opts.uploadSelfie) {
+    await page.getByTestId("reg-live-upload-instead").click();
+    await expect(page.getByTestId("reg-no-camera")).toBeVisible();
+    await page.getByTestId("reg-selfie-file").setInputFiles(IMG("certificate"));
+  } else {
+    await page.getByTestId("reg-live-start").click();
+    await expect(page.getByTestId("reg-live")).toHaveAttribute("data-phase", "running");
+    await expect(page.getByTestId("reg-live")).toHaveAttribute("data-phase", "done", { timeout: 30_000 });
+  }
   await page.getByTestId("reg-selfie-consent").check();
-  await page.getByTestId("reg-selfie-file").setInputFiles(IMG("certificate"));
   await shot?.("03c-selfie");
   const rawUp = page.waitForResponse((r) => r.url().includes("/storage/v1/object/kyc/") && r.request().method() === "POST");
   const portraitUp = page.waitForResponse((r) => r.url().includes("/storage/v1/object/avatars/") && r.request().method() === "POST");

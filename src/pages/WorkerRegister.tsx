@@ -14,6 +14,8 @@ import { childrenOf, nodeName, pathTo, useTaxonomy } from "@/features/taxonomy/u
 import { iconFor } from "@/features/taxonomy/icons";
 import { THEMES, patternStyle } from "@/features/taxonomy/themes";
 import { useProfile } from "@/features/profile/useProfile";
+import { LivenessCapture } from "@/features/verify/LivenessCapture";
+import { QrScanner } from "@/features/verify/QrScanner";
 import { aadhaarProvider, stageQr, stageSelfie, uploadDoc, useKycMode, useMyDocs, useMyKyc, useMyWorker, useRequirements, type ReqField } from "@/features/worker/api";
 
 const STEPS = ["profession", "details", "aadhaar", "qr", "selfie", "documents", "review"] as const;
@@ -36,7 +38,7 @@ export default function WorkerRegister() {
   const [errs, setErrs] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState<string | null>(null); const [err, setErr] = useState<string | null>(null);
   const [aadhaar, setAadhaar] = useState(""); const [otpSent, setOtpSent] = useState<string | null>(null); const [otp, setOtp] = useState("");
-  const [qr, setQr] = useState(""); const [challenge, setChallenge] = useState(""); const [didChallenge, setDidChallenge] = useState(false);
+  const [qr, setQr] = useState(""); const [liveDone, setLiveDone] = useState(false); const [noCamera, setNoCamera] = useState(false);
   const [selfie, setSelfie] = useState<File | null>(null); const [consent, setConsent] = useState(false);
   const req = useRequirements(node);
 
@@ -111,19 +113,15 @@ export default function WorkerRegister() {
     nav("/?tab=worker", { replace: true });
   }
   const missingDocs = (req.data?.docs ?? []).filter((d) => d.required && !uploaded.has(d.type));
-  useEffect(() => {
-    if (step !== "selfie" || challenge) return;
-    supabase.rpc("verification_liveness_challenge").then(({ data, error }) => { if (!error && data) setChallenge(String(data)); });
-  }, [step, challenge]);
   async function saveQr() {
     if (!user || qr.trim().length < 8) return setErr(t("worker.err.qr"));
     setBusy("qr"); setErr(null);
     try { await stageQr(user.id, qr.trim()); setStep("selfie"); } catch (e) { setErr((e as Error).message); } finally { setBusy(null); }
   }
   async function saveSelfie() {
-    if (!user || !selfie || !consent || !didChallenge) return;
+    if (!user || !selfie || !consent || !(liveDone || noCamera)) return;
     setBusy("selfie"); setErr(null);
-    try { await stageSelfie(user.id, selfie, true); setStep("documents"); }
+    try { await stageSelfie(user.id, selfie, liveDone); setStep("documents"); }
     catch (e) { setErr((e as Error).message === "too_big" ? t("worker.err.tooBig") : (e as Error).message || t("worker.err.upload")); }
     finally { setBusy(null); }
   }
@@ -231,9 +229,7 @@ export default function WorkerRegister() {
       {step === "qr" && (
         <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2">
           <div className="card-soft flex gap-3 p-4"><QrCode className="h-6 w-6 shrink-0 text-primary" /><p className="text-sm text-muted-foreground">{t("worker.qrWhy")}</p></div>
-          <Field id="qr" label={t("worker.qrLabel")}>
-            <Textarea id="qr" data-testid="reg-qr" value={qr} onChange={(e) => setQr(e.target.value)} rows={4} className="rounded-xl font-mono text-xs" placeholder={t("worker.qrPlaceholder")} />
-          </Field>
+          <QrScanner value={qr} onChange={setQr} />
           {err && <p data-testid="reg-error" className="text-sm text-destructive">{err}</p>}
           <Button data-testid="reg-qr-save" className="tap w-full rounded-xl" disabled={busy === "qr" || qr.trim().length < 8} onClick={saveQr}>
             {busy === "qr" && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{t("worker.next")}</Button>
@@ -243,15 +239,17 @@ export default function WorkerRegister() {
       {step === "selfie" && (
         <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2">
           <div className="card-soft flex gap-3 p-4"><Camera className="h-6 w-6 shrink-0 text-primary" /><p className="text-sm text-muted-foreground">{t("worker.selfieWhy")}</p></div>
-          <p data-testid="reg-liveness" className="rounded-xl bg-primary/10 p-3 text-sm font-semibold text-primary">{t("worker.liveness", { challenge: t(`worker.challenge.${challenge || "blink"}`) })}</p>
-          <label className="flex items-start gap-2 text-sm"><input data-testid="reg-liveness-done" type="checkbox" checked={didChallenge} onChange={(e) => setDidChallenge(e.target.checked)} className="mt-1" />{t("worker.livenessDid")}</label>
-          <label className="card-soft flex cursor-pointer items-center justify-between p-3 text-sm">
-            <span>{selfie ? selfie.name : t("worker.selfieFile")}</span>
-            <input data-testid="reg-selfie-file" type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={(e) => setSelfie(e.target.files?.[0] ?? null)} />
-          </label>
+          {user && !noCamera && <LivenessCapture userId={user.id} onDone={(r) => { setSelfie(r.portrait); setLiveDone(true); }} onNoCamera={() => { setNoCamera(true); setLiveDone(false); }} />}
+          {noCamera && (<>
+            <p data-testid="reg-no-camera" className="rounded-xl bg-muted p-3 text-sm text-muted-foreground">{t("worker.liveNoCamera")}</p>
+            <label className="card-soft flex cursor-pointer items-center justify-between p-3 text-sm">
+              <span>{selfie ? selfie.name : t("worker.selfieFile")}</span>
+              <input data-testid="reg-selfie-file" type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={(e) => setSelfie(e.target.files?.[0] ?? null)} />
+            </label>
+          </>)}
           <label className="flex items-start gap-2 text-sm"><input data-testid="reg-selfie-consent" type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-1" />{t("worker.selfieConsent")}</label>
           {err && <p data-testid="reg-error" className="text-sm text-destructive">{err}</p>}
-          <Button data-testid="reg-selfie-next" className="tap w-full rounded-xl" disabled={!selfie || !consent || !didChallenge || busy === "selfie"} onClick={saveSelfie}>
+          <Button data-testid="reg-selfie-next" className="tap w-full rounded-xl" disabled={!selfie || !consent || !(liveDone || noCamera) || busy === "selfie"} onClick={saveSelfie}>
             {busy === "selfie" && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{t("worker.next")}</Button>
         </div>
       )}

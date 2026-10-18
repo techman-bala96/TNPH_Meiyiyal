@@ -456,3 +456,6 @@ verify_jwt = false
 # M9 push: callers are checked in code (service role, pg_net hook secret, or a signed-in user).
 [functions.push-send]
 verify_jwt = false
+# M11 Aadhaar OTP (kyc_provider = 'edge'): the function checks the user's JWT itself.
+[functions.kyc-aadhaar]
+verify_jwt = false
