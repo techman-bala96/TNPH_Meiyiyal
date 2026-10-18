@@ -35,7 +35,7 @@ export function DistrictsView() {
   return (
     <div className="space-y-3" data-testid="districts-view">
       <p className="text-xs text-muted-foreground">{t("districts.hint")}</p>
-      <div className="grid gap-2 md:grid-cols-2">
+      <div className="grid gap-2 xl:grid-cols-2">
         <div role="radiogroup" aria-label={t("districts.profession")} className="flex flex-wrap gap-1 rounded-2xl bg-muted p-1">
           {PROFS.map((p) => <button key={p} role="radio" aria-checked={prof === p} data-testid={`districts-prof-${p}`} onClick={() => setProf(p)} className={chip(prof === p)}>{t(`districts.p.${p}`)}</button>)}</div>
         <div role="radiogroup" aria-label={t("districts.status")} className="flex flex-wrap gap-1 rounded-2xl bg-muted p-1">
