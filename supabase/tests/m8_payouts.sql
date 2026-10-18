@@ -1,4 +1,6 @@
 BEGIN;
+-- Account numbers here (7310…, 8310…) are used only by this file, so accounts left by e2e runs
+-- (5010… in e2e/payouts.spec.ts) can never be flagged as duplicates of these; the duplicate rule itself is unchanged.
 INSERT INTO auth.users(id, email, aud, role) VALUES
  ('00000000-0000-0000-0000-00000000a801','p8a@test.local','authenticated','authenticated'),
  ('00000000-0000-0000-0000-00000000a802','p8b@test.local','authenticated','authenticated'),
@@ -42,7 +44,7 @@ DO $$ BEGIN
   EXCEPTION WHEN insufficient_privilege THEN NULL; END;
   BEGIN PERFORM public.payout_apply_event('evt','payout.processed','x',NULL,'UTR','', '{}'); RAISE EXCEPTION 'FAIL: worker webhook';
   EXCEPTION WHEN insufficient_privilege THEN NULL; END;
-  BEGIN PERFORM public.payout_account_submit('bank','5010012345678','HDFC0001234','000000',NULL); RAISE EXCEPTION 'FAIL: bad otp';
+  BEGIN PERFORM public.payout_account_submit('bank','7310012345678','HDFC0001234','000000',NULL); RAISE EXCEPTION 'FAIL: bad otp';
   EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'FAIL%' THEN RAISE; END IF; END;
   RAISE NOTICE 'PASS: worker cannot set the Aadhaar name, write an account, or forge a payout event; wrong step-up code is refused';
 END $$;
@@ -60,20 +62,20 @@ END $$;
 SET LOCAL role authenticated;
 SELECT pg_temp.as_('00000000-0000-0000-0000-00000000a801');
 DO $$ DECLARE r jsonb; a public.worker_payout_accounts; BEGIN
-  r := public.payout_account_submit('bank','5010011110001','HDFC0001234','123456',NULL);
+  r := public.payout_account_submit('bank','7310011110001','HDFC0001234','123456',NULL);
   IF r->>'status' <> 'failed' OR r->>'reason' <> 'invalid_account' THEN RAISE EXCEPTION 'FAIL: invalid %', r; END IF;
-  r := public.payout_account_submit('bank','5010011110000','HDFC0001234','123456',NULL);
+  r := public.payout_account_submit('bank','7310011110000','HDFC0001234','123456',NULL);
   IF r->>'status' <> 'rejected' OR r->>'reason' <> 'name_mismatch' OR r->>'registered_name' <> 'Other Person' THEN RAISE EXCEPTION 'FAIL: mismatch %', r; END IF;
   IF (SELECT count(*) FROM public.payout_requests WHERE worker_user_id=auth.uid()) <> 0 THEN RAISE EXCEPTION 'FAIL: mismatch created a payout'; END IF;
   IF public.my_earnings()->>'wait_reason' <> 'account_rejected' OR public.my_earnings()->>'next_batch' IS NOT NULL THEN RAISE EXCEPTION 'FAIL: rejected date %', public.my_earnings(); END IF;
   r := public.payout_account_submit('upi','kavitha@okaxis',NULL,'123456','ABCDE1234F');
   IF r->>'status' <> 'verified' OR r->>'mask' <> 'ka••••@okaxis' THEN RAISE EXCEPTION 'FAIL: upi %', r; END IF;
-  r := public.payout_account_submit('bank','5010012345678','HDFC0001234','123456',NULL);
+  r := public.payout_account_submit('bank','7310012345678','HDFC0001234','123456',NULL);
   IF r->>'status' <> 'verified' OR r->>'mask' <> '••••5678' OR r->>'registered_name' <> 'Kavitha Raman' THEN RAISE EXCEPTION 'FAIL: penny %', r; END IF;
   IF (r->>'cooling_until')::timestamptz NOT BETWEEN now() + interval '71 hours' AND now() + interval '73 hours' THEN RAISE EXCEPTION 'FAIL: cooling %', r->>'cooling_until'; END IF;
   SELECT * INTO a FROM public.worker_payout_accounts WHERE worker_user_id=auth.uid();
   IF a.account_hash IS NULL OR length(a.account_hash) <> 64 OR a.fund_account_id NOT LIKE 'fa_mock_%' THEN RAISE EXCEPTION 'FAIL: hash'; END IF;
-  IF row_to_json(a)::text LIKE '%5010012345678%' THEN RAISE EXCEPTION 'FAIL: full account stored'; END IF;
+  IF row_to_json(a)::text LIKE '%7310012345678%' THEN RAISE EXCEPTION 'FAIL: full account stored'; END IF;
   IF (SELECT pan_number FROM public.kyc_verification WHERE worker_id='00000000-0000-0000-0000-00000000b801') <> 'ABCDE1234F'
      OR (SELECT pan_verified FROM public.kyc_verification WHERE worker_id='00000000-0000-0000-0000-00000000b801') THEN RAISE EXCEPTION 'FAIL: pan'; END IF;
   IF public.my_earnings()->>'wait_reason' <> 'cooling' OR public.my_earnings()->>'next_batch' IS NULL
@@ -125,7 +127,7 @@ END $$;
 SET LOCAL role authenticated;
 SELECT pg_temp.as_('00000000-0000-0000-0000-00000000a802');
 DO $$ DECLARE r jsonb; BEGIN
-  r := public.payout_account_submit('bank','5010012345678','HDFC0001234','123456',NULL);
+  r := public.payout_account_submit('bank','7310012345678','HDFC0001234','123456',NULL);
   IF r->>'status' <> 'review' OR r->>'reason' <> 'duplicate' OR NOT (r->>'duplicate')::boolean THEN RAISE EXCEPTION 'FAIL: duplicate %', r; END IF;
   RAISE NOTICE 'PASS: a second worker with the same account waits for review';
 END $$;
@@ -135,7 +137,7 @@ UPDATE public.kyc_verification SET legal_name = NULL WHERE worker_id = '00000000
 SET LOCAL role authenticated;
 SELECT pg_temp.as_('00000000-0000-0000-0000-00000000a802');
 DO $$ DECLARE r jsonb; BEGIN
-  r := public.payout_account_submit('bank','6010012345678','HDFC0001234','123456',NULL);
+  r := public.payout_account_submit('bank','8310012345678','HDFC0001234','123456',NULL);
   IF r->>'status' <> 'review' OR r->>'reason' <> 'no_legal_name' THEN RAISE EXCEPTION 'FAIL: no legal %', r; END IF;
   RAISE NOTICE 'PASS: a penny-drop with no Aadhaar name waits for review';
 END $$;
@@ -212,7 +214,7 @@ END $$;
 SET LOCAL role authenticated;
 SELECT pg_temp.as_('00000000-0000-0000-0000-00000000a801');
 DO $$ DECLARE r jsonb; BEGIN
-  r := public.payout_account_submit('bank','5010012340002','HDFC0001234','123456',NULL);
+  r := public.payout_account_submit('bank','7310012340002','HDFC0001234','123456',NULL);
   IF r->>'status' <> 'verified' THEN RAISE EXCEPTION 'FAIL: 0002 validate %', r; END IF;
 END $$;
 SELECT pg_temp.as_('00000000-0000-0000-0000-00000000a803');
@@ -233,7 +235,7 @@ RESET role;
 SET LOCAL role authenticated;
 SELECT pg_temp.as_('00000000-0000-0000-0000-00000000a801');
 DO $$ DECLARE r jsonb; BEGIN
-  r := public.payout_account_submit('bank','5010099988877','HDFC0001234','123456',NULL);
+  r := public.payout_account_submit('bank','7310099988877','HDFC0001234','123456',NULL);
   IF r->>'status' <> 'verified' THEN RAISE EXCEPTION 'FAIL: restore %', r; END IF;
 END $$;
 RESET role;

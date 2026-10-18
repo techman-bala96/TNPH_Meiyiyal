@@ -102,7 +102,7 @@ DO $$ DECLARE _r uuid; _r2 uuid; _s uuid; _n public.notifications; BEGIN
   INSERT INTO public.consult_requests(user_id, worker_id, worker_user_id, node_slug, mode, rate, min_minutes, user_name, expires_at)
   VALUES ('00000000-0000-0000-0000-00000000a901', '00000000-0000-0000-0000-00000000b902', '00000000-0000-0000-0000-00000000a902', 'professionals--doctor--allopathy', 'voice', 10, 5, 'Meena', now() + interval '45 seconds') RETURNING id INTO _r2;
   UPDATE public.consult_requests SET status = 'cancelled' WHERE id = _r2;
-  IF NOT EXISTS (SELECT 1 FROM public.notifications WHERE kind = 'request.missed' AND tag = 'req-' || _r2) THEN RAISE EXCEPTION 'FAIL: W2 on cancel'; END IF;
+  IF NOT EXISTS (SELECT 1 FROM public.notifications WHERE user_id::text LIKE '00000000-0000-0000-0000-00000000a9%' AND kind = 'request.missed' AND tag = 'req-' || _r2) THEN RAISE EXCEPTION 'FAIL: W2 on cancel'; END IF;
   -- accepted
   INSERT INTO public.consult_requests(user_id, worker_id, worker_user_id, node_slug, mode, rate, min_minutes, user_name, expires_at)
   VALUES ('00000000-0000-0000-0000-00000000a901', '00000000-0000-0000-0000-00000000b902', '00000000-0000-0000-0000-00000000a902', 'professionals--doctor--allopathy', 'chat', 10, 5, 'Meena', now() + interval '45 seconds') RETURNING id INTO _r2;
@@ -135,7 +135,7 @@ END $$;
 DO $$ DECLARE _o uuid; _a uuid; _p uuid; BEGIN
   INSERT INTO public.payment_orders(user_id, pack_id, amount_paise, credits, bonus, provider) VALUES ('00000000-0000-0000-0000-00000000a901', (SELECT id FROM public.credit_packs LIMIT 1), 49900, 500, 25, 'mock') RETURNING id INTO _o;
   UPDATE public.payment_orders SET status = 'paid' WHERE id = _o;
-  IF NOT EXISTS (SELECT 1 FROM public.notifications WHERE kind = 'payment.paid' AND (params->>'amount')::numeric = 499 AND (params->>'credits')::numeric = 525) THEN RAISE EXCEPTION 'FAIL: U5'; END IF;
+  IF NOT EXISTS (SELECT 1 FROM public.notifications WHERE user_id::text LIKE '00000000-0000-0000-0000-00000000a9%' AND kind = 'payment.paid' AND (params->>'amount')::numeric = 499 AND (params->>'credits')::numeric = 525) THEN RAISE EXCEPTION 'FAIL: U5'; END IF;
   UPDATE public.payment_orders SET status = 'refunded' WHERE id = _o;
   IF pg_temp.n('00000000-0000-0000-0000-00000000a901', 'payment.refunded') <> 1 THEN RAISE EXCEPTION 'FAIL: U7'; END IF;
   INSERT INTO public.payment_orders(user_id, pack_id, amount_paise, credits, provider) VALUES ('00000000-0000-0000-0000-00000000a901', (SELECT id FROM public.credit_packs LIMIT 1), 9900, 99, 'mock') RETURNING id INTO _o;
@@ -151,14 +151,14 @@ DO $$ DECLARE _o uuid; _a uuid; _p uuid; BEGIN
   INSERT INTO public.payout_requests(worker_user_id, amount, status, account_id) VALUES ('00000000-0000-0000-0000-00000000a902', 12000, 'review', _a) RETURNING id INTO _p;
   IF pg_temp.n('00000000-0000-0000-0000-00000000a902', 'payout.review') <> 1 OR pg_temp.n('00000000-0000-0000-0000-00000000a903', 'admin.payout_review') <> 1 THEN RAISE EXCEPTION 'FAIL: W8 / A1 payout review'; END IF;
   UPDATE public.payout_requests SET status = 'paid' WHERE id = _p;
-  IF NOT EXISTS (SELECT 1 FROM public.notifications WHERE kind = 'payout.paid' AND params->>'last4' = '4321' AND params->>'kind' = 'upi') THEN RAISE EXCEPTION 'FAIL: W6'; END IF;
+  IF NOT EXISTS (SELECT 1 FROM public.notifications WHERE user_id::text LIKE '00000000-0000-0000-0000-00000000a9%' AND kind = 'payout.paid' AND params->>'last4' = '4321' AND params->>'kind' = 'upi') THEN RAISE EXCEPTION 'FAIL: W6'; END IF;
   INSERT INTO public.payout_requests(worker_user_id, amount, status, account_id) VALUES ('00000000-0000-0000-0000-00000000a902', 300, 'processing', _a) RETURNING id INTO _p;
   -- Money switched off: payout failed still comes (safety notice)
   UPDATE public.profiles SET prefs = '{"notify":{"money":false,"quiet":{"on":false}}}' WHERE user_id = '00000000-0000-0000-0000-00000000a902';
   UPDATE public.payout_requests SET status = 'failed' WHERE id = _p;
-  IF (SELECT push_status FROM public.notifications WHERE kind = 'payout.failed') <> 'pending' THEN RAISE EXCEPTION 'FAIL: W7 must ignore the switch'; END IF;
+  IF (SELECT push_status FROM public.notifications WHERE user_id::text LIKE '00000000-0000-0000-0000-00000000a9%' AND kind = 'payout.failed') <> 'pending' THEN RAISE EXCEPTION 'FAIL: W7 must ignore the switch'; END IF;
   UPDATE public.workers SET payout_hold = true WHERE id = '00000000-0000-0000-0000-00000000b902';
-  IF (SELECT push_status FROM public.notifications WHERE kind = 'payout.hold') <> 'skipped_pref' THEN RAISE EXCEPTION 'FAIL: money switch ignored'; END IF;
+  IF (SELECT push_status FROM public.notifications WHERE user_id::text LIKE '00000000-0000-0000-0000-00000000a9%' AND kind = 'payout.hold') <> 'skipped_pref' THEN RAISE EXCEPTION 'FAIL: money switch ignored'; END IF;
   UPDATE public.workers SET payout_hold = false WHERE id = '00000000-0000-0000-0000-00000000b902';
   IF pg_temp.n('00000000-0000-0000-0000-00000000a902', 'payout.resumed') <> 1 THEN RAISE EXCEPTION 'FAIL: resumed'; END IF;
   UPDATE public.profiles SET prefs = '{"notify":{"quiet":{"on":false}}}' WHERE user_id = '00000000-0000-0000-0000-00000000a902';
@@ -175,18 +175,18 @@ DO $$ DECLARE _c uuid; _s uuid; BEGIN
   IF pg_temp.n('00000000-0000-0000-0000-00000000a902', 'verify.needs_info') <> 1 OR pg_temp.n('00000000-0000-0000-0000-00000000a902', 'verify.rejected') <> 1
      OR pg_temp.n('00000000-0000-0000-0000-00000000a902', 'verify.approved') <> 1 THEN RAISE EXCEPTION 'FAIL: W10'; END IF;
   UPDATE public.workers SET blocked_until = now() + interval '7 days' WHERE id = '00000000-0000-0000-0000-00000000b902';
-  IF NOT EXISTS (SELECT 1 FROM public.notifications WHERE kind = 'account.blocked' AND params ? 'until' AND always) THEN RAISE EXCEPTION 'FAIL: W11 blocked'; END IF;
+  IF NOT EXISTS (SELECT 1 FROM public.notifications WHERE user_id::text LIKE '00000000-0000-0000-0000-00000000a9%' AND kind = 'account.blocked' AND params ? 'until' AND always) THEN RAISE EXCEPTION 'FAIL: W11 blocked'; END IF;
   UPDATE public.workers SET blocked_until = NULL WHERE id = '00000000-0000-0000-0000-00000000b902';
   IF pg_temp.n('00000000-0000-0000-0000-00000000a902', 'account.unblocked') <> 1 THEN RAISE EXCEPTION 'FAIL: W11 lifted'; END IF;
   INSERT INTO public.verification_cases(worker_id, status) VALUES ('00000000-0000-0000-0000-00000000b902', 'queued') RETURNING id INTO _c;
   UPDATE public.verification_cases SET status = 'running' WHERE id = _c;
   UPDATE public.verification_cases SET status = 'queued' WHERE id = _c;
-  IF pg_temp.n('00000000-0000-0000-0000-00000000a903', 'admin.verify_queue') <> 1 OR (SELECT count FROM public.notifications WHERE kind = 'admin.verify_queue') <> 2 THEN RAISE EXCEPTION 'FAIL: A2 batched'; END IF;
+  IF pg_temp.n('00000000-0000-0000-0000-00000000a903', 'admin.verify_queue') <> 1 OR (SELECT count FROM public.notifications WHERE user_id::text LIKE '00000000-0000-0000-0000-00000000a9%' AND kind = 'admin.verify_queue') <> 2 THEN RAISE EXCEPTION 'FAIL: A2 batched'; END IF;
   INSERT INTO public.verification_appeals(case_id, worker_id, note, sla_due_at) VALUES (_c, '00000000-0000-0000-0000-00000000b902', 'please re-check', now() + interval '2 days');
   UPDATE public.verification_appeals SET status = 'upheld' WHERE case_id = _c;
   IF pg_temp.n('00000000-0000-0000-0000-00000000a902', 'appeal.upheld') <> 1 THEN RAISE EXCEPTION 'FAIL: appeal upheld'; END IF;
   INSERT INTO public.worker_rewards(worker_id, milestone) SELECT '00000000-0000-0000-0000-00000000b902', m.slug FROM public.reward_milestones m ORDER BY m.sort DESC LIMIT 1 ON CONFLICT DO NOTHING;
-  IF NOT EXISTS (SELECT 1 FROM public.notifications WHERE kind = 'reward.earned' AND params->'title' ? 'en') THEN RAISE EXCEPTION 'FAIL: W12'; END IF;
+  IF NOT EXISTS (SELECT 1 FROM public.notifications WHERE user_id::text LIKE '00000000-0000-0000-0000-00000000a9%' AND kind = 'reward.earned' AND params->'title' ? 'en') THEN RAISE EXCEPTION 'FAIL: W12'; END IF;
   INSERT INTO public.consult_sessions(user_id, worker_id, worker_user_id, node_slug, status, ended_at, credits_used) VALUES
     ('00000000-0000-0000-0000-00000000a901', '00000000-0000-0000-0000-00000000b902', '00000000-0000-0000-0000-00000000a902', 'professionals--doctor--allopathy', 'ended', now() - interval '40 minutes', 30) RETURNING id INTO _s;
   PERFORM public.push_sweep(); PERFORM public.push_sweep();
