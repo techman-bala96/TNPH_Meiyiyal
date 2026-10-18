@@ -45,9 +45,35 @@ async def _lifespan(_app):
 app = FastAPI(title="Meiyiyal verify", version="1.1", lifespan=_lifespan)
 
 
+def _test_mode() -> bool:
+    """VERIFY_TEST_MODE=1 swaps council websites for a local fixture file (e2e). Refused unless Supabase is local."""
+    if os.environ.get("VERIFY_TEST_MODE") != "1":
+        return False
+    base = os.environ.get("SUPABASE_URL", "")
+    return base.startswith(("http://127.0.0.1", "http://localhost", "http://kong"))
+
+
 def _providers() -> dict:
     return {"face": os.environ.get("FACE_PROVIDER", "none"), "liveness": os.environ.get("LIVENESS_PROVIDER", "heuristic"),
-            "ocr": os.environ.get("OCR_PROVIDER", "none"), "uidai_cert": bool(os.environ.get("UIDAI_QR_CERT_PATH"))}
+            "ocr": os.environ.get("OCR_PROVIDER", "none"), "uidai_cert": bool(os.environ.get("UIDAI_QR_CERT_PATH")),
+            "test_mode": _test_mode()}
+
+
+def _fixture_transport(path: str):
+    """Council fixture for e2e: {"<reg no>": {"html": "..."} | {"timeout": true} | {"error": true}}. Unknown number = not on the register."""
+    import json  # noqa: PLC0415
+
+    def transport(request: dict) -> str:
+        table = json.load(open(path, encoding="utf-8"))
+        sent = request.get("params") or request.get("data") or {}
+        number = next(iter(sent.values()), "") if sent else ""
+        row = table.get(str(number).strip()) or {}
+        if row.get("timeout"):
+            raise TimeoutError("fixture timeout")
+        if row.get("error"):
+            raise RegistryError("fixture error")
+        return row.get("html", "<html><body>No records found</body></html>")
+    return transport
 
 
 @app.get("/verify/health")
@@ -146,7 +172,10 @@ def process_case(case_id: str) -> dict:
             return _rpc(client, base, headers, "verification_observe_fingerprint", {"_worker": bundle["worker_id"], "_kind": kind, "_hash": digest}) or "ok"
 
         overrides = _setting(client, base, headers, "verify_registry_adapters")
-        registry = Registry(_fetch_official, live=live_flag is True, now=time.time, adapters=merge_adapters(overrides if isinstance(overrides, dict) else None))
+        fixtures = os.environ.get("VERIFY_REGISTRY_FIXTURES", "")
+        transport = _fixture_transport(fixtures) if _test_mode() and fixtures else _fetch_official
+        registry = Registry(transport, live=live_flag is True, now=time.time, adapters=merge_adapters(overrides if isinstance(overrides, dict) else None),
+                            allow_unconfirmed=_test_mode())
         prov = _providers()
         checks = evaluate(bundle, files, registry=registry, pepper=pepper, qr_public=None, observe=observe, name_pass=name_pass, name_review=name_review,
                           uidai_key=load_uidai_key(os.environ.get("UIDAI_QR_CERT_PATH")), face_provider=prov["face"],

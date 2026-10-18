@@ -246,7 +246,8 @@
       "otp": "Wrong OTP",
       "qr": "Paste the QR text",
       "tooBig": "File is larger than 10 MB",
-      "upload": "Upload failed"
+      "upload": "Upload failed",
+      "type": "Use a PDF or a photo (JPG, PNG or WebP)."
     },
     "locked": "Profession locked",
     "lockedNote": "Your profession is locked after registration. You can still change your field within it.",
@@ -290,7 +291,33 @@
     "liveExpired": "That took too long. Start again.",
     "liveNoCamera": "No camera found. You can upload a photo instead — a reviewer will check it by hand, which takes longer.",
     "livePortrait": "This photo will be your profile picture",
-    "liveUseUpload": "Upload a photo instead"
+    "liveUseUpload": "Upload a photo instead",
+    "reject": {
+      "generic": "Your verification was not approved.",
+      "identity": "Your Aadhaar QR could not be confirmed.",
+      "identity_bad_signature": "The Aadhaar QR is not genuine or was changed (its UIDAI signature does not match).",
+      "identity_last4": "The Aadhaar QR belongs to a different Aadhaar number than the one you verified with OTP.",
+      "identity_bad_uid": "The Aadhaar number in the QR is not valid.",
+      "identity_bad_reference": "The Aadhaar QR could not be read correctly.",
+      "registry": "Your council registration could not be confirmed.",
+      "registry_suspended": "The council register shows this registration as suspended, removed or expired.",
+      "duplicates": "These details are already used by another account.",
+      "duplicates_active": "This council number or Aadhaar is already used by another active professional on Meiyiyal.",
+      "duplicates_banned": "This council number or Aadhaar belongs to an account that was blocked or rejected.",
+      "face": "Your selfie could not be matched.",
+      "face_liveness_static": "The live check looked like a photo or screen, not a live person.",
+      "face_mismatch": "Your selfie does not match the photo on your Aadhaar.",
+      "risk": "Too many checks failed to approve this automatically.",
+      "risk_high": "Too many checks failed to approve this automatically."
+    },
+    "rejectHint": {
+      "generic": "You can appeal below within 30 days. A different admin will review it.",
+      "identity": "Download a fresh e-Aadhaar from the UIDAI website or mAadhaar and scan its QR, then appeal.",
+      "registry": "Check your registration number and your council status, then appeal with a current council certificate.",
+      "duplicates": "If this is your number and someone else is using it, appeal and tell us; we will look into it.",
+      "face": "Do the live selfie again in good light, facing the camera alone, then appeal.",
+      "risk": "Appeal with clearer documents; a person will review everything."
+    }
   },
   "admin": {
     "title": "Admin",

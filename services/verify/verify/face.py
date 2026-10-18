@@ -64,13 +64,21 @@ class InsightFaceMatcher:
             return None
         faces = InsightFaceMatcher._app.get(img)
         if len(faces) != 1:
+            self.last_reason = "no_face" if not faces else "multiple_faces"
             return None
         return faces[0].normed_embedding
 
+    last_reason = "no_single_face"
+
     def compare(self, a: bytes, b: bytes) -> dict:
-        ea, eb = self.embed(a), self.embed(b)
-        if ea is None or eb is None:
-            return {"status": "review", "score": None, "evidence": {"reason": "no_single_face", "provider": "insightface"}}
+        self.last_reason = "no_single_face"
+        ea = self.embed(a)
+        if ea is None:  # the selfie: say what was wrong so the worker can retake it
+            reason = getattr(self, "last_reason", "no_single_face")
+            return {"status": "review", "score": None, "evidence": {"reason": f"selfie_{reason}", "provider": "insightface"}}
+        eb = self.embed(b)
+        if eb is None:
+            return {"status": "review", "score": None, "evidence": {"reason": "reference_unreadable", "provider": "insightface"}}
         sim = float(sum(float(x) * float(y) for x, y in zip(ea, eb, strict=False)))
         hi, lo = float(os.environ.get("FACE_PASS", "0.45")), float(os.environ.get("FACE_REVIEW", "0.30"))
         ev = {"similarity": round(sim, 4), "provider": "insightface", "calibrated": False}
@@ -78,7 +86,10 @@ class InsightFaceMatcher:
             return {"status": "pass", "score": sim, "evidence": ev}
         if sim >= lo:
             return {"status": "review", "score": sim, "evidence": {**ev, "reason": "similarity"}}
-        # Not calibrated, so a low score is review, not a hard reject.
+        # Not calibrated, so even a clear mismatch is never an automatic reject: it is a (soft) fail that
+        # blocks auto-approval and puts the case in front of a person with the reason shown.
+        if sim < float(os.environ.get("FACE_MISMATCH", "0.15")):
+            return {"status": "fail", "score": sim, "evidence": {**ev, "reason": "mismatch"}}
         return {"status": "review", "score": sim, "evidence": {**ev, "reason": "low_similarity"}}
 
 

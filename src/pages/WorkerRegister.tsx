@@ -100,6 +100,9 @@ export default function WorkerRegister() {
   }
   async function onDoc(type: string, f?: File) {
     if (!f || !user || !w) return;
+    // the picker's accept= is only a hint (and absent when sharing from another app): say why before uploading
+    if (!/^(application\/pdf|image\/(jpeg|png|webp))$/.test(f.type)) { setErr(t("worker.err.type")); return; }
+    if (f.size > 10 * 1024 * 1024) { setErr(t("worker.err.tooBig")); return; }
     setBusy(`doc:${type}`); setErr(null);
     try { await uploadDoc(user.id, w.id, type, f); await qc.invalidateQueries({ queryKey: ["my-docs"] }); }
     catch (e) { setErr((e as Error).message === "too_big" ? t("worker.err.tooBig") : t("worker.err.upload")); } finally { setBusy(null); }

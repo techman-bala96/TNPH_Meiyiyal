@@ -48,7 +48,7 @@ export async function setProfile(page: Page, name: string, photo: string) {
 }
 
 /** Full real registration wizard. `shot` optional for screenshots. */
-export type RegOpts = { qrImage?: string; uploadSelfie?: boolean; kycEdge?: boolean };
+export type RegOpts = { qrImage?: string; uploadSelfie?: boolean; kycEdge?: boolean; docFile?: string; aadhaar?: string; beforeDocs?: () => Promise<unknown> };
 export async function registerWorker(page: Page, w: WorkerSpec, shot?: (n: string) => Promise<unknown>, opts: RegOpts = {}) {
   await page.goto("/?tab=worker");
   await page.getByTestId("btn-register-worker").click();
@@ -72,7 +72,7 @@ export async function registerWorker(page: Page, w: WorkerSpec, shot?: (n: strin
   await page.getByTestId("reg-aadhaar").fill("1234");
   await page.getByTestId("reg-send-otp").click();
   await expect(page.getByTestId("reg-error")).toBeVisible();
-  await page.getByTestId("reg-aadhaar").fill("987654321098");
+  await page.getByTestId("reg-aadhaar").fill(opts.aadhaar ?? "987654321098");
   await page.getByTestId("reg-send-otp").click();
   if (opts.kycEdge) await expect(page.getByTestId("reg-aadhaar-otp")).toBeVisible(); // kyc-aadhaar Edge Function (mock adapter)
   else await expect(page.getByTestId("stub-hint")).toBeVisible();
@@ -119,9 +119,10 @@ export async function registerWorker(page: Page, w: WorkerSpec, shot?: (n: strin
   await shot?.("03c-selfie");
   // documents
   await expect(page.getByTestId("reg-docs-next")).toBeDisabled();
+  await opts.beforeDocs?.();
   for (const d of w.docs) {
     const res = page.waitForResponse((r) => r.url().includes("/rest/v1/worker_documents") && r.request().method() === "POST");
-    await page.getByTestId(`doc-${d}`).setInputFiles(IMG("certificate"));
+    await page.getByTestId(`doc-${d}`).setInputFiles(opts.docFile ?? IMG("certificate"));
     expect((await res).status()).toBe(201);
   }
   await expect(page.getByTestId("reg-docs-next")).toBeEnabled();

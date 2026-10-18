@@ -86,9 +86,12 @@ def test_face_providers():
     m = InsightFaceMatcher(embed=lambda img: [1.0, 0.0] if img == b"a" else [0.8, 0.6])
     assert face_check(b"a", b"a", True, provider="insightface", matcher=m)["status"] == "pass"
     low = face_check(b"a", b"z", True, provider="insightface", matcher=InsightFaceMatcher(embed=lambda img: [1.0, 0.0] if img == b"a" else [0.0, 1.0]))
-    assert low["status"] == "review" and low["evidence"]["calibrated"] is False
+    # orthogonal embeddings = clear mismatch: a soft fail (blocks auto-approve, never an automatic reject)
+    assert low["status"] == "fail" and low["evidence"]["reason"] == "mismatch" and low["evidence"]["calibrated"] is False
+    mid = face_check(b"a", b"z", True, provider="insightface", matcher=InsightFaceMatcher(embed=lambda img: [1.0, 0.0] if img == b"a" else [0.2, 0.98]))
+    assert mid["status"] == "review" and mid["evidence"]["reason"] == "low_similarity"
     none = face_check(b"a", b"z", True, provider="insightface", matcher=InsightFaceMatcher(embed=lambda img: None))
-    assert none["evidence"]["reason"] == "no_single_face"
+    assert none["evidence"]["reason"].startswith("selfie_")
 
 
 def test_ocr_adapters():

@@ -142,7 +142,9 @@ def read_secure_qr(text: str, uidai_key: RSAPublicKey | None, pepper: str) -> di
     f = parsed["fields"]
     ref = f.get("reference_id", "")
     last4 = ref[:4] if ref[:4].isdigit() else ""
-    evidence = {"format": "uidai_secure_qr", "version": parsed["version"], "last4": last4, "name": f.get("name", ""),
+    stamp = ref[4:18] if ref[4:18].isdigit() else ""
+    generated = f"{stamp[0:4]}-{stamp[4:6]}-{stamp[6:8]}" if len(stamp) >= 8 else ""
+    evidence = {"format": "uidai_secure_qr", "version": parsed["version"], "last4": last4, "name": f.get("name", ""), "generated": generated,
                 "dob": f.get("dob", ""), "gender": f.get("gender", ""), "has_photo": bool(parsed["photo"]),
                 # reference id = last4 + a timestamp that changes per download, so the identity
                 # fingerprint is last4 + folded name + date of birth (HMAC, never stored in clear).

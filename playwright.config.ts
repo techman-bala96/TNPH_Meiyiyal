@@ -8,7 +8,7 @@ export default defineConfig({
   globalTeardown: "./e2e/global-teardown.ts",
   reporter: [["list"]],
   expect: { toHaveScreenshot: { maxDiffPixelRatio: 0.01, animations: "disabled" } },
-  use: { baseURL: "http://localhost:8080", trace: "retain-on-failure",
+  use: { baseURL: "http://localhost:8080", trace: "retain-on-failure", navigationTimeout: 30_000,
     // fake camera/mic so WebRTC calls can be tested end-to-end
     launchOptions: { args: ["--use-fake-ui-for-media-stream", "--use-fake-device-for-media-stream", "--autoplay-policy=no-user-gesture-required"] } },
   webServer: [
@@ -22,9 +22,10 @@ export default defineConfig({
     { name: "mobile", use: { ...devices["Pixel 7"] }, testIgnore: /(screens|admin-mfa|tour)\.spec\.ts/ },
     { name: "desktop", use: { viewport: { width: 1366, height: 820 } }, testIgnore: /(screens|admin-mfa|tour)\.spec\.ts/ },
     // admin MFA flips a global setting, so it runs after everything else (safe with --workers > 1)
-    { name: "mfa-mobile", use: { ...devices["Pixel 7"] }, testMatch: /admin-mfa\.spec\.ts/, dependencies: ["mobile", "desktop", "tablet"] },
+    { name: "mfa-mobile", use: { ...devices["Pixel 7"] }, testMatch: /admin-mfa\.spec\.ts/, dependencies: ["mobile", "desktop", "tablet", "tablet-land"] },
     { name: "mfa-desktop", use: { viewport: { width: 1366, height: 820 } }, testMatch: /admin-mfa\.spec\.ts/, dependencies: ["mfa-mobile"] },
     // tablet (iPad Mini size, Chromium): a11y, visual and the screenshot tour only
-    { name: "tablet", use: { ...devices["iPad Mini"], browserName: "chromium" }, testMatch: /(a11y|visual|screens)\.spec\.ts/ },
+    { name: "tablet", use: { ...devices["iPad Mini"], browserName: "chromium" }, testMatch: /(a11y|visual|screens|crawl)\.spec\.ts/ },
+    { name: "tablet-land", use: { ...devices["iPad Mini landscape"], browserName: "chromium" }, testMatch: /crawl\.spec\.ts/ },
   ],
 });
