@@ -719,7 +719,10 @@
       "rejected": "Rejected",
       "verified": "Verified",
       "pending": "Checking"
-    }
+    },
+    "sendCode": "Send code",
+    "codeSent": "Code sent to {{masked}}",
+    "codeMock": "Test mode: use code 123456"
   },
   "nav": {
     "label": "Main",

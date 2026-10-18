@@ -445,14 +445,14 @@ isOneToOne: false
                   ]
                 },"payout_requests": {
                   Row: {
-                    "account_id": string | null,"admin_note": string | null,"amount": number,"attempt_count": number,"decided_at": string | null,"decided_by": string | null,"entry_count": number,"failure_reason": string | null,"fee": number,"fee_bearer": string | null,"gross": number | null,"id": string,"method": string,"provider": string | null,"provider_payout_id": string | null,"reference": string | null,"requested_at": string,"review_reason": string | null,"status": string,"tds": number,"worker_user_id": string
+                    "account_id": string | null,"admin_note": string | null,"amount": number,"attempt_count": number,"claimed_at": string | null,"decided_at": string | null,"decided_by": string | null,"entry_count": number,"failure_reason": string | null,"fee": number,"fee_bearer": string | null,"gross": number | null,"id": string,"method": string,"provider": string | null,"provider_payout_id": string | null,"reference": string | null,"requested_at": string,"review_reason": string | null,"status": string,"tds": number,"worker_user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "account_id"?: string | null,"admin_note"?: string | null,"amount": number,"attempt_count"?: number,"decided_at"?: string | null,"decided_by"?: string | null,"entry_count"?: number,"failure_reason"?: string | null,"fee"?: number,"fee_bearer"?: string | null,"gross"?: number | null,"id"?: string,"method"?: string,"provider"?: string | null,"provider_payout_id"?: string | null,"reference"?: string | null,"requested_at"?: string,"review_reason"?: string | null,"status"?: string,"tds"?: number,"worker_user_id": string
+                    "account_id"?: string | null,"admin_note"?: string | null,"amount": number,"attempt_count"?: number,"claimed_at"?: string | null,"decided_at"?: string | null,"decided_by"?: string | null,"entry_count"?: number,"failure_reason"?: string | null,"fee"?: number,"fee_bearer"?: string | null,"gross"?: number | null,"id"?: string,"method"?: string,"provider"?: string | null,"provider_payout_id"?: string | null,"reference"?: string | null,"requested_at"?: string,"review_reason"?: string | null,"status"?: string,"tds"?: number,"worker_user_id": string
                   }
                   Update: {
-                    "account_id"?: string | null,"admin_note"?: string | null,"amount"?: number,"attempt_count"?: number,"decided_at"?: string | null,"decided_by"?: string | null,"entry_count"?: number,"failure_reason"?: string | null,"fee"?: number,"fee_bearer"?: string | null,"gross"?: number | null,"id"?: string,"method"?: string,"provider"?: string | null,"provider_payout_id"?: string | null,"reference"?: string | null,"requested_at"?: string,"review_reason"?: string | null,"status"?: string,"tds"?: number,"worker_user_id"?: string
+                    "account_id"?: string | null,"admin_note"?: string | null,"amount"?: number,"attempt_count"?: number,"claimed_at"?: string | null,"decided_at"?: string | null,"decided_by"?: string | null,"entry_count"?: number,"failure_reason"?: string | null,"fee"?: number,"fee_bearer"?: string | null,"gross"?: number | null,"id"?: string,"method"?: string,"provider"?: string | null,"provider_payout_id"?: string | null,"reference"?: string | null,"requested_at"?: string,"review_reason"?: string | null,"status"?: string,"tds"?: number,"worker_user_id"?: string
                   }
                   Relationships: [
                     {
@@ -605,6 +605,20 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"sms_outbox": {
+                  Row: {
+                    "created_at": string,"id": number,"phone": string,"template": string,"vars": NonNullable<Json>
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id"?: never,"phone": string,"template": string,"vars"?: NonNullable<Json>
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: never,"phone"?: string,"template"?: string,"vars"?: NonNullable<Json>
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"spatial_ref_sys": {
                   Row: {
                     "auth_name": string | null,"auth_srid": number | null,"proj4text": string | null,"srid": number,"srtext": string | null
@@ -615,6 +629,20 @@ isOneToOne: false
                   }
                   Update: {
                     "auth_name"?: string | null,"auth_srid"?: number | null,"proj4text"?: string | null,"srid"?: number,"srtext"?: string | null
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"stepup_codes": {
+                  Row: {
+                    "attempts": number,"code_hash": string,"created_at": string,"expires_at": string,"purpose": string,"sends": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "attempts"?: number,"code_hash": string,"created_at"?: string,"expires_at": string,"purpose": string,"sends"?: number,"user_id": string
+                  }
+                  Update: {
+                    "attempts"?: number,"code_hash"?: string,"created_at"?: string,"expires_at"?: string,"purpose"?: string,"sends"?: number,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -1041,14 +1069,14 @@ isOneToOne: false
                   ]
                 },"worker_payout_accounts": {
                   Row: {
-                    "account_hash": string,"account_last4": string | null,"account_mask": string,"cooling_until": string | null,"created_at": string,"duplicate": boolean,"failure_reason": string | null,"fund_account_id": string | null,"id": string,"ifsc": string | null,"kind": string,"mock_fail": string | null,"registered_name": string | null,"updated_at": string,"validation_status": string,"verified_at": string | null,"worker_id": string | null,"worker_user_id": string
+                    "account_hash": string,"account_last4": string | null,"account_mask": string,"contact_id": string | null,"cooling_until": string | null,"created_at": string,"duplicate": boolean,"failure_reason": string | null,"fund_account_id": string | null,"id": string,"ifsc": string | null,"kind": string,"mock_fail": string | null,"provider": string,"registered_name": string | null,"updated_at": string,"validation_ref": string | null,"validation_status": string,"verified_at": string | null,"worker_id": string | null,"worker_user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "account_hash": string,"account_last4"?: string | null,"account_mask": string,"cooling_until"?: string | null,"created_at"?: string,"duplicate"?: boolean,"failure_reason"?: string | null,"fund_account_id"?: string | null,"id"?: string,"ifsc"?: string | null,"kind": string,"mock_fail"?: string | null,"registered_name"?: string | null,"updated_at"?: string,"validation_status"?: string,"verified_at"?: string | null,"worker_id"?: string | null,"worker_user_id": string
+                    "account_hash": string,"account_last4"?: string | null,"account_mask": string,"contact_id"?: string | null,"cooling_until"?: string | null,"created_at"?: string,"duplicate"?: boolean,"failure_reason"?: string | null,"fund_account_id"?: string | null,"id"?: string,"ifsc"?: string | null,"kind": string,"mock_fail"?: string | null,"provider"?: string,"registered_name"?: string | null,"updated_at"?: string,"validation_ref"?: string | null,"validation_status"?: string,"verified_at"?: string | null,"worker_id"?: string | null,"worker_user_id": string
                   }
                   Update: {
-                    "account_hash"?: string,"account_last4"?: string | null,"account_mask"?: string,"cooling_until"?: string | null,"created_at"?: string,"duplicate"?: boolean,"failure_reason"?: string | null,"fund_account_id"?: string | null,"id"?: string,"ifsc"?: string | null,"kind"?: string,"mock_fail"?: string | null,"registered_name"?: string | null,"updated_at"?: string,"validation_status"?: string,"verified_at"?: string | null,"worker_id"?: string | null,"worker_user_id"?: string
+                    "account_hash"?: string,"account_last4"?: string | null,"account_mask"?: string,"contact_id"?: string | null,"cooling_until"?: string | null,"created_at"?: string,"duplicate"?: boolean,"failure_reason"?: string | null,"fund_account_id"?: string | null,"id"?: string,"ifsc"?: string | null,"kind"?: string,"mock_fail"?: string | null,"provider"?: string,"registered_name"?: string | null,"updated_at"?: string,"validation_ref"?: string | null,"validation_status"?: string,"verified_at"?: string | null,"worker_id"?: string | null,"worker_user_id"?: string
                   }
                   Relationships: [
                     {
@@ -1165,7 +1193,13 @@ isOneToOne: false
                 }
           }
           Functions: {
-            "_postgis_deprecate":
+            "_payout_account_apply":
+{ Args: { "_account": string,"_contact_id"?: string,"_fail": string,"_fund_account_id": string,"_ifsc": string,"_kind": string,"_mock": string,"_pan": string,"_pending"?: boolean,"_provider": string,"_registered": string,"_u": string,"_validation_ref"?: string }; Returns: Json
+                           },
+"_payout_account_ratelimit":
+{ Args: { "_u": string }; Returns: undefined
+                           },
+"_postgis_deprecate":
 { Args: { "newname": string,"oldname": string,"version": string }; Returns: undefined
                            },
 "_postgis_index_extent":
@@ -1649,6 +1683,12 @@ isOneToOne: false
 "payments_mock_enabled":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
+"payout_account_live_prepare":
+{ Args: { "_account": string,"_ifsc": string,"_kind": string,"_otp": string,"_u": string }; Returns: Json
+                           },
+"payout_account_live_record":
+{ Args: { "_account": string,"_account_status": string,"_contact_id": string,"_fund_account_id": string,"_ifsc": string,"_kind": string,"_pan": string,"_registered": string,"_state": string,"_u": string,"_validation_ref": string }; Returns: Json
+                           },
 "payout_account_submit":
 { Args: { "_account": string,"_ifsc": string,"_kind": string,"_otp": string,"_pan"?: string }; Returns: Json
                            },
@@ -1658,11 +1698,25 @@ isOneToOne: false
 "payout_block_reason":
 { Args: { "_user": string }; Returns: string
                            },
+"payout_claim_live":
+{ Args: { "_limit"?: number }; Returns: {
+              "amount": number,"fund_account_id": string,"kind": string,"payout_id": string
+            }[]
+                           },
 "payout_dispatch_mock":
 { Args: { "_id"?: string }; Returns: Json
                            },
 "payout_fold_name":
 { Args: { "_n": string }; Returns: string
+                           },
+"payout_hook_ok":
+{ Args: { "_secret": string }; Returns: boolean
+                           },
+"payout_kick":
+{ Args: { "_body"?: Json }; Returns: undefined
+                           },
+"payout_mark_sent":
+{ Args: { "_id": string,"_provider_payout_id": string }; Returns: undefined
                            },
 "payout_name_result":
 { Args: { "_bank": string,"_legal": string }; Returns: string
@@ -1673,17 +1727,32 @@ isOneToOne: false
 "payout_request":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"payout_retry_sweep":
+{ Args: Record<PropertyKey, never>; Returns: number
+                           },
 "payout_run":
 { Args: { "_force"?: boolean,"_only"?: string }; Returns: Json
                            },
+"payout_send_error":
+{ Args: { "_id": string,"_reason": string,"_retry": boolean }; Returns: string
+                           },
 "payout_unlink":
 { Args: { "_id": string }; Returns: undefined
+                           },
+"payout_validation_event":
+{ Args: { "_account_status": string,"_registered": string,"_validation_ref": string }; Returns: string
+                           },
+"payout_weekly":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "payouts_auto_enabled":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
 "payouts_mock_enabled":
 { Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"payouts_provider":
+{ Args: Record<PropertyKey, never>; Returns: string
                            },
 "populate_geometry_columns":
 { Args: { "tbl_oid": unknown,"use_typmod"?: boolean }; Returns: number
@@ -1905,6 +1974,9 @@ isOneToOne: false
                            },
 "setting_num":
 { Args: { "_d": number,"_k": string }; Returns: number
+                           },
+"sms_outbox_sweep":
+{ Args: Record<PropertyKey, never>; Returns: number
                            },
 "st_3dclosestpoint":
 { Args: { "geom1": unknown,"geom2": unknown }; Returns: unknown
@@ -2381,6 +2453,12 @@ isOneToOne: false
                            },
 "st_wrapx":
 { Args: { "geom": unknown,"move": number,"wrap": number }; Returns: unknown
+                           },
+"stepup_issue":
+{ Args: { "_purpose": string,"_user": string }; Returns: Json
+                           },
+"stepup_verify":
+{ Args: { "_code": string,"_purpose": string,"_user": string }; Returns: boolean
                            },
 "trusted":
 { Args: Record<PropertyKey, never>; Returns: boolean

@@ -459,3 +459,6 @@ verify_jwt = false
 # M11 Aadhaar OTP (kyc_provider = 'edge'): the function checks the user's JWT itself.
 [functions.kyc-aadhaar]
 verify_jwt = false
+# M11 SMS: Supabase Auth Send-SMS hook (signature checked in code). Locally phone login uses test_otp, so the hook stays off.
+[functions.sms-hook]
+verify_jwt = false

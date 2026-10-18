@@ -36,6 +36,14 @@ export default function Earnings() {
     setBusy(true); const { error } = await supabase.rpc("payout_request"); setBusy(false);
     if (error) toast.error(rpcErr(error)); else { toast.success(t("earn.requested")); await qc.invalidateQueries({ queryKey: ["earnings"] }); }
   };
+  const sendCode = async () => {
+    setBusy(true);
+    const { data, error } = await supabase.functions.invoke("payout-fund-account", { body: { action: "stepup" } });
+    setBusy(false);
+    if (error) { toast.error(await fnMessage(error)); return; }
+    const d = data as { mock?: boolean; masked?: string };
+    toast.success(d.mock ? t("earn.codeMock") : t("earn.codeSent", { masked: d.masked ?? "" }));
+  };
   const saveAccount = async () => {
     setBusy(true);
     const { data, error } = await supabase.functions.invoke("payout-fund-account", { body: { kind, account, ifsc, otp, pan } });
@@ -87,7 +95,10 @@ export default function Earnings() {
             </div>
             <input data-testid="payout-account-number" value={account} onChange={(ev) => setAccount(ev.target.value)} autoComplete="off" placeholder={kind === "bank" ? t("earn.accountNo") : t("earn.vpa")} className="w-full rounded-xl border bg-background px-3 py-2 text-sm" />
             {kind === "bank" && <input data-testid="payout-ifsc" value={ifsc} onChange={(ev) => setIfsc(ev.target.value.toUpperCase())} autoComplete="off" placeholder={t("earn.ifsc")} className="w-full rounded-xl border bg-background px-3 py-2 text-sm uppercase" />}
-            <input data-testid="payout-otp" value={otp} onChange={(ev) => setOtp(ev.target.value)} inputMode="numeric" autoComplete="one-time-code" placeholder={t("earn.otp")} className="w-full rounded-xl border bg-background px-3 py-2 text-sm" />
+            <div className="flex gap-2">
+              <input data-testid="payout-otp" value={otp} onChange={(ev) => setOtp(ev.target.value)} inputMode="numeric" autoComplete="one-time-code" placeholder={t("earn.otp")} className="min-w-0 flex-1 rounded-xl border bg-background px-3 py-2 text-sm" />
+              <button type="button" data-testid="payout-send-code" disabled={busy} onClick={sendCode} className="shrink-0 rounded-xl border px-3 text-xs font-semibold text-primary disabled:opacity-50">{t("earn.sendCode")}</button>
+            </div>
             <input data-testid="payout-pan" value={pan} onChange={(ev) => setPan(ev.target.value.toUpperCase())} autoComplete="off" placeholder={t("earn.pan")} className="w-full rounded-xl border bg-background px-3 py-2 text-sm uppercase" />
             <button data-testid="payout-save" disabled={busy || account.trim().length < 5 || otp.trim().length < 4 || (kind === "bank" && ifsc.trim().length < 11)} onClick={saveAccount}
               className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-foreground disabled:opacity-50">
