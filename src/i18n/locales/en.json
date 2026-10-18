@@ -199,7 +199,11 @@
     "selfieWhy": "Take a photo while you do the action below. The raw photo is private and deleted 30 days after a decision. A separate copy is your public profile photo only if you agree.",
     "liveness": "Do this now: {{challenge}}",
     "livenessDid": "I did this action in the photo",
-    "challenge": { "blink": "blink", "turn-left": "turn your head left", "turn-right": "turn your head right" },
+    "challenge": {
+      "blink": "blink",
+      "turn-left": "turn your head left",
+      "turn-right": "turn your head right"
+    },
     "selfieFile": "Choose a photo",
     "selfieConsent": "I agree this photo can be shown on my public profile. My Aadhaar photo is never public.",
     "upload": "Upload",
@@ -239,13 +243,26 @@
     },
     "locked": "Profession locked",
     "lockedNote": "Your profession is locked after registration. You can still change your field within it.",
-    "badge": { "licence": "Licence verified", "degree": "Degree verified" },
+    "badge": {
+      "licence": "Licence verified",
+      "degree": "Degree verified"
+    },
     "verifiedOn": "Verified {{date}}",
     "check": {
-      "identity": "Identity", "face": "Photo", "registry": "Register", "degree": "Certificate",
-      "name": "Name", "forensics": "Document", "duplicates": "Duplicates"
+      "identity": "Identity",
+      "face": "Photo",
+      "registry": "Register",
+      "degree": "Certificate",
+      "name": "Name",
+      "forensics": "Document",
+      "duplicates": "Duplicates"
     },
-    "checkStatus": { "pass": "passed", "review": "needs a person", "fail": "failed", "error": "could not check" },
+    "checkStatus": {
+      "pass": "passed",
+      "review": "needs a person",
+      "fail": "failed",
+      "error": "could not check"
+    },
     "appealNote": "Why should this be reviewed again?",
     "appealSubmit": "Request a review"
   },
@@ -661,6 +678,147 @@
     "label": "Main",
     "home": "Home",
     "conversations": "Conversations",
-    "profile": "Profile"
+    "profile": "Profile",
+    "messages": "Messages"
+  },
+  "nearby": {
+    "search": {
+      "placeholder": "Search: doctor, lawyer, \"my dog is sick\"…",
+      "examples": [
+        "my dog is sick",
+        "wall crack",
+        "civil lawyer for divorce case",
+        "child fever",
+        "patta name change"
+      ],
+      "try": "Try “{{q}}”",
+      "recent": "Recent",
+      "popular": "Popular",
+      "clear": "Clear",
+      "askFor": "Search for “{{q}}”",
+      "thinking": "Understanding…",
+      "alsoTry": "Also try",
+      "mic": "Speak to search",
+      "offline": "Couldn't reach the assistant. Showing the closest match.",
+      "nothing": "No match yet. Try other words, or pick below.",
+      "signIn": "Sign in to search near you",
+      "via": "“{{w}}”"
+    },
+    "groups": {
+      "available": "Available now",
+      "busy": "Busy",
+      "offline": "Offline"
+    },
+    "lawyerNote": "Advocates are shown nearest first (Bar Council rules don't allow ranking by rating).",
+    "auto": {
+      "title": "Get connected fast",
+      "sub": "We'll ring the nearest available {{name}} one by one",
+      "toggle": "Auto request",
+      "on": "On",
+      "off": "Off",
+      "offHint": "Auto request is off. Tap a professional to request.",
+      "findNow": "Find now",
+      "availableCount_one": "{{count}} available near you",
+      "availableCount_other": "{{count}} available near you",
+      "noneAvailable": "No one is online nearby right now",
+      "modeTitle": "How do you want to consult?",
+      "modeSub": "We'll remember this. You can change it any time.",
+      "modeConfirm": "Continue with {{mode}}",
+      "change": "Change",
+      "needCredits": "You need {{n}} credits to start. Top up first.",
+      "topUp": "Top up"
+    },
+    "searching": {
+      "title": "Finding your {{name}}",
+      "ringing": "Ringing {{name}}",
+      "away": "{{km}} away",
+      "tryOf": "Trying {{n}} of {{max}}",
+      "waitS": "{{s}}s",
+      "cancel": "Stop searching",
+      "next": "No answer, trying the next nearest…",
+      "matched": "Connected! Opening your consultation…",
+      "hint": "You're not charged until someone accepts."
+    },
+    "noAnswer": {
+      "title": "No one answered yet",
+      "titleNone": "No one is free nearby right now",
+      "sub": "We tried {{n}} people near you.",
+      "more": "Try {{n}} more",
+      "allTn": "Search all of Tamil Nadu",
+      "message": "Send a message instead",
+      "messageSub": "5 credits · refunded if there's no reply in 24 hours",
+      "close": "Close",
+      "pick": "Who do you want to message?",
+      "askAgain": "Ask again",
+      "askAgainIn": "Ask again in {{s}}s",
+      "others": "Available near you",
+      "request": "Request",
+      "dismiss": "Dismiss"
+    },
+    "msg": {
+      "title": "Message {{name}}",
+      "sub": "They'll get a notification. If they're free, they can call you back in the app.",
+      "placeholder": "Briefly, what do you need help with?",
+      "record": "Record voice note",
+      "stop": "Stop",
+      "recording": "Recording… {{s}}s / 30s",
+      "delete": "Delete",
+      "cost": "Costs {{n}} credits. Refunded if there's no reply in 24 hours.",
+      "send": "Send · {{n}} credits",
+      "sent": "Message sent. We'll tell you when they reply.",
+      "noMic": "Microphone not available",
+      "tooLong": "Keep it under 300 letters",
+      "privacy": "Phone numbers and links are hidden to keep you safe."
+    },
+    "messages": {
+      "title": "Messages",
+      "empty": "No messages yet",
+      "emptyWorker": "When someone messages you, it shows up here.",
+      "sent": "Sent",
+      "received": "Received",
+      "status": {
+        "sent": "Waiting for reply",
+        "read": "Seen",
+        "responded": "Replied",
+        "refunded": "Refunded"
+      },
+      "refundOn": "Refund on {{date}} if no reply",
+      "ready": "{{name}} is free for you now",
+      "connect": "Connect now",
+      "available": "I'm available now",
+      "mute": "Mute",
+      "muted": "Muted",
+      "respondedToast": "We told them you're free. They have 5 minutes to connect.",
+      "voice": "Voice note · {{s}}s",
+      "open": "Messages"
+    },
+    "session": {
+      "paused": "Connection lost with {{name}}. Waiting for them to come back.",
+      "pausedMe": "You were disconnected. Continue below.",
+      "notCharged": "You're not charged while paused.",
+      "endsIn": "Ends in {{t}} if they don't return",
+      "resumeTitle": "Continue the consultation?",
+      "resumeSub": "You both are back. Billing restarts only if both say yes.",
+      "yes": "Yes, continue",
+      "no": "No, end it",
+      "waitingOther": "Waiting for {{name}} to confirm…",
+      "lowTopUp": "Top up",
+      "back": "Return to your consultation",
+      "backPaused": "Consultation paused · tap to continue",
+      "ended": {
+        "early_end": "{{name}} ended without helping",
+        "dropped": "Connection lost",
+        "low_balance": "Ended: balance too low",
+        "credits_exhausted": "Ended: credits used up",
+        "not_resumed": "Consultation ended"
+      },
+      "refunded": "{{n}} credits returned to your wallet",
+      "refundedWorker": "Ended early without a reply. The user was refunded.",
+      "droppedSub": "You were not charged after the connection dropped.",
+      "lowSub": "Top up and reconnect with {{name}} within 10 minutes.",
+      "reconnect": "Reconnect with {{name}}",
+      "reconnectLeft": "Reconnect within {{t}}",
+      "findOther": "Find someone else now"
+    }
   }
 }

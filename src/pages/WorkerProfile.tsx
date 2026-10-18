@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
-import { BadgeCheck, Briefcase, CalendarDays, MapPin, MessageSquareText, ShieldCheck, Star, UserRoundX, Users } from "lucide-react";
+import { BadgeCheck, Briefcase, CalendarDays, Mail, MapPin, MessageSquareText, ShieldCheck, Star, UserRoundX, Users } from "lucide-react";
+import { useConsult } from "@/features/consult/context";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PageShell } from "@/components/app/PageShell";
 import { supabase } from "@/integrations/supabase/client";
@@ -21,7 +22,9 @@ type P = { id: string; display_name: string; photo_url: string | null; about: st
 export default function WorkerProfile() {
   const { id = "" } = useParams(); const { t, i18n } = useTranslation(); const lang = i18n.language ?? "en";
   const q = useQuery({ queryKey: ["worker-public", id], queryFn: async () => { const { data, error } = await supabase.rpc("worker_public", { _id: id }); if (error) throw error; return data as unknown as P | null; } });
-  const cfg = useFeedbackConfig(); const [open, setOpen] = useState(false);
+  const cfg = useFeedbackConfig(); const [open, setOpen] = useState(false); const [sp, setSp] = useSearchParams(); const { messageWorker } = useConsult();
+  // opened from "X is free for you now" (push or Messages) or a suggestion: go straight to the request sheet
+  useEffect(() => { if (sp.get("connect") === "1" && q.data) { setOpen(true); const n = new URLSearchParams(sp); n.delete("connect"); setSp(n, { replace: true }); } }, [sp, q.data, setSp]);
   const tagName = (k: string) => { const all = [...(cfg.data?.tags.positive ?? []), ...(cfg.data?.tags.negative ?? [])]; const g = all.find((x) => x.key === k); return g ? tr(g, lang) : k; };
   const w = q.data;
   if (q.isLoading) return <PageShell title="" testId="worker-profile"><div className="h-60 animate-pulse rounded-3xl bg-muted" /></PageShell>;
@@ -58,6 +61,8 @@ export default function WorkerProfile() {
       </div>
       <button data-testid="wp-consult" onClick={() => setOpen(true)} className="w-full rounded-2xl bg-primary py-3 font-semibold text-primary-foreground shadow-md transition active:scale-[.98]">
         {w.is_busy ? t("consult.busy") : w.is_online ? t("wprofile.consultNow") : t("wprofile.viewRates")}</button>
+      {!w.is_online && <button data-testid="wp-message" onClick={() => messageWorker({ id: w.id, display_name: w.display_name, photo_url: w.photo_url })}
+        className="flex w-full items-center justify-center gap-2 rounded-2xl border py-3 text-sm font-semibold transition hover:bg-muted active:scale-[.98]"><Mail className="h-4 w-4" />{t("nearby.noAnswer.message")}</button>}
       <RequestSheet w={{ ...w, spec: tr(w.specialty, lang) }} open={open} onOpenChange={setOpen} />
       {w.about && <section className="card-soft p-4"><h3 className="mb-1 text-sm font-semibold">{t("wprofile.about")}</h3><p className="text-sm text-muted-foreground">{w.about}</p></section>}
       <section className="space-y-2"><h3 className="text-sm font-semibold">{t("rewards.title")} · {w.rewards.length}</h3>

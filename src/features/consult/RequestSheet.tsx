@@ -12,7 +12,7 @@ import { useWallet, type Mode, type Rates } from "./api";
 import { ModeIcon } from "./ConsultProvider";
 import { useConsult } from "./context";
 
-export type SheetWorker = { id: string; display_name: string; photo_url: string | null; spec: string; is_online: boolean; is_busy?: boolean; rates?: Rates };
+export type SheetWorker = { id: string; display_name: string; photo_url: string | null; spec: string; is_online: boolean; is_busy?: boolean; rates?: Rates; node?: string };
 const MODES: Mode[] = ["chat", "voice", "video"];
 const tint: Record<Mode, string> = { chat: "from-sky-500 to-cyan-500", voice: "from-emerald-500 to-teal-500", video: "from-violet-500 to-fuchsia-500" };
 
