@@ -148,6 +148,7 @@ export const FINDINGS = [
   { by: "LR12 (long chat message)", problem: "A message over 4000 letters (pasted text) failed on send with a server error; the box gave no hint.", fix: "Chat box stops at 4000 letters (the database limit) and shows a counter from 3500." },
   { by: "LR05 / LR09 (leaving a live consultation)", problem: "The 'Return to your consultation' pill sat on top of every inner screen's header, covering the back button and the language switch.", fix: "While the pill shows, the page and sticky headers move down below it." },
   { by: "J06 (voice agent)", problem: "None in the app: the grammar had learned 'my dog is sick', so the scenario now uses a phrase only the language-model adapter knows ('I can't sleep at night').", fix: "Scenario updated." },
+  { by: "LR12 (bad email)", problem: "A wrong email address on the sign-in screen showed the browser's own English bubble, never the app's Tamil/English message.", fix: "Login forms use the app's validation (noValidate) so 'Enter a valid email' shows in the chosen language." },
   { by: "Crawl (all roles)", problem: "Console error 'Blocked call to navigator.vibrate' on every page load.", fix: "ringtone.ts vibrates only after a user gesture." },
   { by: "Crawl (ta)", problem: "<html lang> stayed 'ta' when English was chosen (screen readers, fonts).", fix: "i18n syncs document lang on init and change." },
 ];
