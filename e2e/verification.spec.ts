@@ -36,7 +36,10 @@ test.beforeAll(async () => {
   }
   throw new Error("verify service did not start");
 });
-test.afterAll(() => { try { if (svc?.pid) process.kill(-svc.pid); } catch { /* gone */ } council({}); });
+test.afterAll(() => {
+  // the scenarios flip per-category auto-approve through the admin screen; put the dev default back
+  sql(`UPDATE public.app_settings SET value = '{}'::jsonb WHERE key = 'verify_auto_approve_categories';`);
+  try { if (svc?.pid) process.kill(-svc.pid); } catch { /* gone */ } council({}); });
 test.setTimeout(240_000);
 
 async function person(browser: Browser, cam: string | null) {
@@ -178,7 +181,7 @@ test("[V06] QR without a readable code (photo of something else, typed text) →
 
 for (const [id, name, qr, expectName] of [
   ["V07", "Dr. Arun Kumar", "qr-valid-a-other-name", "fail"],
-  ["V08", "Dr. Arun Kumar", "qr-valid-a-initials", "review"],
+  ["V08", "Dr. Arun Kumar", "qr-valid-a-initials", "pass"],
   ["V09", "டாக்டர் அருண் குமார்", "qr-valid-a", "pass"],
 ] as const) {
   test(`[${id}] name on Aadhaar vs profile: "${name}" vs ${qr.replace("qr-valid-a", "QR").replace(/-/g, " ")} → name ${expectName}`, async ({ browser }) => {

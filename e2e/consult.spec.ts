@@ -74,8 +74,11 @@ test("user ↔ lawyer: ring/decline/timeout/accept, chat + file, video + voice c
   await expect(u.page.getByTestId("msg").filter({ hasText: "sale deed" })).toBeVisible();
   await u.page.getByTestId("file-input").setInputFiles(IMG("certificate"));
   await expect(law.page.getByTestId("msg-file").locator("img")).toBeVisible({ timeout: 10_000 });
+  // a plain-text file is refused with a message (photos, PDF, Word only); a PDF goes through
   await law.page.getByTestId("file-input").setInputFiles({ name: "checklist.txt", mimeType: "text/plain", buffer: Buffer.from("1. Sale deed\n2. Patta\n3. EC") });
-  await expect(u.page.getByTestId("msg-file").filter({ hasText: "checklist.txt" })).toBeVisible();
+  await expect(law.page.getByText("Send a photo, PDF or Word file.")).toBeVisible();
+  await law.page.getByTestId("file-input").setInputFiles({ name: "checklist.pdf", mimeType: "application/pdf", buffer: Buffer.from("%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<<>>\n%%EOF") });
+  await expect(u.page.getByTestId("msg-file").filter({ hasText: "checklist.pdf" })).toBeVisible();
   await shot(u.page, "17-chat-user"); await shot(law.page, "17-chat-lawyer");
 
   // ---- video call: user calls, lawyer's phone rings, accept, media flows both ways

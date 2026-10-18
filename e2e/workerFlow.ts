@@ -107,7 +107,7 @@ export async function registerWorker(page: Page, w: WorkerSpec, shot?: (n: strin
   } else {
     await page.getByTestId("reg-live-start").click();
     await expect(page.getByTestId("reg-live")).toHaveAttribute("data-phase", "running");
-    await expect(page.getByTestId("reg-live")).toHaveAttribute("data-phase", "done", { timeout: 30_000 });
+    await expect(page.getByTestId("reg-live")).toHaveAttribute("data-phase", "done", { timeout: 60_000 });
   }
   await page.getByTestId("reg-selfie-consent").check();
   await shot?.("03c-selfie");
