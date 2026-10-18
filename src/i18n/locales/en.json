@@ -243,7 +243,8 @@
     },
     "payout": {
       "none": "No payout requests",
-      "items": "{{n}} earning entries",
+      "items_one": "{{count}} earning entry",
+      "items_other": "{{count}} earning entries",
       "returned_one": "{{count}} earning entry returned to the balance",
       "returned_other": "{{count}} earning entries returned to the balance",
       "returnedNone": "Earnings returned to the balance",
@@ -272,7 +273,17 @@
       "send": "Send",
       "sent": "Sent to the bank",
       "duplicate": "Duplicate account",
-      "reviewReason": "Needs a person: {{reason}}"
+      "reviewReason": "Needs a person: {{reason}}",
+      "why": {
+        "amount": "large amount",
+        "duplicate": "same account as another worker",
+        "tds": "TDS check",
+        "name_mismatch": "bank name does not match Aadhaar",
+        "name_review": "name needs a check",
+        "no_legal_name": "no Aadhaar name on file",
+        "invalid_account": "invalid account",
+        "beneficiary": "bank rejected the beneficiary"
+      }
     }
   },
   "menu2": {
@@ -545,6 +556,11 @@
       "rejected": "The bank name does not match your Aadhaar name.",
       "failed": "That account could not be verified."
     },
+    "waitPlain": {
+      "cooling": "The new account is in its cool-off",
+      "on_hold": "Earnings are still inside the 72-hour hold",
+      "blocked": "Payouts are paused during a temporary block"
+    },
     "wait": {
       "cooling": "Cool-off until {{date}}",
       "below_min": "Available balance is under the minimum",
@@ -552,7 +568,7 @@
       "paused": "Automatic payouts are paused",
       "ready": "Included in the next Monday batch",
       "flagged": "Payouts are paused while a complaint is open",
-      "blocked": "Payouts resume after the temporary block ends {{date}}",
+      "blocked": "Payouts resume when the temporary block ends on {{date}}",
       "payout_hold": "An admin has paused your payouts",
       "account_unverified": "Add a verified bank account or UPI id",
       "account_rejected": "The bank name does not match your Aadhaar name",

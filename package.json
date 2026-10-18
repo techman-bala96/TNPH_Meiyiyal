@@ -10,6 +10,7 @@
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.app.json --noEmit",
     "test:e2e": "playwright test",
+    "test:unit": "node --experimental-strip-types --test tests/unit/*.test.mjs",
     "test:db": "for f in supabase/tests/*.sql; do docker exec -i supabase_db_meyiyal-local psql -U postgres -v ON_ERROR_STOP=1 < $f || exit 1; done",
     "preview": "vite preview",
     "agent:dev": "services/agent/run.sh",

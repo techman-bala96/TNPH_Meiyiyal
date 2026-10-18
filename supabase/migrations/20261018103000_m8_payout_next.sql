@@ -1,5 +1,6 @@
 -- Next payout is the first Monday 10:00 IST on or after the worker can actually be paid
--- (cool-off, 72h hold, temporary block). Failed payouts remember how many entries went back.
+-- (cool-off, 72h hold, temporary block). No date while the batch is paused. Failed payouts remember
+-- how many entries went back.
 
 ALTER TABLE public.payout_requests ADD COLUMN IF NOT EXISTS entry_count integer NOT NULL DEFAULT 0;
 UPDATE public.payout_requests p
@@ -52,6 +53,8 @@ BEGIN
   IF _block IN ('flagged','payout_hold','not_approved','account_unverified','account_rejected','account_review','in_flight') THEN
     _show := false;
   END IF;
+  -- Batch is switched off: no Monday will pay until an admin resumes it.
+  IF _reason = 'paused' THEN _show := false; END IF;
   IF _a.validation_status = 'verified' AND _a.cooling_until IS NOT NULL AND _a.cooling_until > _gate THEN
     _gate := _a.cooling_until;
   END IF;
@@ -73,7 +76,10 @@ BEGIN
   END IF;
   IF _reason = 'cooling' THEN _until := _a.cooling_until;
   ELSIF _reason = 'blocked' THEN _until := _wk.blocked_until;
-  ELSIF _reason = 'on_hold' THEN _until := _ready;
+  ELSIF _reason = 'on_hold' THEN
+    -- Held earnings that will never reach the minimum still say when the next one unlocks.
+    _until := COALESCE(_ready, (SELECT min(e.available_at) FROM public.worker_earnings e
+                                WHERE e.worker_user_id = _u AND e.payout_id IS NULL AND e.available_at > now()));
   END IF;
 
   RETURN jsonb_build_object(

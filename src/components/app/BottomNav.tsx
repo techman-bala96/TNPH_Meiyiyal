@@ -24,7 +24,7 @@ export function BottomNav() {
   return (
     <>
       <div aria-hidden className="h-[calc(4.5rem+env(safe-area-inset-bottom))] md:h-24" />
-      <nav data-testid="bottom-nav" aria-label={t("nav.label")}
+      <nav data-testid="bottom-nav" data-bottom-nav aria-label={t("nav.label")}
         className="fixed inset-x-0 bottom-0 z-40 mx-auto max-w-md border-t bg-background/85 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl animate-in slide-in-from-bottom-4 fade-in duration-300 md:bottom-4 md:rounded-3xl md:border md:shadow-xl">
         <div className="relative grid grid-cols-3">
           {active >= 0 && (

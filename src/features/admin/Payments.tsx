@@ -6,9 +6,9 @@ import { Check, Loader2, RotateCcw, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { rpcErr } from "@/features/consult/api";
 import { inr, usePacks, type Pack } from "@/features/payments/api";
+import { formatIst } from "@/lib/payoutSchedule";
 
 const chip = (s: string) => s === "paid" || s === "verified" ? "bg-emerald-500/15 text-emerald-700" : s === "failed" || s === "rejected" || s === "reversed" ? "bg-destructive/10 text-destructive" : s === "refunded" || s === "review" ? "bg-sky-500/15 text-sky-700" : s === "requested" || s === "queued" || s === "processing" ? "bg-amber-500/15 text-amber-700" : "bg-muted text-muted-foreground";
-const ist = (iso: string) => new Date(iso).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 const returnedStatus = (s: string) => s === "failed" || s === "reversed" || s === "rejected";
 
 export function PacksEditor() {
@@ -69,7 +69,7 @@ export function PaymentsView() {
 type PayoutRow = { id: string; worker_user_id: string; worker_name: string; amount: number; status: string; reference: string | null; admin_note: string | null; requested_at: string; items: number; review_reason: string | null; failure_reason: string | null; account_mask: string | null; payout_hold: boolean };
 type AccountRow = { worker_user_id: string; worker_name: string; kind: string; account_mask: string; ifsc: string | null; status: string; registered_name: string | null; failure_reason: string | null; duplicate: boolean; cooling_until: string | null; payout_hold: boolean; flag_active: boolean };
 export function PayoutsAdmin() {
-  const { t } = useTranslation(); const qc = useQueryClient(); const [ref, setRef] = useState<Record<string, string>>({}); const [busy, setBusy] = useState(false);
+  const { t, i18n } = useTranslation(); const lang = i18n.resolvedLanguage ?? i18n.language; const ist = (iso: string) => formatIst(iso, lang); const why = (code: string) => t(`admin.payout.why.${code}`, { defaultValue: code }); const qc = useQueryClient(); const [ref, setRef] = useState<Record<string, string>>({}); const [busy, setBusy] = useState(false);
   const q = useQuery({ queryKey: ["admin-payouts"], queryFn: async () => { const { data, error } = await supabase.rpc("admin_payouts"); if (error) throw error; return data as unknown as PayoutRow[]; } });
   const accounts = useQuery({ queryKey: ["admin-payout-accounts"], queryFn: async () => { const { data, error } = await supabase.rpc("admin_payout_accounts"); if (error) throw error; return data as unknown as AccountRow[]; } });
   const auto = useQuery({ queryKey: ["payouts-auto"], queryFn: async () => {
@@ -119,7 +119,7 @@ export function PayoutsAdmin() {
         {accounts.data?.map((a) => (
           <div key={a.worker_user_id} data-testid="payout-account-admin" data-status={a.status} data-name={a.worker_name} className="card-soft space-y-2 p-3 text-sm">
             <div className="flex items-center justify-between gap-2"><b>{a.worker_name}</b><span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${chip(a.status)}`}>{t(`earn.status.${a.status}`)}</span></div>
-            <p className="text-[11px] text-muted-foreground">{a.account_mask}{a.ifsc ? ` · ${a.ifsc}` : ""}{a.registered_name ? ` · ${a.registered_name}` : ""}{a.duplicate ? ` · ${t("admin.payout.duplicate")}` : ""}{a.failure_reason ? ` · ${a.failure_reason}` : ""}{a.flag_active ? ` · ${t("admin.payout.flagged")}` : ""}</p>
+            <p className="text-[11px] text-muted-foreground">{a.account_mask}{a.ifsc ? ` · ${a.ifsc}` : ""}{a.registered_name ? ` · ${a.registered_name}` : ""}{a.duplicate ? ` · ${t("admin.payout.duplicate")}` : ""}{a.failure_reason && !(a.duplicate && a.failure_reason === "duplicate") ? ` · ${why(a.failure_reason)}` : ""}{a.flag_active ? ` · ${t("admin.payout.flagged")}` : ""}</p>
             {a.status === "verified" && a.cooling_until && new Date(a.cooling_until).getTime() > Date.now() && <p data-testid="payout-cooling-until" className="text-[11px] text-muted-foreground">{t("admin.payout.coolingUntil", { date: ist(a.cooling_until) })}</p>}
             <div className="flex flex-wrap gap-2">
               <button data-testid="payout-hold" onClick={() => hold(a.worker_user_id, !a.payout_hold)} className="rounded-lg border px-2 py-1 text-xs font-semibold">{a.payout_hold ? t("admin.payout.releaseHold") : t("admin.payout.hold")}</button>
@@ -132,7 +132,7 @@ export function PayoutsAdmin() {
         {q.data?.map((r) => (
           <div key={r.id} data-testid="payout-admin-row" data-status={r.status} data-name={r.worker_name} data-reason={r.review_reason ?? ""} className="card-soft space-y-2 p-3 text-sm">
             <div className="flex items-center justify-between gap-2"><b>{r.worker_name} · {inr(Number(r.amount), 2)}</b><span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${chip(r.status)}`}>{t(`earn.status.${r.status}`)}</span></div>
-            <p className="text-[11px] text-muted-foreground">{new Date(r.requested_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })} · {returnedStatus(r.status) ? (Number(r.items) > 0 ? t("admin.payout.returned", { count: Number(r.items) }) : t("admin.payout.returnedNone")) : t("admin.payout.items", { n: r.items })}{r.account_mask ? ` · ${r.account_mask}` : ""}{r.reference ? ` · ${r.reference}` : ""}{r.admin_note ? ` · ${r.admin_note}` : ""}{r.failure_reason ? ` · ${r.failure_reason}` : ""}{r.review_reason ? ` · ${t("admin.payout.reviewReason", { reason: r.review_reason })}` : ""}</p>
+            <p className="text-[11px] text-muted-foreground">{ist(r.requested_at)} · {returnedStatus(r.status) ? (Number(r.items) > 0 ? t("admin.payout.returned", { count: Number(r.items) }) : t("admin.payout.returnedNone")) : t("admin.payout.items", { count: Number(r.items) })}{r.account_mask ? ` · ${r.account_mask}` : ""}{r.reference ? ` · ${r.reference}` : ""}{r.admin_note ? ` · ${r.admin_note}` : ""}{r.failure_reason ? ` · ${why(r.failure_reason)}` : ""}{r.review_reason ? ` · ${t("admin.payout.reviewReason", { reason: why(r.review_reason) })}` : ""}</p>
             {r.status === "review" && <button data-testid="payout-approve" onClick={() => approve(r.id)} className="rounded-lg bg-primary px-2.5 py-1.5 text-xs font-semibold text-primary-foreground">{t("admin.payout.send")}</button>}
             {(open(r.status) || r.status === "review") && <div className="flex gap-2">
               <input data-testid="payout-ref" placeholder={t("admin.payout.refOrReason")} value={ref[r.id] ?? ""} onChange={(e) => setRef((x) => ({ ...x, [r.id]: e.target.value }))} className="min-w-0 flex-1 rounded-lg border bg-background px-2 py-1.5 text-xs" />

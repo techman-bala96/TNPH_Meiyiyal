@@ -105,8 +105,22 @@ DO $$ DECLARE _earn bigint; BEGIN
      OR (public.my_earnings()->>'next_batch')::timestamptz <> timestamptz '2026-11-09 10:00:00+05:30' THEN
     RAISE EXCEPTION 'FAIL: hold next %', public.my_earnings(); END IF;
   DELETE FROM public.worker_earnings WHERE id = _earn;
+  -- Held earnings under the minimum: no payout date, but the line still says when they unlock.
+  INSERT INTO public.worker_earnings(worker_user_id, gross, commission_pct, commission, net, available_at)
+  VALUES ('00000000-0000-0000-0000-00000000a801', 180, 18, 30, 150, date_trunc('second', now() + interval '2 days')) RETURNING id INTO _earn;
+  IF public.my_earnings()->>'wait_reason' <> 'on_hold'
+     OR (public.my_earnings()->>'next_batch') IS NOT NULL
+     OR (public.my_earnings()->>'wait_until')::timestamptz IS DISTINCT FROM (SELECT available_at FROM public.worker_earnings WHERE id = _earn) THEN
+    RAISE EXCEPTION 'FAIL: hold under minimum %', public.my_earnings(); END IF;
+  DELETE FROM public.worker_earnings WHERE id = _earn;
+  -- Enough available but the batch is paused (payouts_auto is still false here): no Monday is promised.
+  INSERT INTO public.worker_earnings(worker_user_id, gross, commission_pct, commission, net, available_at)
+  VALUES ('00000000-0000-0000-0000-00000000a801', 300, 18, 50, 250, now() - interval '1 hour') RETURNING id INTO _earn;
+  IF public.my_earnings()->>'wait_reason' <> 'paused' OR (public.my_earnings()->>'next_batch') IS NOT NULL THEN
+    RAISE EXCEPTION 'FAIL: paused date %', public.my_earnings(); END IF;
+  DELETE FROM public.worker_earnings WHERE id = _earn;
   UPDATE public.worker_payout_accounts SET cooling_until = now() + interval '3 days' WHERE worker_user_id = '00000000-0000-0000-0000-00000000a801';
-  RAISE NOTICE 'PASS: next payout is the first Monday 10:00 IST on or after the cool-off or the hold release';
+  RAISE NOTICE 'PASS: next payout is the first Monday 10:00 IST on or after the cool-off or the hold release; none while paused';
 END $$;
 SET LOCAL role authenticated;
 SELECT pg_temp.as_('00000000-0000-0000-0000-00000000a802');
