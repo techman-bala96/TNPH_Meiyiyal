@@ -551,8 +551,12 @@ BEGIN
   SELECT * INTO _w FROM public.workers WHERE id = _worker;
   IF NOT FOUND THEN RAISE EXCEPTION 'worker not found'; END IF;
   _reg := lower(btrim(COALESCE(_w.reg_data->>'reg_no', _w.reg_data->>'enrolment_no', _w.reg_data->>'coa_no', '')));
+  -- A live or banned fingerprint blocks reuse. A row left behind when an unbanned
+  -- account was deleted (worker_id null, blocked false) can be claimed again.
   IF _st = 'approved' AND _reg <> '' AND EXISTS (
-    SELECT 1 FROM public.identity_fingerprints f WHERE f.kind = 'reg_no' AND f.hash = _reg AND f.worker_id IS DISTINCT FROM _worker
+    SELECT 1 FROM public.identity_fingerprints f WHERE f.kind = 'reg_no' AND f.hash = _reg
+      AND f.worker_id IS DISTINCT FROM _worker
+      AND (f.blocked OR f.worker_id IS NOT NULL)
   ) THEN RAISE EXCEPTION 'registration number already used'; END IF;
   IF _st = 'approved' THEN
     SELECT * INTO _c FROM public.verification_cases WHERE worker_id = _worker ORDER BY created_at DESC LIMIT 1;
@@ -568,7 +572,8 @@ BEGIN
     END IF;
     IF _reg <> '' THEN
       INSERT INTO public.identity_fingerprints(kind, hash, worker_id) VALUES ('reg_no', _reg, _worker)
-      ON CONFLICT (kind, hash) DO NOTHING;
+      ON CONFLICT (kind, hash) DO UPDATE SET worker_id = EXCLUDED.worker_id
+      WHERE identity_fingerprints.worker_id IS NULL AND NOT identity_fingerprints.blocked;
     END IF;
     RETURN 'approved';
   END IF;

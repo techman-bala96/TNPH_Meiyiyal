@@ -19,11 +19,14 @@ INSERT INTO public.user_roles(user_id, role) VALUES
  ('00000000-0000-0000-0000-00000000a7a2','admin');
 
 -- Taxonomy, requirements, inherited rates. No login required.
-DO $$ DECLARE req jsonb; chat int; spec int; BEGIN
+DO $$ DECLARE req jsonb; chat numeric; spec numeric; BEGIN
   IF NOT EXISTS (SELECT 1 FROM public.taxonomy_nodes WHERE slug = 'professionals--doctor--veterinary' AND name_i18n->>'en' = 'Veterinary' AND name_i18n->>'ta' = 'கால்நடை மருத்துவம்') THEN
     RAISE EXCEPTION 'FAIL: veterinary node';
   END IF;
-  IF NOT ('vet' = ANY (SELECT synonyms FROM public.taxonomy_nodes WHERE slug = 'professionals--doctor--veterinary')) THEN
+  IF NOT EXISTS (
+    SELECT 1 FROM public.taxonomy_nodes
+    WHERE slug = 'professionals--doctor--veterinary' AND synonyms @> ARRAY['vet']::text[]
+  ) THEN
     RAISE EXCEPTION 'FAIL: veterinary synonym';
   END IF;
   IF NOT EXISTS (SELECT 1 FROM public.taxonomy_nodes WHERE slug = 'professionals--engineer--structural') THEN RAISE EXCEPTION 'FAIL: structural'; END IF;
@@ -50,9 +53,9 @@ DO $$ DECLARE req jsonb; chat int; spec int; BEGIN
   IF public.badge_tier_for('professionals--engineer--electrical', '{"licence_no":"EL1"}'::jsonb) <> 'licence' THEN RAISE EXCEPTION 'FAIL: electrical filled'; END IF;
   IF public.badge_tier_for('professionals--doctor--nutrition-diet', '{"reg_no":"IDA1"}'::jsonb) <> 'degree' THEN RAISE EXCEPTION 'FAIL: nutrition stays degree'; END IF;
   IF public.badge_tier_for('professionals--doctor--psychology-counselling--clinical-psychologist', '{"reg_no":"CRR1"}'::jsonb) <> 'licence' THEN RAISE EXCEPTION 'FAIL: clinical psych licence'; END IF;
-  chat := (public.rates_for('professionals--doctor--veterinary--poultry')->'chat'->>'rate')::int;
-  IF chat IS DISTINCT FROM (public.rates_for('professionals--doctor')->'chat'->>'rate')::int THEN RAISE EXCEPTION 'FAIL: vet rates %', chat; END IF;
-  spec := (public.rates_for('professionals--doctor--allopathy--radiology')->'chat'->>'rate')::int;
+  chat := (public.rates_for('professionals--doctor--veterinary--poultry')->'chat'->>'rate')::numeric;
+  IF chat IS DISTINCT FROM (public.rates_for('professionals--doctor')->'chat'->>'rate')::numeric THEN RAISE EXCEPTION 'FAIL: vet rates %', chat; END IF;
+  spec := (public.rates_for('professionals--doctor--allopathy--radiology')->'chat'->>'rate')::numeric;
   IF spec <> 10 THEN RAISE EXCEPTION 'FAIL: radiology rate %', spec; END IF;
   RAISE NOTICE 'PASS: taxonomy, veterinary, physio council, badges, rates';
 END $$;
