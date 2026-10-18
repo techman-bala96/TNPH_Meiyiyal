@@ -1,11 +1,14 @@
 import { createHmac } from "node:crypto";
+import { mkdirSync } from "node:fs";
 import { expect, test, type Page } from "@playwright/test";
 import { IMG, grantAdmin, signInAt, sql } from "./workerFlow";
 import { makeWorker, open } from "./consultFlow";
 
 const API = "http://127.0.0.1:54321";
 const WEBHOOK_SECRET = "mock_webhook_secret_local";
-const ART = "/opt/cursor/artifacts";
+// Screenshots for review; override with E2E_ARTIFACTS_DIR (Cursor cloud used /opt/cursor/artifacts).
+const ART = process.env.E2E_ARTIFACTS_DIR ?? "test-results/artifacts";
+mkdirSync(ART, { recursive: true });
 const NODE = "professionals--doctor--allopathy";
 const shot = (page: Page, name: string) => page.screenshot({ path: `${ART}/${test.info().project.name}_${name}.png`, fullPage: true });
 async function runBatch(page: Page) {
@@ -44,15 +47,18 @@ test("payouts: penny-drop success, name mismatch, weekly run, flagged worker ski
     await expect(toast).toBeVisible();
     await expect(toast).toContainText("Account verified");
     if (test.info().project.name === "mobile") {
-      const toastBox = await toast.boundingBox();
-      const navBox = await w.page.getByTestId("bottom-nav").boundingBox();
-      expect(toastBox && navBox && toastBox.y + toastBox.height <= navBox.y + 1).toBe(true);
+      // Sonner slides the toast up from below the viewport; measure once it has settled, not mid-animation.
+      await expect.poll(async () => {
+        const toastBox = await toast.boundingBox();
+        const navBox = await w.page.getByTestId("bottom-nav").boundingBox();
+        return !!(toastBox && navBox && toastBox.y + toastBox.height <= navBox.y + 1);
+      }, { timeout: 3_000 }).toBe(true);
     }
     await expect(w.page.getByTestId("payout-mask")).toContainText("5678");
     await expect(w.page.getByTestId("payout-registered")).toContainText("Kavitha Raman");
     await expect(w.page.getByTestId("payout-wait")).toHaveAttribute("data-reason", "cooling");
-    const coolingEpoch = Number(accountTime(w.email, "extract(epoch FROM a.cooling_until)::bigint"));
-    const eligibleEpoch = Number(accountTime(w.email, "extract(epoch FROM public.payout_next_at(a.cooling_until))::bigint"));
+    const coolingEpoch = Number(accountTime(w.email, "floor(extract(epoch FROM a.cooling_until))::bigint"));
+    const eligibleEpoch = Number(accountTime(w.email, "floor(extract(epoch FROM public.payout_next_at(a.cooling_until)))::bigint"));
     const until = await w.page.getByTestId("payout-wait").getAttribute("data-until");
     const nextAt = await w.page.getByTestId("payout-next").getAttribute("data-at");
     expect(Math.floor(new Date(until ?? "").getTime() / 1000)).toBe(coolingEpoch);
