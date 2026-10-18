@@ -58,7 +58,7 @@ function Row({ m, i }: { m: WorkerMessage; i: number }) {
       {m.voice_path && <div className="flex items-center gap-2 text-xs text-muted-foreground"><Mic className="h-4 w-4 text-rose-500" />{t("nearby.messages.voice", { s: m.voice_seconds ?? 0 })}
         {audio && <audio data-testid="message-audio" src={audio} controls className="h-9 min-w-0 flex-1" />}</div>}
       {m.role === "user" && m.refund_at && m.status !== "responded" && <p className="flex items-center gap-1 text-[11px] text-muted-foreground"><Undo2 className="h-3.5 w-3.5" />{t("nearby.messages.refundOn", { date: new Date(m.refund_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" }) })}</p>}
-      {ready && <Link to={`/w/${m.worker_id}?connect=1`} data-testid="message-connect" className="flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 py-2.5 text-sm font-semibold text-white shadow-md animate-pulse">
+      {ready && <Link to={`/w/${m.worker_id}?connect=1`} data-testid="message-connect" className="flex items-center justify-center gap-2 rounded-2xl bg-emerald-600 py-2.5 text-sm font-semibold text-white shadow-md ring-4 ring-emerald-500/20 transition hover:bg-emerald-700">
         <Zap className="h-4 w-4" />{t("nearby.messages.ready", { name: m.other_name })} · {t("nearby.messages.connect")}</Link>}
       {m.role === "worker" && (m.status === "sent" || m.status === "read") && (
         <div className="grid grid-cols-[1fr_auto] gap-2">

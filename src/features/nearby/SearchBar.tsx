@@ -22,7 +22,7 @@ export function SearchBar({ compact = false }: { compact?: boolean }) {
   const [question, setQuestion] = useState<AgentPlus["question"]>(null); const [note, setNote] = useState<string | null>(null);
   const pending = useRef<Record<string, unknown> | null>(null); const box = useRef<HTMLDivElement>(null); const input = useRef<HTMLInputElement>(null);
   const [recent, setRecent] = useState<string[]>(readRecent);
-  const nodes = tax.data ?? [];
+  const nodes = useMemo(() => tax.data ?? [], [tax.data]);
   const hits = useMemo(() => suggest(q, nodes.map((n) => ({ slug: n.slug, parent: n.parent, kind: n.kind, name: n.name as { en: string; ta?: string }, synonyms: n.synonyms }))), [q, nodes]);
   const examples = t("nearby.search.examples", { returnObjects: true }) as string[];
 
@@ -72,7 +72,7 @@ export function SearchBar({ compact = false }: { compact?: boolean }) {
       </form>
 
       {showPanel && (
-        <div data-testid="search-panel" className="absolute inset-x-0 top-full mt-2 max-h-[60dvh] overflow-y-auto rounded-2xl border bg-popover p-2 text-popover-foreground shadow-2xl animate-in fade-in slide-in-from-top-1">
+        <div data-testid="search-panel" className="absolute inset-x-0 top-full z-50 mt-2 max-h-[60dvh] overflow-y-auto rounded-2xl border bg-popover p-2 text-popover-foreground shadow-2xl animate-in fade-in slide-in-from-top-1">
           {question && (
             <div data-testid="search-question" className="space-y-2 p-2">
               <p className="flex items-center gap-1.5 text-sm font-semibold"><Sparkles className="h-4 w-4 text-primary" />{question.text[lang]}</p>

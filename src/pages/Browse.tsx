@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { ArrowLeft, ChevronRight, House } from "lucide-react";
 import { WorkerList } from "@/components/app/WorkerList";
 import { HomeHeader } from "@/components/app/HomeHeader";
+import { SearchBar } from "@/features/nearby/SearchBar";
 import { childrenOf, nodeName, pathTo, useTaxonomy, type TaxNode } from "@/features/taxonomy/useTaxonomy";
 import { iconFor } from "@/features/taxonomy/icons";
 import { patternStyle, themeFor } from "@/features/taxonomy/themes";
@@ -18,7 +19,7 @@ export default function Browse() {
   const { data: loc } = useCurrentLocation(); const [sp] = useSearchParams();
   const all = tax.data ?? [];
   const node = all.find((n) => n.slug === slug);
-  if (tax.isLoading) return <main className="mx-auto max-w-md p-4"><div className="h-40 animate-pulse rounded-3xl bg-muted" /></main>;
+  if (tax.isLoading) return <main className="mx-auto max-w-md p-4 md:max-w-3xl lg:max-w-5xl"><div className="h-40 animate-pulse rounded-3xl bg-muted" /></main>;
   if (!node) return <Navigate to="/" replace />;
 
   const path = pathTo(all, slug);
@@ -30,8 +31,8 @@ export default function Browse() {
   const where = placeLabel(loc ?? null, lang === "ta");
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-md flex-col pb-8">
-      <div className="px-4 pt-3"><HomeHeader from={`/browse/${slug}`} /></div>
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col pb-8 md:max-w-3xl lg:max-w-5xl">
+      <div className="space-y-3 px-4 pt-3"><HomeHeader from={`/browse/${slug}`} /><SearchBar compact /></div>
 
       <section data-testid="browse-hero" data-theme={th.key} className={`relative mx-3 mt-3 overflow-hidden rounded-3xl p-4 shadow-md ${th.hero} ${th.ink}`}>
         <div className="pointer-events-none absolute inset-0" style={patternStyle(th)} />
@@ -73,7 +74,7 @@ export default function Browse() {
 function TileGrid({ kids, all, tile, ring, lang }: { kids: TaxNode[]; all: TaxNode[]; tile: string; ring: string; lang: string }) {
   const { t } = useTranslation();
   return (
-    <ul data-testid="node-grid" className="grid grid-cols-2 gap-3">
+    <ul data-testid="node-grid" className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
       {kids.map((k) => {
         const Icon = iconFor(k.icon); const n = childrenOf(all, k.slug).length;
         return (

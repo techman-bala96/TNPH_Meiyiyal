@@ -429,7 +429,9 @@
     "live": "LIVE",
     "sys": {
       "session_started": "Session started",
-      "credits_exhausted": "Credits used up · session ended"
+      "credits_exhausted": "Credits used up · session ended",
+      "session_paused": "Connection lost · billing paused",
+      "session_resumed": "Back together · session continues"
     }
   },
   "feedback": {
@@ -712,7 +714,7 @@
     "lawyerNote": "Advocates are shown nearest first (Bar Council rules don't allow ranking by rating).",
     "auto": {
       "title": "Get connected fast",
-      "sub": "We'll ring the nearest available {{name}} one by one",
+      "sub": "We'll ring the nearest available {{name}} expert one by one",
       "toggle": "Auto request",
       "on": "On",
       "off": "Off",
@@ -729,7 +731,7 @@
       "topUp": "Top up"
     },
     "searching": {
-      "title": "Finding your {{name}}",
+      "title": "Finding a {{name}} expert near you",
       "ringing": "Ringing {{name}}",
       "away": "{{km}} away",
       "tryOf": "Trying {{n}} of {{max}}",

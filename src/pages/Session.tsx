@@ -20,7 +20,7 @@ import type { SessionState } from "@/features/nearby/api";
 type Info = SessionInfo & { worker_id?: string; ended_by?: "me" | "other" | null; refunded?: number; reconnect_until?: string | null };
 const RESUME_MIN = 3;
 
-const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+const fmt = (x: number) => { const s = Math.max(0, x); return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(Math.floor(s % 60)).padStart(2, "0")}`; };
 const MAX = 20 * 1024 * 1024;
 
 export default function Session() {

@@ -46,6 +46,8 @@ test("user ↔ lawyer: ring/decline/timeout/accept, chat + file, video + voice c
   expect(await ringKind(law.page)).toBeNull();
 
   // ---- timeout (expire server-side instead of waiting 45s)
+  // the "ask again" rules (wait a minute after a no; at most two misses per 30 min) are covered by nearby.spec — step past them here
+  sql(`UPDATE public.consult_requests SET created_at = created_at - interval '31 minutes', responded_at = responded_at - interval '31 minutes', expires_at = expires_at - interval '31 minutes' WHERE user_name='Meena Lakshmi' AND status <> 'ringing';`);
   await card.click(); await u.page.getByTestId("req-voice").click();
   await expect(law.page.getByTestId("incoming-ring")).toBeVisible({ timeout: 10_000 });
   sql(`UPDATE public.consult_requests SET expires_at = now() - interval '1 second' WHERE status='ringing' AND user_name='Meena Lakshmi';`);
@@ -53,6 +55,8 @@ test("user ↔ lawyer: ring/decline/timeout/accept, chat + file, video + voice c
   await expect(law.page.getByTestId("incoming-ring")).toHaveCount(0, { timeout: 15_000 });
 
   // ---- accept chat
+  // the "ask again" rules (wait a minute after a no; at most two misses per 30 min) are covered by nearby.spec — step past them here
+  sql(`UPDATE public.consult_requests SET created_at = created_at - interval '31 minutes', responded_at = responded_at - interval '31 minutes', expires_at = expires_at - interval '31 minutes' WHERE user_name='Meena Lakshmi' AND status <> 'ringing';`);
   await card.click(); await u.page.getByTestId("req-chat").click();
   await law.page.getByTestId("ring-accept").click();
   await expect(law.page.getByTestId("session-page")).toBeVisible();

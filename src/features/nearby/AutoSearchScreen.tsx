@@ -25,7 +25,7 @@ export function AutoSearchScreen({ v, nodeLabel, onCancel, onMore, onAllTn, onMe
   const pct = cur ? Math.min(100, (left / ringTotal) * 100) : 0;
   const exhausted = v.status === "exhausted";
   return (
-    <div data-testid="auto-search" data-status={v.status} className="fixed inset-0 z-[100] flex flex-col bg-gradient-to-b from-slate-950 via-slate-900 to-primary/70 text-white animate-in fade-in">
+    <div data-testid="auto-search" data-status={v.status} className="fixed inset-0 z-[100] flex flex-col bg-slate-950 bg-gradient-to-b from-slate-950 via-slate-900 to-primary/70 text-white animate-in fade-in">
       <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-between gap-6 p-6 pb-10 md:max-w-lg md:justify-center">
         {!exhausted ? (<>
           <div className="mt-6 text-center">

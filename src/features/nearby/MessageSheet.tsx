@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -19,9 +19,9 @@ export function MessageSheet({ target, onClose }: { target: MsgTarget | null; on
   const [body, setBody] = useState(""); const [blob, setBlob] = useState<Blob | null>(null); const [secs, setSecs] = useState(0);
   const [rec, setRec] = useState(false); const [sending, setSending] = useState(false);
   const mr = useRef<MediaRecorder | null>(null); const timer = useRef<number | null>(null); const started = useRef(0);
-  const url = blob ? URL.createObjectURL(blob) : null;
+  const url = useMemo(() => (blob ? URL.createObjectURL(blob) : null), [blob]);
   useEffect(() => () => { if (url) URL.revokeObjectURL(url); }, [url]);
-  useEffect(() => { if (!target) { setBody(""); setBlob(null); setSecs(0); stop(); } }, [target]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (!target) { setBody(""); setBlob(null); setSecs(0); stop(); } }, [target]);
 
   function stop() { if (timer.current) window.clearInterval(timer.current); timer.current = null; if (mr.current && mr.current.state !== "inactive") mr.current.stop(); setRec(false); }
   async function record() {
