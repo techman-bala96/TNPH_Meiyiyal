@@ -201,7 +201,16 @@
     "appealSubmit": "Request a review"
   },
   "admin": {
-    "title": "Verification",
+    "title": "Admin",
+    "heading": {
+      "queue": "Verification queue",
+      "moderation": "Moderation",
+      "rates": "Consult rates",
+      "audit": "Audit log",
+      "packs": "Credit packs",
+      "payments": "Payments",
+      "payouts": "Payouts"
+    },
     "empty": "Nothing here",
     "note": "Note to worker (required for reject / more info)",
     "approve": "Approve",
