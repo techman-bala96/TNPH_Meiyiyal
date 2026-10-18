@@ -436,7 +436,7 @@ Conventions used everywhere:
 - Bank and UPI penny-drop, Aadhaar name match, 3-day cool-off (including the first account), Monday 10:00 IST batch, ₹200 minimum, existing 72-hour hold. No TDS. Platform bears the fee. No Request tap once the account is verified.
 - `worker_payout_accounts` (mask + hash only), `payout_events`, `workers.payout_hold`, `kyc_verification.legal_name`.
 - Edge: `payout-fund-account`, `payout-run`, `payout-webhook`, mock provider in `_shared/payouts.ts`. Live RazorpayX calls are refused.
-- Earnings screen shows the masked account, verification state, next Monday, and why a payout is waiting. Admin Payouts tab: review queue, global pause, per-worker hold, cool-off release, break-glass mark-paid.
+- Earnings screen shows the masked account, verification state, the first Monday 10:00 IST batch on or after the worker is eligible (cool-off, 72-hour hold, temporary block), and the cool-off or hold end in IST. A rejected or flagged account does not show a payout date. Admin Payouts tab: review queue, global pause, per-worker hold, cool-off end, break-glass mark-paid. A failed, reversed, or rejected payout says how many earning entries went back to the balance (`entry_count`, migration `20261018103000_m8_payout_next.sql`).
 - **Tests:** `m8_payouts.sql`; `e2e/payouts.spec.ts` (penny-drop, name mismatch, weekly run, flagged skip, failure returns the balance). The M6 manual request path still runs when there is no verified account.
 
 ### UI — Bottom navigation (`137cf8e`)
@@ -760,7 +760,7 @@ Prerequisites: Linux/macOS, **Docker**, **Node 20** (box: v20.19.2), **Supabase 
 
 **Shipped in mock mode (M8, migration `20261018070000_m8_payouts.sql`).** No live RazorpayX HTTP. A verified bank or UPI account is paid by the Monday 10:00 IST batch; the worker does not tap Request. Manual request stays only when there is no verified account. Admin pay-now and break-glass mark-paid (UTR required) stay.
 
-- Cool-off is **3 days** for a new or changed account, including the first one. An admin can release it sooner (`payout_cooling_days`).
+- Cool-off is **3 days** for a new or changed account, including the first one. An admin can release it sooner (`payout_cooling_days`). The earnings screen's next payout is the Monday 10:00 IST batch on or after that cool-off (and after the 72-hour hold, when that is later). The cool-off line shows the end time in IST.
 - Same penny-drop and Aadhaar-name check for bank and UPI. The full account number is not stored (mask + hash + mock fund-account id).
 - Platform bears the transfer fee (`payout_fee_bearer=platform`; v1 does not deduct it even if flipped). No TDS (`tds_enabled=false`). PAN is optional text and is not verified.
 - Batch skips a flagged worker, a temporary block, an admin hold, a cool-off, a duplicate or unmatched account, and anything under ₹200 or still inside the 72-hour hold. Amounts ≥ ₹10,000 wait for review.

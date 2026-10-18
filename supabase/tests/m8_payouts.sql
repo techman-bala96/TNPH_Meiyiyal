@@ -65,6 +65,7 @@ DO $$ DECLARE r jsonb; a public.worker_payout_accounts; BEGIN
   r := public.payout_account_submit('bank','5010011110000','HDFC0001234','123456',NULL);
   IF r->>'status' <> 'rejected' OR r->>'reason' <> 'name_mismatch' OR r->>'registered_name' <> 'Other Person' THEN RAISE EXCEPTION 'FAIL: mismatch %', r; END IF;
   IF (SELECT count(*) FROM public.payout_requests WHERE worker_user_id=auth.uid()) <> 0 THEN RAISE EXCEPTION 'FAIL: mismatch created a payout'; END IF;
+  IF public.my_earnings()->>'wait_reason' <> 'account_rejected' OR public.my_earnings()->>'next_batch' IS NOT NULL THEN RAISE EXCEPTION 'FAIL: rejected date %', public.my_earnings(); END IF;
   r := public.payout_account_submit('upi','kavitha@okaxis',NULL,'123456','ABCDE1234F');
   IF r->>'status' <> 'verified' OR r->>'mask' <> 'ka••••@okaxis' THEN RAISE EXCEPTION 'FAIL: upi %', r; END IF;
   r := public.payout_account_submit('bank','5010012345678','HDFC0001234','123456',NULL);
@@ -75,11 +76,39 @@ DO $$ DECLARE r jsonb; a public.worker_payout_accounts; BEGIN
   IF row_to_json(a)::text LIKE '%5010012345678%' THEN RAISE EXCEPTION 'FAIL: full account stored'; END IF;
   IF (SELECT pan_number FROM public.kyc_verification WHERE worker_id='00000000-0000-0000-0000-00000000b801') <> 'ABCDE1234F'
      OR (SELECT pan_verified FROM public.kyc_verification WHERE worker_id='00000000-0000-0000-0000-00000000b801') THEN RAISE EXCEPTION 'FAIL: pan'; END IF;
-  IF public.my_earnings()->>'wait_reason' <> 'cooling' OR public.my_earnings()->>'next_batch' IS NULL THEN RAISE EXCEPTION 'FAIL: wait %', public.my_earnings(); END IF;
+  IF public.my_earnings()->>'wait_reason' <> 'cooling' OR public.my_earnings()->>'next_batch' IS NULL
+     OR (public.my_earnings()->>'next_batch')::timestamptz < (public.my_earnings()->'account'->>'cooling_until')::timestamptz
+     OR (public.my_earnings()->>'wait_until') IS DISTINCT FROM (public.my_earnings()->'account'->>'cooling_until') THEN
+    RAISE EXCEPTION 'FAIL: wait %', public.my_earnings(); END IF;
   BEGIN PERFORM public.payout_request(); RAISE EXCEPTION 'FAIL: request while verified';
   EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'FAIL%' THEN RAISE; END IF; END;
   RAISE NOTICE 'PASS: penny-drop verifies a matching bank or UPI, masks it, starts a 3-day cool-off, and does not store the number';
 END $$;
+RESET role;
+DO $$ DECLARE _earn bigint; BEGIN
+  PERFORM pg_temp.as_('00000000-0000-0000-0000-00000000a801');
+  IF public.payout_next_at('2026-10-21 12:00:00+05:30') <> timestamptz '2026-10-26 10:00:00+05:30' THEN
+    RAISE EXCEPTION 'FAIL: pinned monday %', public.payout_next_at('2026-10-21 12:00:00+05:30'); END IF;
+  IF public.payout_next_at('2026-10-26 10:00:00+05:30') <> timestamptz '2026-10-26 10:00:00+05:30' THEN
+    RAISE EXCEPTION 'FAIL: exact monday %', public.payout_next_at('2026-10-26 10:00:00+05:30'); END IF;
+  IF public.payout_next_at('2026-10-26 10:01:00+05:30') <> timestamptz '2026-11-02 10:00:00+05:30' THEN
+    RAISE EXCEPTION 'FAIL: after monday %', public.payout_next_at('2026-10-26 10:01:00+05:30'); END IF;
+  UPDATE public.worker_payout_accounts SET cooling_until = '2026-10-21 12:00:00+05:30' WHERE worker_user_id = '00000000-0000-0000-0000-00000000a801';
+  IF (public.my_earnings()->>'next_batch')::timestamptz <> timestamptz '2026-10-26 10:00:00+05:30'
+     OR (public.my_earnings()->>'wait_until')::timestamptz <> timestamptz '2026-10-21 12:00:00+05:30'
+     OR public.my_earnings()->>'wait_reason' <> 'cooling' THEN
+    RAISE EXCEPTION 'FAIL: cool-off next %', public.my_earnings(); END IF;
+  UPDATE public.worker_payout_accounts SET cooling_until = now() - interval '1 hour' WHERE worker_user_id = '00000000-0000-0000-0000-00000000a801';
+  INSERT INTO public.worker_earnings(worker_user_id, gross, commission_pct, commission, net, available_at)
+  VALUES ('00000000-0000-0000-0000-00000000a801', 300, 18, 50, 250, '2026-11-04 15:00:00+05:30') RETURNING id INTO _earn;
+  IF public.my_earnings()->>'wait_reason' <> 'on_hold'
+     OR (public.my_earnings()->>'next_batch')::timestamptz <> timestamptz '2026-11-09 10:00:00+05:30' THEN
+    RAISE EXCEPTION 'FAIL: hold next %', public.my_earnings(); END IF;
+  DELETE FROM public.worker_earnings WHERE id = _earn;
+  UPDATE public.worker_payout_accounts SET cooling_until = now() + interval '3 days' WHERE worker_user_id = '00000000-0000-0000-0000-00000000a801';
+  RAISE NOTICE 'PASS: next payout is the first Monday 10:00 IST on or after the cool-off or the hold release';
+END $$;
+SET LOCAL role authenticated;
 SELECT pg_temp.as_('00000000-0000-0000-0000-00000000a802');
 DO $$ DECLARE r jsonb; BEGIN
   r := public.payout_account_submit('bank','5010012345678','HDFC0001234','123456',NULL);
@@ -125,7 +154,7 @@ DO $$ DECLARE r jsonb; _id uuid; BEGIN
   PERFORM public.admin_payout_release_cooling('00000000-0000-0000-0000-00000000a801');
   r := public.admin_payout_run();
   SELECT id INTO _id FROM public.payout_requests WHERE worker_user_id='00000000-0000-0000-0000-00000000a801' AND status='processing';
-  IF _id IS NULL OR (SELECT amount FROM public.payout_requests WHERE id=_id) <> 328 THEN RAISE EXCEPTION 'FAIL: weekly %', r; END IF;
+  IF _id IS NULL OR (SELECT amount FROM public.payout_requests WHERE id=_id) <> 328 OR (SELECT entry_count FROM public.payout_requests WHERE id=_id) <> 1 THEN RAISE EXCEPTION 'FAIL: weekly %', r; END IF;
   IF (SELECT COALESCE(sum(net),0) FROM public.worker_earnings WHERE worker_user_id='00000000-0000-0000-0000-00000000a801' AND payout_id IS NULL AND available_at <= now()) <> 0 THEN RAISE EXCEPTION 'FAIL: earnings still free'; END IF;
   IF (SELECT count(*) FROM public.payout_requests WHERE worker_user_id='00000000-0000-0000-0000-00000000a801' AND status IN ('queued','processing','review','requested')) <> 1 THEN RAISE EXCEPTION 'FAIL: double payout'; END IF;
   PERFORM set_config('test.payout', _id::text, true);
@@ -177,6 +206,7 @@ DO $$ DECLARE r jsonb; BEGIN
   PERFORM public.admin_payout_release_cooling('00000000-0000-0000-0000-00000000a801');
   r := public.admin_payout_run();
   IF (SELECT count(*) FROM public.payout_requests WHERE worker_user_id='00000000-0000-0000-0000-00000000a801' AND status='failed' AND failure_reason='beneficiary') <> 1 THEN RAISE EXCEPTION 'FAIL: 0002 status %', r; END IF;
+  IF (SELECT items FROM public.admin_payouts(NULL) p WHERE p.worker_user_id='00000000-0000-0000-0000-00000000a801' AND p.failure_reason='beneficiary') <> 1 THEN RAISE EXCEPTION 'FAIL: returned count'; END IF;
   IF (SELECT COALESCE(sum(net),0) FROM public.worker_earnings WHERE worker_user_id='00000000-0000-0000-0000-00000000a801' AND payout_id IS NULL AND available_at <= now()) <> 328 THEN RAISE EXCEPTION 'FAIL: 0002 balance'; END IF;
   IF (SELECT validation_status FROM public.worker_payout_accounts WHERE worker_user_id='00000000-0000-0000-0000-00000000a801') <> 'failed' THEN RAISE EXCEPTION 'FAIL: 0002 account'; END IF;
   r := public.admin_payout_run();
@@ -216,6 +246,8 @@ DO $$ DECLARE r jsonb; n int; BEGIN
   SELECT count(*) INTO n FROM public.payout_requests WHERE worker_user_id='00000000-0000-0000-0000-00000000a801';
   r := public.payout_run(false, '00000000-0000-0000-0000-00000000a801');
   IF (SELECT count(*) FROM public.payout_requests WHERE worker_user_id='00000000-0000-0000-0000-00000000a801') <> n THEN RAISE EXCEPTION 'FAIL: flagged paid %', r; END IF;
+  PERFORM pg_temp.as_('00000000-0000-0000-0000-00000000a801');
+  IF (public.my_earnings()->>'next_batch') IS NOT NULL THEN RAISE EXCEPTION 'FAIL: flagged date %', public.my_earnings(); END IF;
   IF (SELECT COALESCE(sum(net),0) FROM public.worker_earnings WHERE worker_user_id='00000000-0000-0000-0000-00000000a801' AND payout_id IS NULL AND net=12000) <> 12000 THEN RAISE EXCEPTION 'FAIL: flagged balance'; END IF;
   RAISE NOTICE 'PASS: a flagged worker is skipped and keeps the balance';
 END $$;
@@ -248,7 +280,8 @@ SET LOCAL role authenticated;
 SELECT pg_temp.as_('00000000-0000-0000-0000-00000000a804');
 DO $$ DECLARE r jsonb; BEGIN
   r := public.payout_request();
-  IF (r->>'amount')::numeric <> 246 OR (SELECT status FROM public.payout_requests WHERE id=(r->>'id')::uuid) <> 'requested' THEN RAISE EXCEPTION 'FAIL: manual %', r; END IF;
+  IF (r->>'amount')::numeric <> 246 OR (SELECT status FROM public.payout_requests WHERE id=(r->>'id')::uuid) <> 'requested'
+     OR (SELECT entry_count FROM public.payout_requests WHERE id=(r->>'id')::uuid) <> 1 THEN RAISE EXCEPTION 'FAIL: manual %', r; END IF;
   BEGIN PERFORM public.payout_request(); RAISE EXCEPTION 'FAIL: second manual';
   EXCEPTION WHEN raise_exception THEN IF SQLERRM LIKE 'FAIL%' THEN RAISE; END IF; END;
   RAISE NOTICE 'PASS: without a verified account the worker can still request, and only once';

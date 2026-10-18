@@ -11,7 +11,7 @@ import { inr } from "@/features/payments/api";
 type Payout = { id: string; amount: number; status: string; reference: string | null; admin_note: string | null; failure_reason: string | null; requested_at: string; decided_at: string | null };
 type Week = { week: string; sessions: number; gross: number; commission: number; net: number };
 type Account = { kind: "bank" | "upi"; mask: string; ifsc: string | null; status: string; registered_name: string | null; reason: string | null; duplicate: boolean; cooling_until: string | null; verified_at: string | null };
-type Earn = { is_worker: boolean; commission_pct: number | null; lifetime_gross: number; lifetime_net: number; on_hold: number; available: number; requested: number; paid: number; payout_min: number; hold_hours: number; payouts_auto: boolean; next_batch: string | null; wait_reason: string | null; cooling_days: number; account: Account | null; weeks: Week[]; payouts: Payout[] };
+type Earn = { is_worker: boolean; commission_pct: number | null; lifetime_gross: number; lifetime_net: number; on_hold: number; available: number; requested: number; paid: number; payout_min: number; hold_hours: number; payouts_auto: boolean; next_batch: string | null; wait_reason: string | null; wait_until: string | null; cooling_days: number; account: Account | null; weeks: Week[]; payouts: Payout[] };
 
 const chip = (s: string) => s === "paid" || s === "verified" ? "bg-emerald-500/15 text-emerald-700" : s === "failed" || s === "rejected" || s === "reversed" ? "bg-destructive/10 text-destructive" : s === "review" ? "bg-sky-500/15 text-sky-700" : "bg-amber-500/15 text-amber-700";
 const ist = (iso: string) => new Date(iso).toLocaleString("en-IN", { timeZone: "Asia/Kolkata", weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
@@ -77,8 +77,8 @@ export default function Earnings() {
             {e.account.registered_name && <p data-testid="payout-registered" className="text-xs text-muted-foreground">{t("earn.registered")}: {e.account.registered_name}</p>}
             <button type="button" data-testid="payout-change" onClick={() => setEditing(true)} className="text-xs font-semibold text-primary">{t("earn.change")}</button>
           </div>}
-          {e.next_batch && <p className="text-xs"><span className="text-muted-foreground">{t("earn.next")}: </span><b data-testid="payout-next">{ist(e.next_batch)}</b></p>}
-          {e.wait_reason && <p data-testid="payout-wait" data-reason={e.wait_reason} className="text-xs text-muted-foreground">{t(`earn.wait.${e.wait_reason}`)}</p>}
+          {e.next_batch && <p className="text-xs"><span className="text-muted-foreground">{t("earn.next")}: </span><b data-testid="payout-next" data-at={e.next_batch}>{ist(e.next_batch)}</b></p>}
+          {e.wait_reason && <p data-testid="payout-wait" data-reason={e.wait_reason} data-until={e.wait_until ?? ""} className="text-xs text-muted-foreground">{t(`earn.wait.${e.wait_reason}`, { date: e.wait_until ? ist(e.wait_until) : "" })}</p>}
           {showForm && <div className="space-y-2">
             <div className="grid grid-cols-2 gap-1 rounded-xl bg-muted p-1">
               {(["bank", "upi"] as const).map((k) => (
@@ -117,7 +117,7 @@ export default function Earnings() {
             {e.payouts.map((p) => (
               <div key={p.id} data-testid="payout-row" data-status={p.status} className="flex items-center justify-between gap-2 p-3 text-sm">
                 <span className="min-w-0"><b className="tabular-nums">{inr(Number(p.amount), 2)}</b>
-                  <span className="block truncate text-[11px] text-muted-foreground"><Clock className="mr-0.5 inline h-3 w-3" />{new Date(p.requested_at).toLocaleDateString([], { dateStyle: "medium" })}{p.reference ? ` · ${p.reference}` : ""}{p.admin_note ? ` · ${p.admin_note}` : ""}{p.failure_reason ? ` · ${p.failure_reason}` : ""}</span></span>
+                  <span className="block truncate text-[11px] text-muted-foreground"><Clock className="mr-0.5 inline h-3 w-3" />{new Date(p.requested_at).toLocaleDateString([], { dateStyle: "medium" })}{p.reference ? ` · ${p.reference}` : ""}{p.admin_note ? ` · ${p.admin_note}` : ""}{(p.status === "failed" || p.status === "reversed" || p.status === "rejected") ? ` · ${t("earn.returned")}` : p.failure_reason ? ` · ${p.failure_reason}` : ""}</span></span>
                 <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold ${chip(p.status)}`}>{t(`earn.status.${p.status}`)}</span>
               </div>))}
           </div>

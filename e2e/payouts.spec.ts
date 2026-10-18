@@ -14,6 +14,7 @@ async function runBatch(page: Page) {
   expect((await done).ok()).toBe(true);
 }
 const available = (email: string) => sql(`SELECT (COALESCE(sum(e.net),0) = 250)::text FROM public.worker_earnings e JOIN auth.users u ON u.id = e.worker_user_id WHERE u.email = '${email}' AND e.payout_id IS NULL AND e.available_at <= now()`);
+const accountTime = (email: string, expr: string) => sql(`SELECT ${expr} FROM public.worker_payout_accounts a JOIN auth.users u ON u.id = a.worker_user_id WHERE u.email = '${email}'`);
 
 test.setTimeout(240_000);
 test("payouts: penny-drop success, name mismatch, weekly run, flagged worker skipped, failure returns the balance", async ({ browser }) => {
@@ -39,10 +40,28 @@ test("payouts: penny-drop success, name mismatch, weekly run, flagged worker ski
     await w.page.getByTestId("payout-otp").fill("123456");
     await w.page.getByTestId("payout-save").click();
     await expect(w.page.getByTestId("payout-account")).toHaveAttribute("data-status", "verified");
+    const toast = w.page.locator("[data-sonner-toast]").first();
+    await expect(toast).toBeVisible();
+    await expect(toast).toContainText("Account verified");
+    if (test.info().project.name === "mobile") {
+      const toastBox = await toast.boundingBox();
+      const navBox = await w.page.getByTestId("bottom-nav").boundingBox();
+      expect(toastBox && navBox && toastBox.y + toastBox.height <= navBox.y + 1).toBe(true);
+    }
     await expect(w.page.getByTestId("payout-mask")).toContainText("5678");
     await expect(w.page.getByTestId("payout-registered")).toContainText("Kavitha Raman");
     await expect(w.page.getByTestId("payout-wait")).toHaveAttribute("data-reason", "cooling");
-    await expect(w.page.getByTestId("payout-next")).toBeVisible();
+    const coolingEpoch = Number(accountTime(w.email, "extract(epoch FROM a.cooling_until)::bigint"));
+    const eligibleEpoch = Number(accountTime(w.email, "extract(epoch FROM public.payout_next_at(a.cooling_until))::bigint"));
+    const until = await w.page.getByTestId("payout-wait").getAttribute("data-until");
+    const nextAt = await w.page.getByTestId("payout-next").getAttribute("data-at");
+    expect(Math.floor(new Date(until ?? "").getTime() / 1000)).toBe(coolingEpoch);
+    expect(Math.floor(new Date(nextAt ?? "").getTime() / 1000)).toBe(eligibleEpoch);
+    expect(eligibleEpoch).toBeGreaterThanOrEqual(coolingEpoch);
+    expect(new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Kolkata", weekday: "long" }).format(new Date(nextAt ?? ""))).toBe("Monday");
+    const coolParts = new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short" }).formatToParts(new Date(coolingEpoch * 1000));
+    await expect(w.page.getByTestId("payout-wait")).toContainText(coolParts.find((p) => p.type === "day")?.value ?? "");
+    await expect(w.page.getByTestId("payout-wait")).toContainText(coolParts.find((p) => p.type === "month")?.value ?? "");
     await expect(w.page.getByTestId("payout-request")).toHaveCount(0);
     await shot(w.page, "earnings_payout_account");
 
@@ -53,6 +72,7 @@ test("payouts: penny-drop success, name mismatch, weekly run, flagged worker ski
     await w.page.getByTestId("payout-save").click();
     await expect(w.page.getByTestId("payout-account")).toHaveAttribute("data-status", "rejected");
     await expect(w.page.getByTestId("payout-wait")).toHaveAttribute("data-reason", "account_rejected");
+    await expect(w.page.getByTestId("payout-next")).toHaveCount(0);
     await shot(w.page, "earnings_name_mismatch");
 
     await w.page.getByTestId("payout-account-number").fill("5010012345678");
@@ -109,6 +129,9 @@ test("payouts: penny-drop success, name mismatch, weekly run, flagged worker ski
     await runBatch(admin.page);
     expect(sql(`SELECT status FROM public.payout_requests p JOIN auth.users u ON u.id = p.worker_user_id WHERE u.email = '${w.email}' ORDER BY p.requested_at DESC LIMIT 1`)).toBe("failed");
     expect(available(w.email)).toBe("true");
+    await admin.page.reload();
+    await admin.page.getByTestId("admin-tab-payouts").click();
+    await expect(admin.page.locator('[data-testid="payout-admin-row"][data-status="failed"]')).toContainText("returned to the balance");
 
     await w.page.getByTestId("payout-change").click();
     await w.page.getByTestId("payout-account-number").fill("5010099988877");
