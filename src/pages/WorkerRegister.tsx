@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { friendlyError } from "@/lib/friendlyError";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
@@ -81,7 +82,7 @@ export default function WorkerRegister() {
     const clean = Object.fromEntries(Object.entries(reg).filter(([k]) => req.data?.fields.some((f) => f.key === k)).map(([k, v]) => [k, v.trim()]));
     const { error } = await supabase.rpc("worker_register", { _node: node, _extra_nodes: extra, _display_name: name.trim(), _years: Number(years), _about: about.trim(), _reg: clean });
     setBusy(null);
-    if (error) return setErr(error.message);
+    if (error) return setErr(friendlyError(t, error.message));
     await qc.invalidateQueries({ queryKey: ["my-worker"] });
     setStep(kyc.data?.aadhaar_verified ? "qr" : "aadhaar");
   }
@@ -89,14 +90,14 @@ export default function WorkerRegister() {
     const a = aadhaar.replace(/\D/g, "");
     if (!/^[2-9]\d{11}$/.test(a)) return setErr(t("worker.err.aadhaar"));
     setBusy("otp"); setErr(null);
-    try { const r = await aadhaarProvider(mode.data).sendOtp(a); setOtpSent(r.masked); } catch (e) { setErr((e as Error).message); } finally { setBusy(null); }
+    try { const r = await aadhaarProvider(mode.data).sendOtp(a); setOtpSent(r.masked); } catch (e) { setErr(friendlyError(t, (e as Error).message)); } finally { setBusy(null); }
   }
   async function verifyOtp() {
     setBusy("verify"); setErr(null);
     try {
       const ok = await aadhaarProvider(mode.data).verifyOtp(otp);
       if (!ok) setErr(t("worker.err.otp")); else { await qc.invalidateQueries({ queryKey: ["my-kyc"] }); setStep("qr"); }
-    } catch (e) { setErr((e as Error).message); } finally { setBusy(null); }
+    } catch (e) { setErr(friendlyError(t, (e as Error).message)); } finally { setBusy(null); }
   }
   async function onDoc(type: string, f?: File) {
     if (!f || !user || !w) return;
@@ -111,7 +112,7 @@ export default function WorkerRegister() {
     setBusy("submit"); setErr(null);
     const { error } = await supabase.rpc("worker_submit");
     setBusy(null);
-    if (error) return setErr(error.message);
+    if (error) return setErr(friendlyError(t, error.message));
     await qc.invalidateQueries({ queryKey: ["my-worker"] });
     nav("/?tab=worker", { replace: true });
   }
@@ -119,7 +120,7 @@ export default function WorkerRegister() {
   async function saveQr() {
     if (!user || qr.trim().length < 8) return setErr(t("worker.err.qr"));
     setBusy("qr"); setErr(null);
-    try { await stageQr(user.id, qr.trim()); setStep("selfie"); } catch (e) { setErr((e as Error).message); } finally { setBusy(null); }
+    try { await stageQr(user.id, qr.trim()); setStep("selfie"); } catch (e) { setErr(friendlyError(t, (e as Error).message)); } finally { setBusy(null); }
   }
   async function saveSelfie() {
     if (!user || !selfie || !consent || !(liveDone || noCamera)) return;

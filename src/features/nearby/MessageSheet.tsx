@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { friendlyError } from "@/lib/friendlyError";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
@@ -49,7 +50,7 @@ export function MessageSheet({ target, onClose }: { target: MsgTarget | null; on
       const { error } = await supabase.rpc("worker_message_send", { _worker: target.id, _body: body.trim() || null, _voice_path: path, _voice_seconds: blob ? secs : null });
       if (error) throw error;
       toast.success(t("nearby.msg.sent")); qc.invalidateQueries({ queryKey: ["wallet"] }); qc.invalidateQueries({ queryKey: ["worker-messages"] }); onClose();
-    } catch (e) { toast.error(errText(e as { message?: string })); } finally { setSending(false); }
+    } catch (e) { toast.error(friendlyError(t, errText(e as { message?: string }))); } finally { setSending(false); }
   }
   const tooLong = body.length > MAX_CHARS; const can = (body.trim().length > 0 || !!blob) && !tooLong && !rec && !sending;
   return (

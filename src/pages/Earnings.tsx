@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { friendlyError } from "@/lib/friendlyError";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -40,7 +41,7 @@ export default function Earnings() {
     setBusy(true);
     const { data, error } = await supabase.functions.invoke("payout-fund-account", { body: { action: "stepup" } });
     setBusy(false);
-    if (error) { toast.error(await fnMessage(error)); return; }
+    if (error) { toast.error(friendlyError(t, await fnMessage(error))); return; }
     const d = data as { mock?: boolean; masked?: string };
     toast.success(d.mock ? t("earn.codeMock") : t("earn.codeSent", { masked: d.masked ?? "" }));
   };
@@ -48,7 +49,7 @@ export default function Earnings() {
     setBusy(true);
     const { data, error } = await supabase.functions.invoke("payout-fund-account", { body: { kind, account, ifsc, otp, pan } });
     setBusy(false);
-    if (error) { toast.error(await fnMessage(error)); return; }
+    if (error) { toast.error(friendlyError(t, await fnMessage(error))); return; }
     const status = String((data as { status?: string })?.status ?? "");
     toast.success(t(`earn.saved.${status}`, { defaultValue: status }));
     setAccount(""); setOtp(""); setEditing(status !== "verified");

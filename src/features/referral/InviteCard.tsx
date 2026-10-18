@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { friendlyError } from "@/lib/friendlyError";
 import { useTranslation } from "react-i18next";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -29,7 +30,7 @@ export function InviteCard() {
   const claim = async () => {
     const code = normalizeCode(enter); if (!code) { toast.error(t("invite.r.invalid")); return; }
     setBusy(true); const { data, error } = await supabase.rpc("referral_claim", { _code: code, _landing: "user" }); setBusy(false);
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(friendlyError(t, error.message)); return; }
     if (data === "ok") { toast.success(t("invite.applied", { code })); setEnter(""); qc.invalidateQueries({ queryKey: ["my-referral"] }); }
     else toast.error(t(`invite.r.${data}`, { defaultValue: t("invite.r.invalid") }));
   };

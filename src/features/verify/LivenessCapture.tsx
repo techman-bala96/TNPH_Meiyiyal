@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { friendlyError } from "@/lib/friendlyError";
 import { useTranslation } from "react-i18next";
 import { BadgeCheck, Camera, Loader2, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -45,7 +46,7 @@ export function LivenessCapture({ userId, onDone, onNoCamera }: { userId: string
     } catch { onNoCamera(); return; }
     const v = video.current!; v.srcObject = stream.current; await v.play().catch(() => undefined);
     const { data, error } = await supabase.rpc("verification_liveness_start");
-    if (error || !data) { setErr(error?.message ?? "error"); setPhase("error"); return; }
+    if (error || !data) { setErr(friendlyError(t, error?.message)); setPhase("error"); return; }
     const c = data as unknown as Challenge; setCh(c); setPhase("running");
     const shots: { step: string; blob: Blob }[] = [];
     try {
@@ -74,7 +75,7 @@ export function LivenessCapture({ userId, onDone, onNoCamera }: { userId: string
       onDone({ portrait: file });
     } catch (e) {
       const m = (e as Error).message || "";
-      setErr(m.includes("expired") ? t("worker.liveExpired") : m); setPhase("error");
+      setErr(m.includes("expired") ? t("worker.liveExpired") : friendlyError(t, m)); setPhase("error");
     }
   }
 

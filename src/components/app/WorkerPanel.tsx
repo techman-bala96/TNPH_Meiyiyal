@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { friendlyError } from "@/lib/friendlyError";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
@@ -41,7 +42,7 @@ export function WorkerPanel() {
   const autoOff = !w.is_online ? notes.data?.find((n) => n.kind === "worker.auto_offline" && !n.read_at) : undefined;
   async function toggle(on: boolean) {
     const { error } = await supabase.rpc("worker_set_online", { _online: on });
-    if (error) toast.error(error.message);
+    if (error) toast.error(friendlyError(t, error.message));
     else if (on && autoOff) { await markRead([autoOff.id]); await qc.invalidateQueries({ queryKey: ["notifications"] }); }
     await qc.invalidateQueries({ queryKey: ["my-worker"] }); await qc.invalidateQueries({ queryKey: ["standing"] });
   }

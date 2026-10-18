@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { friendlyError } from "@/lib/friendlyError";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { ArrowDownLeft, ArrowUpRight, CheckCircle2, Coins, Gift, Loader2, ReceiptText, RotateCcw, Sparkles, XCircle, Ban } from "lucide-react";
@@ -29,7 +30,7 @@ export default function Wallet() {
         setResult({ status: v.status === "paid" ? "paid" : "failed", credits: Number(order.credits) + Number(order.bonus) });
       } else if (r.kind === "failed") setResult({ status: "failed", reason: r.reason });
       else { await cancelOrder(order.order_id); setResult({ status: "cancelled" }); }
-    } catch (e) { setResult({ status: "failed", reason: (e as Error).message }); }
+    } catch (e) { setResult({ status: "failed", reason: friendlyError(t, (e as Error).message) }); }
     finally { setBusy(null); await refresh(); }
   };
   const label = (r: LedgerRow) => {

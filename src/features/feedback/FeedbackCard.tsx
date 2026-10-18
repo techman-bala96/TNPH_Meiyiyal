@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { friendlyError } from "@/lib/friendlyError";
 import { useTranslation } from "react-i18next";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -27,7 +28,7 @@ export function FeedbackCard({ sessionId, workerName }: { sessionId: string; wor
     setBusy(true);
     const { data, error } = await supabase.rpc("feedback_submit", { _sid: sessionId, _rating: rating, _tags: tags, _comment: comment || null, _complaint: complaint, _complaint_reason: complaint ? reason : null });
     setBusy(false);
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(friendlyError(t, error.message)); return; }
     toast.success(t("feedback.thanks"));
     const awarded = (data as { awarded?: string[] })?.awarded ?? [];
     if (awarded.length) toast(t("feedback.workerAwarded", { name: workerName }));

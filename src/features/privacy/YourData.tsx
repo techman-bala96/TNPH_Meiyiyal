@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { friendlyError } from "@/lib/friendlyError";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -25,7 +26,7 @@ export function YourData() {
 
   const download = async () => {
     setBusy(true); const { data, error } = await supabase.rpc("my_data_export"); setBusy(false);
-    if (error) { toast.error(error.message.includes("limit") ? t("privacy.tooMany") : error.message); return; }
+    if (error) { toast.error(error.message.includes("limit") ? t("privacy.tooMany") : friendlyError(t, error.message)); return; }
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = exportFileName(new Date());
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
@@ -38,7 +39,7 @@ export function YourData() {
   };
   const cancel = async () => {
     setBusy(true); const { error } = await supabase.rpc("account_delete_cancel"); setBusy(false);
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(friendlyError(t, error.message)); return; }
     refresh(); toast.success(t("privacy.cancelled"));
   };
 

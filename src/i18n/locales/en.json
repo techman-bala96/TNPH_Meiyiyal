@@ -1204,7 +1204,14 @@
     "fileTooBig": "The file is too big.",
     "fileType": "This file type is not allowed.",
     "network": "No connection. Check your internet and try again.",
-    "generic": "Something went wrong. Please try again."
+    "generic": "Something went wrong. Please try again.",
+    "msgDaily": "You have sent 3 messages to this professional today. Try again tomorrow or request a consultation.",
+    "msgTooLong": "Keep the message under 300 letters.",
+    "msgBlocked": "This professional is not taking messages from you.",
+    "lowCredits": "Not enough credits. Top up your wallet and try again.",
+    "regLocked": "Your registration is being checked, so it cannot be changed now.",
+    "profLocked": "Your profession is fixed once registered. Contact support to change it.",
+    "regMissing": "Some required details are missing. Check each step and try again."
   },
   "net": {
     "offline": "You're offline. Messages and calls will continue when the network is back.",
