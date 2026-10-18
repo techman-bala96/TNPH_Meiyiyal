@@ -22,6 +22,8 @@ import WorkerProfile from "@/pages/WorkerProfile";
 import { ConsultProvider } from "@/features/consult/ConsultProvider";
 import { BottomNav } from "@/components/app/BottomNav";
 import { VoiceProvider } from "@/features/voice/VoiceProvider";
+import Notifications from "@/pages/Notifications";
+import { NotificationsSync } from "@/features/push/NotificationsSync";
 
 const qc = new QueryClient();
 
@@ -33,6 +35,7 @@ export default function App() {
       <BrowserRouter>
         <AuthProvider>
           <PrefsSync />
+          <NotificationsSync />
           <ConsultProvider>
           <VoiceProvider>
           <Routes>
@@ -45,6 +48,7 @@ export default function App() {
               <Route path="/admin" element={<Admin />} />
               <Route path="/session/:id" element={<Session />} />
               <Route path="/history" element={<History />} />
+              <Route path="/notifications" element={<Notifications />} />
               <Route path="/wallet" element={<Wallet />} />
               <Route path="/earnings" element={<Earnings />} />
               <Route path="/w/:id" element={<WorkerProfile />} />

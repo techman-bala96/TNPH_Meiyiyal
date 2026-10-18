@@ -7,6 +7,8 @@ import { HomeHeader } from "@/components/app/HomeHeader";
 import { childrenOf, nodeName, useTaxonomy } from "@/features/taxonomy/useTaxonomy";
 import { iconFor } from "@/features/taxonomy/icons";
 import { THEMES, patternStyle } from "@/features/taxonomy/themes";
+import { PushAskCard } from "@/features/push/PushAskCard";
+import { REQUESTED_KEY } from "@/features/push/webPush";
 
 export default function Home() {
   const { t, i18n } = useTranslation();
@@ -35,6 +37,7 @@ export default function Home() {
       {tab === "find" ? (
         <section className="space-y-5" data-testid="find-panel">
           <h1 className="text-xl font-bold leading-tight">{t("home.headline")}</h1>
+          {localStorage.getItem(REQUESTED_KEY) && <PushAskCard reason="client" />}
           {tax.isLoading && <div className="h-40 animate-pulse rounded-3xl bg-muted" />}
           {groups.map((g) => (
             <div key={g.slug} className="space-y-3">

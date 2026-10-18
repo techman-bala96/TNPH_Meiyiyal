@@ -34,7 +34,7 @@ _This file replaces the 16 Oct HANDOFF.md. It is self-contained: you can rebuild
 **அடுத்து செய்ய வேண்டியவை (இந்த வரிசையில்):**
 1. Verification engine v1. எல்லாம் முடிஞ்ச அளவு automate: doctors/lawyers-உம் checks pass ஆனா தானா approve ஆகணும். "Licence verified" / "Degree verified" ரெண்டு badge இருக்கும். எல்லா வகை engineers, doctors-ஐயும் சேர்க்கணும்.
 2. Payout automation — mock வந்துவிட்டது (M8, வாரம் ஒரு முறை, 3 நாள் cool-off). நேரடி RazorpayX keys இன்னும் இல்லை.
-3. FCM push.
+3. ~~FCM push~~ → **Web Push (சொந்த VAPID key, Firebase இல்லை)** — M9-ல் கட்டியாச்சு (mock mode). உண்மையான phone-ல ngrok வழியா test பண்ணணும், production VAPID key வைக்கணும் (§7.3).
 4. TURN/100ms.
 5. MSG91 SMS.
 6. Google Maps.
@@ -44,7 +44,7 @@ _This file replaces the 16 Oct HANDOFF.md. It is self-contained: you can rebuild
 
 **உங்கள் வேலை:**
 - பழைய Supabase anon key-ஐ rotate பண்ணுங்க. இது **மிக அவசரம்**.
-- KYC provider, RazorpayX, MSG91 DLT, 100ms, FCM, Google Maps accounts.
+- KYC provider, RazorpayX, MSG91 DLT, 100ms, Google Maps accounts. (Push-க்கு Firebase account தேவையில்லை; VAPID key நாமே உருவாக்கலாம்.)
 - வக்கீல் ஆலோசனை.
 - Privacy policy.
 
@@ -84,7 +84,7 @@ Meiyiyal is a **Tamil Nadu-first marketplace for ONLINE professional consultatio
 | 4 | **Browse:** groups → categories → sub-categories (→ specialty) with breadcrumbs, "zero confusion"; TN-realistic taxonomy | ✅ 81 nodes, EN+TA | Data-driven tree; admin can add nodes without a deploy |
 | 5 | **v1 scope = Doctor, Lawyer, Engineer only** (Group A, "Professionals") | ✅ | Highest online value, clear licensing. Skilled trades later |
 | 6 | **Worker list:** online first, card shows rating, specialty, info, distance km | ✅ | Speed to consult |
-| 7 | **Request → worker phone rings with vibration** (app open or background) → accept | ✅ in-app ring; ❌ background push (FCM pending) | Real-time matching |
+| 7 | **Request → worker phone rings with vibration** (app open or background) → accept | ✅ in-app ring; ✅ background Web Push (M9, mock until a real-phone test) | Real-time matching |
 | 8 | **Credits:** user buys credits; chat/voice/video billed per minute; file sharing in chat and in calls | ✅ (Razorpay mock until keys) | Closed-loop wallet = simple refunds, no cash-out (RBI closed-system PPI) |
 | 9 | **Rewards/recognition certificates** based on quality + feedback | ✅ 9 milestones, EN/TA PNG/PDF | Motivates good workers |
 | 10 | **Negative feedback is temporary:** watch the next 3–4 jobs; hide it if they're good. 2–3 negatives → temporary block | ✅ flag clears after 3 good sessions; 3 negatives / 30 days → 7-day block | Fair to workers, protects users |
@@ -109,7 +109,7 @@ Meiyiyal is a **Tamil Nadu-first marketplace for ONLINE professional consultatio
 | 29 | **Doctors: all systems**: Allopathy, Siddha, Ayurveda, Unani, Homoeopathy, Yoga & Naturopathy, Dental, Physio, Psychology, Nutrition; each with its correct council; **require both registration and degree verification** | 🟡 taxonomy exists; both-checks rule pending | Patient safety |
 | 30 | **Public profile shows** the verified badge + "verified on <date>" + **the verification selfie** | ❌ next (needs explicit consent at capture) | Trust signal |
 | 31 | Python only where it adds value: a FastAPI service for the voice agent (done) and the future verification engine | ✅ | — |
-| 32 | Providers: **100ms** (calls), **MSG91** (SMS OTP), **Google Maps/Places**, **Razorpay** (+RazorpayX), **FCM** | 🟡 all pluggable; real keys pending | — |
+| 32 | Providers: **100ms** (calls), **MSG91** (SMS OTP), **Google Maps/Places**, **Razorpay** (+RazorpayX), **Web Push (VAPID)** | 🟡 all pluggable; real keys pending | — |
 | 33 | Shareable preview URL for the user's phone | ✅ ngrok (while the box runs) | — |
 
 ### 1.3 Final pricing / trust numbers (decided; the live values sit in the DB, see §3)
@@ -333,7 +333,7 @@ Conventions used everywhere:
   - `RequestSheet`, then a full-screen ring overlay (WebAudio tone + `navigator.vibrate`; also polls every 5 s in case a Realtime event is missed).
   - `/session/:id`: realtime chat, attachments, call view, meter.
   - `/history`: who, profession, mode, duration, credits.
-- **Push:** a `PushProvider` interface exists (in-app now; FCM later).
+- **Push:** a `PushProvider` interface exists; M9 implements it with standard Web Push (`webPushProvider`).
 - **Tests:** `m3_consult.sql` (14 checks: no client minting, outsider isolation, billing maths, exhaustion); `e2e/consult.spec.ts` (3 browser contexts with fake camera/mic).
 
 ### M4 — Feedback, rewards, moderation, public profile, admin rates (`ff1936d`)
@@ -439,6 +439,18 @@ Conventions used everywhere:
 - Earnings screen shows the masked account, verification state, the first Monday 10:00 IST batch on or after the worker is eligible (cool-off, 72-hour hold, temporary block), and the cool-off or hold end in IST. A rejected or flagged account does not show a payout date. Admin Payouts tab: review queue, global pause, per-worker hold, cool-off end, break-glass mark-paid. A failed, reversed, or rejected payout says how many earning entries went back to the balance (`entry_count`, migration `20261018103000_m8_payout_next.sql`).
 - **Tests:** `m8_payouts.sql`; `e2e/payouts.spec.ts` (penny-drop, name mismatch, weekly run, flagged skip, failure returns the balance). The M6 manual request path still runs when there is no verified account.
 
+### M9 — Push notifications, Web Push + VAPID (`20261018120000_m9_push_notifications.sql`)
+- **Decision D1 (18 Oct 2026):** our own Web Push with VAPID keys. **No Firebase/FCM.** Works on Android Chrome, desktop browsers, and iPhone 16.4+ only when Meiyiyal is added to the Home Screen.
+- **Tables:** `push_subscriptions` (one row per device: endpoint, p256dh, auth, lang, failure_count; owner can read, writes only via RPC) and `notifications` (the inbox + push queue: kind, category, priority, params, url, tag, collapse/dedupe keys, `push_status`, `read_at`; on the realtime publication).
+- **Events:** DB triggers call `notify()` for requests (incoming/accepted/declined/missed), calls, chat (collapsed, **name only, never the message text**), credits ran out, payments, payouts, payout account, verification, blocks, appeals, rewards, feedback reminder, and admin queues (`notify_admins`). Kinds and en/ta text live in `supabase/functions/_shared/pushText.ts` (one file for the server and the app).
+- **Rules:** categories (requests, chat, money, account, offers=off by default, admin); safety/legal alerts always on; quiet hours 22:00–07:00 IST on by default — normal alerts wait and arrive as one morning summary, but requests and calls still ring; collapse windows (chat 120 s, admin 3600 s).
+- **Delivery:** an insert with `push_status='pending'` kicks the Edge Function `push-send` through `pg_net` (header `x-push-hook` = `app_settings.push_hook_secret`). `push-send` claims rows (urgent first), renders the text in the device's language, and sends with `@pushforge/builder` (TTL 60 s + high urgency for rings). Dead devices (404/410) are removed. A `pg_cron` job `push-sweep` runs every 30 s: expires unanswered rings (no client poll needed any more), releases quiet-hours holds, sends cool-off / block-lifted / feedback reminders, retries stuck rows.
+- **Mock mode:** `app_settings.push_mock = true` (default) records the payload as `sent` without calling a push service. Settings shows a "test mode" note.
+- **Reachability change:** an Online worker with a working push device stays requestable for `push_reach_minutes` (480 = 8 h) after closing the app (`worker_reachable()`, used by `search_workers`, `worker_public`, `request_create`). Without push the old 2-minute presence rule holds.
+- **App:** service worker moved to `injectManifest` (`src/sw.ts`): same precache + SPA fallback as before, plus `push` (Accept/Decline actions for a request, sticky for urgent, no banner if the app is already open on that screen), `notificationclick`, `pushsubscriptionchange`. We ask for permission only at good moments with our own card first (worker after approval, client after the first request, admin on `/admin`; never on first load; "Not now" waits 7 days, max 3 asks). iPhone in a Safari tab sees "Add to Home Screen" steps. Settings → Notifications: this device on/off, test alert, category switches, quiet hours. Bell with unread count in the header and an inbox at `/notifications`. Sign-out removes this device.
+- **Env:** `VITE_VAPID_PUBLIC_KEY` (public, app build), `VAPID_PRIVATE_KEY_JWK` + `VAPID_SUBJECT` (Edge secrets). Generate with `node scripts/gen-vapid-keys.mjs`. Local dev keys live in git-ignored `supabase/functions/.env` and `.env.local`.
+- **Tests:** `m9_push.sql`; `tests/unit/pushText.test.mjs`; `e2e/push.spec.ts` (ask card, device saved, request → push row sent in mock, service worker push → message, real Chrome shows the notification with Accept/Decline, bell + inbox, settings + quiet hours persist, Tamil, iPhone install card).
+
 ### UI — Bottom navigation (`137cf8e`)
 - `BottomNav`:
   - Home / Conversations (`/history`) / Profile, with a sliding active pill and animated icons; safe-area padding.
@@ -501,6 +513,7 @@ Conventions used everywhere:
 - `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`: injected automatically by Supabase
 - `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `RAZORPAY_WEBHOOK_SECRET`: switch from mock to Razorpay
 - `MOCK_PAYMENT_SECRET`, `MOCK_WEBHOOK_SECRET`: mock gateway signing (non-secret local defaults in code)
+- `VAPID_PRIVATE_KEY_JWK` (secret, JSON JWK of the P-256 private key), `VAPID_SUBJECT` (`mailto:` or `https:` contact): Web Push (`push-send`). Make a pair with `node scripts/gen-vapid-keys.mjs`; the public half goes to `VITE_VAPID_PUBLIC_KEY`.
 
 ### 4.4 Voice agent (`services/agent`; `run.sh` reads the URL/key from `.env.local` without echoing them)
 `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_JWT_SECRET` (HS256 fallback), `AGENT_PORT` (8787), `AGENT_CORS` (default `http://localhost:8080,http://localhost:8090`), `AGENT_RATE_PER_HOUR` (120), `AGENT_LEXICON_TTL` (600), `AGENT_LEXICON_FILE`, `AGENT_LLM_PROVIDER` (empty = rules only).
@@ -528,7 +541,7 @@ Other config tables: `rate_cards`, `credit_packs`, `commission_rules`, `reward_m
 | Capability | Interface / switch | Today (no keys) | Production provider | What's needed |
 |---|---|---|---|---|
 | Calls | `CallProvider` (`src/features/consult/call`), `VITE_HMS_TOKEN_URL`, `VITE_ICE_SERVERS` | P2P WebRTC, STUN only; may fail across NAT/mobile networks | **100ms** (or TURN, e.g. Cloudflare/Twilio/coturn) | 100ms app access key/secret + template id; implement the 100ms provider + `call-token` Edge Function. Or quick fix: TURN credentials in `VITE_ICE_SERVERS` |
-| Push / ring when closed | `PushProvider` | in-app Realtime ring + 5 s poll | **FCM** web push | Firebase project, web config, VAPID key, service-account JSON (Edge secret); `push_tokens` table; SW handler |
+| Push / ring when closed | `PushProvider` (`webPushProvider`) | **Web Push, mock mode** (`push_mock=true`) + in-app ring | Web Push live (`push_mock=false`) | VAPID key pair (`VITE_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY_JWK`, `VAPID_SUBJECT`); `push_send_url` set to the hosted function; no Firebase |
 | SMS OTP | Supabase phone auth | test OTPs only | **MSG91** via Supabase Send-SMS hook → Edge Function | MSG91 auth key, DLT entity + template id, sender id |
 | Maps/geocoding | `MapFactory`, `geocoding.ts` | Leaflet + OSM tiles + Nominatim (dev only) | **Google Maps JS + Places + Geocoding** (or Ola/MapmyIndia) | `VITE_GOOGLE_MAPS_API_KEY` (HTTP-referrer restricted); implement the adapter |
 | Payments | `_shared/payments.ts` provider | mock gateway | **Razorpay** | `RAZORPAY_KEY_ID/SECRET/WEBHOOK_SECRET`; set `payments_mock=false`; register webhook URL `…/functions/v1/payments-webhook` |
@@ -591,14 +604,16 @@ Prerequisites: Linux/macOS, **Docker**, **Node 20** (box: v20.19.2), **Supabase 
 | Admin | any account + the SQL in step 10 | e2e admins are `admin+…@meiyiyal.test` |
 | Mock payment | Wallet → pack → mock checkout | buttons: success / failure / cancel |
 
-### 5.2 Running the tests (current results, re-checked 18 Oct 2026, 9:30 AM IST)
+### 5.2 Running the tests (current results, re-checked 18 Oct 2026, 7:00 PM IST, branch `feat/push-notifications`)
 | Suite | Command | Result |
 |---|---|---|
-| DB (SQL, psql in the DB container) | `npm run test:db` (runs `supabase/tests/*.sql`; needs the stack up) | **111 PASS** (m0…m6) |
-| Browser e2e | `npx playwright install chromium` (once; `sudo npx playwright install-deps chromium` on fresh Linux), then `npx playwright test` (starts vite :8080, functions serve, agent :8787 automatically) | **32/32 passed** (16 tests × mobile + desktop; last full run at `137cf8e`, 17 Oct) |
+| DB (SQL, psql in the DB container) | `npm run test:db` (runs `supabase/tests/*.sql`; needs the stack up) | **159 PASS** (m0…m9; run on a freshly reset DB — leftover e2e payout accounts can trip `m8` duplicate checks) |
+| Browser e2e | `npx playwright install chromium` (once; `sudo npx playwright install-deps chromium` on fresh Linux), then `npx playwright test` (starts vite :8080, functions serve, agent :8787 automatically) | **41 passed, 1 skipped** (mobile + desktop; the real-Chrome notification test runs on desktop only and skips where Google Chrome is not installed) |
 | Voice agent | `npm run test:agent` (pytest + ruff) | **107 passed**, ruff clean |
-| Lint | `npm run lint` | **11 problems (3 errors, 8 warnings) = pre-existing baseline** (shadcn empty interfaces + react-refresh warnings) |
-| Types / build | `npm run typecheck` · `npm run build` | OK at `137cf8e` |
+| Lint | `npm run lint` | **0 errors, 8 warnings = pre-existing baseline** (react-refresh warnings) |
+| Types / build | `npm run typecheck` (app + service worker) · `npm run build` | OK (injectManifest, 17 precache entries) |
+| Unit | `npm run test:unit` | **16 passed** |
+| Verify service | `npm run test:verify` | **106 passed**, ruff clean |
 
 - A single spec: `npx playwright test e2e/payments.spec.ts --project=mobile`.
 - Screenshots from specs go to `/workspace/meyiyal/screens` (paths in the specs).
@@ -647,7 +662,7 @@ Prerequisites: Linux/macOS, **Docker**, **Node 20** (box: v20.19.2), **Supabase 
 | # | Issue | Impact | Fix (where) |
 |---|---|---|---|
 | 1 | **Calls are P2P WebRTC with STUN only** | Voice/video may not connect across different networks (CGNAT/mobile). Chat always works | TURN in `VITE_ICE_SERVERS` or implement 100ms (§7.4) |
-| 2 | **No FCM push** | The ring only works while the app is open | §7.3 |
+| 2 | **Push is in mock mode** (M9) | Alerts are recorded but not sent to phones until production VAPID keys are set and `push_mock=false`. iPhone gets push only from the Home Screen app (16.4+) | §7.3 |
 | 3 | **Nominatim/OSM public servers** | Usage policy forbids heavy production use; no autocomplete | Google Maps adapter (§7.6) or self-hosted Nominatim |
 | 4 | **96 of 213 areas have no Tamil name** | Shows English in TA mode | Fill `tn_areas.name_ta` (migration) |
 | 5 | **Lawyer advertising risk** (BCI Rule 36; Madras HC, P.N. Vignesh 2024) | Ratings/rankings for advocates may be seen as solicitation | Counsel review before scaling; admin kill switch recommended |
@@ -769,13 +784,11 @@ Prerequisites: Linux/macOS, **Docker**, **Node 20** (box: v20.19.2), **Supabase 
 
 **Still needs a person:** a RazorpayX account and those four secrets; a CA before anyone sets `tds_enabled`; MSG91 (or another real OTP) before live step-up; turn `payouts_auto` on only after a sandbox transfer looks right. The hosted Monday schedule is not wired — the admin “Run payout batch” button and a direct call to `payout-run` are what move money in this build.
 
-### 7.3 FCM push (ring when the app is closed)
-- A Firebase project; the web SW handles `push` with vibrate, `requireInteraction` and Accept/Decline actions.
-- `push_tokens` table + a register-token RPC.
-- An Edge Function `push-send`, called from `request_create` (via a DB webhook/queue). It needs the FCM HTTP v1 service account.
-- **Env names:** `VITE_FIREBASE_CONFIG` (public JSON), `VITE_FCM_VAPID_KEY`, `FCM_SERVICE_ACCOUNT_JSON` (secret).
-- iOS works only for an installed PWA (16.4+).
-- Later: Capacitor native for a true call screen.
+### 7.3 Web Push — go live (built in M9; FCM dropped by decision D1)
+- **Real-phone test first:** run the preview over ngrok (https is required), open it on an Android phone in Chrome, allow alerts, set `push_mock=false` locally, and check: ring with the app closed, Accept/Decline from the notification, chat name-only, quiet hours. On iPhone: Add to Home Screen first, then allow.
+- **Production keys:** `node scripts/gen-vapid-keys.mjs` → `supabase secrets set VAPID_PRIVATE_KEY_JWK='…' VAPID_SUBJECT='mailto:…'`; set `VITE_VAPID_PUBLIC_KEY` in the hosting env and rebuild. Never reuse the dev keys. Changing keys later makes every device subscribe again.
+- **DB settings in production:** `UPDATE app_settings SET value = to_jsonb('https://<project>.supabase.co/functions/v1/push-send'::text) WHERE key = 'push_send_url';` then `push_mock = false`. Keep `push_hook_secret` private (admin-only table). `pg_cron` + `pg_net` must be enabled on the hosted project.
+- **Later:** Capacitor native for a true full-screen call screen (Web Push cannot ring like a phone call); optional "starting soon" alerts were skipped (D7).
 
 ### 7.4 TURN / 100ms
 - **Quick:** add a TURN server (Cloudflare Calls TURN / Twilio NTS / coturn) to `VITE_ICE_SERVERS`, with short-lived credentials from an Edge Function.
@@ -824,7 +837,7 @@ Bonus-credit expiry; Tamil names for 96 areas; the lawyer-sort decision; README 
 |---|---|---|---|
 | 8.1 Verification engine | RLS on cases/checks/evidence; only service writes; audit; SLA timestamps; appeal limit; retention purge; one reg. no. → one account. pytest: name normaliser (60+ cases incl. Tamil/initials), QR parser + tampered QR, forensics fixtures, OCR per template, risk engine table-driven, duplicate matcher, registry adapters with recorded HTML fixtures | genuine doctor auto-approved; doctor with registry mismatch → admin approves; forged certificate → flagged → rejected → appeal; reused reg. no. → hard reject; banned worker re-registers (same face/phone) → blocked; suspended status → reject; re-verification expiry → badge removed + can't go online; software engineer → "Degree verified"; civil engineer with CMDA → "Licence verified"; public profile shows badge + date + selfie only after consent | Accuracy set (~50 consented samples + synthetic forgeries): FAR < 1% at FRR < 10% before enabling auto-approve; SSRF tests on fetchers |
 | 8.2 Payouts | idempotent webhook; no double payout; risk routing; min/hold rules; bank hash duplicates | penny-drop success/name mismatch; auto weekly run (mock clock); flagged payout → admin review; failure/reversal returns earnings | RazorpayX sandbox contract tests |
-| 8.3 FCM | token register/unregister RLS | ring with app backgrounded (CDP/permission mocks), Accept from notification opens the session | Manual device matrix: Android Chrome, iOS installed PWA |
+| 8.3 Web Push | device register/unregister RLS (done in `m9_push.sql`) | ring with app backgrounded (CDP/permission mocks), Accept from notification opens the session | Manual device matrix: Android Chrome, iOS installed PWA |
 | 8.4 TURN/100ms | token function auth (party + balance) | call across two contexts with forced relay (`iceTransportPolicy: relay`) | Real-device test on two different mobile networks |
 | 8.5 MSG91 | hook signature check | phone login with a mocked hook | Live OTP on a real number (staging) |
 | 8.6 Google Maps | — | picker with a mocked Google loader; fallback to Leaflet when no key | Quota alerting |
@@ -846,7 +859,7 @@ _Prices were checked on vendor or vendor-listing pages on 18 Oct 2026, unless ma
 | **Razorpay** (collect) | Checkout for credit packs | 2% per domestic transaction + 18% GST on the fee (≈ 2.36%); no setup/AMC (standard rate card; negotiable) | ₹499 pack → ≈ ₹11.8 fee | [razorpay.com/pricing](https://razorpay.com/pricing/) |
 | **RazorpayX** (payouts) | worker payouts + fund-account validation | IMPS/UPI ₹4 (< ₹1k), ₹6 (₹1k–25k), ₹9 (> ₹25k); NEFT ₹5; + GST. Plan/subscription fees may apply (a listing shows "BB+ Core ₹2,476/quarter"; verify). Penny-drop fee not confirmed | 500 weekly payouts ≈ ₹3,000 + GST/month | [razorpay.com/x/payouts_x](https://razorpay.com/x/payouts_x/), [docs](https://razorpay.com/docs/x/payouts) |
 | **Google Maps Platform (India pricing)** | Dynamic Maps, Places Autocomplete, Geocoding | 70,000 free events/SKU/month (Essentials); then per 1,000: Dynamic Maps $2.10, Autocomplete requests $0.85 (sessions free with a token), Geocoding $1.50 | Likely ₹0 at pilot scale | [India pricing](https://developers.google.com/maps/billing-and-pricing/pricing-india), [India FAQ](https://developers.google.com/maps/billing-and-pricing/india) |
-| **FCM** | push | No charge for Firebase Cloud Messaging (widely documented; verify) | ₹0 | [firebase.google.com/pricing](https://firebase.google.com/pricing) |
+| **Web Push (VAPID)** | push | Browser push services (Google, Mozilla, Apple) do not charge senders; only our Edge Function calls | ₹0 | — |
 | **KYC provider** (v2) | Aadhaar OTP/QR, face match, PAN, DigiLocker | Mostly quote-based. Indicative: Aadhaar OTP/QR ≈ ₹5–6, face ≈ ₹15 per journey; planning budget **₹15–80 per completed worker verification** (from docs) | 200 workers ≈ ₹3k–16k one-time | `06-verification-engine.md` §7, [comparison (vendor-written)](https://hypersign.id/resources/blog/best-aadhaar-verification-api-providers) |
 | Verification v1 (in-house) | QR, face, OCR, forensics on our server | ₹0 licence; compute only | a small CPU VM | `06` §9 |
 | Google STT / LLM | voice agent upgrade | not priced in docs | — | [cloud.google.com/speech-to-text/pricing](https://cloud.google.com/speech-to-text/pricing) |
@@ -869,7 +882,7 @@ _Prices were checked on vendor or vendor-listing pages on 18 Oct 2026, unless ma
 | High | Choose a **KYC provider** (shortlist Surepass + IDfy or HyperVerge); open a business account (CIN/GST/PAN, DPA) | Verification v2: Aadhaar OTP, face, PAN, DigiLocker |
 | High | **RazorpayX** account (current account or Lite) + API keys; **Razorpay** live keys (or test keys first) | Payments go live; automatic payouts |
 | Medium | **MSG91** account + **DLT** entity/template registration | Real SMS OTP |
-| Medium | **Firebase** project (FCM) | Background ring |
+| Medium | **Real-phone push test** over ngrok + production VAPID keys (no Firebase needed) | Background ring (§7.3) |
 | Medium | **100ms** account (or approve a TURN option) | Calls across networks |
 | Medium | **Google Maps** API key (billing account; referrer restriction) | Production maps/search |
 | Before launch | **Lawyer review** of advocate listings (BCI Rule 36) and the lawyer card wording | Legal risk |

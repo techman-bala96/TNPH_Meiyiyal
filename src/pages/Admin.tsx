@@ -12,6 +12,7 @@ import { Splash } from "@/components/app/Guards";
 import { useIsAdmin } from "@/features/worker/api";
 import { AuditLog, Moderation } from "@/features/admin/Moderation";
 import { RatesEditor } from "@/features/admin/Rates";
+import { PushAskCard } from "@/features/push/PushAskCard";
 
 type Check = { check: string; status: string; score?: number | null; reason?: string | null; provider?: string | null };
 type Row = { id: string; display_name: string; primary_node: string; node_name: { en: string; ta?: string } | null; years_experience: number; about: string | null;
@@ -32,6 +33,7 @@ export default function Admin() {
 
   return (
     <PageShell title={`${t("admin.title")} · ${t(`admin.heading.${tab}`)}`} testId="admin-page">
+      <PushAskCard reason="admin" />
       <div className="grid grid-cols-4 gap-1 rounded-2xl bg-primary/10 p-1">
         {(["queue", "moderation", "rates", "audit", "packs", "payments", "payouts"] as const).map((k) => (
           <button key={k} data-testid={`admin-tab-${k}`} onClick={() => setTab(k)} className={`rounded-xl py-2 text-xs font-semibold transition ${tab === k ? "bg-primary text-primary-foreground shadow" : "text-primary"}`}>{t(`admin.tab.${k}`)}</button>))}

@@ -2,7 +2,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
-export type Prefs = { theme?: "light" | "dark" | "system"; lang?: "en" | "ta"; notify?: { requests?: boolean; chat?: boolean; promos?: boolean } };
+export type Prefs = { theme?: "light" | "dark" | "system"; lang?: "en" | "ta"; notify?: NotifyPrefs };
+export type NotifyPrefs = { requests?: boolean; chat?: boolean; money?: boolean; account?: boolean; promos?: boolean; admin?: boolean;
+  quiet?: { on?: boolean; from?: string; to?: string } };
 export type Profile = { user_id: string; full_name: string | null; email: string | null; phone_number: string | null; avatar_url: string | null; dob: string | null; prefs: Prefs };
 
 export function useProfile() {

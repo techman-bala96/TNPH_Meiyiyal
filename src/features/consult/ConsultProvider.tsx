@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -10,6 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useMyWorker } from "@/features/worker/api";
 import { initials } from "@/features/profile/useProfile";
 import { startRing, stopRing } from "./ringtone";
+import { closeNotifications, REQUESTED_KEY } from "@/features/push/webPush";
 import type { ConsultRequest, Mode } from "./api";
 
 import { ConsultCtx as C, type Target } from "./context";
@@ -36,6 +37,7 @@ export function ConsultProvider({ children }: { children: ReactNode }) {
   const [incoming, setIncoming] = useState<ConsultRequest | null>(null);
   const [outgoing, setOutgoing] = useState<{ req: ConsultRequest; target: Target } | null>(null);
   const outRef = useRef(outgoing); outRef.current = outgoing;
+  const loc = useLocation();
 
   // presence heartbeat (any page) + realtime presence channel
   useEffect(() => {
@@ -90,6 +92,23 @@ export function ConsultProvider({ children }: { children: ReactNode }) {
     else if (r.status === "timeout") toast(t("consult.noAnswer", { name: cur.target.display_name }));
   }
 
+  // the ring is over (answered here, expired, or cancelled): remove its phone notification too
+  const lastRing = useRef<string | null>(null);
+  useEffect(() => {
+    if (lastRing.current && lastRing.current !== incoming?.id) void closeNotifications(`req-${lastRing.current}`);
+    lastRing.current = incoming?.id ?? null;
+  }, [incoming?.id]);
+
+  // opened from the notification's Accept / Decline buttons: /?ring=<id>&act=accept|decline
+  useEffect(() => {
+    const sp = new URLSearchParams(loc.search); const ring = sp.get("ring"); const act = sp.get("act");
+    if (!ring || !incoming || incoming.id !== ring) return;
+    sp.delete("ring"); sp.delete("act");
+    nav({ pathname: loc.pathname, search: sp.toString() ? `?${sp}` : "" }, { replace: true });
+    if (act === "accept" || act === "decline") void respond(act === "accept");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [incoming?.id, loc.search]);
+
   // ring sounds
   useEffect(() => {
     if (incoming) startRing("incoming"); else if (outgoing) startRing("outgoing"); else stopRing();
@@ -99,6 +118,7 @@ export function ConsultProvider({ children }: { children: ReactNode }) {
   const request = useCallback(async (w: Target, mode: Mode) => {
     const { data, error } = await supabase.rpc("request_create", { _worker: w.id, _mode: mode });
     if (error) { toast.error(error.message); return; }
+    try { localStorage.setItem(REQUESTED_KEY, "1"); } catch { /* private mode */ }
     const { data: r } = await supabase.from("consult_requests").select("*").eq("id", data as string).single();
     setOutgoing({ req: r as unknown as ConsultRequest, target: w });
   }, []);

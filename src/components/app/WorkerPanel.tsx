@@ -11,6 +11,7 @@ import { patternStyle, themeFor } from "@/features/taxonomy/themes";
 import { useMyVerification, useMyWorker } from "@/features/worker/api";
 import { MyRewards, StandingBanners } from "@/features/rewards/WorkerStanding";
 import { useStanding } from "@/features/rewards/standing";
+import { PushAskCard, PushOffBanner } from "@/features/push/PushAskCard";
 
 export function WorkerPanel() {
   const { t, i18n } = useTranslation(); const lang = i18n.language?.startsWith("ta") ? "ta" : "en";
@@ -80,6 +81,8 @@ export function WorkerPanel() {
           <p className="text-xs text-muted-foreground">{t(w.status === "approved" ? "worker.onlineHint" : "worker.lockedHint")}</p></div>
         <Switch data-testid="go-online" checked={w.is_online && !blocked} disabled={w.status !== "approved" || blocked} onCheckedChange={toggle} aria-label={t("worker.goOnline")} />
       </div>
+      {w.status === "approved" && !blocked && <PushAskCard reason="worker" />}
+      {w.status === "approved" && w.is_online && !blocked && <PushOffBanner />}
       {w.status === "approved" && (
         <Link to="/earnings" data-testid="btn-earnings" className="card-soft flex items-center gap-3 p-4 transition hover:-translate-y-0.5">
           <span className="grid h-11 w-11 place-items-center rounded-full bg-violet-500/15 text-violet-600"><Banknote className="h-5 w-5" /></span>

@@ -8,7 +8,7 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "typecheck": "tsc -p tsconfig.app.json --noEmit",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.sw.json --noEmit",
     "test:e2e": "playwright test",
     "test:unit": "node --experimental-strip-types --test tests/unit/*.test.mjs",
     "test:db": "for f in supabase/tests/*.sql; do docker exec -i supabase_db_meyiyal-local psql -U postgres -v ON_ERROR_STOP=1 < $f || exit 1; done",
@@ -93,6 +93,9 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
     "vite": "^5.4.19",
-    "vite-plugin-pwa": "^0.21.2"
+    "vite-plugin-pwa": "^0.21.2",
+    "workbox-core": "^7.4.1",
+    "workbox-precaching": "^7.4.1",
+    "workbox-routing": "^7.4.1"
   }
 }
