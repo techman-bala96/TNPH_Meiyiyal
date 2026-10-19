@@ -86,7 +86,8 @@ test("crawl: worker pending (registered through the real wizard)", async ({ brow
   await registerWorker(page, w);
   await run(page, rec, [{ path: "/?tab=worker" }, { path: "/worker/register" }, { path: "/earnings" }, { path: "/messages" }]);
   // pending worker cannot go online or be found
-  await page.goto("/?tab=worker"); await expect(page.getByTestId("go-online")).toHaveCount(0);
+  await page.goto("/?tab=worker"); await expect(page.getByTestId("worker-status")).toHaveAttribute("data-status", "pending");
+  await expect(page.getByTestId("go-online")).toBeDisabled();
   assertClean(rec);
 });
 
