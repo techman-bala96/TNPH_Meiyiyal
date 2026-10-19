@@ -102,12 +102,12 @@ test("crawl: admin console (every tab)", async ({ browser }) => {
   await adminApprove(page, [workerName]);
   workerId = sql(`SELECT w.id FROM public.workers w JOIN auth.users u ON u.id = w.user_id WHERE u.email = '${workerEmail}'`);
   // the crawl really clicks switches in Settings (each saves at once); put every setting back afterwards
-  sql(`CREATE SCHEMA IF NOT EXISTS e2e; DROP TABLE IF EXISTS e2e.settings_before; CREATE TABLE e2e.settings_before AS SELECT key, value FROM public.app_settings;`);
+  sql(`CREATE SCHEMA IF NOT EXISTS e2e; DROP TABLE IF EXISTS e2e.settings_before_${TAG()}; CREATE TABLE e2e.settings_before_${TAG()} AS SELECT key, value FROM public.app_settings;`);
   const tabs = ["queue", "appeals", "districts", "moderation", "referrals", "payments", "payouts", "packs", "rates", "commission", "settings", "catalog", "milestones", "security", "audit"];
   try {
     await run(page, rec, tabs.map((t) => ({ path: `/admin#${t}`, open: async () => { await page.goto(`/admin#${t}`); await page.reload(); await settle(page); } })));
   } finally {
-    sql(`UPDATE public.app_settings s SET value = b.value FROM e2e.settings_before b WHERE b.key = s.key AND s.value IS DISTINCT FROM b.value;`);
+    sql(`UPDATE public.app_settings s SET value = b.value FROM e2e.settings_before_${TAG()} b WHERE b.key = s.key AND s.value IS DISTINCT FROM b.value;`);
   }
   assertClean(rec);
 });
