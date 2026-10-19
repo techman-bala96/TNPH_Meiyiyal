@@ -31,3 +31,4 @@ supabase/.temp
 test-results/
 playwright-report/
 .env.local
+.cache/

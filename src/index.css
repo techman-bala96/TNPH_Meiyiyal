@@ -11,7 +11,7 @@
     --card-foreground: 200 25% 12%;
     --popover: 0 0% 100%;
     --popover-foreground: 200 25% 12%;
-    --primary: 168 76% 36%;          /* Meiyiyal green/teal */
+    --primary: 168 80% 25%;          /* Meiyiyal green/teal (darkened in M11 for WCAG AA text contrast) */
     --primary-foreground: 0 0% 100%;
     --secondary: 168 40% 94%;
     --secondary-foreground: 168 76% 24%;
@@ -19,15 +19,15 @@
     --muted-foreground: 200 10% 42%;
     --accent: 350 80% 52%;           /* Meiyiyal red */
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 75% 52%;
+    --destructive: 0 72% 44%;
     --destructive-foreground: 0 0% 100%;
     --border: 180 12% 89%;
     --input: 180 12% 89%;
-    --ring: 168 76% 36%;
+    --ring: 168 80% 25%;
     --radius: 1rem;
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 200 25% 12%;
-    --sidebar-primary: 168 76% 36%;
+    --sidebar-primary: 168 80% 25%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 168 40% 94%;
     --sidebar-accent-foreground: 168 76% 24%;
@@ -72,6 +72,8 @@
   }
 }
 @layer components {
+  html.has-session-pill body { padding-top: calc(3.25rem + env(safe-area-inset-top)); }
+  html.has-session-pill .sticky.top-0 { top: calc(3.25rem + env(safe-area-inset-top)); }
   .tap { @apply min-h-11 active:scale-[0.98] transition-transform; }
   .card-soft { @apply rounded-2xl bg-card shadow-[0_1px_2px_rgba(0,0,0,.04),0_4px_16px_rgba(16,80,70,.06)] dark:shadow-none dark:ring-1 dark:ring-border; }
   /* dark map tiles */

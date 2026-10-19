@@ -1,0 +1,5 @@
+# Optional real face model for FACE_PROVIDER=insightface (CPU). Large download; not needed for tests.
+insightface==0.7.*
+onnxruntime==1.*
+opencv-python-headless==4.*
+numpy<3

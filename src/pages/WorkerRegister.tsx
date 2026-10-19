@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { friendlyError } from "@/lib/friendlyError";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
@@ -14,6 +15,8 @@ import { childrenOf, nodeName, pathTo, useTaxonomy } from "@/features/taxonomy/u
 import { iconFor } from "@/features/taxonomy/icons";
 import { THEMES, patternStyle } from "@/features/taxonomy/themes";
 import { useProfile } from "@/features/profile/useProfile";
+import { LivenessCapture } from "@/features/verify/LivenessCapture";
+import { QrScanner } from "@/features/verify/QrScanner";
 import { aadhaarProvider, stageQr, stageSelfie, uploadDoc, useKycMode, useMyDocs, useMyKyc, useMyWorker, useRequirements, type ReqField } from "@/features/worker/api";
 
 const STEPS = ["profession", "details", "aadhaar", "qr", "selfie", "documents", "review"] as const;
@@ -36,9 +39,11 @@ export default function WorkerRegister() {
   const [errs, setErrs] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState<string | null>(null); const [err, setErr] = useState<string | null>(null);
   const [aadhaar, setAadhaar] = useState(""); const [otpSent, setOtpSent] = useState<string | null>(null); const [otp, setOtp] = useState("");
-  const [qr, setQr] = useState(""); const [challenge, setChallenge] = useState(""); const [didChallenge, setDidChallenge] = useState(false);
+  const [qr, setQr] = useState(""); const [liveDone, setLiveDone] = useState(false); const [noCamera, setNoCamera] = useState(false);
   const [selfie, setSelfie] = useState<File | null>(null); const [consent, setConsent] = useState(false);
   const req = useRequirements(node);
+  // Asked for more information: the QR and selfie sent last time are still on the case, so they can be kept.
+  const fixing = w?.status === "needs_info";
 
   // resume a draft
   useEffect(() => {
@@ -79,7 +84,7 @@ export default function WorkerRegister() {
     const clean = Object.fromEntries(Object.entries(reg).filter(([k]) => req.data?.fields.some((f) => f.key === k)).map(([k, v]) => [k, v.trim()]));
     const { error } = await supabase.rpc("worker_register", { _node: node, _extra_nodes: extra, _display_name: name.trim(), _years: Number(years), _about: about.trim(), _reg: clean });
     setBusy(null);
-    if (error) return setErr(error.message);
+    if (error) return setErr(friendlyError(t, error.message));
     await qc.invalidateQueries({ queryKey: ["my-worker"] });
     setStep(kyc.data?.aadhaar_verified ? "qr" : "aadhaar");
   }
@@ -87,17 +92,20 @@ export default function WorkerRegister() {
     const a = aadhaar.replace(/\D/g, "");
     if (!/^[2-9]\d{11}$/.test(a)) return setErr(t("worker.err.aadhaar"));
     setBusy("otp"); setErr(null);
-    try { const r = await aadhaarProvider(mode.data).sendOtp(a); setOtpSent(r.masked); } catch (e) { setErr((e as Error).message); } finally { setBusy(null); }
+    try { const r = await aadhaarProvider(mode.data).sendOtp(a); setOtpSent(r.masked); } catch (e) { setErr(friendlyError(t, (e as Error).message)); } finally { setBusy(null); }
   }
   async function verifyOtp() {
     setBusy("verify"); setErr(null);
     try {
       const ok = await aadhaarProvider(mode.data).verifyOtp(otp);
       if (!ok) setErr(t("worker.err.otp")); else { await qc.invalidateQueries({ queryKey: ["my-kyc"] }); setStep("qr"); }
-    } catch (e) { setErr((e as Error).message); } finally { setBusy(null); }
+    } catch (e) { setErr(friendlyError(t, (e as Error).message)); } finally { setBusy(null); }
   }
   async function onDoc(type: string, f?: File) {
     if (!f || !user || !w) return;
+    // the picker's accept= is only a hint (and absent when sharing from another app): say why before uploading
+    if (!/^(application\/pdf|image\/(jpeg|png|webp))$/.test(f.type)) { setErr(t("worker.err.type")); return; }
+    if (f.size > 10 * 1024 * 1024) { setErr(t("worker.err.tooBig")); return; }
     setBusy(`doc:${type}`); setErr(null);
     try { await uploadDoc(user.id, w.id, type, f); await qc.invalidateQueries({ queryKey: ["my-docs"] }); }
     catch (e) { setErr((e as Error).message === "too_big" ? t("worker.err.tooBig") : t("worker.err.upload")); } finally { setBusy(null); }
@@ -106,24 +114,20 @@ export default function WorkerRegister() {
     setBusy("submit"); setErr(null);
     const { error } = await supabase.rpc("worker_submit");
     setBusy(null);
-    if (error) return setErr(error.message);
+    if (error) return setErr(friendlyError(t, error.message));
     await qc.invalidateQueries({ queryKey: ["my-worker"] });
     nav("/?tab=worker", { replace: true });
   }
   const missingDocs = (req.data?.docs ?? []).filter((d) => d.required && !uploaded.has(d.type));
-  useEffect(() => {
-    if (step !== "selfie" || challenge) return;
-    supabase.rpc("verification_liveness_challenge").then(({ data, error }) => { if (!error && data) setChallenge(String(data)); });
-  }, [step, challenge]);
   async function saveQr() {
     if (!user || qr.trim().length < 8) return setErr(t("worker.err.qr"));
     setBusy("qr"); setErr(null);
-    try { await stageQr(user.id, qr.trim()); setStep("selfie"); } catch (e) { setErr((e as Error).message); } finally { setBusy(null); }
+    try { await stageQr(user.id, qr.trim()); setStep("selfie"); } catch (e) { setErr(friendlyError(t, (e as Error).message)); } finally { setBusy(null); }
   }
   async function saveSelfie() {
-    if (!user || !selfie || !consent || !didChallenge) return;
+    if (!user || !selfie || !consent || !(liveDone || noCamera)) return;
     setBusy("selfie"); setErr(null);
-    try { await stageSelfie(user.id, selfie, true); setStep("documents"); }
+    try { await stageSelfie(user.id, selfie, liveDone); setStep("documents"); }
     catch (e) { setErr((e as Error).message === "too_big" ? t("worker.err.tooBig") : (e as Error).message || t("worker.err.upload")); }
     finally { setBusy(null); }
   }
@@ -134,7 +138,7 @@ export default function WorkerRegister() {
         {STEPS.map((s, i) => <li key={s} className={`h-1.5 flex-1 rounded-full transition-colors ${i <= idx ? "bg-primary" : "bg-muted"}`} />)}
       </ol>
       <p className="text-xs font-medium text-muted-foreground">{t("worker.stepOf", { n: idx + 1, total: STEPS.length })} · {t(`worker.step.${step}`)}</p>
-      {w?.status === "needs_info" && w.review_note && <p data-testid="review-note" className="rounded-xl bg-amber-500/10 p-3 text-sm text-amber-700 dark:text-amber-300">{w.review_note}</p>}
+      {w?.status === "needs_info" && w.review_note && <p data-testid="review-note" className="rounded-xl bg-amber-500/10 p-3 text-sm text-amber-800 dark:text-amber-300">{w.review_note}</p>}
 
       {step === "profession" && (
         <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2">
@@ -224,16 +228,15 @@ export default function WorkerRegister() {
             </>
           )}
           {err && <p data-testid="reg-error" className="text-sm text-destructive">{err}</p>}
-          {kyc.data?.aadhaar_verified && <Button className="tap w-full rounded-xl" onClick={() => setStep("qr")}>{t("worker.next")}</Button>}
+          {kyc.data?.aadhaar_verified && <Button data-testid="reg-aadhaar-next" className="tap w-full rounded-xl" onClick={() => setStep("qr")}>{t("worker.next")}</Button>}
         </div>
       )}
 
       {step === "qr" && (
         <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2">
           <div className="card-soft flex gap-3 p-4"><QrCode className="h-6 w-6 shrink-0 text-primary" /><p className="text-sm text-muted-foreground">{t("worker.qrWhy")}</p></div>
-          <Field id="qr" label={t("worker.qrLabel")}>
-            <Textarea id="qr" data-testid="reg-qr" value={qr} onChange={(e) => setQr(e.target.value)} rows={4} className="rounded-xl font-mono text-xs" placeholder={t("worker.qrPlaceholder")} />
-          </Field>
+          {fixing && <Button data-testid="reg-keep-qr" variant="outline" className="tap w-full rounded-xl" onClick={() => { setErr(null); setStep("selfie"); }}>{t("worker.keepPrev")}</Button>}
+          <QrScanner value={qr} onChange={setQr} />
           {err && <p data-testid="reg-error" className="text-sm text-destructive">{err}</p>}
           <Button data-testid="reg-qr-save" className="tap w-full rounded-xl" disabled={busy === "qr" || qr.trim().length < 8} onClick={saveQr}>
             {busy === "qr" && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{t("worker.next")}</Button>
@@ -243,15 +246,18 @@ export default function WorkerRegister() {
       {step === "selfie" && (
         <div className="space-y-3 animate-in fade-in slide-in-from-bottom-2">
           <div className="card-soft flex gap-3 p-4"><Camera className="h-6 w-6 shrink-0 text-primary" /><p className="text-sm text-muted-foreground">{t("worker.selfieWhy")}</p></div>
-          <p data-testid="reg-liveness" className="rounded-xl bg-primary/10 p-3 text-sm font-semibold text-primary">{t("worker.liveness", { challenge: t(`worker.challenge.${challenge || "blink"}`) })}</p>
-          <label className="flex items-start gap-2 text-sm"><input data-testid="reg-liveness-done" type="checkbox" checked={didChallenge} onChange={(e) => setDidChallenge(e.target.checked)} className="mt-1" />{t("worker.livenessDid")}</label>
-          <label className="card-soft flex cursor-pointer items-center justify-between p-3 text-sm">
-            <span>{selfie ? selfie.name : t("worker.selfieFile")}</span>
-            <input data-testid="reg-selfie-file" type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={(e) => setSelfie(e.target.files?.[0] ?? null)} />
-          </label>
+          {fixing && <Button data-testid="reg-keep-selfie" variant="outline" className="tap w-full rounded-xl" onClick={() => { setErr(null); setStep("documents"); }}>{t("worker.keepPrev")}</Button>}
+          {user && !noCamera && <LivenessCapture userId={user.id} onDone={(r) => { setSelfie(r.portrait); setLiveDone(true); }} onNoCamera={() => { setNoCamera(true); setLiveDone(false); }} />}
+          {noCamera && (<>
+            <p data-testid="reg-no-camera" className="rounded-xl bg-muted p-3 text-sm text-muted-foreground">{t("worker.liveNoCamera")}</p>
+            <label className="card-soft flex cursor-pointer items-center justify-between p-3 text-sm">
+              <span>{selfie ? selfie.name : t("worker.selfieFile")}</span>
+              <input data-testid="reg-selfie-file" type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={(e) => setSelfie(e.target.files?.[0] ?? null)} />
+            </label>
+          </>)}
           <label className="flex items-start gap-2 text-sm"><input data-testid="reg-selfie-consent" type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-1" />{t("worker.selfieConsent")}</label>
           {err && <p data-testid="reg-error" className="text-sm text-destructive">{err}</p>}
-          <Button data-testid="reg-selfie-next" className="tap w-full rounded-xl" disabled={!selfie || !consent || !didChallenge || busy === "selfie"} onClick={saveSelfie}>
+          <Button data-testid="reg-selfie-next" className="tap w-full rounded-xl" disabled={!selfie || !consent || !(liveDone || noCamera) || busy === "selfie"} onClick={saveSelfie}>
             {busy === "selfie" && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{t("worker.next")}</Button>
         </div>
       )}

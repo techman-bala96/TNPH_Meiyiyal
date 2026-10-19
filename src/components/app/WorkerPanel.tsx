@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { friendlyError } from "@/lib/friendlyError";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
@@ -32,7 +33,7 @@ export function WorkerPanel() {
 
   const path = pathTo(tax.data ?? [], w.primary_node); const th = themeFor(path);
   const meta: Record<string, { icon: typeof Clock; tone: string }> = {
-    draft: { icon: FileWarning, tone: "text-amber-600" }, pending: { icon: Hourglass, tone: "text-amber-600" }, needs_info: { icon: FileWarning, tone: "text-amber-600" },
+    draft: { icon: FileWarning, tone: "text-amber-700" }, pending: { icon: Hourglass, tone: "text-amber-700" }, needs_info: { icon: FileWarning, tone: "text-amber-700" },
     approved: { icon: BadgeCheck, tone: "text-primary" }, rejected: { icon: ShieldAlert, tone: "text-destructive" }, blocked: { icon: ShieldAlert, tone: "text-destructive" },
   };
   const M = meta[w.status];
@@ -41,7 +42,7 @@ export function WorkerPanel() {
   const autoOff = !w.is_online ? notes.data?.find((n) => n.kind === "worker.auto_offline" && !n.read_at) : undefined;
   async function toggle(on: boolean) {
     const { error } = await supabase.rpc("worker_set_online", { _online: on });
-    if (error) toast.error(error.message);
+    if (error) toast.error(friendlyError(t, error.message));
     else if (on && autoOff) { await markRead([autoOff.id]); await qc.invalidateQueries({ queryKey: ["notifications"] }); }
     await qc.invalidateQueries({ queryKey: ["my-worker"] }); await qc.invalidateQueries({ queryKey: ["standing"] });
   }
@@ -57,7 +58,16 @@ export function WorkerPanel() {
         <div className="min-w-0 flex-1">
           <p data-testid="worker-status" data-status={w.status} className="font-semibold">{t(`worker.status.${w.status}`)}</p>
           <p className="text-sm text-muted-foreground">{t(`worker.statusHint.${w.status}`)}</p>
-          {w.review_note && w.status !== "approved" && <p data-testid="review-note" className="mt-2 rounded-lg bg-muted p-2 text-sm">{w.review_note}</p>}
+          {w.review_note && w.status !== "approved" && (() => {
+            // automatic decisions store a code ("identity:bad_signature"); admins write sentences. Codes become plain words.
+            const code = /^([a-z_]+):([a-z0-9_]+)$/.exec(w.review_note) ?? (/^(risk|verification failed)$/.test(w.review_note) ? ["", "risk", "high"] : null);
+            return code
+              ? <div data-testid="review-note" data-code={`${code[1]}:${code[2]}`} className="mt-2 space-y-1 rounded-lg bg-muted p-2 text-sm">
+                  <p className="font-medium">{t(`worker.reject.${code[1]}_${code[2]}`, { defaultValue: t(`worker.reject.${code[1]}`, { defaultValue: t("worker.reject.generic") }) })}</p>
+                  <p className="text-xs text-muted-foreground">{t(`worker.rejectHint.${code[1]}`, { defaultValue: t("worker.rejectHint.generic") })}</p>
+                </div>
+              : <p data-testid="review-note" className="mt-2 rounded-lg bg-muted p-2 text-sm">{w.review_note}</p>;
+          })()}
           {verify.data?.badge_tier && <p data-testid="badge-tier" data-tier={verify.data.badge_tier} className="mt-1 text-xs font-semibold">{t(`worker.badge.${verify.data.badge_tier}`)}{verify.data.verified_at ? ` · ${t("worker.verifiedOn", { date: new Date(verify.data.verified_at).toLocaleDateString() })}` : ""}</p>}
           {(verify.data?.checks?.length ?? 0) > 0 && (
             <ul data-testid="verify-checks" className="mt-2 space-y-1">

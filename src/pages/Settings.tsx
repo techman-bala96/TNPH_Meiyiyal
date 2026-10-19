@@ -5,6 +5,7 @@ import { PageShell, Section } from "@/components/app/PageShell";
 import { WorkerBadge } from "@/components/app/WorkerBadge";
 import { useProfile, useUpdateProfile, type Prefs } from "@/features/profile/useProfile";
 import { PushSettings } from "@/features/push/PushSettings";
+import { YourData } from "@/features/privacy/YourData";
 
 export default function Settings() {
   const { t, i18n } = useTranslation();
@@ -38,6 +39,9 @@ export default function Settings() {
       <Section title={t("settings.notifications")}>
         <PushSettings prefs={prefs} savePrefs={savePrefs} />
         <p className="mt-3 text-xs text-muted-foreground">{t("settings.notifyNote")}</p>
+      </Section>
+      <Section title={t("privacy.title")}>
+        <YourData />
       </Section>
     </PageShell>
   );

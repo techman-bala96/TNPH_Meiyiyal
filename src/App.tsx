@@ -1,8 +1,9 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { NetworkBanner } from "@/components/app/NetworkBanner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/hooks/useAuth";
-import { GuestOnly, RequireAuth, RequireLocation } from "@/components/app/Guards";
+import { GuestOnly, RequireAuth, RequireLocation, Splash } from "@/components/app/Guards";
 import Login from "@/pages/Login";
 import AuthCallback from "@/pages/AuthCallback";
 import Home from "@/pages/Home";
@@ -10,7 +11,9 @@ import Browse from "@/pages/Browse";
 import Profile from "@/pages/Profile";
 import Settings from "@/pages/Settings";
 import WorkerRegister from "@/pages/WorkerRegister";
-import Admin from "@/pages/Admin";
+import { lazy, Suspense } from "react";
+// Admin code is a separate chunk: ordinary users never download it.
+const Admin = lazy(() => import("@/pages/Admin"));
 import { ThemeProvider } from "next-themes";
 import { PrefsSync } from "@/components/app/PrefsSync";
 import LocationPage from "@/pages/LocationPage";
@@ -24,7 +27,10 @@ import { BottomNav } from "@/components/app/BottomNav";
 import { VoiceProvider } from "@/features/voice/VoiceProvider";
 import Notifications from "@/pages/Notifications";
 import Messages from "@/pages/Messages";
+import Legal from "@/pages/Legal";
+import NotFound from "@/pages/NotFound";
 import { NotificationsSync } from "@/features/push/NotificationsSync";
+import { ReferralClaimer } from "@/features/referral/ReferralClaimer";
 
 const qc = new QueryClient();
 
@@ -33,20 +39,24 @@ export default function App() {
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem storageKey="meiyiyal-theme" disableTransitionOnChange>
     <QueryClientProvider client={qc}>
       <Toaster />
+      <NetworkBanner />
       <BrowserRouter>
         <AuthProvider>
           <PrefsSync />
           <NotificationsSync />
+          <ReferralClaimer />
           <ConsultProvider>
           <VoiceProvider>
           <Routes>
             <Route element={<GuestOnly />}><Route path="/login" element={<Login />} /></Route>
+            <Route path="/privacy" element={<Legal kind="privacy" />} />
+            <Route path="/terms" element={<Legal kind="terms" />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route element={<RequireAuth />}>
               <Route path="/location" element={<LocationPage />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/admin" element={<Admin />} />
+              <Route path="/admin" element={<Suspense fallback={<Splash />}><Admin /></Suspense>} />
               <Route path="/session/:id" element={<Session />} />
               <Route path="/history" element={<History />} />
               <Route path="/notifications" element={<Notifications />} />
@@ -60,7 +70,7 @@ export default function App() {
                 <Route path="/worker/register" element={<WorkerRegister />} />
               </Route>
             </Route>
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
           <BottomNav />
           </VoiceProvider>

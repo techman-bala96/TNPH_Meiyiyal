@@ -2,6 +2,7 @@
 let ctx: AudioContext | null = null;
 let timer: ReturnType<typeof setInterval> | null = null;
 export let ringing = false;
+let vibrated = false; // only cancel a vibration we started (Chrome logs an error for vibrate() before any tap)
 
 function burst(freqs: number[], ms: number) {
   if (!ctx) return;
@@ -18,7 +19,7 @@ export function startRing(kind: "incoming" | "outgoing" = "incoming") {
   const play = () => {
     if (kind === "incoming") { burst([440, 480], 400); setTimeout(() => burst([440, 480], 400), 550); }
     else burst([425], 900);
-    if (kind === "incoming" && "vibrate" in navigator) navigator.vibrate?.([400, 200, 400]);
+    if (kind === "incoming" && "vibrate" in navigator && navigator.userActivation?.hasBeenActive !== false) vibrated = navigator.vibrate?.([400, 200, 400]) || vibrated;
   };
   play();
   timer = setInterval(play, kind === "incoming" ? 2500 : 3000);
@@ -28,6 +29,6 @@ export function stopRing() {
   ringing = false;
   if (timer) clearInterval(timer);
   timer = null;
-  if ("vibrate" in navigator) navigator.vibrate?.(0);
+  if (vibrated && "vibrate" in navigator) { navigator.vibrate?.(0); vibrated = false; }
   (window as unknown as { __meiyiyalRing?: string }).__meiyiyalRing = undefined;
 }

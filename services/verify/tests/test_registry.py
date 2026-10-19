@@ -1,6 +1,6 @@
 import pytest
 
-from verify.registry import HOSTS, URLS, Registry, RegistryError, guard_url, parse_registry_html
+from verify.registry import ADAPTERS, HOSTS, URLS, Registry, RegistryError, build_request, guard_url, merge_adapters, parse_registry_html
 
 ACTIVE = """
 <table>
@@ -37,7 +37,7 @@ def test_parse_active_suspended_and_missing():
 
 
 def test_live_off_does_not_call_transport():
-    def boom(url, reg):
+    def boom(req):
         raise AssertionError("network")
 
     reg = Registry(boom, live=False, now=lambda: 1000)
@@ -47,23 +47,23 @@ def test_live_off_does_not_call_transport():
 
 
 def test_timeout_and_error_are_review():
-    def timeout(url, reg):
+    def timeout(req):
         raise TimeoutError("slow")
 
     reg = Registry(timeout, live=True, now=lambda: 1000)
-    assert reg.lookup("tnmc", "X", "Y")["evidence"]["reason"] == "timeout"
+    assert reg.lookup("tnmc", "TNMC 1", "Y")["evidence"]["reason"] == "timeout"
 
-    def crash(url, reg):
+    def crash(req):
         raise RuntimeError("reset")
 
     reg = Registry(crash, live=True, now=lambda: 5000)
-    assert reg.lookup("nmc", "X", "Y")["evidence"]["reason"] == "error"
+    assert reg.lookup("nmc", "NMC 1", "Y")["evidence"]["reason"] == "error"
 
 
 def test_rate_limit_skips_transport():
     calls = {"n": 0}
 
-    def fetch(url, reg):
+    def fetch(req):
         calls["n"] += 1
         return ACTIVE
 
@@ -72,7 +72,7 @@ def test_rate_limit_skips_transport():
     def now():
         return clock["t"]
 
-    reg = Registry(fetch, live=True, now=now)
+    reg = Registry(fetch, live=True, now=now, allow_unconfirmed=True)
     first = reg.lookup("tnmc", "TNMC 87654", "Kavitha Raman")
     assert first["status"] == "pass" and calls["n"] == 1
     clock["t"] = 1
@@ -84,12 +84,12 @@ def test_rate_limit_skips_transport():
 
 
 def test_chain_stops_on_fail_and_falls_through_review():
-    def fetch(url, reg):
-        if "nmc.org.in" in url:
+    def fetch(req):
+        if "nmc.org.in" in req["url"]:
             return "<p>TNMC 87654 Kavitha Raman Active</p>"
         return "<p>no rows</p>"
 
-    reg = Registry(fetch, live=True, now=lambda: 100)
+    reg = Registry(fetch, live=True, now=lambda: 100, allow_unconfirmed=True)
     found = reg.lookup_chain(["tnmc", "nmc"], "TNMC 87654", "Kavitha Raman")
     assert found["status"] == "pass"
     assert found["evidence"]["provider"] == "nmc"
@@ -99,3 +99,41 @@ def test_manual_provider_is_review():
     reg = Registry(lambda *a: "nope", live=True, now=lambda: 0)
     assert reg.lookup("manual", "EL1", "Priya")["evidence"]["reason"] == "manual"
     assert reg.lookup("siddha-board", "S1", "Priya")["evidence"]["reason"] == "no_adapter"
+
+
+def test_the_registration_number_is_sent():
+    sent = []
+
+    def fetch(req):
+        sent.append(req)
+        return ACTIVE
+
+    reg = Registry(fetch, live=True, now=lambda: 50, allow_unconfirmed=True)
+    reg.lookup("tnmc", "TNMC 87654", "Kavitha Raman")
+    assert sent[0]["method"] == "GET" and "TNMC 87654" in sent[0]["params"].values()
+    reg2 = Registry(fetch, live=True, now=lambda: 50, allow_unconfirmed=True)
+    reg2.lookup("rci", "A12345", "Kavitha Raman")
+    assert sent[1]["method"] == "POST" and sent[1]["data"] == {"crrno": "A12345"}
+
+
+def test_unconfirmed_adapter_cannot_pass_or_hard_fail():
+    reg = Registry(lambda req: ACTIVE, live=True, now=lambda: 9)
+    ok = reg.lookup("tnmc", "TNMC 87654", "Kavitha Raman")
+    assert ok["status"] == "review" and ok["evidence"]["reason"] == "unconfirmed_adapter" and ok["evidence"]["parsed"] == "pass"
+    bad = Registry(lambda req: ACTIVE, live=True, now=lambda: 99).lookup("tnmc", "TNMC 00001", "Other Person")
+    assert bad["status"] == "review" and bad["evidence"]["parsed"] == "fail"
+
+
+def test_confirmed_override_and_host_lock():
+    adapters = merge_adapters({"tnmc": {"confirmed": True, "field": "q"}, "nmc": {"url": "https://evil.example/x"}})
+    assert adapters["tnmc"]["confirmed"] is True and adapters["tnmc"]["field"] == "q"
+    assert adapters["nmc"]["url"].startswith("https://nmc.org.in")
+    reg = Registry(lambda req: ACTIVE, live=True, now=lambda: 1, adapters=adapters)
+    assert reg.lookup("tnmc", "TNMC 87654", "Kavitha Raman")["status"] == "pass"
+
+
+def test_captcha_site_is_manual_and_empty_number_is_review():
+    reg = Registry(lambda req: (_ for _ in ()).throw(AssertionError("no call")), live=True, now=lambda: 1)
+    assert reg.lookup("coa", "CA/2010/12345", "Ar. Meena")["evidence"]["reason"] == "captcha"
+    assert reg.lookup("tnmc", "  ", "X")["evidence"]["reason"] == "no_number"
+    assert build_request(ADAPTERS["coa"], "CA/1")["data"] == {"reg_no": "CA/1"}

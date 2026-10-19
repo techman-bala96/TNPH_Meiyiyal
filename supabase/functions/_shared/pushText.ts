@@ -62,6 +62,9 @@ export const TEXTS: Record<string, Record<Lang, T>> = {
   "payment.paid": L(
     (p) => ({ title: "Payment successful", body: `${inr(p.amount)} paid. ${p.credits ?? 0} credits added to your wallet.` }),
     (p) => ({ title: "பணம் செலுத்தப்பட்டது", body: `${inr(p.amount)} செலுத்தினீர்கள். உங்கள் wallet-ல் ${p.credits ?? 0} கிரெடிட் சேர்க்கப்பட்டது.` })),
+  "payment.bonus_expiring": L(
+    (p) => ({ title: "Bonus credits expiring", body: `${p.amount ?? 0} bonus credits expire on ${p.date ?? "soon"}. Use them before then.` }),
+    (p) => ({ title: "போனஸ் கிரெடிட் காலாவதியாகிறது", body: `${p.amount ?? 0} போனஸ் கிரெடிட் ${p.date ?? "விரைவில்"} அன்று காலாவதியாகும். அதற்குள் பயன்படுத்துங்கள்.` })),
   "payment.failed": L(
     (p) => ({ title: "Payment didn't go through", body: `Your ${inr(p.amount)} payment failed. Please try again.` }),
     (p) => ({ title: "பணம் செலுத்த முடியவில்லை", body: `உங்கள் ${inr(p.amount)} பணம் செலுத்தல் தோல்வியடைந்தது. மீண்டும் முயற்சி செய்யுங்கள்.` })),

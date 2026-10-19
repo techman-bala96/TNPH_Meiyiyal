@@ -9,8 +9,8 @@ interface AuthCtx {
   session: Session | null;
   loading: boolean;
   signInWithGoogle: () => Promise<Result>;
-  sendEmailLink: (email: string) => Promise<Result>;
-  sendPhoneOtp: (phoneE164: string) => Promise<Result>;
+  sendEmailLink: (email: string, captchaToken?: string) => Promise<Result>;
+  sendPhoneOtp: (phoneE164: string, captchaToken?: string) => Promise<Result>;
   verifyPhoneOtp: (phoneE164: string, token: string) => Promise<Result>;
   signOut: () => Promise<void>;
 }
@@ -26,8 +26,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(s);
       setLoading(false);
     });
-    supabase.auth.getSession().then(({ data }) => { setSession(data.session); setLoading(false); });
-    return () => subscription.unsubscribe();
+    // A stored session can outlive the account (deleted, banned, or every session revoked): the access token
+    // stays valid for up to an hour, so ask Auth on open and when the app comes back to the foreground.
+    // Only a definite "no such user / session" answer signs out; network errors never do.
+    const check = async () => {
+      const { data } = await supabase.auth.getSession(); if (!data.session) return;
+      const { error } = await supabase.auth.getUser();
+      const e = error as (Error & { status?: number; code?: string }) | null;
+      if (e && (e.status === 401 || e.status === 403 || /user_not_found|session_not_found|user_banned|does not exist/i.test(`${e.code ?? ""} ${e.message}`)))
+        await supabase.auth.signOut({ scope: "local" });
+    };
+    supabase.auth.getSession().then(({ data }) => { setSession(data.session); setLoading(false); void check(); });
+    const onVis = () => { if (document.visibilityState === "visible") void check(); };
+    document.addEventListener("visibilitychange", onVis);
+    return () => { subscription.unsubscribe(); document.removeEventListener("visibilitychange", onVis); };
   }, []);
 
   const value: AuthCtx = {
@@ -38,12 +50,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { error } = await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: callbackUrl() } });
       return { error };
     },
-    sendEmailLink: async (email) => {
-      const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: callbackUrl(), shouldCreateUser: true } });
+    sendEmailLink: async (email, captchaToken) => {
+      const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: callbackUrl(), shouldCreateUser: true, captchaToken } });
       return { error };
     },
-    sendPhoneOtp: async (phone) => {
-      const { error } = await supabase.auth.signInWithOtp({ phone });
+    sendPhoneOtp: async (phone, captchaToken) => {
+      const { error } = await supabase.auth.signInWithOtp({ phone, options: { captchaToken } });
       return { error };
     },
     verifyPhoneOtp: async (phone, token) => {

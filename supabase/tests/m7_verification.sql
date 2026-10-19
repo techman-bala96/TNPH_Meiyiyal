@@ -375,6 +375,16 @@ DO $$ DECLARE wa uuid; wb uuid; cid uuid; seen text; BEGIN
   seen := public.verification_observe_fingerprint(wb, 'reg_no', 'tnmc-dup-1');
   IF seen <> 'active' THEN RAISE EXCEPTION 'FAIL: duplicate saw %', seen; END IF;
   RAISE NOTICE 'PASS: duplicate registration number is detected';
+  -- M11: a pending holder is review, a rejected holder is review, and automatic rejection bans nothing
+  IF public.verification_observe_fingerprint(wb, 'aadhaar', 'aad-pending-1') <> 'ok' THEN RAISE EXCEPTION 'FAIL: fp claim'; END IF;
+  IF public.verification_observe_fingerprint(wa, 'aadhaar', 'aad-pending-1') <> 'claimed_pending' THEN RAISE EXCEPTION 'FAIL: pending holder'; END IF;
+  PERFORM set_config('meiyiyal.trusted','on', true);
+  UPDATE public.workers SET status = 'rejected' WHERE id = wb;
+  IF public.verification_observe_fingerprint(wa, 'aadhaar', 'aad-pending-1') <> 'previously_rejected' THEN RAISE EXCEPTION 'FAIL: rejected holder'; END IF;
+  IF (SELECT blocked FROM public.identity_fingerprints WHERE hash = 'aad-pending-1') THEN RAISE EXCEPTION 'FAIL: auto ban'; END IF;
+  UPDATE public.workers SET status = 'pending' WHERE id = wb;
+  PERFORM set_config('meiyiyal.trusted','off', true);
+  RAISE NOTICE 'PASS: pending/rejected holders go to review; no automatic ban';
 END $$;
 SELECT set_config('request.jwt.claims','{"sub":"00000000-0000-0000-0000-00000000a7a1","role":"authenticated"}', true);
 SET LOCAL role authenticated;

@@ -1,9 +1,9 @@
 // Payout provider. Mock when app_settings.payouts_mock is true (the local default).
-// RazorpayX is selected only when mock is off AND RAZORPAYX_KEY_ID, RAZORPAYX_KEY_SECRET,
-// and RAZORPAYX_ACCOUNT_NUMBER are set. This build does not call RazorpayX: those methods
-// refuse instead of opening a network connection. Penny-drop suffix rules (0000 / 0001 / 0002)
-// live in payout_account_submit so the SQL tests and this function share one result.
+// RazorpayX when mock is off AND RAZORPAYX_KEY_ID, RAZORPAYX_KEY_SECRET, RAZORPAYX_ACCOUNT_NUMBER are set
+// (RAZORPAYX_WEBHOOK_SECRET for webhooks). Otherwise null → the functions answer 503.
+// Mock penny-drop suffix rules (0000 / 0001 / 0002) live in payout_account_submit so SQL tests share them.
 import { admin, cors, hmacHex, json, requireUser, safeEqual } from "./payments.ts";
+import { RazorpayX } from "./razorpayx.ts";
 
 export { admin, cors, hmacHex, json, requireUser };
 
@@ -21,21 +21,27 @@ export class MockPayoutProvider implements PayoutProvider {
   }
 }
 
-/** Present so the switch exists. Refuses every call until a later build wires the HTTP client. */
-class RazorpayXProvider implements PayoutProvider {
+export class RazorpayXProvider implements PayoutProvider {
   readonly name = "razorpayx" as const;
-  async verifyWebhook(): Promise<boolean> {
-    throw new Error("live_payouts_not_in_this_build");
+  readonly rx: RazorpayX;
+  private webhookSecret: string;
+  constructor(rx: RazorpayX, webhookSecret: string) { this.rx = rx; this.webhookSecret = webhookSecret; }
+  async verifyWebhook(rawBody: string, signature: string) {
+    if (!this.webhookSecret) return false;
+    return safeEqual(await hmacHex(this.webhookSecret, rawBody), signature);
   }
 }
 
 export async function pickPayoutProvider(): Promise<PayoutProvider | null> {
   const { data } = await admin().rpc("payouts_mock_enabled");
   if (data === true) return new MockPayoutProvider();
-  const id = Deno.env.get("RAZORPAYX_KEY_ID");
-  const secret = Deno.env.get("RAZORPAYX_KEY_SECRET");
-  const account = Deno.env.get("RAZORPAYX_ACCOUNT_NUMBER");
-  if (id && secret && account) return new RazorpayXProvider();
+  const keyId = Deno.env.get("RAZORPAYX_KEY_ID");
+  const keySecret = Deno.env.get("RAZORPAYX_KEY_SECRET");
+  const accountNumber = Deno.env.get("RAZORPAYX_ACCOUNT_NUMBER");
+  if (keyId && keySecret && accountNumber) {
+    return new RazorpayXProvider(new RazorpayX({ keyId, keySecret, accountNumber, base: Deno.env.get("RAZORPAYX_BASE_URL") || undefined }),
+      Deno.env.get("RAZORPAYX_WEBHOOK_SECRET") ?? "");
+  }
   return null;
 }
 

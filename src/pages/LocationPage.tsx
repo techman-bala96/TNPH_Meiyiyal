@@ -8,7 +8,8 @@ import { LangToggle } from "@/components/app/LangToggle";
 import { Button } from "@/components/ui/button";
 import districtsData from "@/features/location/districts.json";
 import { getBrowserPosition, reverseGeocode, type ResolvedPlace } from "@/features/location/geocoding";
-import { nominatimReverse, nominatimSearch, shortAddress, type NominatimPlace } from "@/features/location/nominatim";
+import { shortAddress, type NominatimPlace } from "@/features/location/nominatim";
+import { geoAutocomplete, geoAutocompleteEnabled, geoPlace, geoReverse, geoSearch, type Suggestion } from "@/features/location/geo";
 import { createMap, type LatLng, type MapHandle } from "@/features/location/map";
 import { useCurrentLocation, useSaveLocation } from "@/features/location/useCurrentLocation";
 
@@ -87,7 +88,7 @@ export default function LocationPage() {
     let live = true;
     setResolving(true);
     const id = setTimeout(async () => {
-      const [near, rev] = await Promise.allSettled([reverseGeocode(center.lat, center.lng), nominatimReverse(center.lat, center.lng, lang)]);
+      const [near, rev] = await Promise.allSettled([reverseGeocode(center.lat, center.lng), geoReverse(center.lat, center.lng, lang)]);
       if (!live) return;
       setPlace(near.status === "fulfilled" ? near.value : null);
       setAddress(rev.status === "fulfilled" && rev.value ? shortAddress(rev.value) : null);
@@ -102,11 +103,22 @@ export default function LocationPage() {
   const seededD = needle ? DISTRICTS.filter((d) => m(d.name.en) || m(d.name.ta)).slice(0, 4) : [];
   const seededA = needle ? (areas.data ?? []).filter((a) => m(a.name) || m(a.name_ta)).slice(0, 6) : [];
   useEffect(() => setRemote(null), [q]);
+  // Google only: type-ahead suggestions (Nominatim's policy forbids autocomplete)
+  const [sugg, setSugg] = useState<Suggestion[]>([]);
+  useEffect(() => {
+    if (!geoAutocompleteEnabled || needle.length < 2) { setSugg([]); return; }
+    const id = setTimeout(() => { geoAutocomplete(q.trim(), lang).then(setSugg); }, 300);
+    return () => clearTimeout(id);
+  }, [q, lang]); // eslint-disable-line react-hooks/exhaustive-deps
+  async function pickSuggestion(s: Suggestion) {
+    const p = await geoPlace(s.place_id, lang);
+    if (p) go({ lat: +p.lat, lng: +p.lon }, null);
+  }
 
   async function submitSearch() {
     if (needle.length < 3) return;
     setSearching(true);
-    try { setRemote(await nominatimSearch(q.trim(), lang)); } catch { setRemote([]); } finally { setSearching(false); }
+    try { setRemote(await geoSearch(q.trim(), lang)); } catch { setRemote([]); } finally { setSearching(false); }
   }
   function go(p: LatLng, override: { district: string; area: number | null } | null) {
     source.current = "search"; areaOverride.current = override;
@@ -173,6 +185,10 @@ export default function LocationPage() {
                   className="tap flex w-full items-center gap-3 px-4 py-2 text-left text-sm"><MapPin className="h-4 w-4 text-muted-foreground" />
                   <span className="flex-1">{(ta && a.name_ta) || a.name}</span><span className="text-xs text-muted-foreground">{dName(d.name)}</span></button></li>
               ); })}
+              {sugg.map((sg) => (
+                <li key={sg.place_id}><button data-testid="suggest-hit" onClick={() => pickSuggestion(sg)}
+                  className="tap flex w-full items-center gap-3 px-4 py-2 text-left text-sm"><MapPin className="h-4 w-4 shrink-0 text-muted-foreground" /><span className="truncate">{sg.text}</span></button></li>
+              ))}
               {remote?.map((r, i) => (
                 <li key={`${r.lat},${r.lon},${i}`}><button data-testid="place-hit" onClick={() => go({ lat: +r.lat, lng: +r.lon }, null)}
                   className="tap flex w-full items-start gap-3 px-4 py-2 text-left text-sm"><Search className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
@@ -194,7 +210,7 @@ export default function LocationPage() {
 
       {/* bottom sheet */}
       <section data-testid="confirm-sheet" className="absolute inset-x-0 bottom-0 z-[600] rounded-t-3xl bg-card p-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(0,0,0,.12)]">
-        <button data-testid="btn-locate" onClick={() => locate()} aria-label={t("location.useCurrent")}
+        <button data-testid="btn-locate" onClick={() => locate()} title={t("location.useCurrent")}
           className="tap absolute -top-14 right-3 flex items-center gap-1.5 rounded-full bg-card px-3 text-sm font-semibold text-primary shadow-lg">
           {locating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Crosshair className="h-4 w-4" />}{t("location.locateMe")}
         </button>

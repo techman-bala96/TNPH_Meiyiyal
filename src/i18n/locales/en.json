@@ -23,7 +23,10 @@
     "invalidEmail": "Enter a valid email",
     "signingIn": "Signing you in…",
     "signedInAs": "Signed in as",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "linkExpired": "This sign-in link has expired or was already used.",
+    "linkFailed": "Sign-in did not complete.",
+    "signInAgain": "Sign in again"
   },
   "common": {
     "error": "Something went wrong"
@@ -193,20 +196,25 @@
     "aadhaarNo": "Aadhaar number",
     "otpSentTo": "OTP sent to the mobile linked with {{masked}}",
     "stubHint": "Test mode: use OTP 123456",
-    "qrWhy": "Paste the text from your Aadhaar QR. We check the signature and keep only the last 4 digits. The QR itself is deleted 30 days after a decision.",
+    "qrWhy": "Scan the QR on your Aadhaar card or e-Aadhaar PDF. We check UIDAI's signature and keep only the last 4 digits. The QR is deleted 30 days after a decision.",
     "qrLabel": "Aadhaar QR text",
     "qrPlaceholder": "Paste the QR payload",
-    "selfieWhy": "Take a photo while you do the action below. The raw photo is private and deleted 30 days after a decision. A separate copy is your public profile photo only if you agree.",
+    "selfieWhy": "We'll ask you to do 3 quick actions in front of the camera. The raw frames are private and deleted 30 days after a decision. A separate photo is your public profile photo only if you agree.",
     "liveness": "Do this now: {{challenge}}",
     "livenessDid": "I did this action in the photo",
     "challenge": {
-      "blink": "blink",
+      "blink": "blink twice",
+      "turn_left": "turn your head left",
+      "turn_right": "turn your head right",
+      "smile": "smile",
+      "look_up": "look up",
       "turn-left": "turn your head left",
       "turn-right": "turn your head right"
     },
     "selfieFile": "Choose a photo",
     "selfieConsent": "I agree this photo can be shown on my public profile. My Aadhaar photo is never public.",
     "upload": "Upload",
+    "keepPrev": "Keep the one I sent before",
     "replace": "Replace",
     "docsNote": "PDF or photo, up to 10 MB. Documents are private and seen only by our verification team.",
     "submit": "Submit for verification",
@@ -239,7 +247,8 @@
       "otp": "Wrong OTP",
       "qr": "Paste the QR text",
       "tooBig": "File is larger than 10 MB",
-      "upload": "Upload failed"
+      "upload": "Upload failed",
+      "type": "Use a PDF or a photo (JPG, PNG or WebP)."
     },
     "locked": "Profession locked",
     "lockedNote": "Your profession is locked after registration. You can still change your field within it.",
@@ -264,7 +273,52 @@
       "error": "could not check"
     },
     "appealNote": "Why should this be reviewed again?",
-    "appealSubmit": "Request a review"
+    "appealSubmit": "Request a review",
+    "qrMode": {
+      "camera": "Scan with camera",
+      "image": "Upload a photo",
+      "paste": "Paste text"
+    },
+    "qrScanning": "Point the camera at the large QR on your Aadhaar. Hold steady.",
+    "qrFound": "QR read. Check it below and continue.",
+    "qrNoCamera": "Camera not available. Upload a photo of the QR or paste its text.",
+    "qrImageFail": "Couldn't find a QR in that photo. Try a sharper, well-lit photo.",
+    "qrImagePick": "Choose a photo of the QR",
+    "liveStart": "Start camera check",
+    "liveStep": "Step {{n}} of {{total}}: {{challenge}}",
+    "liveHold": "Hold… {{s}}",
+    "liveDone": "Camera check done",
+    "liveRetry": "Try again",
+    "liveExpired": "That took too long. Start again.",
+    "liveNoCamera": "No camera found. You can upload a photo instead — a reviewer will check it by hand, which takes longer.",
+    "livePortrait": "This photo will be your profile picture",
+    "liveUseUpload": "Upload a photo instead",
+    "reject": {
+      "generic": "Your verification was not approved.",
+      "identity": "Your Aadhaar QR could not be confirmed.",
+      "identity_bad_signature": "The Aadhaar QR is not genuine or was changed (its UIDAI signature does not match).",
+      "identity_last4": "The Aadhaar QR belongs to a different Aadhaar number than the one you verified with OTP.",
+      "identity_bad_uid": "The Aadhaar number in the QR is not valid.",
+      "identity_bad_reference": "The Aadhaar QR could not be read correctly.",
+      "registry": "Your council registration could not be confirmed.",
+      "registry_suspended": "The council register shows this registration as suspended, removed or expired.",
+      "duplicates": "These details are already used by another account.",
+      "duplicates_active": "This council number or Aadhaar is already used by another active professional on Meiyiyal.",
+      "duplicates_banned": "This council number or Aadhaar belongs to an account that was blocked or rejected.",
+      "face": "Your selfie could not be matched.",
+      "face_liveness_static": "The live check looked like a photo or screen, not a live person.",
+      "face_mismatch": "Your selfie does not match the photo on your Aadhaar.",
+      "risk": "Too many checks failed to approve this automatically.",
+      "risk_high": "Too many checks failed to approve this automatically."
+    },
+    "rejectHint": {
+      "generic": "You can appeal below within 30 days. A different admin will review it.",
+      "identity": "Download a fresh e-Aadhaar from the UIDAI website or mAadhaar and scan its QR, then appeal.",
+      "registry": "Check your registration number and your council status, then appeal with a current council certificate.",
+      "duplicates": "If this is your number and someone else is using it, appeal and tell us; we will look into it.",
+      "face": "Do the live selfie again in good light, facing the camera alone, then appeal.",
+      "risk": "Appeal with clearer documents; a person will review everything."
+    }
   },
   "admin": {
     "title": "Admin",
@@ -275,7 +329,15 @@
       "audit": "Audit log",
       "packs": "Credit packs",
       "payments": "Payments",
-      "payouts": "Payouts"
+      "payouts": "Payouts",
+      "appeals": "Verification appeals",
+      "districts": "Professionals by district",
+      "referrals": "Referrals & invite codes",
+      "commission": "Commission by category",
+      "settings": "App settings",
+      "catalog": "Professions & requirements",
+      "milestones": "Reward milestones",
+      "security": "Admins & security"
     },
     "empty": "Nothing here",
     "note": "Note to worker (required for reject / more info)",
@@ -299,7 +361,15 @@
       "audit": "Audit",
       "packs": "Packs",
       "payments": "Payments",
-      "payouts": "Payouts"
+      "payouts": "Payouts",
+      "appeals": "Appeals",
+      "districts": "Districts",
+      "referrals": "Referrals",
+      "commission": "Commission",
+      "settings": "Settings",
+      "catalog": "Professions",
+      "milestones": "Milestones",
+      "security": "Security"
     },
     "save": "Save",
     "saved": "Saved",
@@ -359,6 +429,33 @@
         "invalid_account": "invalid account",
         "beneficiary": "bank rejected the beneficiary"
       }
+    },
+    "appeals": {
+      "f": {
+        "open": "Open",
+        "upheld": "Upheld",
+        "overturned": "Overturned",
+        "all": "All"
+      },
+      "empty": "No appeals here.",
+      "rejection": "Rejection note",
+      "otherAdmin": "You rejected this case, so another admin must decide the appeal.",
+      "overturn": "Overturn & approve",
+      "uphold": "Uphold rejection"
+    },
+    "media": {
+      "open": "View selfie & liveness frames",
+      "purged": "Raw photos already deleted (30-day retention).",
+      "steps": "Actions",
+      "inWindow": "done in time",
+      "noWindow": "no timed check"
+    },
+    "group": {
+      "review": "Review",
+      "people": "People",
+      "money": "Money",
+      "setup": "Setup",
+      "records": "Records"
     }
   },
   "menu2": {
@@ -408,7 +505,16 @@
       "connecting": "Connecting…",
       "connected": "Connected",
       "failed": "Connection failed",
-      "ended": "Call ended"
+      "ended": "Call ended",
+      "mute": "Mute microphone",
+      "unmute": "Unmute microphone",
+      "camOff": "Turn camera off",
+      "camOn": "Turn camera on",
+      "flip": "Switch camera",
+      "hangup": "End call",
+      "permVideo": "Camera or microphone is blocked. Allow them for this site in your browser settings, then call again.",
+      "permVoice": "Microphone is blocked. Allow it for this site in your browser settings, then call again.",
+      "noDevice": "No working camera or microphone was found on this device."
     },
     "notFound": "Session not found",
     "home": "Home",
@@ -432,7 +538,8 @@
       "credits_exhausted": "Credits used up · session ended",
       "session_paused": "Connection lost · billing paused",
       "session_resumed": "Back together · session continues"
-    }
+    },
+    "fileType": "Send a photo, PDF or Word file."
   },
   "feedback": {
     "title": "How was your consultation with {{name}}?",
@@ -529,7 +636,17 @@
     "worker_clear_flag": "Flag cleared",
     "worker_flag_auto_cleared": "Flag auto-cleared",
     "rate_set": "Rate changed",
-    "rate_delete": "Rate override removed"
+    "rate_delete": "Rate override removed",
+    "setting_set": "Setting changed",
+    "milestone_upsert": "Milestone saved",
+    "commission_set": "Commission changed",
+    "taxonomy_add": "Profession added",
+    "taxonomy_update": "Profession updated",
+    "requirements_set": "Requirements changed",
+    "verify_rule_set": "Verification rule changed",
+    "referral_campaign_create": "Campaign code created",
+    "referral_enable": "Invite code enabled",
+    "referral_disable": "Invite code disabled"
   },
   "voice": {
     "on": "Turn on voice assistant",
@@ -591,8 +708,11 @@
       "pack": "{{name}} pack",
       "bonus": "Bonus · {{name}}",
       "refund": "Refund · {{name}}",
-      "consult": "{{mode}} consultation · {{min}} min"
-    }
+      "consult": "{{mode}} consultation · {{min}} min",
+      "bonusExpired": "Bonus credits expired"
+    },
+    "bonusExpiry": "{{n}} bonus credits expire on {{date}}",
+    "bonusRule": "Bonus credits are used first and expire {{days}} days after purchase. Paid credits never expire."
   },
   "pay": {
     "testMode": "Test mode",
@@ -674,7 +794,10 @@
       "rejected": "Rejected",
       "verified": "Verified",
       "pending": "Checking"
-    }
+    },
+    "sendCode": "Send code",
+    "codeSent": "Code sent to {{masked}}",
+    "codeMock": "Test mode: use code 123456"
   },
   "nav": {
     "label": "Main",
@@ -823,5 +946,284 @@
       "reconnectLeft": "Reconnect within {{t}}",
       "findOther": "Find someone else now"
     }
+  },
+  "adminSet": {
+    "hint": "Every change is checked against safe limits and written to the audit log. Secret keys are never shown here.",
+    "filter": "Search settings",
+    "badJson": "That isn't valid JSON",
+    "undo": "Undo",
+    "prod": "Production",
+    "catHint": "Inherit follows the all-categories switch above. On or Off overrides it for that profession.",
+    "cat": {
+      "inherit": "Inherit",
+      "on": "On",
+      "off": "Off"
+    },
+    "grp": {
+      "verification": "Verification",
+      "money": "Money",
+      "consult": "Consultations",
+      "moderation": "Moderation",
+      "notifications": "Notifications",
+      "referrals": "Referrals",
+      "security": "Security",
+      "dev": "Developer"
+    }
+  },
+  "catalog": {
+    "hint": "Rename, hide or add sub-categories. New top-level professions need a verification review and are added by migration.",
+    "kind": {
+      "category": "Profession",
+      "subcategory": "Sub-category",
+      "specialty": "Specialty",
+      "group": "Group"
+    },
+    "workers": "{{n}} professionals",
+    "hidden": "Hidden",
+    "nameEn": "Name (English)",
+    "nameTa": "Name (Tamil)",
+    "synonyms": "Search words (comma separated)",
+    "sort": "Order",
+    "visible": "Visible to users",
+    "docs": "Documents asked at registration",
+    "addChild": "Add a sub-category",
+    "add": "Add",
+    "added": "Added",
+    "rules": "Council register check",
+    "baseRules": "Checks for every professional",
+    "inherits": "Inherits from the parent profession.",
+    "required": "Required",
+    "weight": "Weight",
+    "check": {
+      "identity": "Aadhaar",
+      "face": "Face match",
+      "registry": "Council",
+      "degree": "Degree",
+      "name": "Name match",
+      "forensics": "Document check",
+      "duplicates": "Duplicates"
+    }
+  },
+  "ms": {
+    "hint": "Badges professionals earn. Turn one off to stop new awards; earned badges stay.",
+    "add": "Add milestone",
+    "active": "Active",
+    "titleEn": "Title (English)",
+    "titleTa": "Title (Tamil)",
+    "descEn": "Description (English)",
+    "descTa": "Description (Tamil)",
+    "kind": "Measure",
+    "threshold": "Target",
+    "minReviews": "Min reviews",
+    "color": "Colour",
+    "k": {
+      "sessions_served": "Sessions served",
+      "rating_avg": "Average rating",
+      "positive_streak": "Positive streak",
+      "five_stars": "Five-star reviews"
+    }
+  },
+  "commission": {
+    "hint": "Platform commission for a profession or sub-category (15–20%). Others use the default in Settings › Money.",
+    "none": "No overrides yet.",
+    "pick": "Choose a profession…",
+    "add": "Add override",
+    "remove": "Remove override"
+  },
+  "districts": {
+    "hint": "Registered professionals in each of the 38 Tamil Nadu districts. Districts with nobody yet show 0.",
+    "profession": "Profession",
+    "status": "Status",
+    "search": "Search district",
+    "hideZero": "Hide zero",
+    "sort": "Sort",
+    "sortName": "District order",
+    "sortTotal": "Most first",
+    "caption": "Professionals per district by status and profession",
+    "district": "District",
+    "total": "Total",
+    "allDistricts": "{{n}} districts",
+    "note": "Submitted = past draft. Pending includes ‘more info’. Doctor includes veterinary, which is also shown on its own.",
+    "p": {
+      "all": "All",
+      "doctor": "Doctor",
+      "veterinary": "Veterinary",
+      "lawyer": "Lawyer",
+      "engineer": "Engineer"
+    },
+    "s": {
+      "all": "All",
+      "submitted": "Submitted",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "swipe": "Swipe sideways for more columns →"
+  },
+  "refAdmin": {
+    "hint": "Who joined with whose code. No rewards are given in this version.",
+    "v": {
+      "top": "Top referrers",
+      "campaign": "Campaign codes",
+      "list": "All referrals"
+    },
+    "kind": {
+      "personal": "Personal",
+      "campaign": "Campaign"
+    },
+    "joined": "joined",
+    "deleted": "Deleted account",
+    "workers": "{{n}} professionals",
+    "last": "last",
+    "max": "max {{n}}",
+    "expires": "Expires",
+    "see": "See who joined",
+    "active": "Active",
+    "none": "Nothing yet",
+    "pro": "Professional",
+    "newCampaign": "New campaign code",
+    "label": "Label, e.g. Facebook Diwali post",
+    "code": "Code (blank = auto)",
+    "maxUses": "Max uses (optional)",
+    "create": "Create",
+    "created": "Created {{code}}"
+  },
+  "invite": {
+    "title": "Invite friends",
+    "body": "Share your code. When someone signs up with it, they appear here.",
+    "copyCode": "Copy code",
+    "copied": "Copied",
+    "shareUser": "Invite a friend",
+    "shareWorker": "Invite a professional",
+    "shareText": "Join me on Meiyiyal, verified professionals in Tamil Nadu. My invite code: {{code}}",
+    "joined_one": "{{count}} person joined with your code ({{workers}} professionals)",
+    "joined_other": "{{count}} people joined with your code ({{workers}} professionals)",
+    "noRewards": "Invites are not rewarded yet.",
+    "referredBy": "You joined with code {{code}}",
+    "enter": "Have an invite code?",
+    "apply": "Apply",
+    "applied": "Invite code {{code}} applied",
+    "willApply": "Invite code {{code}} will be applied when you sign in",
+    "r": {
+      "invalid": "That code isn't valid",
+      "self": "You can't use your own code",
+      "already": "You already used an invite code",
+      "expired": "That code has expired",
+      "full": "That code has been used up",
+      "too_late": "Invite codes can only be added by new accounts"
+    },
+    "link": "Link",
+    "copyLink": "Copy link"
+  },
+  "legal": {
+    "draft": "DRAFT — this document has not been reviewed by a lawyer yet and may change before launch.",
+    "updated": "Last updated {{date}}",
+    "grievance": "Grievance Officer",
+    "gName": "Name",
+    "gEmail": "Email",
+    "gPhone": "Phone",
+    "gAddress": "Address",
+    "tba": "To be appointed before launch. Until then, write to us from the app's Help section.",
+    "privacy": "Privacy policy",
+    "terms": "Terms of use"
+  },
+  "privacy": {
+    "title": "Your data",
+    "intro": "Download a copy of everything we hold about you, or delete your account.",
+    "download": "Download my data",
+    "downloaded": "Your data file is downloading",
+    "tooMany": "You've reached today's download limit. Try again tomorrow.",
+    "delete": "Delete my account",
+    "explain": "Your account will be deleted in {{days}} days. You can cancel any time before that. After deletion your name, phone, email, location, messages and files are removed.",
+    "keeps": "Payment and tax records are kept, without your name, as the law requires.",
+    "wallet": "Your wallet balance of ₹{{amount}} will be lost. Ask for a refund first if you want it back.",
+    "typeWord": "Type {{word}} to confirm",
+    "keep": "Keep my account",
+    "confirm": "Delete account",
+    "scheduled": "Account deletion scheduled",
+    "pending": "Your account will be deleted on {{due}}.",
+    "waiting": "Waiting for",
+    "cancel": "Cancel deletion",
+    "cancelled": "Deletion cancelled. Your account stays.",
+    "b": {
+      "active_consultation": "an active consultation to end",
+      "payout_in_progress": "a payout in progress",
+      "unpaid_earnings": "your unpaid earnings to be paid out",
+      "admin_account": "admin access to be removed"
+    }
+  },
+  "mfa": {
+    "title": "Admin sign-in check",
+    "enrolIntro": "Admin access needs an authenticator app (Google Authenticator, Microsoft Authenticator, Authy…). Scan this code once.",
+    "qrAlt": "QR code for your authenticator app",
+    "manual": "Can't scan? Type this key into the app:",
+    "prompt": "Open your authenticator app and enter the 6-digit code for Meiyiyal.",
+    "code": "6-digit code",
+    "verify": "Verify",
+    "wrong": "That code didn't work. Check the time on your phone and try the newest code.",
+    "lost": "Lost your phone? Ask another admin to reset your authenticator from Admin → Security.",
+    "signOut": "Sign out",
+    "admins": "Admins and authenticators",
+    "hasFactor": "Authenticator set up",
+    "noFactor": "No authenticator yet",
+    "reset": "Reset",
+    "resetNote": "Why? (e.g. lost phone, confirmed by call)",
+    "resetConfirm": "Reset authenticator",
+    "resetDone": "Authenticator reset. They will set it up again at next sign-in."
+  },
+  "captcha": {
+    "mock": "I'm not a robot (test mode)",
+    "failed": "The security check didn't load. Check your connection and reload."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "This link is wrong or the page has moved.",
+    "home": "Go to home"
+  },
+  "errors": {
+    "regNoUsed": "This registration number is already used by an approved professional. Check it before approving.",
+    "noteRequired": "Please write a short note first.",
+    "thisPerson": "This professional",
+    "busy": "{{name}} is with someone else right now. Try again soon or pick another professional.",
+    "offline": "{{name}} just went offline.",
+    "unavailable": "This professional is not available.",
+    "alreadyRinging": "You are already calling someone. Wait for the answer or cancel first.",
+    "searchRunning": "An automatic search is already running.",
+    "tooMany": "Too many tries in a short time. Please wait a few minutes.",
+    "askedTwice": "You asked twice already. Send a message or try someone else.",
+    "waitMinute": "Please wait a minute before asking again.",
+    "self": "You cannot request yourself.",
+    "noRate": "Prices for this service are not set yet.",
+    "sessionEnded": "This consultation has already ended.",
+    "signIn": "Your sign-in has expired. Please sign in again.",
+    "otpExpired": "The code has expired. Ask for a new one.",
+    "badCode": "That code is not right. Check it and try again.",
+    "ifsc": "Enter a valid IFSC code (like SBIN0001234).",
+    "upi": "Enter a valid UPI ID (like name@bank).",
+    "account": "Enter a valid bank account number.",
+    "aadhaar": "Enter a valid 12-digit Aadhaar number.",
+    "pan": "Enter a valid PAN (like ABCDE1234F).",
+    "payoutPending": "A payout is already on its way.",
+    "fileTooBig": "The file is too big.",
+    "fileType": "This file type is not allowed.",
+    "network": "No connection. Check your internet and try again.",
+    "generic": "Something went wrong. Please try again.",
+    "msgDaily": "You have sent 3 messages to this professional today. Try again tomorrow or request a consultation.",
+    "msgTooLong": "Keep the message under 300 letters.",
+    "msgBlocked": "This professional is not taking messages from you.",
+    "lowCredits": "Not enough credits. Top up your wallet and try again.",
+    "regLocked": "Your registration is being checked, so it cannot be changed now.",
+    "profLocked": "Your profession is fixed once registered. Contact support to change it.",
+    "regMissing": "Some required details are missing. Check each step and try again."
+  },
+  "net": {
+    "offline": "You're offline. Messages and calls will continue when the network is back.",
+    "back": "Back online"
+  },
+  "pwa": {
+    "title": "Add Meiyiyal to your phone",
+    "body": "Opens like an app, rings for calls, works on slow networks.",
+    "install": "Install",
+    "later": "Not now"
   }
 }

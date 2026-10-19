@@ -13,6 +13,8 @@ i18n
       ta: { translation: ta },
     },
     fallbackLng: 'en',
+    supportedLngs: ['en', 'ta'],
+    load: 'languageOnly',
     interpolation: {
       escapeValue: false,
     },
@@ -21,5 +23,10 @@ i18n
       caches: ['localStorage'],
     },
   });
+
+// Screen readers, fonts and hyphenation follow <html lang>; keep it in step with the chosen language.
+const syncLang = (l: string) => { if (typeof document !== 'undefined') document.documentElement.lang = l?.startsWith('ta') ? 'ta' : 'en'; };
+syncLang(i18n.resolvedLanguage ?? i18n.language);
+i18n.on('languageChanged', syncLang);
 
 export default i18n;

@@ -16,10 +16,10 @@ const diag = (c: string) => `repeating-linear-gradient(135deg, ${c} 0 1px, trans
 export const THEMES: Record<string, Theme> = {
   doctor: { key: "doctor", hero: "bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600", ink: "text-white", accent: "text-teal-600",
     tile: "bg-teal-50 text-teal-600", ring: "hover:ring-teal-300", pattern: dots("rgba(255,255,255,.22)"), taglineKey: "browse.tagline.doctor" },
-  lawyer: { key: "lawyer", hero: "bg-gradient-to-br from-slate-800 via-indigo-900 to-slate-900", ink: "text-amber-50", accent: "text-amber-600",
-    tile: "bg-amber-50 text-amber-700", ring: "hover:ring-amber-300", pattern: diag("rgba(251,191,36,.12)"), taglineKey: "browse.tagline.lawyer" },
-  engineer: { key: "engineer", hero: "bg-gradient-to-br from-sky-700 via-blue-700 to-indigo-700", ink: "text-white", accent: "text-orange-600",
-    tile: "bg-orange-50 text-orange-600", ring: "hover:ring-orange-300", pattern: grid("rgba(255,255,255,.12)"), taglineKey: "browse.tagline.engineer" },
+  lawyer: { key: "lawyer", hero: "bg-gradient-to-br from-slate-800 via-indigo-900 to-slate-900", ink: "text-amber-50", accent: "text-amber-700",
+    tile: "bg-amber-50 text-amber-800", ring: "hover:ring-amber-300", pattern: diag("rgba(251,191,36,.12)"), taglineKey: "browse.tagline.lawyer" },
+  engineer: { key: "engineer", hero: "bg-gradient-to-br from-sky-700 via-blue-700 to-indigo-700", ink: "text-white", accent: "text-orange-700",
+    tile: "bg-orange-50 text-orange-700", ring: "hover:ring-orange-300", pattern: grid("rgba(255,255,255,.12)"), taglineKey: "browse.tagline.engineer" },
   default: { key: "default", hero: "bg-gradient-to-br from-primary to-emerald-700", ink: "text-white", accent: "text-primary",
     tile: "bg-primary/10 text-primary", ring: "hover:ring-primary/40", pattern: dots("rgba(255,255,255,.18)"), taglineKey: "browse.tagline.default" },
 };

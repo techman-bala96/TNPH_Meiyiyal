@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { InviteCard } from "@/features/referral/InviteCard";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Camera, Check, ChevronRight, Coins, Loader2, MapPin, Plus } from "lucide-react";
 import { useWallet } from "@/features/consult/api";
@@ -23,7 +24,7 @@ export default function Profile() {
   const [name, setName] = useState(""); const [phone, setPhone] = useState(""); const [dob, setDob] = useState("");
   const [busy, setBusy] = useState<"save" | "photo" | null>(null); const [err, setErr] = useState<string | null>(null);
   const file = useRef<HTMLInputElement>(null);
-  useEffect(() => { if (p) { setName(p.full_name ?? ""); setPhone(p.phone_number?.replace(/^\+91/, "") ?? ""); setDob(p.dob ?? ""); } }, [p]);
+  useEffect(() => { if (p) { setName(p.full_name ?? ""); setPhone(p.phone_number?.replace(/^\+?91(?=\d{10}$)/, "") ?? ""); setDob(p.dob ?? ""); } }, [p]);
 
   const locs = useQuery({ queryKey: ["my-locations", user?.id], enabled: !!user, queryFn: async () => {
     const { data, error } = await supabase.rpc("my_locations"); if (error) throw error; return data as unknown as Saved[];
@@ -60,8 +61,8 @@ export default function Profile() {
         <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold">{t("wallet.topUp")}</span><ChevronRight className="h-4 w-4 opacity-80" />
       </Link>
       <div className="flex flex-col items-center gap-2 pt-2">
-        <button data-testid="btn-photo" onClick={() => file.current?.click()} className="relative rounded-full" aria-label={t("profile.changePhoto")}>
-          <UserAvatar className="h-24 w-24 text-2xl" />
+        <button data-testid="btn-photo" onClick={() => file.current?.click()} className="relative rounded-full">
+          <UserAvatar className="h-24 w-24 text-2xl" /><span className="sr-only">{t("profile.changePhoto")}</span>
           <span className="absolute bottom-0 right-0 grid h-8 w-8 place-items-center rounded-full bg-primary text-primary-foreground shadow ring-2 ring-background">
             {busy === "photo" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Camera className="h-4 w-4" />}
           </span>
@@ -104,6 +105,7 @@ export default function Profile() {
         </ul>
         <Link to="/location" state={{ from: "/profile" }} data-testid="add-location" className="tap mt-1 flex items-center gap-2 text-sm font-semibold text-primary"><Plus className="h-4 w-4" />{t("profile.addLocation")}</Link>
       </Section>
+      <InviteCard />
     </PageShell>
   );
 }

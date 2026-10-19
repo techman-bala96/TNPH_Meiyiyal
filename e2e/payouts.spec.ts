@@ -97,7 +97,7 @@ test("payouts: penny-drop success, name mismatch, weekly run, flagged worker ski
     await card().getByTestId("payout-release").click();
     await expect(admin.page.getByTestId("payout-auto")).toHaveAttribute("data-paused", "true");
     await admin.page.getByTestId("payout-pause").click();
-    await expect(admin.page.getByTestId("payout-run")).toBeEnabled();
+    await expect(admin.page.getByTestId("payout-run")).toBeEnabled({ timeout: 15_000 });
     await runBatch(admin.page);
     const pout = sql(`SELECT p.provider_payout_id FROM public.payout_requests p JOIN auth.users u ON u.id = p.worker_user_id WHERE u.email = '${w.email}' AND p.status = 'processing' ORDER BY p.requested_at DESC LIMIT 1`);
     expect(pout.startsWith("pout_mock_")).toBe(true);

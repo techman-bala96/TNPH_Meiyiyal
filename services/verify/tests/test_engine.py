@@ -30,8 +30,11 @@ def test_degree_engineer_can_pass_without_a_council():
         "rules": RULES,
         "aadhaar_last4": "1234",
         "liveness_ok": True,
+        "liveness_steps": ["blink", "turn-left"],
+        "liveness_window_ok": True,
     }
-    files = {"qr": token, "selfie": selfie, "portrait": selfie, "docs": {"degree_cert": cert}}
+    live = {"blink": [b"f1", b"f2"], "turn-left": [b"f3", b"f4"]}
+    files = {"qr": token, "selfie": selfie, "portrait": selfie, "docs": {"degree_cert": cert}, "live": live}
     seen = []
 
     def observe(kind, digest):
@@ -39,7 +42,8 @@ def test_degree_engineer_can_pass_without_a_council():
         return "ok"
 
     registry = Registry(lambda *a: (_ for _ in ()).throw(AssertionError("network")), live=False)
-    checks = evaluate(bundle, files, registry=registry, pepper=PEPPER, qr_public=private.public_key(), observe=observe)
+    checks = evaluate(bundle, files, registry=registry, pepper=PEPPER, qr_public=private.public_key(), observe=observe,
+                      face_provider="mock", liveness_provider="mock")
     by = {c["check"]: c for c in checks}
     assert by["identity"]["status"] == "pass"
     assert by["face"]["status"] == "pass"

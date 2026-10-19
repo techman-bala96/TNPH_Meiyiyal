@@ -38,7 +38,7 @@ export default function History() {
               <Avatar className="h-12 w-12 rounded-2xl">{r.other_photo && <AvatarImage src={r.other_photo} className="object-cover" />}<AvatarFallback className="rounded-2xl bg-primary/10 text-primary">{initials(r.other_name)}</AvatarFallback></Avatar>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2"><p className="truncate font-semibold">{r.other_name}</p>
-                  {r.status === "active" && <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-600">{t("consult.live")}</span>}</div>
+                  {r.status === "active" && <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-700">{t("consult.live")}</span>}</div>
                 <p className="truncate text-xs text-muted-foreground" data-testid="history-prof">{[n(r.category_name), n(r.node_name)].filter(Boolean).join(" · ")}</p>
                 <div className="mt-1 flex flex-wrap items-center gap-x-3 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1" data-testid="history-modes">{r.modes.map((m) => <ModeIcon key={m} mode={m} className="h-3.5 w-3.5" />)}</span>

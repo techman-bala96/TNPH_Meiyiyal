@@ -10,6 +10,7 @@ import { THEMES, patternStyle } from "@/features/taxonomy/themes";
 import { PushAskCard } from "@/features/push/PushAskCard";
 import { REQUESTED_KEY } from "@/features/push/webPush";
 import { SearchBar } from "@/features/nearby/SearchBar";
+import { InstallCard } from "@/features/pwa/InstallCard";
 
 export default function Home() {
   const { t, i18n } = useTranslation();
@@ -25,6 +26,7 @@ export default function Home() {
     <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col gap-4 px-4 pb-8 pt-3 md:max-w-3xl lg:max-w-5xl">
       <HomeHeader />
       <div className="flex items-center justify-between"><Logo className="h-7" /></div>
+      <InstallCard />
 
       <div role="tablist" className="grid grid-cols-2 rounded-2xl bg-muted p-1">
         {(["find", "worker"] as const).map((k) => (

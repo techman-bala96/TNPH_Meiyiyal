@@ -57,3 +57,9 @@ export async function mockGateway(providerOrderId: string, outcome: "success" | 
   return data;
 }
 export async function cancelOrder(orderId: string) { await supabase.rpc("payment_order_cancel", { _id: orderId }); }
+
+export type BonusInfo = { total: number; next_amount: number | null; next_expires_at: string | null; expiry_days: number };
+export function useBonus() {
+  const { user } = useAuth();
+  return useQuery({ queryKey: ["wallet", "bonus", user?.id], enabled: !!user, queryFn: async () => { const { data, error } = await supabase.rpc("my_bonus"); if (error) throw error; return data as unknown as BonusInfo | null; } });
+}

@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { friendlyError } from "@/lib/friendlyError";
 import { ArrowLeft, Coins, FileText, Loader2, Paperclip, PauseCircle, Phone, PhoneOff, Radar, RotateCcw, Send, Undo2, Video, WifiOff } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,6 +17,9 @@ import { FeedbackCard } from "@/features/feedback/FeedbackCard";
 import { useConsult } from "@/features/consult/context";
 import { useCurrentLocation } from "@/features/location/useCurrentLocation";
 import type { SessionState } from "@/features/nearby/api";
+
+/** Same list as the consult-files bucket (migration 20261019110000). */
+const FILE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif", "image/gif", "application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
 
 type Info = SessionInfo & { worker_id?: string; ended_by?: "me" | "other" | null; refunded?: number; reconnect_until?: string | null };
 const RESUME_MIN = 3;
@@ -36,8 +40,18 @@ export default function Session() {
 
   // realtime: messages, calls, session row
   useEffect(() => {
-    void supabase.from("consult_messages").select("*").eq("session_id", id).order("created_at").then(({ data }) => setMsgs((data ?? []) as unknown as Message[]));
-    void supabase.from("session_calls").select("*").eq("session_id", id).order("created_at").then(({ data }) => setCalls((data ?? []) as unknown as Call[]));
+    // (re)load merges by id: called on open, whenever the realtime channel (re)subscribes, when the network comes back
+    // and when the app returns to the foreground, so nothing sent while this side was offline or closed is missed or doubled
+    const merge = <T extends { id: string; created_at?: string }>(cur: T[], rows: T[]) => {
+      const byId = new Map(cur.map((x) => [x.id, x])); for (const r of rows) byId.set(r.id, r);
+      return [...byId.values()].sort((a, b) => String(a.created_at ?? "").localeCompare(String(b.created_at ?? "")));
+    };
+    const load = () => {
+      void supabase.from("consult_messages").select("*").eq("session_id", id).order("created_at").then(({ data }) => { if (data) setMsgs((m) => merge(m, data as unknown as Message[])); });
+      void supabase.from("session_calls").select("*").eq("session_id", id).order("created_at").then(({ data }) => { if (data) setCalls((c) => merge(c, data as unknown as Call[])); });
+      void qc.invalidateQueries({ queryKey: ["session", id] });
+    };
+    load();
     const ch = supabase.channel(`session:${id}`)
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "consult_messages", filter: `session_id=eq.${id}` },
         (p) => setMsgs((m) => (m.some((x) => x.id === (p.new as Message).id) ? m : [...m, p.new as Message])))
@@ -45,8 +59,10 @@ export default function Session() {
         const c = p.new as Call; setCalls((cs) => [...cs.filter((x) => x.id !== c.id), c]);
       })
       .on("postgres_changes", { event: "UPDATE", schema: "public", table: "consult_sessions", filter: `id=eq.${id}` }, () => qc.invalidateQueries({ queryKey: ["session", id] }))
-      .subscribe();
-    return () => { void supabase.removeChannel(ch); };
+      .subscribe((st) => { if (st === "SUBSCRIBED") load(); });
+    const vis = () => { if (document.visibilityState === "visible") load(); };
+    window.addEventListener("online", load); document.addEventListener("visibilitychange", vis);
+    return () => { void supabase.removeChannel(ch); window.removeEventListener("online", load); document.removeEventListener("visibilitychange", vis); };
   }, [id, qc]);
 
   // metering tick (server-authoritative, idempotent)
@@ -85,7 +101,7 @@ export default function Session() {
   const lowBal = s.role === "user" && meter?.minutes_left != null && meter.minutes_left <= 2 && active && !paused;
   const resumeLeft = paused && meter?.paused_at ? Math.max(0, RESUME_MIN * 60 - (now - new Date(meter.paused_at).getTime()) / 1000) : 0;
   const answer = async (yes: boolean) => { const { data, error } = await supabase.rpc("session_resume_answer", { _sid: id, _yes: yes });
-    if (error) toast.error(error.message); else { setMeter(data as unknown as SessionState); qc.invalidateQueries({ queryKey: ["session", id] }); } };
+    if (error) toast.error(friendlyError(t, error.message)); else { setMeter(data as unknown as SessionState); qc.invalidateQueries({ queryKey: ["session", id] }); } };
   const reconnectUntil = s.reconnect_until ? new Date(s.reconnect_until).getTime() : 0; const canReconnect = s.role === "user" && reconnectUntil > now && !!s.worker_id;
   const target = { id: s.worker_id ?? "", display_name: s.other.name, photo_url: s.other.photo, spec: prof, node: s.node_slug };
   const reason = s.end_reason ?? "";
@@ -93,29 +109,30 @@ export default function Session() {
   const send = async () => {
     const body = text.trim(); if (!body) return; setText("");
     const { error } = await supabase.from("consult_messages").insert({ session_id: id, sender: user.id, body, kind: "text" });
-    if (error) { toast.error(error.message); setText(body); }
+    if (error) { toast.error(friendlyError(t, error.message)); setText(body); }
   };
   const upload = async (f: File) => {
     if (f.size > MAX) { toast.error(t("consult.tooBig")); return; }
+    if (!FILE_TYPES.includes(f.type)) { toast.error(t("consult.fileType")); return; }
     setUploading(true);
     const path = `${id}/${crypto.randomUUID()}-${f.name.replace(/[^\w.-]+/g, "_")}`;
     const up = await supabase.storage.from("consult-files").upload(path, f, { contentType: f.type || "application/octet-stream" });
-    if (up.error) { setUploading(false); toast.error(up.error.message); return; }
+    if (up.error) { setUploading(false); toast.error(friendlyError(t, up.error.message)); return; }
     const { error } = await supabase.from("consult_messages").insert({ session_id: id, sender: user.id, kind: "file", file_path: path, file_name: f.name, mime: f.type, size_bytes: f.size });
-    setUploading(false); if (error) toast.error(error.message);
+    setUploading(false); if (error) toast.error(friendlyError(t, error.message));
   };
-  const startCall = async (m: "voice" | "video") => { const { error } = await supabase.rpc("call_start", { _sid: id, _mode: m }); if (error) toast.error(error.message); };
-  const end = async () => { const { error } = await supabase.rpc("session_end", { _sid: id }); if (error) toast.error(error.message); qc.invalidateQueries({ queryKey: ["session", id] }); };
+  const startCall = async (m: "voice" | "video") => { const { error } = await supabase.rpc("call_start", { _sid: id, _mode: m }); if (error) toast.error(friendlyError(t, error.message)); };
+  const end = async () => { const { error } = await supabase.rpc("session_end", { _sid: id }); if (error) toast.error(friendlyError(t, error.message)); qc.invalidateQueries({ queryKey: ["session", id] }); };
 
   return (
     <div className="mx-auto flex h-dvh max-w-2xl flex-col bg-background" data-testid="session-page" data-status={s.status}>
       <header className="flex items-center gap-3 border-b bg-card/80 px-3 py-2.5 backdrop-blur">
-        <button onClick={() => nav(-1)} aria-label="back" className="rounded-full p-1.5 hover:bg-muted"><ArrowLeft className="h-5 w-5" /></button>
+        <button onClick={() => nav(-1)} aria-label={t("auth.back")} className="rounded-full p-1.5 hover:bg-muted"><ArrowLeft className="h-5 w-5" /></button>
         <Avatar className="h-10 w-10">{s.other.photo && <AvatarImage src={s.other.photo} className="object-cover" />}<AvatarFallback className="bg-primary/10 text-primary">{initials(s.other.name)}</AvatarFallback></Avatar>
         <div className="min-w-0 flex-1"><p className="truncate font-semibold" data-testid="session-other">{s.other.name}</p>
           <p className="flex items-center gap-1 truncate text-xs text-muted-foreground"><ModeIcon mode={s.mode} className="h-3 w-3" />{prof} · <span data-testid="session-timer" className="tabular-nums">{elapsed}</span></p></div>
         {active && <>
-          <button data-testid="start-voice" onClick={() => startCall("voice")} disabled={!!live || paused} className="rounded-full p-2 text-emerald-600 hover:bg-emerald-500/10 disabled:opacity-40"><Phone className="h-5 w-5" /></button>
+          <button data-testid="start-voice" onClick={() => startCall("voice")} disabled={!!live || paused} className="rounded-full p-2 text-emerald-700 hover:bg-emerald-500/10 disabled:opacity-40"><Phone className="h-5 w-5" /></button>
           <button data-testid="start-video" onClick={() => startCall("video")} disabled={!!live || paused} className="rounded-full p-2 text-violet-600 hover:bg-violet-500/10 disabled:opacity-40"><Video className="h-5 w-5" /></button>
           <button data-testid="end-session" onClick={end} className="rounded-full bg-red-500 px-3 py-1.5 text-xs font-semibold text-white">{t("consult.end")}</button></>}
       </header>
@@ -124,7 +141,7 @@ export default function Session() {
         {s.role === "user" && active && meter?.balance != null && <span>{t("consult.balance")} <b data-testid="session-balance" className="tabular-nums">{Number(meter.balance).toFixed(0)}</b></span>}
         <span className="text-muted-foreground">{t("consult.perMin", { rate: meter?.rate ?? s.rates[s.mode]?.rate })}</span>
       </div>
-      {lowBal && <div data-testid="low-balance" className="flex items-center justify-center gap-3 bg-amber-500/15 px-4 py-1.5 text-center text-xs font-semibold text-amber-700 dark:text-amber-300">
+      {lowBal && <div data-testid="low-balance" className="flex items-center justify-center gap-3 bg-amber-500/15 px-4 py-1.5 text-center text-xs font-semibold text-amber-800 dark:text-amber-300">
         <span className="animate-pulse">{t("consult.lowBalance", { n: meter?.minutes_left })}</span>
         <Link to="/wallet" data-testid="low-topup" className="rounded-full bg-amber-500 px-2.5 py-0.5 text-white">{t("nearby.session.lowTopUp")}</Link></div>}
       {paused && !meter?.resume_ask && (
@@ -142,9 +159,10 @@ export default function Session() {
 
       {active ? (
         <footer className="flex items-end gap-2 border-t bg-card p-2">
-          <input ref={fileRef} type="file" data-testid="file-input" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) void upload(f); e.target.value = ""; }} />
+          <input ref={fileRef} type="file" accept={FILE_TYPES.join(",")} data-testid="file-input" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) void upload(f); e.target.value = ""; }} />
           <button data-testid="attach" onClick={() => fileRef.current?.click()} disabled={uploading} className="rounded-full p-2.5 text-muted-foreground hover:bg-muted">{uploading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Paperclip className="h-5 w-5" />}</button>
-          <textarea data-testid="chat-input" rows={1} value={text} onChange={(e) => setText(e.target.value)} placeholder={t("consult.typeMsg")}
+          {text.length > 3500 && <span data-testid="chat-count" aria-live="polite" className="self-center text-[10px] tabular-nums text-muted-foreground">{text.length}/4000</span>}
+          <textarea data-testid="chat-input" rows={1} maxLength={4000} aria-label={t("consult.typeMsg")} value={text} onChange={(e) => setText(e.target.value)} placeholder={t("consult.typeMsg")}
             onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); void send(); } }}
             className="max-h-32 flex-1 resize-none rounded-2xl border bg-background px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/40" />
           <button data-testid="chat-send" onClick={send} disabled={!text.trim()} className="grid h-10 w-10 place-items-center rounded-full bg-primary text-primary-foreground transition active:scale-90 disabled:opacity-40"><Send className="h-4 w-4" /></button>
@@ -191,7 +209,7 @@ export default function Session() {
           <span className="relative grid h-12 w-12 place-items-center rounded-full bg-primary"><span className="absolute inset-0 animate-ping rounded-full bg-primary/50" /><ModeIcon mode={live.mode as Mode} className="relative h-5 w-5" /></span>
           <div className="flex-1"><p className="font-semibold">{s.other.name}</p><p className="text-xs text-white/70">{t(`consult.incoming.${live.mode}`)}</p></div>
           <button data-testid="call-decline" onClick={() => void supabase.rpc("call_answer", { _call: live.id, _accept: false }).then()} className="grid h-11 w-11 place-items-center rounded-full bg-red-500"><PhoneOff className="h-5 w-5" /></button>
-          <button data-testid="call-accept" onClick={async () => { const { error } = await supabase.rpc("call_answer", { _call: live.id, _accept: true }); if (error) toast.error(error.message); }}
+          <button data-testid="call-accept" onClick={async () => { const { error } = await supabase.rpc("call_answer", { _call: live.id, _accept: true }); if (error) toast.error(friendlyError(t, error.message)); }}
             className="grid h-11 w-11 place-items-center rounded-full bg-emerald-500 ring-4 ring-emerald-500/30 animate-pulse"><ModeIcon mode={live.mode as Mode} className="h-5 w-5" /></button>
         </div>
       )}

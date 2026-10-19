@@ -22,8 +22,8 @@ export function UserMenu() {
   const { user, signOut } = useAuth(); const { data: p } = useProfile(); const admin = useIsAdmin();
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger data-testid="avatar-btn" aria-label={t("menu.account")} className="tap grid w-11 shrink-0 place-items-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring">
-        <UserAvatar />
+      <DropdownMenuTrigger data-testid="avatar-btn" className="tap grid w-11 shrink-0 place-items-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <UserAvatar /><span className="sr-only">{t("menu.account")}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56 rounded-xl">
         <DropdownMenuLabel className="font-normal">

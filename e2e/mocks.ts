@@ -36,8 +36,8 @@ export async function mockMapNetwork(page: Page) {
 }
 
 /** Fresh user via email magic link (local Mailpit). */
-export async function loginNewEmail(page: Page, request: import("@playwright/test").APIRequestContext, prefix = "u") {
-  const email = `${prefix}+${Math.random().toString(36).slice(2, 8)}-${Date.now()}@meiyiyal.test`;
+export async function loginNewEmail(page: Page, request: import("@playwright/test").APIRequestContext, prefix = "u", existing?: string) {
+  const email = existing ?? `${prefix}+${Math.random().toString(36).slice(2, 8)}-${Date.now()}@meiyiyal.test`;
   await page.goto("/login");
   await page.getByTestId("btn-email").click();
   await page.getByTestId("input-email").fill(email);

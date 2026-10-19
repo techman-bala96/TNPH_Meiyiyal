@@ -1,5 +1,8 @@
+import { Link } from "react-router-dom";
+import { friendlyError } from "@/lib/friendlyError";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { pendingReferral } from "@/features/referral/capture";
 import { Mail, Phone, ArrowLeft, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,6 +10,7 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 import { Logo } from "@/components/app/Logo";
 import { LangToggle } from "@/components/app/LangToggle";
 import { useAuth } from "@/hooks/useAuth";
+import { Captcha, captchaEnabled } from "@/features/captcha/Captcha";
 
 type Mode = "choose" | "email" | "email-sent" | "phone" | "otp";
 
@@ -15,6 +19,7 @@ const GoogleIcon = () => (
 );
 
 export default function Login() {
+  const invite = pendingReferral();
   const { t } = useTranslation();
   const auth = useAuth();
   const [mode, setMode] = useState<Mode>("choose");
@@ -24,12 +29,17 @@ export default function Login() {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const e164 = `+91${phone}`;
+  // Captcha tokens are single-use: remount the widget after every send.
+  const needCaptcha = captchaEnabled(); const [cap, setCap] = useState<string | null>(null); const [capKey, setCapKey] = useState(0);
+  const takeCap = () => { const tok = cap ?? undefined; setCap(null); setCapKey((k) => k + 1); return tok; };
+  const capWidget = needCaptcha && <Captcha key={capKey} onToken={setCap} />;
+  const capBlocked = needCaptcha && !cap;
 
   const run = async (fn: () => Promise<{ error: Error | null }>, next?: Mode) => {
     setBusy(true); setErr(null);
     const { error } = await fn();
     setBusy(false);
-    if (error) setErr(error.message || t("common.error"));
+    if (error) setErr(friendlyError(t, error.message)); // never the raw Auth text ("Token has expired or is invalid")
     else if (next) setMode(next);
   };
 
@@ -51,6 +61,7 @@ export default function Login() {
 
       <section className="card-soft mt-10 p-5">
         <h1 className="mb-4 text-lg font-semibold">{t("auth.title")}</h1>
+        {invite && <p data-testid="login-invite" className="mb-3 rounded-xl bg-primary/10 px-3 py-2 text-xs font-medium text-primary">{t("invite.willApply", { code: invite.code })}</p>}
 
         {mode === "choose" && (
           <div className="flex flex-col gap-3">
@@ -68,15 +79,16 @@ export default function Login() {
         )}
 
         {mode === "email" && (
-          <form className="flex flex-col gap-3" onSubmit={(e) => {
+          <form noValidate className="flex flex-col gap-3" onSubmit={(e) => {
             e.preventDefault();
             if (!/^\S+@\S+\.\S+$/.test(email)) return setErr(t("auth.invalidEmail"));
-            run(() => auth.sendEmailLink(email.trim()), "email-sent");
+            const tok = takeCap(); run(() => auth.sendEmailLink(email.trim(), tok), "email-sent");
           }}>
             <label className="text-sm font-medium" htmlFor="email">{t("auth.emailLabel")}</label>
             <Input id="email" data-testid="input-email" type="email" inputMode="email" autoComplete="email" className="h-12 rounded-xl"
               value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@gmail.com" />
-            <Button data-testid="btn-send-link" type="submit" size="lg" className="tap h-12 rounded-xl" disabled={busy}>
+            {capWidget}
+            <Button data-testid="btn-send-link" type="submit" size="lg" className="tap h-12 rounded-xl" disabled={busy || capBlocked}>
               {busy && <Loader2 className="h-4 w-4 animate-spin" />} {t("auth.sendLink")}
             </Button>
           </form>
@@ -89,10 +101,10 @@ export default function Login() {
         )}
 
         {mode === "phone" && (
-          <form className="flex flex-col gap-3" onSubmit={(e) => {
+          <form noValidate className="flex flex-col gap-3" onSubmit={(e) => {
             e.preventDefault();
             if (!/^[6-9]\d{9}$/.test(phone)) return setErr(t("auth.invalidPhone"));
-            run(() => auth.sendPhoneOtp(e164), "otp");
+            const tok = takeCap(); run(() => auth.sendPhoneOtp(e164, tok), "otp");
           }}>
             <label className="text-sm font-medium" htmlFor="phone">{t("auth.phoneLabel")}</label>
             <div className="flex h-12 items-center overflow-hidden rounded-xl border focus-within:ring-2 focus-within:ring-ring">
@@ -101,7 +113,8 @@ export default function Login() {
                 className="h-full flex-1 bg-transparent pr-3 outline-none" value={phone}
                 onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))} placeholder="98765 43210" />
             </div>
-            <Button data-testid="btn-send-otp" type="submit" size="lg" className="tap h-12 rounded-xl" disabled={busy}>
+            {capWidget}
+            <Button data-testid="btn-send-otp" type="submit" size="lg" className="tap h-12 rounded-xl" disabled={busy || capBlocked}>
               {busy && <Loader2 className="h-4 w-4 animate-spin" />} {t("auth.sendOtp")}
             </Button>
           </form>
@@ -116,14 +129,16 @@ export default function Login() {
             <Button data-testid="btn-verify" type="submit" size="lg" className="tap h-12 w-full rounded-xl" disabled={busy || otp.length !== 6}>
               {busy && <Loader2 className="h-4 w-4 animate-spin" />} {t("auth.verify")}
             </Button>
-            <button type="button" className="text-sm text-primary" onClick={() => run(() => auth.sendPhoneOtp(e164))}>{t("auth.resend")}</button>
+            {capWidget}
+            <button type="button" data-testid="btn-resend" disabled={busy || capBlocked} className="text-sm text-primary disabled:opacity-40" onClick={() => { const tok = takeCap(); run(() => auth.sendPhoneOtp(e164, tok)); }}>{t("auth.resend")}</button>
           </form>
         )}
 
         {err && <p data-testid="auth-error" role="alert" className="mt-3 text-sm text-destructive">{err}</p>}
       </section>
 
-      <p className="mt-auto pt-8 text-center text-xs text-muted-foreground">{t("auth.terms")}</p>
+      <p className="mt-auto pt-8 text-center text-xs text-muted-foreground">{t("auth.terms")}{" "}
+        <Link data-testid="login-terms" to="/terms" className="underline">{t("legal.terms")}</Link> · <Link data-testid="login-privacy" to="/privacy" className="underline">{t("legal.privacy")}</Link></p>
     </main>
   );
 }

@@ -1,33 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 import { IMG, setProfile, signInAt, sql } from "./workerFlow";
 import { cardOf, makeWorker, open, shot } from "./consultFlow";
-
-/** Fake Web Speech: the test "speaks" with window.__voice.say(text); TTS finishes instantly but is logged. */
-async function mockSpeech(page: Page) {
-  await page.addInitScript(() => {
-    type L = ((e: unknown) => void) | null;
-    const live: FakeRec[] = [];
-    class FakeRec { lang = ""; continuous = false; interimResults = false; maxAlternatives = 1; onresult: L = null; onerror: L = null; onend: L = null; running = false;
-      start() { this.running = true; live.push(this); }
-      stop() { this.abort(); }
-      abort() { this.running = false; const i = live.indexOf(this); if (i >= 0) live.splice(i, 1); } }
-    const emit = (text: string, isFinal: boolean) => {
-      const r = live.find((x) => x.running); if (!r) return false;
-      const res = Object.assign([{ transcript: text, confidence: 0.9 }], { isFinal });
-      r.onresult?.({ resultIndex: 0, results: [res] }); return true;
-    };
-    const w = window as unknown as Record<string, unknown>;
-    w.SpeechRecognition = FakeRec; w.webkitSpeechRecognition = FakeRec;
-    w.__voice = { say: (t: string) => { emit(t.split(" ").slice(0, 2).join(" "), false); return emit(t, true); }, listening: () => live.some((x) => x.running), lang: () => live.find((x) => x.running)?.lang };
-    const synth = { speaking: false, cancel() {}, getVoices: () => [], speak(u: { onend?: () => void }) { setTimeout(() => u.onend?.(), 30); } };
-    Object.defineProperty(window, "speechSynthesis", { value: synth, configurable: true });
-  });
-}
-const say = async (p: Page, text: string) => {
-  await expect.poll(() => p.evaluate(() => (window as unknown as { __voice: { listening: () => boolean } }).__voice.listening())).toBe(true);
-  await p.evaluate((t) => (window as unknown as { __voice: { say: (t: string) => boolean } }).__voice.say(t), text);
-};
-const spoken = (p: Page) => p.evaluate(() => ((window as unknown as { __meiyiyalSpoken?: { text: string; lang: string }[] }).__meiyiyalSpoken ?? []));
+import { mockSpeech, say, spoken } from "./scenario";
 
 const PAED = "professionals--doctor--allopathy--paediatrics", SIDDHA = "professionals--doctor--siddha--general-siddha";
 test.setTimeout(300_000);
@@ -100,4 +74,21 @@ test("voice agent: direct command, follow-up question, exclusion, online-only, T
   await shot(u.page, "25-voice-tamil");
 
   for (const s of [a, b, c, u]) await s.ctx.close();
+});
+
+test("server speech-to-text: /agent/stt (mock adapter) transcribes, and the transcript drives the agent", async ({ page }) => {
+  sql(`DELETE FROM auth.users WHERE email LIKE 'v-stt%@meiyiyal.test';`);
+  await page.addInitScript(() => localStorage.setItem("i18nextLng", "en"));
+  await page.context().grantPermissions(["geolocation"]); await page.context().setGeolocation({ latitude: 13.0317, longitude: 80.27 });
+  const { mockMapNetwork } = await import("./mocks"); await mockMapNetwork(page);
+  await signInAt(page, page.request, "v-stt");
+  const out = await page.evaluate(async () => {
+    const m = await import("/src/features/voice/agent.ts");
+    const text = await m.transcribeAudio(new Blob(["MOCK:child doctor online"], { type: "audio/webm" }), "en");
+    const r = await m.askAgent(text, "en", null, {});
+    let refused = "";
+    try { await m.transcribeAudio(new Blob([new Uint8Array(1_000_001)], { type: "audio/webm" }), "en"); } catch (e) { refused = (e as Error).message; }
+    return { text, action: r.action, node: r.node, online: r.filters.online_only, refused };
+  });
+  expect(out).toEqual({ text: "child doctor online", action: "navigate", node: "professionals--doctor--allopathy--paediatrics", online: true, refused: "stt 413" });
 });

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { friendlyError } from "@/lib/friendlyError";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
@@ -39,7 +40,7 @@ export function PushSettings({ prefs, savePrefs }: { prefs: Prefs; savePrefs: (p
   const turnOff = async () => { setBusy(true); await disablePush().catch(() => undefined); setBusy(false); await refresh(); toast(t("push.turnedOff")); };
   const test = async () => {
     const { error } = await supabase.rpc("push_test");
-    if (error) { toast.error(error.message); return; }
+    if (error) { toast.error(friendlyError(t, error.message)); return; }
     void kickPush(); toast.success(t("push.testSent"));
   };
 

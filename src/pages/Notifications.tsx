@@ -8,8 +8,8 @@ import { markRead, useInvalidateNotes, useNotifications, type Note } from "@/fea
 import { renderText } from "@/features/push/text";
 
 const ICON: Record<string, typeof Bell> = { requests: PhoneCall, chat: MessageCircle, money: IndianRupee, account: BadgeCheck, admin: ShieldCheck, promos: Star, system: Bell };
-const TONE: Record<string, string> = { requests: "bg-emerald-500/15 text-emerald-600", chat: "bg-sky-500/15 text-sky-600", money: "bg-violet-500/15 text-violet-600",
-  account: "bg-primary/15 text-primary", admin: "bg-amber-500/15 text-amber-600", promos: "bg-pink-500/15 text-pink-600", system: "bg-muted text-muted-foreground" };
+const TONE: Record<string, string> = { requests: "bg-emerald-500/15 text-emerald-700", chat: "bg-sky-500/15 text-sky-700", money: "bg-violet-500/15 text-violet-600",
+  account: "bg-primary/15 text-primary", admin: "bg-amber-500/15 text-amber-700", promos: "bg-pink-500/15 text-pink-600", system: "bg-muted text-muted-foreground" };
 
 export default function Notifications() {
   const { t, i18n } = useTranslation(); const lang = i18n.language?.startsWith("ta") ? "ta" : "en";
