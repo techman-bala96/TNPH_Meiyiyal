@@ -8,21 +8,21 @@ has passed the authenticator (TOTP) step (`aal2`). The separate host adds:
 - a place to add extra edge rules (IP allow-list, HTTP basic auth) without touching the public site;
 - `noindex` on every response, so search engines never list it.
 
-## Steps (Hostinger DNS + the same build)
+## Steps (Cloudflare Pages + the same build)
 
-1. **DNS.** Hostinger hPanel → Domains → meiyiyal.com → DNS / Nameservers → add a record:
-   - if the site is on Hostinger hosting: `A  admin  <same IP as the @ record>`;
-   - if the site is on another static host (Netlify / Cloudflare Pages / Vercel): `CNAME  admin  <that host's target>`.
-2. **Hosting.** Point `admin.meiyiyal.com` at the same `dist/` folder (Hostinger: Websites → Add website → subdomain →
-   same files, or a second deploy of the same build). Keep HTTPS on (free SSL in hPanel).
+1. **Hosting + DNS.** The same Cloudflare Pages project that serves meiyiyal.com serves the admin host too (one build,
+   no second project): Workers & Pages → `meiyiyal` → Custom domains → add `admin.meiyiyal.com`. Cloudflare makes the
+   `CNAME admin → meiyiyal.pages.dev` record and the free SSL certificate itself (docs/GO-LIVE.md §2b, §3).
+2. **Nothing else to upload.** Every push to `meyiyal-v1` updates both hosts at once.
 3. **Build setting.** Build the web app with `VITE_ADMIN_HOST=admin.meiyiyal.com`. With it set:
    - visiting `/admin` on meiyiyal.com sends the browser to `https://admin.meiyiyal.com/admin`;
    - admins sign in again there (sessions are per origin) and pass the authenticator step.
 4. **Supabase Auth URLs.** Dashboard → Authentication → URL configuration → add
    `https://admin.meiyiyal.com/auth/callback` to *Redirect URLs* (keep the main one).
-5. **Headers.** `deploy/hostinger/.htaccess` sends `X-Robots-Tag: noindex` for the admin host and `/admin`, plus the
-   security headers used on the main site. Optional extra: an IP allow-list for the admin host
-   (commented block in the same file).
+5. **Headers.** `deploy/cloudflare/_headers` sends `X-Robots-Tag: noindex` for `https://admin.meiyiyal.com/*` and `/admin`,
+   plus the security headers used on the main site. Optional extra lock: Cloudflare → meiyiyal.com → Security → WAF →
+   Custom rule "hostname equals admin.meiyiyal.com and IP not in {office/home IPs} → Block" (free plan allows it), or
+   Cloudflare Zero Trust → Access (free up to 50 users) for an e-mail login in front of the admin host.
 6. **Authenticator.** Each admin opens `/admin`, scans the QR code with Google/Microsoft Authenticator or Authy and enters a
    code. Lost phone → another admin uses Admin → Security → Reset (written to the audit log with a reason). If the last
    admin loses theirs, run in the Supabase SQL editor: `DELETE FROM auth.mfa_factors WHERE user_id = '<uuid>';`.

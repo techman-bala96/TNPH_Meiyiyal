@@ -1,12 +1,25 @@
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import { VitePWA } from "vite-plugin-pwa";
 import path from "path";
+import { copyFileSync } from "fs";
+
+// Cloudflare Pages reads _headers and _redirects from the build output. Keep them in deploy/cloudflare/ and copy them
+// into dist/ on every production build (docs/GO-LIVE.md §2). Dev and preview servers are not affected.
+const cloudflarePagesFiles = (): Plugin => ({
+  name: "meiyiyal-cloudflare-pages-files",
+  apply: "build",
+  writeBundle(options) {
+    const out = options.dir ?? path.resolve(__dirname, "dist");
+    for (const f of ["_headers", "_redirects"]) copyFileSync(path.resolve(__dirname, "deploy/cloudflare", f), path.join(out, f));
+  },
+});
 
 export default defineConfig(() => ({
   server: { host: "::", port: 8080 },
   plugins: [
     react(),
+    cloudflarePagesFiles(),
     VitePWA({
       // M9: our own worker (src/sw.ts) so it can show Web Push notifications; caching stays the same.
       strategies: "injectManifest",

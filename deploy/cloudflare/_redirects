@@ -1,0 +1,12 @@
+# Meiyiyal on Cloudflare Pages. The build copies this file into dist/ (vite.config.ts → cloudflarePagesFiles).
+#
+# Deep links (/search, /pro/…, /admin/…) need no rule here: dist/ has no top-level 404.html, so Pages treats the site
+# as a single-page app and answers every unknown path with index.html (status 200). Real files (sw.js,
+# manifest.webmanifest, /assets/*, icons) are always served as themselves. Do NOT add "/* /index.html 200": Pages
+# flags it as an infinite loop and ignores it.
+#
+# Host redirects (www → meiyiyal.com, http → https) are not possible in this file; they are set once in the
+# Cloudflare dashboard (docs/GO-LIVE.md §2, "Always Use HTTPS" and the www redirect rule).
+#
+# Add path redirects below, one per line: <from> <to> <status>, e.g.
+# /help /support 301
