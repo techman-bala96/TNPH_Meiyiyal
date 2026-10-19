@@ -71,7 +71,7 @@ function AdminConsole() {
     <PageShell title={`${t("admin.title")} · ${t(`admin.heading.${tab}`)}`} testId="admin-page" wide>
       <PushAskCard reason="admin" />
       <div className="lg:grid lg:grid-cols-[13rem_1fr] lg:gap-6">
-      <nav aria-label={t("admin.title")} data-testid="admin-nav" className="mb-4 space-y-2 lg:sticky lg:top-16 lg:mb-0 lg:self-start">
+      <nav aria-label={t("admin.title")} data-testid="admin-nav" className="mb-4 space-y-2 lg:sticky lg:top-16 lg:mb-0 lg:max-h-[calc(100dvh-5rem)] lg:self-start lg:overflow-y-auto lg:pb-2">
         {TAB_GROUPS.map(([g, list]) => (
           <div key={g} className="flex flex-wrap items-center gap-1 lg:flex-col lg:items-stretch">
             <span className="w-16 shrink-0 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground lg:w-auto lg:px-2 lg:pt-2">{t(`admin.group.${g}`)}</span>
