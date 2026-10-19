@@ -10,7 +10,7 @@ Links: [HANDOFF](HANDOFF.md) · [Live readiness](#live-readiness) · [Real-phone
 
 ## 1. Coverage matrix (feature inventory from the code)
 
-**371 / 371 items covered (100%)**: UI 330 · server 40 · key-only 1
+**371 / 371 items covered (100%)**: UI 331 · server 39 · key-only 1
 
 Status: **UI** = exercised through the app's UI in a passing scenario · **server** = runs server-side inside a UI journey or by a DB test (no screen of its own) · **key-only** = needs a production key/account, mock adapter tested instead · **GAP** = not covered.
 
@@ -62,7 +62,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `admin_decide_appeal` | UI | called by the app during the UI run |
 | RPC | `admin_decide_worker` | UI | called by the app during the UI run |
 | RPC | `admin_delete_rate` | UI | called by the app during the UI run |
-| RPC | `admin_guard` | server | 2676 calls in run |
+| RPC | `admin_guard` | server | 3038 calls in run |
 | RPC | `admin_list_admins` | UI | called by the app during the UI run |
 | RPC | `admin_mfa_ok` | server | SQL helper: inside has_role() so admin rights need MFA (aal2); driven by the mfa-* projects |
 | RPC | `admin_milestones` | UI | called by the app during the UI run |
@@ -148,7 +148,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `push_subscribe` | UI | called by the app during the UI run |
 | RPC | `push_test` | UI | called by the app during the UI run |
 | RPC | `push_unsubscribe` | UI | called by the app during the UI run |
-| RPC | `rate_for` | server | 12338 calls in run |
+| RPC | `rate_for` | server | 13514 calls in run |
 | RPC | `rates_for` | UI | called by the app during the UI run |
 | RPC | `referral_check` | server | supabase/tests |
 | RPC | `referral_claim` | UI | called by the app during the UI run |
@@ -173,7 +173,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `verification_appeal` | UI | called by the app during the UI run |
 | RPC | `verification_liveness_challenge` | server | legacy RPC (M7), replaced by the M11 liveness flow in the verify service; safe to drop |
 | RPC | `verification_liveness_start` | UI | called by the app during the UI run |
-| RPC | `verification_rules_for` | server | 8257 calls in run |
+| RPC | `verification_rules_for` | server | 9131 calls in run |
 | RPC | `verification_stage_liveness` | UI | called by the app during the UI run |
 | RPC | `verification_stage_qr` | UI | called by the app during the UI run |
 | RPC | `verification_stage_selfie` | UI | called by the app during the UI run |
@@ -207,7 +207,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | Cron | `bonus-expire (0 19 * * *)` | UI | bonus_expire() run by a UI scenario at the time-travel step, result checked in the UI |
 | Cron | `fast-sweep (5 seconds)` | UI |  |
 | Cron | `payout-retry (*/10 * * * *)` | UI | supabase/tests |
-| Cron | `payout-weekly (30 4 * * 1)` | server | supabase/tests |
+| Cron | `payout-weekly (30 4 * * 1)` | UI | supabase/tests |
 | Cron | `push-sweep (30 seconds)` | UI | supabase/tests |
 | Cron | `sms-outbox-sweep (0 * * * *)` | server | supabase/tests |
 | Cron | `verify-dispatch (* * * * *)` | UI | supabase/tests |
@@ -390,7 +390,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 
 ## 2. Scenarios
 
-105 scenarios · 105 pass · 0 fail · 0 not run yet · runs: 227 pass / 6 fail / 0 pending (per project).
+105 scenarios · 105 pass · 0 fail · 0 not run yet · runs: 228 pass / 5 fail / 0 pending (per project).
 
 | ID | Scenario (steps) | Expected | Actual | Spec | Device | Lang | Date (IST) | Mode | Shots |
 |---|---|---|---|---|---|---|---|---|---|
@@ -551,7 +551,7 @@ Cannot be proven in a desktop browser or without production keys. Do these on re
 Every visible clickable on every route, per role, language and screen size, clicked once on a fresh page (plus double taps on primary actions).
 Result: **ok** (landed as expected, no console error / unhandled rejection / blank screen) · **disabled** (correctly disabled for this state) · **covered-by-scenario** (side effect such as sign-out, submit or delete: exercised by a journey instead) · **external-link** · **moved** (navigated on purpose) · **FAIL**.
 
-4199 clicks · 645 distinct controls · 8 failures · screen issues: 229 (tap-target<24px, english-in-tamil).
+4357 clicks · 664 distinct controls · 4 failures · screen issues: 237 (tap-target<24px, english-in-tamil).
 
 | Role | Route | Control | Kind | Result (size/lang) |
 |---|---|---|---|---|
@@ -756,6 +756,7 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | admin | `/admin#payouts` | admin-tab-audit <sub>Audit</sub> | button | ok: 6 runs |
 | admin | `/admin#payouts` | payout-pause <sub>Resume payouts</sub> | button | covered-by-scenario: 6 runs |
 | admin | `/admin#payouts` | payout-run <sub>Run payout batch</sub> | button | disabled: 6 runs |
+| admin | `/admin#payouts` | payout-hold <sub>Hold worker</sub> | button | ok: 3 runs |
 | admin | `/admin#queue` | page-back <sub>Back</sub> | button | FAIL: desktop/en; ok: 5 runs |
 | admin | `/admin#queue` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
 | admin | `/admin#queue` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs; moved: 2 runs |
@@ -826,7 +827,7 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | admin | `/admin#referrals` | ref-view-list <sub>All referrals</sub> | button | ok: 6 runs |
 | admin | `/admin#referrals` | ref-see <sub>See who joined</sub> | button | ok: 6 runs |
 | admin | `/admin#referrals` | ref-active <sub>on</sub> | switch | ok: 6 runs |
-| admin | `/admin#referrals` | ref-code-row <sub>Copy code</sub> | button | ok: 4 runs; FAIL: 2 runs |
+| admin | `/admin#referrals` | ref-code-row <sub>Copy code</sub> | button | ok: 6 runs |
 | admin | `/admin#security` | page-back <sub>Back</sub> | button | ok: 6 runs |
 | admin | `/admin#security` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
 | admin | `/admin#security` | admin-tab-queue <sub>Queue</sub> | button | ok: 6 runs |
@@ -844,6 +845,7 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | admin | `/admin#security` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 6 runs |
 | admin | `/admin#security` | admin-tab-security <sub>Security</sub> | button | ok: 6 runs |
 | admin | `/admin#security` | admin-tab-audit <sub>Audit</sub> | button | ok: 6 runs |
+| admin | `/admin#security` | admin-row <sub>Reset</sub> | button | ok: 2 runs |
 | admin | `/admin#settings` | page-back <sub>Back</sub> | button | ok: 6 runs |
 | admin | `/admin#settings` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
 | admin | `/admin#settings` | admin-tab-queue <sub>Queue</sub> | button | ok: 6 runs |
@@ -930,14 +932,14 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | list-all <sub>Show all</sub> | button | ok: 6 runs |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | auto-toggle <sub>Auto request</sub> | switch | ok: 6 runs |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | find-now <sub>Find now</sub> | button | disabled: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | worker-card <sub>Dr. Meena CrawlD LICENCE VERIFIED < 1 km</sub> | button | moved: 24 runs; ok: 4 runs; sampled: 7 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | worker-card <sub>Dr. Meena CrawlD LICENCE VERIFIED < 1 km</sub> | button | moved: 22 runs; ok: 4 runs; sampled: 13 runs |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | nav-home <sub>Home</sub> | a | moved: 6 runs |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | nav-conversations <sub>Conversations</sub> | a | moved: 6 runs |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | nav-profile <sub>Profile</sub> | a | moved: 6 runs |
 | client | `/history` | page-back <sub>பின்செல்</sub> | button | ok: 6 runs |
 | client | `/history` | lang-toggle <sub>Switch to English</sub> | button | ok: 6 runs |
 | client | `/history` | get-test-credits <sub>சோதனை கிரெடிட்</sub> | button | ok: 6 runs |
-| client | `/history` | history-row <sub>Dr. Meena CrawlD மருத்துவர் · குழந்தை நல</sub> | a | ok: 4 runs |
+| client | `/history` | history-row <sub>Dr. Meena CrawlD மருத்துவர் · குழந்தை நல</sub> | a | ok: 6 runs |
 | client | `/history` | nav-home <sub>முகப்பு</sub> | a | ok: 6 runs |
 | client | `/history` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: 6 runs |
 | client | `/history` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: 6 runs |
@@ -966,7 +968,7 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | client | `/profile` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
 | client | `/profile` | profile-wallet <sub>Wallet 0 credits Add credits</sub> | a | ok: 6 runs |
 | client | `/profile` | btn-photo <sub>Change photo</sub> | button | ok: 6 runs |
-| client | `/profile` | profile-page <sub>Full name</sub> | label | ok: 18 runs; disabled: 4 runs; FAIL: 2 runs |
+| client | `/profile` | profile-page <sub>Full name</sub> | label | ok: 18 runs; disabled: 6 runs |
 | client | `/profile` | btn-save-profile <sub>Save</sub> | button | ok: 10 runs |
 | client | `/profile` | add-location <sub>Add a location</sub> | a | ok: 6 runs |
 | client | `/profile` | invite-copy-code <sub>Copy code</sub> | button | ok: 6 runs |
@@ -978,8 +980,16 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | client | `/profile` | nav-conversations <sub>Conversations</sub> | a | ok: 6 runs |
 | client | `/profile` | nav-profile <sub>Profile</sub> | a | ok: 6 runs |
 | client | `/profile` | loc-use <sub>பயன்படுத்து</sub> | button | ok: 2 runs |
-| client | `/session/` | lang-toggle <sub>Switch to English</sub> | button | ok: 2 runs |
-| client | `/session/` | not-found-home <sub>முகப்புக்குச் செல்</sub> | a | ok: 2 runs |
+| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | session-page <sub>பின்செல்</sub> | button | ok: 2 runs |
+| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | star-1 <sub>1</sub> | button | ok: 2 runs |
+| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | star-2 <sub>2</sub> | button | ok: 2 runs |
+| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | star-3 <sub>3</sub> | button | ok: 2 runs |
+| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | star-4 <sub>4</sub> | button | ok: 2 runs |
+| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | star-5 <sub>5</sub> | button | ok: 2 runs |
+| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | report-toggle <sub>புகார் அளிக்க</sub> | button | ok: 2 runs |
+| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | feedback-submit <sub>கருத்தை சமர்ப்பி</sub> | button | disabled: 2 runs |
+| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | go-history <sub>உரையாடல்கள்</sub> | a | ok: 2 runs |
+| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | session-summary <sub>முகப்பு</sub> | a | ok: 2 runs |
 | client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | session-page <sub>பின்செல்</sub> | button | ok: 2 runs |
 | client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | star-1 <sub>1</sub> | button | ok: 2 runs |
 | client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | star-2 <sub>2</sub> | button | ok: 2 runs |
@@ -1031,11 +1041,6 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | client | `/settings` | nav-home <sub>Home</sub> | a | moved: 4 runs; ok: 2 runs |
 | client | `/settings` | nav-conversations <sub>Conversations</sub> | a | moved: 4 runs; ok: 2 runs |
 | client | `/settings` | nav-profile <sub>Profile</sub> | a | moved: 4 runs; ok: 2 runs |
-| client | `/w/` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 2 runs |
-| client | `/w/` | not-found-home <sub>Go to home</sub> | a | ok: 2 runs |
-| client | `/w/` | nav-home <sub>Home</sub> | a | ok: 2 runs |
-| client | `/w/` | nav-conversations <sub>Conversations</sub> | a | ok: 2 runs |
-| client | `/w/` | nav-profile <sub>Profile</sub> | a | ok: 2 runs |
 | client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | page-back <sub>Back</sub> | button | ok: tablet/en |
 | client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: tablet/en |
 | client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | wp-consult <sub>View rates</sub> | button | ok: tablet/en |
@@ -1050,6 +1055,13 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | client | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | nav-home <sub>Home</sub> | a | ok: 2 runs |
 | client | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | nav-conversations <sub>Conversations</sub> | a | ok: 2 runs |
 | client | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | nav-profile <sub>Profile</sub> | a | ok: 2 runs |
+| client | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | page-back <sub>Back</sub> | button | ok: 2 runs |
+| client | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 2 runs |
+| client | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | wp-consult <sub>View rates</sub> | button | ok: 2 runs |
+| client | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | wp-message <sub>Send a message instead</sub> | button | ok: 2 runs |
+| client | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | nav-home <sub>Home</sub> | a | ok: 2 runs |
+| client | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | nav-conversations <sub>Conversations</sub> | a | ok: 2 runs |
+| client | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | nav-profile <sub>Profile</sub> | a | ok: 2 runs |
 | client | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | page-back <sub>Back</sub> | button | ok: tablet-land/en |
 | client | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: tablet-land/en |
 | client | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | wp-consult <sub>View rates</sub> | button | ok: tablet-land/en |
@@ -1084,64 +1096,64 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | guest | `/terms` | page-back <sub>Back</sub> | button | ok: 6 runs |
 | guest | `/terms` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
 | guest | `/terms` | legal-terms <sub>Privacy policy</sub> | a | ok: 6 runs |
-| worker-approved | `/?tab=worker` | loc-chip <sub>Your location Mylapore, Chennai · Change</sub> | a | ok: 4 runs |
-| worker-approved | `/?tab=worker` | mic-toggle <sub>Turn on voice assistant</sub> | button | ok: 4 runs |
-| worker-approved | `/?tab=worker` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| worker-approved | `/?tab=worker` | bell <sub>Notifications · 2 unread</sub> | a | ok: 4 runs |
-| worker-approved | `/?tab=worker` | avatar-btn <sub>Account</sub> | button | ok: 4 runs |
-| worker-approved | `/?tab=worker` | tab-find <sub>Find Worker</sub> | tab | ok: 4 runs |
-| worker-approved | `/?tab=worker` | tab-worker <sub>Worker</sub> | tab | ok: 4 runs |
-| worker-approved | `/?tab=worker` | go-online <sub>Go online</sub> | switch | covered-by-scenario: 4 runs |
-| worker-approved | `/?tab=worker` | btn-earnings <sub>Earnings Weekly payouts to your bank</sub> | a | ok: 2 runs; moved: 2 runs |
-| worker-approved | `/?tab=worker` | view-public-profile <sub>Public profile</sub> | a | ok: 2 runs; moved: 2 runs |
-| worker-approved | `/?tab=worker` | nav-home <sub>Home</sub> | a | ok: 2 runs; moved: 2 runs |
-| worker-approved | `/?tab=worker` | nav-conversations <sub>Conversations</sub> | a | ok: 2 runs; moved: 2 runs |
-| worker-approved | `/?tab=worker` | nav-profile <sub>Profile</sub> | a | ok: 2 runs; moved: 2 runs |
+| worker-approved | `/?tab=worker` | loc-chip <sub>Your location Mylapore, Chennai · Change</sub> | a | ok: 6 runs |
+| worker-approved | `/?tab=worker` | mic-toggle <sub>Turn on voice assistant</sub> | button | ok: 6 runs |
+| worker-approved | `/?tab=worker` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
+| worker-approved | `/?tab=worker` | bell <sub>Notifications · 2 unread</sub> | a | ok: 6 runs |
+| worker-approved | `/?tab=worker` | avatar-btn <sub>Account</sub> | button | ok: 6 runs |
+| worker-approved | `/?tab=worker` | tab-find <sub>Find Worker</sub> | tab | ok: 6 runs |
+| worker-approved | `/?tab=worker` | tab-worker <sub>Worker</sub> | tab | ok: 6 runs |
+| worker-approved | `/?tab=worker` | go-online <sub>Go online</sub> | switch | covered-by-scenario: 6 runs |
+| worker-approved | `/?tab=worker` | btn-earnings <sub>Earnings Weekly payouts to your bank</sub> | a | ok: 4 runs; moved: 2 runs |
+| worker-approved | `/?tab=worker` | view-public-profile <sub>Public profile</sub> | a | ok: 4 runs; moved: 2 runs |
+| worker-approved | `/?tab=worker` | nav-home <sub>Home</sub> | a | ok: 4 runs; moved: 2 runs |
+| worker-approved | `/?tab=worker` | nav-conversations <sub>Conversations</sub> | a | ok: 4 runs; moved: 2 runs |
+| worker-approved | `/?tab=worker` | nav-profile <sub>Profile</sub> | a | ok: 4 runs; moved: 2 runs |
 | worker-approved | `/?tab=worker` | push-ask-dismiss <sub>Not now</sub> | button | ok: 2 runs |
-| worker-approved | `/earnings` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| worker-approved | `/earnings` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| worker-approved | `/earnings` | payout-request <sub>Request payout</sub> | button | disabled: 4 runs |
-| worker-approved | `/earnings` | payout-kind-bank <sub>Bank</sub> | button | ok: 4 runs |
-| worker-approved | `/earnings` | payout-kind-upi <sub>UPI</sub> | button | ok: 4 runs |
-| worker-approved | `/earnings` | payout-send-code <sub>Send code</sub> | button | ok: 4 runs |
-| worker-approved | `/earnings` | payout-save <sub>Check account</sub> | button | disabled: 4 runs |
-| worker-approved | `/earnings` | nav-home <sub>Home</sub> | a | ok: 4 runs |
-| worker-approved | `/earnings` | nav-conversations <sub>Conversations</sub> | a | ok: 4 runs |
-| worker-approved | `/earnings` | nav-profile <sub>Profile</sub> | a | ok: 4 runs |
-| worker-approved | `/messages` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| worker-approved | `/messages` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| worker-approved | `/messages` | nav-home <sub>Home</sub> | a | ok: 4 runs |
-| worker-approved | `/messages` | nav-conversations <sub>Conversations</sub> | a | ok: 4 runs |
-| worker-approved | `/messages` | nav-profile <sub>Profile</sub> | a | ok: 4 runs |
-| worker-approved | `/notifications` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| worker-approved | `/notifications` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| worker-approved | `/notifications` | inbox-mark-all <sub>Mark all as read</sub> | button | ok: 3 runs |
-| worker-approved | `/notifications` | inbox-item <sub>While you were away You have 1 new updat</sub> | button | moved: 4 runs; ok: 2 runs |
-| worker-approved | `/notifications` | nav-home <sub>Home</sub> | a | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/notifications` | nav-conversations <sub>Conversations</sub> | a | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/notifications` | nav-profile <sub>Profile</sub> | a | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/settings` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| worker-approved | `/settings` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| worker-approved | `/settings` | worker-badge <sub>Doctor Allopathy › Paediatrics Verified </sub> | a | ok: 4 runs |
-| worker-approved | `/settings` | lang-en <sub>English</sub> | button | ok: 4 runs |
-| worker-approved | `/settings` | lang-ta <sub>தமிழ்</sub> | button | ok: 4 runs |
-| worker-approved | `/settings` | theme-light <sub>Light</sub> | button | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/settings` | theme-dark <sub>Dark</sub> | button | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/settings` | theme-system <sub>System</sub> | button | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/settings` | push-test <sub>Send a test alert</sub> | button | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/settings` | notify-requests <sub>New requests & calls</sub> | switch | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/settings` | notify-chat <sub>Chat messages</sub> | switch | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/settings` | notify-money <sub>Payments & payouts</sub> | switch | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/settings` | notify-account <sub>Account & verification</sub> | switch | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/settings` | notify-promos <sub>Offers & reminders</sub> | switch | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/settings` | quiet-on <sub>Quiet hours</sub> | switch | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/settings` | data-export <sub>Download my data</sub> | button | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/settings` | link-privacy <sub>Privacy policy</sub> | a | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/settings` | link-terms <sub>Terms of use</sub> | a | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/settings` | delete-start <sub>Delete my account</sub> | button | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/settings` | nav-home <sub>Home</sub> | a | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/settings` | nav-conversations <sub>Conversations</sub> | a | moved: 3 runs; ok: desktop/ta |
-| worker-approved | `/settings` | nav-profile <sub>Profile</sub> | a | moved: 3 runs; ok: desktop/ta |
+| worker-approved | `/earnings` | page-back <sub>Back</sub> | button | ok: 6 runs |
+| worker-approved | `/earnings` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
+| worker-approved | `/earnings` | payout-request <sub>Request payout</sub> | button | disabled: 6 runs |
+| worker-approved | `/earnings` | payout-kind-bank <sub>Bank</sub> | button | ok: 6 runs |
+| worker-approved | `/earnings` | payout-kind-upi <sub>UPI</sub> | button | ok: 6 runs |
+| worker-approved | `/earnings` | payout-send-code <sub>Send code</sub> | button | ok: 6 runs |
+| worker-approved | `/earnings` | payout-save <sub>Check account</sub> | button | disabled: 6 runs |
+| worker-approved | `/earnings` | nav-home <sub>Home</sub> | a | ok: 6 runs |
+| worker-approved | `/earnings` | nav-conversations <sub>Conversations</sub> | a | ok: 6 runs |
+| worker-approved | `/earnings` | nav-profile <sub>Profile</sub> | a | ok: 6 runs |
+| worker-approved | `/messages` | page-back <sub>Back</sub> | button | ok: 6 runs |
+| worker-approved | `/messages` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
+| worker-approved | `/messages` | nav-home <sub>Home</sub> | a | ok: 6 runs |
+| worker-approved | `/messages` | nav-conversations <sub>Conversations</sub> | a | ok: 6 runs |
+| worker-approved | `/messages` | nav-profile <sub>Profile</sub> | a | ok: 6 runs |
+| worker-approved | `/notifications` | page-back <sub>Back</sub> | button | ok: 6 runs |
+| worker-approved | `/notifications` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
+| worker-approved | `/notifications` | inbox-mark-all <sub>Mark all as read</sub> | button | ok: 4 runs |
+| worker-approved | `/notifications` | inbox-item <sub>While you were away You have 1 new updat</sub> | button | moved: 5 runs; ok: 3 runs |
+| worker-approved | `/notifications` | nav-home <sub>Home</sub> | a | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/notifications` | nav-conversations <sub>Conversations</sub> | a | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/notifications` | nav-profile <sub>Profile</sub> | a | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/settings` | page-back <sub>Back</sub> | button | ok: 6 runs |
+| worker-approved | `/settings` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
+| worker-approved | `/settings` | worker-badge <sub>Doctor Allopathy › Paediatrics Verified </sub> | a | ok: 6 runs |
+| worker-approved | `/settings` | lang-en <sub>English</sub> | button | ok: 6 runs |
+| worker-approved | `/settings` | lang-ta <sub>தமிழ்</sub> | button | ok: 6 runs |
+| worker-approved | `/settings` | theme-light <sub>Light</sub> | button | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/settings` | theme-dark <sub>Dark</sub> | button | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/settings` | theme-system <sub>System</sub> | button | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/settings` | push-test <sub>Send a test alert</sub> | button | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/settings` | notify-requests <sub>New requests & calls</sub> | switch | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/settings` | notify-chat <sub>Chat messages</sub> | switch | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/settings` | notify-money <sub>Payments & payouts</sub> | switch | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/settings` | notify-account <sub>Account & verification</sub> | switch | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/settings` | notify-promos <sub>Offers & reminders</sub> | switch | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/settings` | quiet-on <sub>Quiet hours</sub> | switch | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/settings` | data-export <sub>Download my data</sub> | button | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/settings` | link-privacy <sub>Privacy policy</sub> | a | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/settings` | link-terms <sub>Terms of use</sub> | a | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/settings` | delete-start <sub>Delete my account</sub> | button | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/settings` | nav-home <sub>Home</sub> | a | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/settings` | nav-conversations <sub>Conversations</sub> | a | moved: 4 runs; ok: 2 runs |
+| worker-approved | `/settings` | nav-profile <sub>Profile</sub> | a | moved: 4 runs; ok: 2 runs |
 | worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | page-back <sub>பின்செல்</sub> | button | ok: tablet/en |
 | worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | lang-toggle <sub>Switch to English</sub> | button | ok: tablet/en |
 | worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | wp-consult <sub>கட்டணம் பார்க்க</sub> | button | ok: tablet/en |
@@ -1156,6 +1168,13 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | worker-approved | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | nav-home <sub>முகப்பு</sub> | a | ok: 2 runs |
 | worker-approved | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: 2 runs |
 | worker-approved | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: 2 runs |
+| worker-approved | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | page-back <sub>பின்செல்</sub> | button | ok: 2 runs |
+| worker-approved | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | lang-toggle <sub>Switch to English</sub> | button | ok: 2 runs |
+| worker-approved | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | wp-consult <sub>கட்டணம் பார்க்க</sub> | button | ok: 2 runs |
+| worker-approved | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | wp-message <sub>அதற்கு பதிலாக செய்தி அனுப்பு</sub> | button | ok: 2 runs |
+| worker-approved | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | nav-home <sub>முகப்பு</sub> | a | ok: 2 runs |
+| worker-approved | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: 2 runs |
+| worker-approved | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: 2 runs |
 | worker-approved | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | page-back <sub>பின்செல்</sub> | button | ok: tablet-land/en |
 | worker-approved | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | lang-toggle <sub>Switch to English</sub> | button | ok: tablet-land/en |
 | worker-approved | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | wp-consult <sub>கட்டணம் பார்க்க</sub> | button | ok: tablet-land/en |
@@ -1273,49 +1292,57 @@ Screen-check notes (non-blocking):
 | admin | `/admin#queue` | mobile/ta | tap-target<24px | A:125x17 |
 | admin | `/admin#districts` | mobile/ta | tap-target<24px | districts-hide-zero:13x13 |
 | admin | `/admin#referrals` | mobile/ta | english-in-tamil | Anbu, Ref, Oct, MJR, E-D, Facebook, post, E-M |
-| admin | `/admin#payments` | mobile/ta | english-in-tamil | Karthik, Subramanian, basic, pay, late, webhook, starter, order, BAD, REQUEST, ERROR, Payment, declined, bank, value, User, ece, Refresh, Payer |
-| admin | `/admin#payouts` | mobile/ta | english-in-tamil | Priya, Natarajan, UTR- |
+| admin | `/admin#payments` | mobile/ta | english-in-tamil | Refund, Client, starter, pay, webhook, Bought, mistake, Karthik, Crawl, order, max, pro, value, eac, basic, faf, eca, dce, acfeaa, adf, cfa, fbf, fddad, cfecbbb |
+| admin | `/admin#payouts` | mobile/ta | english-in-tamil | Hold, HDFC, Priya, Natarajan, UTR- |
 | admin | `/admin#packs` | mobile/ta | english-in-tamil | Starter, Basic, Value, Pro, Max |
 | admin | `/admin#packs` | mobile/ta | tap-target<24px | INPUT:13x13 |
 | admin | `/admin#packs` | mobile/ta | tap-target<24px | pack-active:13x13 |
-| admin | `/admin#rates` | mobile/ta | english-in-tamil | doctor, allopathy, allergy-immunology, cardiology, dermatology, diabetology-endocrinology, ent, gastroenterology, general-surgery, geriatrics, gynaecology-obste |
+| admin | `/admin#rates` | mobile/ta | english-in-tamil | doctor, allopathy, dermatology, diabetology-endocrinology, ent, gastroenterology, general-surgery, geriatrics, gynaecology-obstetrics, hematology, infectious-di |
 | admin | `/admin#settings` | mobile/ta | english-in-tamil | verify, auto, approve, false, risk, reject, name, pass, review, registry, live, days, selfie, retain, liveness, window, seconds, job, max, attempts, stub, provi |
 | admin | `/admin#catalog` | mobile/ta | english-in-tamil | migration |
 | admin | `/admin#milestones` | mobile/ta | english-in-tamil | first, consult, five, star, sessions, streak, top, rated, excellence |
-| admin | `/admin#security` | mobile/ta | english-in-tamil | Karthik, Subramanian, refmadm, dzx, ji-, admm, sqck, admtam, crawlm-admin, vqydgm-, yadmd, pwwyun-, hojz, vfm-admin, koy, vfd-admin, wps, pur-, ulq, cor, tf-, h |
-| admin | `/admin#audit` | mobile/ta | english-in-tamil | crawlm-admin, vqydgm-, Oct, first, consult, verify, auto, approve, categories, professionals--doctor, true, false, professionals--doctor--allopathy--allergy-imm |
-| client | `/` | mobile/en | tap-target<24px | search-input:282x23 |
+| admin | `/admin#security` | mobile/ta | english-in-tamil | Karthik, Subramanian, refmadm, dzx, ji-, admm, sqck, admtam, yadmd, pwwyun-, vfd-admin, exq-, hojz, vfm-admin, koy, wps, pur-, ulq, cor, tf-, hmnifz-, wiguqu-,  |
+| admin | `/admin#audit` | mobile/ta | english-in-tamil | crawlm-admin, Oct, first, consult, verify, auto, approve, categories, professionals--doctor, true, false, professionals--doctor--allopathy--dermatology, chat, p |
 | client | `/` | mobile/en | tap-target<24px | group-professionals:380x20 |
-| client | `/ (dark)` | mobile/en | tap-target<24px | search-input:282x23 |
 | client | `/ (dark)` | mobile/en | tap-target<24px | group-professionals:380x20 |
-| client | `/browse/professionals` | mobile/en | tap-target<24px | search-input:282x23 |
 | client | `/browse/professionals` | mobile/en | tap-target<24px | A:14x14 |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/en | tap-target<24px | search-input:282x23 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/en | tap-target<24px | A:14x14 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/en | tap-target<24px | crumb-professionals:82x16 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/en | tap-target<24px | crumb-professionals--doctor:40x16 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/en | tap-target<24px | crumb-professionals--doctor--allopathy:55x16 |
 | client | `/settings` | mobile/en | tap-target<24px | link-privacy:100x16 |
 | client | `/settings` | mobile/en | tap-target<24px | link-terms:97x16 |
-| client | `/` | mobile/ta | tap-target<24px | search-input:282x23 |
+| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | mobile/en | tap-target<24px | report-toggle:116x16 |
 | client | `/` | mobile/ta | tap-target<24px | group-professionals:380x20 |
-| client | `/browse/professionals` | mobile/ta | tap-target<24px | search-input:282x23 |
 | client | `/browse/professionals` | mobile/ta | tap-target<24px | A:14x14 |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/ta | english-in-tamil | Meena, CrawlM, Arun, Kumar, Kavitha, Raman, Prakash |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/ta | tap-target<24px | search-input:282x23 |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/ta | english-in-tamil | Meena, CrawlT, CrawlD, CrawlM, CrawlL, Kavitha, Raman, Arun, Prakash |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/ta | tap-target<24px | A:14x14 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/ta | tap-target<24px | crumb-professionals:141x16 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/ta | tap-target<24px | crumb-professionals--doctor:68x16 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/ta | tap-target<24px | crumb-professionals--doctor--allopathy:129x16 |
-| client | `/profile` | mobile/ta | english-in-tamil | Marina, Beach, Triplicane, Chennai, ZXH, localhost, ref |
+| client | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | mobile/ta | english-in-tamil | Meena, CrawlM, Tamil, Nadu, Medical, Council |
+| client | `/profile` | mobile/ta | english-in-tamil | Marina, Beach, Triplicane, Chennai, MHHK, localhost, ref |
 | client | `/profile` | mobile/ta | tap-target<24px | loc-use:89x16 |
 | client | `/settings` | mobile/ta | english-in-tamil | English, Settings- |
 | client | `/settings` | mobile/ta | tap-target<24px | link-privacy:176x16 |
 | client | `/settings` | mobile/ta | tap-target<24px | link-terms:186x16 |
 | client | `/wallet` | mobile/ta | english-in-tamil | credits, local, only, Oct |
+| client | `/history` | mobile/ta | english-in-tamil | Meena, CrawlM, Oct |
 | client | `/location` | mobile/ta | english-in-tamil | Marina, Beach, Triplicane, Chennai |
+| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | mobile/ta | english-in-tamil | Meena, CrawlM |
+| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | mobile/ta | tap-target<24px | report-toggle:116x16 |
 | guest | `/privacy` | mobile/ta | english-in-tamil | draft-, Data, Fiduciary |
 | guest | `/terms` | mobile/ta | english-in-tamil | draft- |
+| worker-approved | `/?tab=worker` | mobile/en | tap-target<24px | view-public-profile:94x16 |
+| worker-approved | `/?tab=worker (dark)` | mobile/en | tap-target<24px | view-public-profile:94x16 |
+| worker-approved | `/settings` | mobile/en | tap-target<24px | link-privacy:100x16 |
+| worker-approved | `/settings` | mobile/en | tap-target<24px | link-terms:97x16 |
+| worker-approved | `/?tab=worker` | mobile/ta | english-in-tamil | Meena, CrawlM |
+| worker-approved | `/?tab=worker` | mobile/ta | tap-target<24px | view-public-profile:139x16 |
+| worker-approved | `/settings` | mobile/ta | english-in-tamil | English, Settings- |
+| worker-approved | `/settings` | mobile/ta | tap-target<24px | link-privacy:176x16 |
+| worker-approved | `/settings` | mobile/ta | tap-target<24px | link-terms:186x16 |
+| worker-approved | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | mobile/ta | english-in-tamil | Meena, CrawlM, Tamil, Nadu, Medical, Council |
 | worker-pending | `/?tab=worker` | mobile/ta | english-in-tamil | Meena, CrawlM |
 | worker-pending | `/worker/register` | mobile/ta | english-in-tamil | Meena, CrawlM |
 | admin | `/admin#queue` | tablet/en | tap-target<24px | A:92x17 |
