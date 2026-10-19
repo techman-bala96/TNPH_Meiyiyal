@@ -57,6 +57,12 @@ async function run(page: Page, rec: Recorder, routes: { path: string; open?: () 
 }
 
 let workerName = ""; let workerEmail = ""; let workerId = "";
+/** Module state is lost when Playwright restarts its worker after a failed test; pick the crawl worker up from the DB again. */
+function recoverWorker() {
+  if (workerEmail && workerId) return;
+  const [e, id, n] = sql(`SELECT u.email, w.id, w.display_name FROM public.workers w JOIN auth.users u ON u.id = w.user_id WHERE u.email LIKE 'crawl${TAG()}-worker%' ORDER BY w.submitted_at DESC NULLS LAST LIMIT 1`).split("|");
+  workerEmail ||= e; workerId ||= id; workerName ||= n;
+}
 
 test("crawl: guest (signed out)", async ({ browser }) => {
   const page = await ctx(browser); const rec = new Recorder("guest");
@@ -88,6 +94,7 @@ test("crawl: admin console (every tab)", async ({ browser }) => {
   const page = await ctx(browser); const rec = new Recorder("admin");
   const email = await signInAt(page, page.request, `crawl${TAG()}-admin`);
   grantAdmin(email); await page.reload();
+  recoverWorker();
   await adminApprove(page, [workerName]);
   workerId = sql(`SELECT w.id FROM public.workers w JOIN auth.users u ON u.id = w.user_id WHERE u.email = '${workerEmail}'`);
   // the crawl really clicks switches in Settings (each saves at once); put every setting back afterwards
@@ -102,6 +109,7 @@ test("crawl: admin console (every tab)", async ({ browser }) => {
 });
 
 test("crawl: worker approved", async ({ browser }) => {
+  recoverWorker(); expect(workerEmail, "crawl worker from the pending crawl").toBeTruthy();
   const page = await ctx(browser); const rec = new Recorder("worker-approved");
   // same person signs in again on a new device (magic link)
   const { loginNewEmail } = await import("./mocks");
@@ -113,6 +121,7 @@ test("crawl: worker approved", async ({ browser }) => {
 });
 
 test("crawl: client", async ({ browser }) => {
+  recoverWorker(); expect(workerEmail, "crawl worker from the pending crawl").toBeTruthy();
   const page = await ctx(browser); const rec = new Recorder("client");
   const clientEmail = await signInAt(page, page.request, `crawl${TAG()}-client`);
   await setProfile(page, "Karthik Crawl", IMG("user"));
