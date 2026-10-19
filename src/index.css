@@ -74,6 +74,14 @@
 @layer components {
   html.has-session-pill body { padding-top: calc(3.25rem + env(safe-area-inset-top)); }
   html.has-session-pill .sticky.top-0 { top: calc(3.25rem + env(safe-area-inset-top)); }
+  /* VITE_TEST_MODE: the slim test bar (TestModeBanner) is 1.5rem + the notch; push the page below it */
+  html.test-mode { --tm-h: calc(1.5rem + env(safe-area-inset-top)); }
+  html.test-mode body { padding-top: var(--tm-h); }
+  html.test-mode .sticky.top-0 { top: var(--tm-h); }
+  html.test-mode .h-dvh { height: calc(100dvh - var(--tm-h)); }
+  html.test-mode .min-h-dvh { min-height: calc(100dvh - var(--tm-h)); }
+  html.test-mode.has-session-pill body { padding-top: calc(4.75rem + env(safe-area-inset-top)); }
+  html.test-mode.has-session-pill .sticky.top-0 { top: calc(4.75rem + env(safe-area-inset-top)); }
   .tap { @apply min-h-11 active:scale-[0.98] transition-transform; }
   .card-soft { @apply rounded-2xl bg-card shadow-[0_1px_2px_rgba(0,0,0,.04),0_4px_16px_rgba(16,80,70,.06)] dark:shadow-none dark:ring-1 dark:ring-border; }
   /* dark map tiles */
