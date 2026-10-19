@@ -1181,6 +1181,8 @@
     "home": "Go to home"
   },
   "errors": {
+    "regNoUsed": "This registration number is already used by an approved professional. Check it before approving.",
+    "noteRequired": "Please write a short note first.",
     "thisPerson": "This professional",
     "busy": "{{name}} is with someone else right now. Try again soon or pick another professional.",
     "offline": "{{name}} just went offline.",

@@ -26,6 +26,8 @@ const TABLE: [RegExp, string][] = [
   [/message too long/i, "msgTooLong"],
   [/not taking messages from you/i, "msgBlocked"],
   [/insufficient credits|not enough credits/i, "lowCredits"],
+  [/registration number already used/i, "regNoUsed"],
+  [/note required|reason required/i, "noteRequired"],
   [/invalid IFSC/i, "ifsc"],
   [/invalid UPI id/i, "upi"],
   [/invalid account number/i, "account"],

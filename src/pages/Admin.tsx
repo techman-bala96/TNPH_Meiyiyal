@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { friendlyError } from "@/lib/friendlyError";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { BadgeCheck, ExternalLink, Loader2, ShieldX } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -121,7 +122,7 @@ function AdminCard({ r, onDone }: { r: Row; onDone: () => void }) {
   async function decide(d: string) {
     setBusy(d); setErr(null);
     const { error } = await supabase.rpc("admin_decide_worker", { _worker: r.id, _decision: d, _note: note || undefined });
-    setBusy(null); if (error) setErr(error.message); else onDone();
+    setBusy(null); if (error) setErr(friendlyError(t, error.message)); else onDone();
   }
   return (
     <li data-testid="admin-card" data-name={r.display_name} className="card-soft space-y-3 p-4">
