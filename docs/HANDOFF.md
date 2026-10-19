@@ -384,29 +384,45 @@ Notes: `test:db` turns admin MFA off for the run and restores it; Playwright's g
 | 11 | Wallet money left at account deletion is forfeited | user loss if they forget | dialog warns; decide whether to auto-refund instead |
 
 ## 27. What Bala must provide
-**Accounts & keys** (put values only in `supabase secrets` / the VM env / `.env.production.local`, never in git or chat):
-- [ ] **Supabase** Pro org + new project in **Mumbai (ap-south-1)**; project ref, DB password, anon key, JWT secret (for the agent).
-- [ ] **Hostinger**: meiyiyal.com DNS access + hosting for `public_html` (and the `admin` subdomain).
-- [ ] **Small Linux VM** in Mumbai (2 vCPU / 4 GB) for agent, verify and coturn; its public IP for DNS.
-- [ ] **Razorpay**: live `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, webhook secret (KYC of the business done).
-- [ ] **RazorpayX**: `RAZORPAYX_KEY_ID`, `RAZORPAYX_KEY_SECRET`, current-account number, webhook secret.
-- [ ] **MSG91**: auth key, DLT entity + sender ID (6 letters), two DLT-approved templates (sign-in OTP, step-up code).
-- [ ] **Surepass** (or another Aadhaar e-KYC vendor) token; DPA signed.
-- [ ] **Google Cloud**: OAuth client (web) for sign-in; optional Maps browser key (referrer-restricted) + server key.
-- [ ] **SMTP sender** for sign-in emails (Resend / SES / Zoho) + SPF/DKIM records.
-- [ ] **Cloudflare Turnstile** site key + secret (free).
-- [ ] **VAPID** key pair (run `node scripts/gen-vapid-keys.mjs` yourself) and the contact e-mail for `VAPID_SUBJECT`.
-- [ ] Optional: 100ms keys; Google STT key or an OpenAI-compatible STT/LLM endpoint + key.
+**Status (19 Oct 2026): every key-dependent feature is ON HOLD until you send the keys.** Each one runs on its mock
+adapter today and is covered by mock tests only; nothing calls a paid API until its secret exists. When a key arrives:
+put it where the table says → test with your own account → flip the setting (GO-LIVE §5).
 
-**Decisions & reviews**
-- [ ] Lawyer review of `/privacy`, `/terms` (en/ta) and advocate listings; then remove the DRAFT banner.
-- [ ] **Grievance Officer**: name, email, phone, address (`VITE_GRIEVANCE_*`).
-- [ ] CA review: GST on packs, TDS on payouts (`tds_enabled`), wallet terms.
-- [ ] Which professions may ever auto-approve (stays off at launch).
-- [ ] Referral reward rules (rewards stay disabled until then).
-- [ ] Wallet balance at account deletion: forfeit (current) or auto-refund?
-- [ ] The 5 Tamil area names in §23.
-- [ ] Rotate / pause the old Lovable Supabase project if not done already.
+Where values go: **Edge secrets** = `supabase secrets set NAME=value` on the Mumbai project · **Web build** =
+`.env.production.local` before `npm run build` (public values only) · **VM env** = the agent / verify env files on the VM (names in `.env.example`, GO-LIVE §4) · **Setting** = Admin → Settings (or `deploy/production/settings.sql`) · **Dashboard** = Supabase dashboard page named.
+Never put real values in git or chat.
+
+| # | What (on hold → mock today) | Goes into (exact names) | Where to get it |
+| --- | --- | --- | --- |
+| 1 | **Hosted Supabase, Mumbai** (local Supabase today) | Web build `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`; VM env `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (verify), `SUPABASE_JWT_SECRET` (agent); DB password for `supabase link` / `db push` | supabase.com → new org (Pro) → New project, region **Mumbai (ap-south-1)** → Project Settings → API / Database |
+| 2 | **Hostinger DNS + hosting** (none today) | DNS records in GO-LIVE §3 (`@`/`www` → hosting, `admin`, `agent`/`verify`/`turn` → VM IP, SPF/DKIM TXT); `dist/` → `public_html` | hPanel → Domains → meiyiyal.com → DNS Zone; Hosting → File Manager |
+| 3 | **Razorpay** payments (mock gateway, `payments_mock=true`) | Edge secrets `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `RAZORPAY_WEBHOOK_SECRET`; webhook URL `https://<ref>.supabase.co/functions/v1/payments-webhook`; then setting `payments_mock=false` | dashboard.razorpay.com → Account & Settings → API Keys (Live) and → Webhooks (events `payment.captured`, `payment.failed`, `order.paid`, `refund.processed`) |
+| 4 | **RazorpayX** payouts (mock, `payouts_mock=true`) | Edge secrets `RAZORPAYX_KEY_ID`, `RAZORPAYX_KEY_SECRET`, `RAZORPAYX_ACCOUNT_NUMBER`, `RAZORPAYX_WEBHOOK_SECRET`; webhook `…/functions/v1/payout-webhook`; settings `payouts_mock=false`, later `payouts_auto=true` | x.razorpay.com → Settings → Developer Controls (API keys, webhooks); current-account number on the RazorpayX home |
+| 5 | **MSG91 + DLT** SMS (mock → `sms_outbox`, test OTPs in `config.toml`) | Edge secrets `SMS_PROVIDER=msg91`, `MSG91_AUTH_KEY`, `MSG91_SENDER_ID`, `MSG91_TEMPLATE_LOGIN_OTP`, `MSG91_TEMPLATE_STEPUP`, `SEND_SMS_HOOK_SECRET`; Dashboard → Auth → Hooks → Send SMS → `…/functions/v1/sms-hook` | msg91.com → API → Auth key; DLT entity + 6-letter sender ID + 2 templates on a DLT portal (Jio/Vodafone/Airtel), then map them in MSG91 → Templates |
+| 6 | **Aadhaar e-KYC provider**, e.g. Surepass (stub, fixed OTP) | Edge secrets `KYC_PROVIDER=surepass`, `SUREPASS_TOKEN` (`SUREPASS_BASE_URL` only if they give a different host); setting `kyc_provider="edge"` | surepass.io → sign up as a business → dashboard → API token (sign their DPA) |
+| 7 | **Council lookups** (fixture register in tests; live adapters unconfirmed) | No key for the public TNMC / NMC / RCI / CoA / Bar Council TN&P / CMDA search pages. Confirm each request in a browser's network tab, then setting `verify_registry_adapters` (`confirmed: true` per adapter) and `verify_registry_live=true`. If a council gives you API credentials, send them and they go into VM env for verify | Each council's website / office; CoA has a captcha → stays manual review |
+| 8 | **TURN relay** (STUN only today) | VM: `deploy/coturn/turnserver.conf` `static-auth-secret`; Edge secrets `ICE_PROVIDER=coturn`, `TURN_URLS` (e.g. `turn:turn.meiyiyal.com:3478,turns:turn.meiyiyal.com:5349`), `TURN_SECRET` (same value), optional `TURN_TTL` | You generate the secret (`openssl rand -hex 32`); coturn on the Mumbai VM + certbot for `turn.meiyiyal.com` |
+| 9 | Optional **100ms** calls (built-in WebRTC today) | Edge secrets `HMS_ACCESS_KEY`, `HMS_APP_SECRET`, `HMS_TEMPLATE_ROLE` (optional `HMS_ROOM_ID`); Web build `VITE_CALL_PROVIDER=hms` | dashboard.100ms.live → Developer → Access key / App secret; Templates → role name |
+| 10 | Optional **Google Maps** (OSM + Nominatim today) | Web build `VITE_MAPS_PROVIDER=google`, `VITE_GOOGLE_MAPS_BROWSER_KEY` (HTTP-referrer restricted to meiyiyal.com); Edge secret `GOOGLE_MAPS_SERVER_KEY` (Geocoding + Places only) | console.cloud.google.com → APIs & Services → Credentials; enable Maps JavaScript, Geocoding, Places |
+| 11 | **Captcha** (provider `none` today) | Web build `VITE_CAPTCHA_PROVIDER=turnstile`, `VITE_CAPTCHA_SITE_KEY`; Dashboard → Auth → Bot and Abuse Protection → Turnstile + **secret**; setting `captcha_provider="turnstile"` | dash.cloudflare.com → Turnstile → Add site (meiyiyal.com, admin.meiyiyal.com) — free |
+| 12 | **Voice search STT / LLM** (browser speech + mock LLM today) | VM env (agent) `AGENT_STT_PROVIDER` (`google` / `openai`), `AGENT_STT_KEY` (+ `AGENT_STT_URL`, `AGENT_STT_MODEL` for an OpenAI-compatible endpoint); `AGENT_LLM_PROVIDER` (`openai`-compatible), `AGENT_LLM_KEY`, `AGENT_LLM_URL`, `AGENT_LLM_MODEL`; Web build `VITE_AGENT_URL=https://agent.meiyiyal.com`, `VITE_STT=auto` | Google Cloud Speech-to-Text key (ta-IN) or any OpenAI-compatible provider's API page |
+| 13 | **Production VAPID** push (`push_mock=true`, local dev keys) | Edge secrets `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY_JWK`, `VAPID_SUBJECT=mailto:you@meiyiyal.com`; Web build `VITE_VAPID_PUBLIC_KEY` (same public key); setting `push_mock=false` | Run `node scripts/gen-vapid-keys.mjs` yourself (keep the private key off git) |
+| 14 | **SMTP sender** for sign-in e-mails (Mailpit locally) | Dashboard → Auth → SMTP Settings (host, port, user, password, from `no-reply@meiyiyal.com`); SPF/DKIM TXT in Hostinger DNS | Resend / Amazon SES / Zoho Mail → SMTP credentials + DNS records they show |
+| 15 | **Google sign-in** (works locally without it) | Dashboard → Auth → Providers → Google (client ID + secret); redirect `https://<ref>.supabase.co/auth/v1/callback` | console.cloud.google.com → Credentials → OAuth client (Web) |
+| 16 | **Small Linux VM** for agent, verify, coturn | Public IP → DNS (`agent`, `verify`, `turn`); setting `verify_service_url=https://verify.meiyiyal.com`; VM env `VERIFY_SERVICE_KEY` = setting `verify_service_key`, `VERIFY_HMAC_PEPPER` | Any Mumbai VM (2 vCPU / 4 GB), e.g. Hostinger VPS / AWS Lightsail |
+
+**Reviews & decisions (not keys)**
+| # | What | Where it lands | Who |
+| --- | --- | --- | --- |
+| 17 | **Lawyer review** of `/privacy`, `/terms` (en + ta) and advocate listings (BCI rules) | `src/features/legal/content.ts` (shown by `src/pages/Legal.tsx`); then remove the DRAFT banner | Your lawyer |
+| 18 | **Grievance Officer** name, e-mail, phone, address | Web build `VITE_GRIEVANCE_NAME`, `VITE_GRIEVANCE_EMAIL`, `VITE_GRIEVANCE_PHONE`, `VITE_GRIEVANCE_ADDRESS` | You |
+| 19 | **CA review**: GST on packs, **TDS on payouts**, wallet terms | settings `tds_enabled`, pack prices (Admin → Packs) | Your CA |
+| 20 | **Real-phone test** (list in `docs/TEST-SCENARIOS.md` → "Real-phone and production-only checks": install, push, ring sound/vibration, mic/camera, calls over 4G + TURN, SMS OTP, payments) | Tick each row there | You, on Android + iPhone, after keys 3–13 |
+| 21 | **5 Tamil area names** left empty on purpose: Denkanikottai (Krishnagiri), Madurai City (Madurai), Kumarapalayam (Namakkal), Sholingur (Ranipet), Trichy City (Tiruchirappalli) | `public.tn_areas.name_ta` (one UPDATE each, or tell me and I add a migration) | You |
+| 22 | Which professions may ever auto-approve (all **off** at launch) | Admin → Settings → Auto-approve per profession | You |
+| 23 | Referral reward rules (rewards disabled until then) | §19 | You |
+| 24 | Wallet balance at account deletion: forfeit (current) or auto-refund | §21 | You |
+| 25 | Rotate / pause the old Lovable Supabase project | Supabase dashboard | You |
 
 **At launch (you, in the app)**
 - [ ] Make yourself admin (SQL in README), open `/admin`, enrol an authenticator; add a second admin for recovery.
