@@ -363,7 +363,7 @@ Secrets in `app_settings` (`aadhaar_pepper`, `payout_account_pepper`, `verify_hm
 | --- | --- | --- |
 | typecheck | `npm run typecheck` | OK |
 | lint | `npm run lint` | 0 errors, 14 warnings |
-| unit | `npm test` | 55 / 55 pass |
+| unit | `npm run test:unit` | 55 / 55 pass |
 | db | `npm run test:db` | 216 PASS (rc 0) |
 | agent | `npm run test:agent` | 130 pass |
 | verify | `npm run test:verify` | 124 pass |
