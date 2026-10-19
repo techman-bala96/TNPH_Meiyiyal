@@ -52,6 +52,9 @@ test("[G02] admin refunds a paid order with a reason → credits taken back, cli
   const u = await client(browser, "02", `Refund Client ${tag()}`);
   await u.page.goto("/wallet");
   await u.page.locator('[data-testid="pack"][data-id="starter"]').click();
+  await expect(u.page.getByTestId("mock-checkout")).toBeVisible();
+  await expect(u.page.getByTestId("mock-amount")).toBeVisible();
+  await u.page.waitForTimeout(500); // the sheet slides up
   await u.page.getByTestId("mock-pay").click();
   await expect(u.page.getByTestId("pay-result")).toHaveAttribute("data-status", "paid");
   const bal = Number(await u.page.getByTestId("wallet-balance").first().innerText()); expect(bal).toBeGreaterThan(0);
