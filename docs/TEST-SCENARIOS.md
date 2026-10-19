@@ -10,7 +10,7 @@ Links: [HANDOFF](HANDOFF.md) · [Live readiness](#live-readiness) · [Real-phone
 
 ## 1. Coverage matrix (feature inventory from the code)
 
-**352 / 371 items covered (94.9%)**: UI 307 · server 44 · GAP 9 · key-only 1 · FAIL 10
+**354 / 371 items covered (95.4%)**: UI 310 · server 43 · GAP 9 · key-only 1 · FAIL 8
 
 Status: **UI** = exercised through the app's UI in a passing scenario · **server** = runs server-side inside a UI journey or by a DB test (no screen of its own) · **key-only** = needs a production key/account, mock adapter tested instead · **GAP** = not covered.
 
@@ -62,7 +62,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `admin_decide_appeal` | UI | called by the app during the UI run |
 | RPC | `admin_decide_worker` | UI | called by the app during the UI run |
 | RPC | `admin_delete_rate` | UI | called by the app during the UI run |
-| RPC | `admin_guard` | server | 2306 calls in run |
+| RPC | `admin_guard` | server | 2309 calls in run |
 | RPC | `admin_list_admins` | UI | called by the app during the UI run |
 | RPC | `admin_mfa_ok` | server | SQL helper: inside has_role() so admin rights need MFA (aal2); driven by the mfa-* projects |
 | RPC | `admin_milestones` | UI | called by the app during the UI run |
@@ -83,7 +83,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `admin_referrals` | UI | called by the app during the UI run |
 | RPC | `admin_refund` | server | supabase/tests |
 | RPC | `admin_reset_mfa` | server | supabase/tests |
-| RPC | `admin_security_event` | server | supabase/tests |
+| RPC | `admin_security_event` | UI | called by the app during the UI run |
 | RPC | `admin_set_commission` | UI | called by the app during the UI run |
 | RPC | `admin_set_rate` | UI | called by the app during the UI run |
 | RPC | `admin_set_referral_code_active` | UI | called by the app during the UI run |
@@ -173,7 +173,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `verification_appeal` | UI | called by the app during the UI run |
 | RPC | `verification_liveness_challenge` | server | legacy RPC (M7), replaced by the M11 liveness flow in the verify service; safe to drop |
 | RPC | `verification_liveness_start` | UI | called by the app during the UI run |
-| RPC | `verification_rules_for` | server | 7263 calls in run |
+| RPC | `verification_rules_for` | server | 7272 calls in run |
 | RPC | `verification_stage_liveness` | UI | called by the app during the UI run |
 | RPC | `verification_stage_qr` | UI | called by the app during the UI run |
 | RPC | `verification_stage_selfie` | UI | called by the app during the UI run |
@@ -329,8 +329,8 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | Auth | `Google OAuth redirect` | UI | L-4 · real Google consent screen is production-only |
 | Auth | `session expiry → sign in again` | UI | LR02 |
 | Auth | `sign-out across tabs` | UI | LR03 |
-| Auth | `captcha adapter (mock)` | FAIL | MFA-2 · Turnstile/hCaptcha need a site key |
-| Admin | `admin TOTP MFA + no-MFA admin blocked` | FAIL | MFA-1 |
+| Auth | `captcha adapter (mock)` | UI | MFA-2 · Turnstile/hCaptcha need a site key |
+| Admin | `admin TOTP MFA + no-MFA admin blocked` | UI | MFA-1 |
 | Admin | `idle sign-out` | server | AD-2 · timer covered by unit test tests/unit; UI shown in settings editor |
 | Admin | `every editor (settings validated + audited, auto-approve per category, commission, milestones, professions)` | UI | AD-2, AD-3 |
 | Referrals | `personal invite link, claimed once, campaign codes, admin view` | UI | AD-1 |
@@ -390,7 +390,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 
 ## 2. Scenarios
 
-101 scenarios · 86 pass · 13 fail · 2 not run yet · runs: 199 pass / 22 fail / 4 pending (per project).
+101 scenarios · 88 pass · 13 fail · 0 not run yet · runs: 203 pass / 22 fail / 0 pending (per project).
 
 | ID | Scenario (steps) | Expected | Actual | Spec | Device | Lang | Date (IST) | Mode | Shots |
 |---|---|---|---|---|---|---|---|---|---|
@@ -442,8 +442,8 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | LR11 | deleted account: after the 7-day wait the account is erased, the old device is signed out, and the same email starts fresh | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `live.spec.ts:257` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:33 am IST | UI | 6 ([first](/workspace/scenario-shots/LR11-desktop-fresh-account.png)) |
 | LR12 | invalid inputs: empty / very long name, bad email, bad phone, 5000-character chat message | clear messages, nothing breaks | desktop: **pass**<br>mobile: **pass** | `live.spec.ts:286` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:33 am IST | UI | 8 ([first](/workspace/scenario-shots/LR12-desktop-bad-email.png)) |
 | M-1 | 3 workers register via real flow, admin approves, go online; user in Kanniyakumari & Chennai finds them (online first, km, show all by district) | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **FAIL** (Error: Timed out 5000ms waiting for expect(locator).toHaveCount(expected)) | `marketplace.spec.ts:19` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:34 am IST | UI |  |
-| MFA-1 | admin needs an authenticator: enrol with QR/secret, wrong code refused, then the console opens | as described; every assertion in the test holds | mfa-mobile: **not run yet**<br>mfa-desktop: **not run yet** | `admin-mfa.spec.ts:18` | phone (Pixel 7), desktop 1366×820 | en |  | UI |  |
-| MFA-2 | sign-in captcha adapter: mock widget must be ticked before a link is sent | as described; every assertion in the test holds | mfa-mobile: **not run yet**<br>mfa-desktop: **not run yet** | `admin-mfa.spec.ts:51` | phone (Pixel 7), desktop 1366×820 | en |  | UI |  |
+| MFA-1 | admin needs an authenticator: enrol with QR/secret, wrong code refused, then the console opens | as described; every assertion in the test holds | mfa-mobile: **pass**<br>mfa-desktop: **pass** | `admin-mfa.spec.ts:18` | phone (Pixel 7), desktop 1366×820 | en | 19 Oct 2026, 8:51 am IST | UI |  |
+| MFA-2 | sign-in captcha adapter: mock widget must be ticked before a link is sent | as described; every assertion in the test holds | mfa-mobile: **pass**<br>mfa-desktop: **pass** | `admin-mfa.spec.ts:51` | phone (Pixel 7), desktop 1366×820 | en | 19 Oct 2026, 8:51 am IST | UI |  |
 | N-1 | search bar: typed + Tamil suggestions | nearest-first list, grouped by availability, rounded km | desktop: **pass**<br>mobile: **pass** | `nearby.spec.ts:28` | desktop 1366×820, phone (Pixel 7) | en + ta | 19 Oct 2026, 4:35 am IST | UI |  |
 | N-2 | no answer | ask-again wait + suggestions; auto request cascades to the next nearest; paid message → worker 'available now' → connect | desktop: **pass**<br>mobile: **pass** | `nearby.spec.ts:96` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:35 am IST | UI |  |
 | N-3 | network drop pauses billing, both say continue | resumes; long drop ends with reconnect + find someone else | desktop: **pass**<br>mobile: **pass** | `nearby.spec.ts:170` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:36 am IST | UI |  |
@@ -517,7 +517,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | 15 | Phone, tablet, desktop sizes | A11Y-1, VIS-1 | PASS · every scenario runs on phone + desktop projects; crawl adds tablet portrait/landscape |
 | 16 | iPhone Safari limits (push needs Home Screen install) | PU-3 | real phone (see below) |
 | 17 | Session expiry and re-login | LR02 | PASS |
-| 18 | Admin without MFA | MFA-1 | not run |
+| 18 | Admin without MFA | MFA-1 | PASS |
 | 19 | Deleted account | LR11 | PASS |
 | 20 | Invalid inputs | LR12, L-2, PO-1 | FAIL |
 
