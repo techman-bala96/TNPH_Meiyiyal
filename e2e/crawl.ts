@@ -145,7 +145,18 @@ export async function crawl(page: Page, rec: Recorder, route: string, lang: stri
       const events: string[] = [];
       const onDl = () => events.push("download"), onFc = () => events.push("filechooser"), onPop = () => events.push("popup"), onDlg = (d: import("@playwright/test").Dialog) => { events.push("dialog"); void d.dismiss(); };
       page.on("download", onDl); page.on("filechooser", onFc); page.on("popup", onPop); page.on("dialog", onDlg);
-      await el.click({ timeout: 4000, noWaitAfter: true });
+      try { await el.click({ timeout: 4000, noWaitAfter: true }); }
+      catch (e1) {
+        // say why (what covered it / not stable), then try once more on a freshly opened screen
+        const why = (e1 as Error).message.split("\n").find((l) => /intercepts pointer events|not stable|not visible|not enabled|detached/.test(l))?.trim().slice(0, 140) ?? "timeout";
+        await page.keyboard.press("Escape").catch(() => undefined); await open();
+        const again = await stamp(page).then((l) => l.find((x) => x.key === it.key));
+        if (!again) throw new Error(`gone after reopening (${why})`);
+        before.sig = await page.evaluate(() => document.body.innerHTML.length + "|" + document.activeElement?.outerHTML.slice(0, 80));
+        await page.evaluate(() => { (window as unknown as { __mut: number }).__mut = 0; new MutationObserver((l) => { (window as unknown as { __mut: number }).__mut += l.length; }).observe(document.body, { subtree: true, childList: true, attributes: true, characterData: true }); });
+        await page.locator(`[data-crawl="${again.id}"]`).click({ timeout: 4000, noWaitAfter: true }).catch((e2) => { throw new Error(`${why}; retry: ${(e2 as Error).message.split("\n")[0]}`); });
+        row.detail = `retried once (first try: ${why})`;
+      }
       await page.waitForTimeout(700);
       await page.waitForLoadState("domcontentloaded", { timeout: 8000 }).catch(() => undefined);
       page.off("download", onDl); page.off("filechooser", onFc); page.off("popup", onPop); page.off("dialog", onDlg);
@@ -159,12 +170,12 @@ export async function crawl(page: Page, rec: Recorder, route: string, lang: stri
       const errs = errors.filter((e) => !/Failed to load resource: the server responded with a status of 4\d\d|favicon|ResizeObserver|Download the React DevTools/.test(e));
       if (after.text < 3) { row.result = "FAIL"; row.detail = "blank screen"; }
       else if (errs.length) { row.result = "FAIL"; row.detail = "console: " + errs.join(" | "); }
-      else if (after.url !== before.url) { row.result = "ok"; row.detail = "→ " + new URL(after.url).pathname + new URL(after.url).search; }
+      else if (after.url !== before.url) { row.result = "ok"; row.detail = (row.detail ? row.detail + " " : "") + "→ " + new URL(after.url).pathname + new URL(after.url).search; }
       else if (events.length) { row.result = "ok"; row.detail = events.join(","); }
       else if (after.mut > 0 || after.sig !== before.sig) row.result = "ok";
       else { row.result = "FAIL"; row.detail = "dead click (nothing changed)"; }
     } catch (e) {
-      row.result = "FAIL"; row.detail = "click failed: " + (e as Error).message.split("\n")[0].slice(0, 160);
+      row.result = "FAIL"; row.detail = "click failed: " + (e as Error).message.split("\n")[0].slice(0, 220);
     }
   }
 }
