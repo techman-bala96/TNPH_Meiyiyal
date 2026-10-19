@@ -25,6 +25,18 @@ async function ctx(browser: Browser) {
   await page.addInitScript(() => { if (!localStorage.getItem("i18nextLng")) localStorage.setItem("i18nextLng", "en"); });
   return page;
 }
+/** Under load the dev server sometimes stalls on one request: wait up to 60 s and retry once (also for the first load). */
+async function gotoSlow(page: Page, path: string) {
+  await page.goto(path, { timeout: 60_000 }).catch(() => page.goto(path, { timeout: 60_000 }));
+}
+async function reloadSlow(page: Page) {
+  await page.reload({ timeout: 60_000 }).catch(() => page.reload({ timeout: 60_000 }));
+}
+/** Fresh browser: load the sign-in screen with the slow-server allowance before the shared sign-in helpers use it. */
+async function warmLogin(page: Page) {
+  await gotoSlow(page, "/login");
+  await expect(page.getByTestId("btn-email")).toBeVisible({ timeout: 60_000 });
+}
 async function settle(page: Page) {
   await page.waitForLoadState("networkidle", { timeout: 2500 }).catch(() => undefined);
   await page.waitForTimeout(300);
@@ -35,17 +47,17 @@ async function setLang(page: Page, lang: string) {
   if (cur.startsWith(lang)) return;
   const t = page.getByTestId("lang-toggle").first();
   if (await t.count()) { await t.click(); await page.waitForTimeout(400); }
-  else { await page.evaluate((l) => localStorage.setItem("i18nextLng", l), lang); await page.reload(); }
+  else { await page.evaluate((l) => localStorage.setItem("i18nextLng", l), lang); await reloadSlow(page); }
   await expect.poll(() => page.evaluate(() => `${localStorage.getItem("i18nextLng")}|${document.documentElement.lang}`)).toBe(`${lang}|${lang}`);
 }
 
 async function run(page: Page, rec: Recorder, routes: { path: string; open?: () => Promise<void>; dbl?: string[] }[]) {
   for (const lang of ["en", "ta"]) {
-    await page.goto(routes[0].path); await settle(page); await setLang(page, lang);
+    await gotoSlow(page, routes[0].path); await settle(page); await setLang(page, lang);
     const seen = new Set<string>();
     for (const r of routes) {
       // reopening a screen hundreds of times: the dev server sometimes stalls on one request under load; wait longer and retry once
-      const open = r.open ?? (async () => { await page.goto(r.path, { timeout: 60_000 }).catch(() => page.goto(r.path, { timeout: 60_000 })); await settle(page); });
+      const open = r.open ?? (async () => { await gotoSlow(page, r.path); await settle(page); });
       await open();
       await shotScreen(page, rec, r.path, lang);
       await checkScreen(page, rec, r.path, lang);
@@ -75,13 +87,14 @@ test("crawl: guest (signed out)", async ({ browser }) => {
     { path: "/auth/callback#error=access_denied&error_code=otp_expired&error_description=Email+link+is+invalid+or+has+expired" },
   ]);
   // protected screens bounce to /login
-  for (const p of ["/", "/wallet", "/admin", "/settings"]) { await page.goto(p); await expect(page).toHaveURL(/\/login$/); }
+  for (const p of ["/", "/wallet", "/admin", "/settings"]) { await gotoSlow(page, p); await expect(page).toHaveURL(/\/login$/); }
   assertClean(rec);
 });
 
 test("crawl: worker pending (registered through the real wizard)", async ({ browser }) => {
   sql(`DELETE FROM auth.users WHERE email LIKE 'crawl${TAG()}-%@meiyiyal.test';`);
   const page = await ctx(browser); const rec = new Recorder("worker-pending");
+  await warmLogin(page);
   workerEmail = await signInAt(page, page.request, `crawl${TAG()}-worker`);
   // own council number per screen size: the number is unique across approved professionals, and other specs use WORKERS[0]'s
   const w = { ...WORKERS[0], name: `Dr. Meena Crawl${TAG().toUpperCase()}`, at: AT, fields: { ...WORKERS[0].fields, reg_no: `TNMC 9${"mdtlx".indexOf(TAG()) + 1}001` } };
@@ -90,15 +103,16 @@ test("crawl: worker pending (registered through the real wizard)", async ({ brow
   await registerWorker(page, w);
   await run(page, rec, [{ path: "/?tab=worker" }, { path: "/worker/register" }, { path: "/earnings" }, { path: "/messages" }]);
   // pending worker cannot go online or be found
-  await page.goto("/?tab=worker"); await expect(page.getByTestId("worker-status")).toHaveAttribute("data-status", "pending");
+  await gotoSlow(page, "/?tab=worker"); await expect(page.getByTestId("worker-status")).toHaveAttribute("data-status", "pending");
   await expect(page.getByTestId("go-online")).toBeDisabled();
   assertClean(rec);
 });
 
 test("crawl: admin console (every tab)", async ({ browser }) => {
   const page = await ctx(browser); const rec = new Recorder("admin");
+  await warmLogin(page);
   const email = await signInAt(page, page.request, `crawl${TAG()}-admin`);
-  grantAdmin(email); await page.reload();
+  grantAdmin(email); await reloadSlow(page);
   recoverWorker();
   await adminApprove(page, [workerName]);
   workerId = sql(`SELECT w.id FROM public.workers w JOIN auth.users u ON u.id = w.user_id WHERE u.email = '${workerEmail}'`);
@@ -106,7 +120,13 @@ test("crawl: admin console (every tab)", async ({ browser }) => {
   sql(`CREATE SCHEMA IF NOT EXISTS e2e; DROP TABLE IF EXISTS e2e.settings_before_${TAG()}; CREATE TABLE e2e.settings_before_${TAG()} AS SELECT key, value FROM public.app_settings;`);
   const tabs = ["queue", "appeals", "districts", "moderation", "referrals", "payments", "payouts", "packs", "rates", "commission", "settings", "catalog", "milestones", "security", "audit"];
   try {
-    await run(page, rec, tabs.map((t) => ({ path: `/admin#${t}`, open: async () => { await page.goto(`/admin#${t}`); await page.reload(); await settle(page); } })));
+    await run(page, rec, tabs.map((t) => ({ path: `/admin#${t}`, open: async () => {
+      await gotoSlow(page, `/admin#${t}`); await reloadSlow(page);
+      // the console and the chosen tab render after the role / session checks; give them time under load
+      await expect(page.getByTestId("admin-page")).toBeVisible({ timeout: 30_000 });
+      await expect(page.getByTestId(`admin-tab-${t}`)).toHaveAttribute("aria-current", "page", { timeout: 30_000 });
+      await settle(page);
+    } })));
   } finally {
     sql(`UPDATE public.app_settings s SET value = b.value FROM e2e.settings_before_${TAG()} b WHERE b.key = s.key AND s.value IS DISTINCT FROM b.value;`);
   }
@@ -116,6 +136,7 @@ test("crawl: admin console (every tab)", async ({ browser }) => {
 test("crawl: worker approved", async ({ browser }) => {
   recoverWorker(); expect(workerEmail, "crawl worker from the pending crawl").toBeTruthy();
   const page = await ctx(browser); const rec = new Recorder("worker-approved");
+  await warmLogin(page);
   // same person signs in again on a new device (magic link)
   const { loginNewEmail } = await import("./mocks");
   await loginNewEmail(page, page.request, workerEmail.split("@")[0], workerEmail);
@@ -128,6 +149,7 @@ test("crawl: worker approved", async ({ browser }) => {
 test("crawl: client", async ({ browser }) => {
   recoverWorker(); expect(workerEmail, "crawl worker from the pending crawl").toBeTruthy();
   const page = await ctx(browser); const rec = new Recorder("client");
+  await warmLogin(page);
   const clientEmail = await signInAt(page, page.request, `crawl${TAG()}-client`);
   await setProfile(page, "Karthik Crawl", IMG("user"));
   // a finished consultation to open read-only (the live session screen is driven end to end by consult/nearby/consult-live specs)
