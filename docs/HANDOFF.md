@@ -361,7 +361,19 @@ Secrets in `app_settings` (`aadhaar_pepper`, `payout_account_pepper`, `verify_hm
 ## 25. Tests
 | suite | command | result (19 Oct 2026, IST) |
 | --- | --- | --- |
-@@TESTS@@
+| typecheck | `npm run typecheck` | OK |
+| lint | `npm run lint` | 0 errors, 14 warnings |
+| unit | `npm test` | 55 / 55 pass |
+| db | `npm run test:db` | 216 PASS (rc 0) |
+| agent | `npm run test:agent` | 130 pass |
+| verify | `npm run test:verify` | 124 pass |
+| PWA | `npm run test:pwa` | pass |
+| e2e mobile (Pixel 7) | `npx playwright test --project=mobile` | 101 pass, 1 skipped |
+| e2e desktop (1366×820) | `npx playwright test --project=desktop` | 102 pass |
+| e2e tablet (a11y / visual / screens) | `--project=tablet` | 6 pass |
+| click-crawl (mobile, desktop, tablet, tablet-land × 5 roles × en/ta) | `-g "crawl:"` | 20 / 20 pass |
+| MFA | `--project=mfa-mobile --project=mfa-desktop --no-deps` | 4 pass |
+| scenarios | `node scripts/test-scenarios.mjs` | 105 / 105 pass (233 project runs), coverage 371 / 371 |
 
 **Scenario checklist:** every scenario (steps, expected, actual pass/fail per device, language, spec, screenshots), the coverage matrix of every route / RPC / Edge Function / cron job / setting / admin tool / notification, the Button coverage table from the click-crawl, the live-readiness list and the real-phone / production-only checks are in **[TEST-SCENARIOS.md](TEST-SCENARIOS.md)** (regenerate with `node scripts/test-scenarios.mjs` after a full run; see the header there).
 

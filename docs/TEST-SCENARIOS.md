@@ -62,7 +62,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `admin_decide_appeal` | UI | called by the app during the UI run |
 | RPC | `admin_decide_worker` | UI | called by the app during the UI run |
 | RPC | `admin_delete_rate` | UI | called by the app during the UI run |
-| RPC | `admin_guard` | server | 3378 calls in run |
+| RPC | `admin_guard` | server | 5436 calls in run |
 | RPC | `admin_list_admins` | UI | called by the app during the UI run |
 | RPC | `admin_mfa_ok` | server | SQL helper: inside has_role() so admin rights need MFA (aal2); driven by the mfa-* projects |
 | RPC | `admin_milestones` | UI | called by the app during the UI run |
@@ -148,7 +148,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `push_subscribe` | UI | called by the app during the UI run |
 | RPC | `push_test` | UI | called by the app during the UI run |
 | RPC | `push_unsubscribe` | UI | called by the app during the UI run |
-| RPC | `rate_for` | server | 25245 calls in run |
+| RPC | `rate_for` | server | 30159 calls in run |
 | RPC | `rates_for` | UI | called by the app during the UI run |
 | RPC | `referral_check` | server | supabase/tests |
 | RPC | `referral_claim` | UI | called by the app during the UI run |
@@ -173,7 +173,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `verification_appeal` | UI | called by the app during the UI run |
 | RPC | `verification_liveness_challenge` | server | legacy RPC (M7), replaced by the M11 liveness flow in the verify service; safe to drop |
 | RPC | `verification_liveness_start` | UI | called by the app during the UI run |
-| RPC | `verification_rules_for` | server | 9790 calls in run |
+| RPC | `verification_rules_for` | server | 14842 calls in run |
 | RPC | `verification_stage_liveness` | UI | called by the app during the UI run |
 | RPC | `verification_stage_qr` | UI | called by the app during the UI run |
 | RPC | `verification_stage_selfie` | UI | called by the app during the UI run |
@@ -186,7 +186,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `worker_public` | UI | called by the app during the UI run |
 | RPC | `worker_reachable` | server | supabase/tests |
 | RPC | `worker_register` | UI | called by the app during the UI run |
-| RPC | `worker_register_guard` | server | 210 calls in run |
+| RPC | `worker_register_guard` | server | 216 calls in run |
 | RPC | `worker_set_online` | UI | called by the app during the UI run |
 | RPC | `worker_submit` | UI | called by the app during the UI run |
 | Edge function | `account-purge` | server | called by the hourly job via pg_net; driven in LR11 |
@@ -390,13 +390,13 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 
 ## 2. Scenarios
 
-105 scenarios · 105 pass · 0 fail · 0 not run yet · runs: 228 pass / 5 fail / 0 pending (per project).
+105 scenarios · 105 pass · 0 fail · 0 not run yet · runs: 233 pass / 0 fail / 0 pending (per project).
 
 | ID | Scenario (steps) | Expected | Actual | Spec | Device | Lang | Date (IST) | Mode | Shots |
 |---|---|---|---|---|---|---|---|---|---|
-| A11Y-1 | public pages pass axe (en + ta) | as described; every assertion in the test holds | tablet: **pass**<br>desktop: **pass**<br>mobile: **pass** | `a11y.spec.ts:19` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en + ta | 19 Oct 2026, 7:36 am IST | UI |  |
-| A11Y-2 | signed-in user pages pass axe | as described; every assertion in the test holds | tablet: **pass**<br>desktop: **pass**<br>mobile: **pass** | `a11y.spec.ts:28` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 7:36 am IST | UI |  |
-| A11Y-3 | admin console passes axe | as described; every assertion in the test holds | tablet: **pass**<br>desktop: **pass**<br>mobile: **pass** | `a11y.spec.ts:40` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 7:36 am IST | UI |  |
+| A11Y-1 | public pages pass axe (en + ta) | as described; every assertion in the test holds | tablet: **pass**<br>desktop: **pass**<br>mobile: **pass** | `a11y.spec.ts:19` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en + ta | 19 Oct 2026, 1:02 pm IST | UI |  |
+| A11Y-2 | signed-in user pages pass axe | as described; every assertion in the test holds | tablet: **pass**<br>desktop: **pass**<br>mobile: **pass** | `a11y.spec.ts:28` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 1:02 pm IST | UI |  |
+| A11Y-3 | admin console passes axe | as described; every assertion in the test holds | tablet: **pass**<br>desktop: **pass**<br>mobile: **pass** | `a11y.spec.ts:40` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 1:02 pm IST | UI |  |
 | AD-1 | invite codes: personal link captured before login, claimed once, admin sees who referred whom; campaign codes | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `admin-m11.spec.ts:26` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:10 am IST | UI |  |
 | AD-2 | admin editors: settings (validated + audited), per-category auto-approve, commission, milestone, profession; districts view + CSV | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `admin-m11.spec.ts:78` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:10 am IST | UI |  |
 | AD-3 | Tamil admin: districts and settings render in Tamil | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `admin-m11.spec.ts:166` | desktop 1366×820, phone (Pixel 7) | en + ta | 19 Oct 2026, 11:10 am IST | UI |  |
@@ -446,8 +446,8 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | LR11 | deleted account: after the 7-day wait the account is erased, the old device is signed out, and the same email starts fresh | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `live.spec.ts:257` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:13 am IST | UI | 6 ([first](/workspace/scenario-shots/LR11-desktop-fresh-account.png)) |
 | LR12 | invalid inputs: empty / very long name, bad email, bad phone, 5000-character chat message | clear messages, nothing breaks | desktop: **pass**<br>mobile: **pass** | `live.spec.ts:286` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:13 am IST | UI | 8 ([first](/workspace/scenario-shots/LR12-desktop-bad-email.png)) |
 | M-1 | 3 workers register via real flow, admin approves, go online; user in Kanniyakumari & Chennai finds them (online first, km, show all by district) | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `marketplace.spec.ts:19` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:12 am IST | UI |  |
-| MFA-1 | admin needs an authenticator: enrol with QR/secret, wrong code refused, then the console opens | as described; every assertion in the test holds | mfa-mobile: **pass**<br>mfa-desktop: **pass** | `admin-mfa.spec.ts:18` | phone (Pixel 7), desktop 1366×820 | en | 19 Oct 2026, 8:51 am IST | UI |  |
-| MFA-2 | sign-in captcha adapter: mock widget must be ticked before a link is sent | as described; every assertion in the test holds | mfa-mobile: **pass**<br>mfa-desktop: **pass** | `admin-mfa.spec.ts:51` | phone (Pixel 7), desktop 1366×820 | en | 19 Oct 2026, 8:51 am IST | UI |  |
+| MFA-1 | admin needs an authenticator: enrol with QR/secret, wrong code refused, then the console opens | as described; every assertion in the test holds | mfa-mobile: **pass**<br>mfa-desktop: **pass** | `admin-mfa.spec.ts:18` | phone (Pixel 7), desktop 1366×820 | en | 19 Oct 2026, 1:38 pm IST | UI |  |
+| MFA-2 | sign-in captcha adapter: mock widget must be ticked before a link is sent | as described; every assertion in the test holds | mfa-mobile: **pass**<br>mfa-desktop: **pass** | `admin-mfa.spec.ts:51` | phone (Pixel 7), desktop 1366×820 | en | 19 Oct 2026, 1:38 pm IST | UI |  |
 | N-1 | search bar: typed + Tamil suggestions | nearest-first list, grouped by availability, rounded km | desktop: **pass**<br>mobile: **pass** | `nearby.spec.ts:28` | desktop 1366×820, phone (Pixel 7) | en + ta | 19 Oct 2026, 11:13 am IST | UI |  |
 | N-2 | no answer | ask-again wait + suggestions; auto request cascades to the next nearest; paid message → worker 'available now' → connect | desktop: **pass**<br>mobile: **pass** | `nearby.spec.ts:96` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:13 am IST | UI |  |
 | N-3 | network drop pauses billing, both say continue | resumes; long drop ends with reconnect + find someone else | desktop: **pass**<br>mobile: **pass** | `nearby.spec.ts:170` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:14 am IST | UI |  |
@@ -463,7 +463,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | PU-2 | settings: category switches + quiet hours persist, turn off removes the device; Tamil screen | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `push.spec.ts:148` | desktop 1366×820, phone (Pixel 7) | en + ta | 19 Oct 2026, 11:14 am IST | UI |  |
 | PU-3 | iPhone in a Safari tab: shows 'Add to Home Screen' steps instead of a prompt | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `push.spec.ts:194` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:14 am IST | UI |  |
 | PU-4 | service worker shows the phone notification with Accept / Decline, and stays quiet when the app is already open on that screen | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **skipped** | `push.spec.ts:210` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:14 am IST | UI |  |
-| SCR-1 | M11 screens on tablet (en + ta) | as described; every assertion in the test holds | tablet: **pass** | `screens.spec.ts:8` | tablet (iPad Mini) | en + ta | 19 Oct 2026, 8:25 am IST | UI |  |
+| SCR-1 | M11 screens on tablet (en + ta) | as described; every assertion in the test holds | tablet: **pass** | `screens.spec.ts:8` | tablet (iPad Mini) | en + ta | 19 Oct 2026, 1:02 pm IST | UI |  |
 | T-1 | feedback | rewards + certificate; complaint flag auto-clears; 3 complaints → block → admin extend/unblock; admin edits rates; public profile | desktop: **pass**<br>mobile: **pass** | `trust.spec.ts:20` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:14 am IST | UI |  |
 | V01 | doctor, everything genuine, auto-approve ON for doctors | approved automatically → can go online | desktop: **pass**<br>mobile: **pass** | `verification.spec.ts:134` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:14 am IST | UI | 18 ([first](/workspace/scenario-shots/V01-desktop-01-profession.png)) |
 | V02 | doctor genuine, auto-approve OFF (production default) | waits for admin → admin approves → goes online | desktop: **pass**<br>mobile: **pass** | `verification.spec.ts:150` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:38 am IST | UI | 20 ([first](/workspace/scenario-shots/V02-desktop-01-profession.png)) |
@@ -494,8 +494,8 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | V27 | physio: genuine registration | registry review, decision recorded, admin can approve | desktop: **pass**<br>mobile: **pass** | `verification.spec.ts:353` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:37 am IST | UI | 18 ([first](/workspace/scenario-shots/V27-desktop-01-profession.png)) |
 | V28 | approved doctor; 90 days later the council shows suspended | recheck takes them offline with a reason | desktop: **pass**<br>mobile: **pass** | `verification.spec.ts:368` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:37 am IST | UI | 20 ([first](/workspace/scenario-shots/V28-desktop-01-profession.png)) |
 | V29 | 30 days after the decision the raw selfie and liveness frames are deleted; the consented public portrait stays | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `verification.spec.ts:388` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:38 am IST | UI | 20 ([first](/workspace/scenario-shots/V29-desktop-01-profession.png)) |
-| VIS-1 | public screens look the same (en + ta) | as described; every assertion in the test holds | tablet: **pass**<br>desktop: **pass**<br>mobile: **pass** | `visual.spec.ts:15` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en + ta | 19 Oct 2026, 8:25 am IST | UI |  |
-| VIS-2 | settings screen looks the same | as described; every assertion in the test holds | tablet: **pass**<br>desktop: **pass**<br>mobile: **pass** | `visual.spec.ts:30` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 8:25 am IST | UI |  |
+| VIS-1 | public screens look the same (en + ta) | as described; every assertion in the test holds | tablet: **pass**<br>desktop: **pass**<br>mobile: **pass** | `visual.spec.ts:15` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en + ta | 19 Oct 2026, 1:03 pm IST | UI |  |
+| VIS-2 | settings screen looks the same | as described; every assertion in the test holds | tablet: **pass**<br>desktop: **pass**<br>mobile: **pass** | `visual.spec.ts:30` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 1:03 pm IST | UI |  |
 | VM-1 | QR photo is decoded in the browser; no-camera selfie upload; reject | appeal → a different admin overturns (with media audit) | desktop: **pass**<br>mobile: **pass** | `verify-m11.spec.ts:17` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:15 am IST | UI |  |
 | VM-2 | Aadhaar OTP through the kyc-aadhaar Edge Function (mock adapter) when kyc_provider = edge | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `verify-m11.spec.ts:74` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:15 am IST | UI |  |
 | WR-1 | Doctor registers (Aadhaar OTP + docs) -> pending -> admin approves -> Go Online; non-admin blocked from /admin | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `worker-reg.spec.ts:27` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 11:16 am IST | UI |  |
@@ -551,7 +551,7 @@ Cannot be proven in a desktop browser or without production keys. Do these on re
 Every visible clickable on every route, per role, language and screen size, clicked once on a fresh page (plus double taps on primary actions).
 Result: **ok** (landed as expected, no console error / unhandled rejection / blank screen) · **disabled** (correctly disabled for this state) · **covered-by-scenario** (side effect such as sign-out, submit or delete: exercised by a journey instead) · **external-link** · **moved** (navigated on purpose) · **FAIL**.
 
-4357 clicks · 664 distinct controls · 4 failures · screen issues: 237 (tap-target<24px, english-in-tamil).
+4398 clicks · 662 distinct controls · 0 failures · screen issues: 238 (tap-target<24px, english-in-tamil).
 
 | Role | Route | Control | Kind | Result (size/lang) |
 |---|---|---|---|---|
@@ -575,7 +575,7 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | admin | `/admin#appeals` | appeals-filter-open <sub>Open</sub> | button | ok: 6 runs |
 | admin | `/admin#appeals` | appeals-filter-upheld <sub>Upheld</sub> | button | ok: 6 runs |
 | admin | `/admin#appeals` | appeals-filter-overturned <sub>Overturned</sub> | button | ok: 6 runs |
-| admin | `/admin#appeals` | appeals-filter-all <sub>All</sub> | button | ok: 5 runs; FAIL: mobile/ta |
+| admin | `/admin#appeals` | appeals-filter-all <sub>All</sub> | button | ok: 6 runs |
 | admin | `/admin#audit` | page-back <sub>Back</sub> | button | ok: 6 runs |
 | admin | `/admin#audit` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
 | admin | `/admin#audit` | admin-tab-queue <sub>Queue</sub> | button | ok: 6 runs |
@@ -592,7 +592,7 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | admin | `/admin#audit` | admin-tab-catalog <sub>Professions</sub> | button | ok: 6 runs |
 | admin | `/admin#audit` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 6 runs |
 | admin | `/admin#audit` | admin-tab-security <sub>Security</sub> | button | ok: 6 runs |
-| admin | `/admin#audit` | admin-tab-audit <sub>Audit</sub> | button | ok: 5 runs; FAIL: tablet-land/en |
+| admin | `/admin#audit` | admin-tab-audit <sub>Audit</sub> | button | ok: 6 runs |
 | admin | `/admin#catalog` | page-back <sub>Back</sub> | button | ok: 6 runs |
 | admin | `/admin#catalog` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
 | admin | `/admin#catalog` | admin-tab-queue <sub>Queue</sub> | button | ok: 6 runs |
@@ -609,7 +609,7 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | admin | `/admin#catalog` | admin-tab-catalog <sub>Professions</sub> | button | ok: 6 runs |
 | admin | `/admin#catalog` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 6 runs |
 | admin | `/admin#catalog` | admin-tab-security <sub>Security</sub> | button | ok: 6 runs |
-| admin | `/admin#catalog` | admin-tab-audit <sub>Audit</sub> | button | ok: 5 runs; FAIL: tablet-land/en |
+| admin | `/admin#catalog` | admin-tab-audit <sub>Audit</sub> | button | ok: 6 runs |
 | admin | `/admin#catalog` | cat-node-open <sub>DoctorProfession · 0 professionals</sub> | button | ok: 18 runs; sampled: 680 runs |
 | admin | `/admin#catalog` | rule-required <sub>on</sub> | switch | ok: 6 runs |
 | admin | `/admin#commission` | page-back <sub>Back</sub> | button | ok: 6 runs |
@@ -700,7 +700,7 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | admin | `/admin#moderation` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 6 runs |
 | admin | `/admin#moderation` | admin-tab-security <sub>Security</sub> | button | ok: 6 runs |
 | admin | `/admin#moderation` | admin-tab-audit <sub>Audit</sub> | button | ok: 6 runs |
-| admin | `/admin#packs` | page-back <sub>Back</sub> | button | ok: 6 runs |
+| admin | `/admin#packs` | page-back <sub>Back</sub> | button | ok: 5 runs; moved: mobile/ta |
 | admin | `/admin#packs` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
 | admin | `/admin#packs` | admin-tab-queue <sub>Queue</sub> | button | ok: 6 runs |
 | admin | `/admin#packs` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 6 runs |
@@ -756,8 +756,8 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | admin | `/admin#payouts` | admin-tab-audit <sub>Audit</sub> | button | ok: 6 runs |
 | admin | `/admin#payouts` | payout-pause <sub>Resume payouts</sub> | button | covered-by-scenario: 6 runs |
 | admin | `/admin#payouts` | payout-run <sub>Run payout batch</sub> | button | disabled: 6 runs |
-| admin | `/admin#payouts` | payout-hold <sub>Hold worker</sub> | button | ok: 3 runs |
-| admin | `/admin#queue` | page-back <sub>Back</sub> | button | FAIL: desktop/en; ok: 5 runs |
+| admin | `/admin#payouts` | payout-hold <sub>Release hold</sub> | button | ok: 5 runs; moved: 5 runs |
+| admin | `/admin#queue` | page-back <sub>Back</sub> | button | ok: 6 runs |
 | admin | `/admin#queue` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
 | admin | `/admin#queue` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs; moved: 2 runs |
 | admin | `/admin#queue` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 4 runs; moved: 2 runs |
@@ -803,7 +803,7 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | admin | `/admin#rates` | admin-tab-security <sub>Security</sub> | button | ok: 6 runs |
 | admin | `/admin#rates` | admin-tab-audit <sub>Audit</sub> | button | ok: 6 runs |
 | admin | `/admin#rates` | rate-delete <sub>remove</sub> | button | ok: 6 runs |
-| admin | `/admin#rates` | rates-add-node <sub>Add override for… doctor › allopathy › g</sub> | select | moved: 6 runs |
+| admin | `/admin#rates` | rates-add-node <sub>Add override for… doctor › nutrition-die</sub> | select | moved: 6 runs |
 | admin | `/admin#rates` | rates-add | button | disabled: 6 runs |
 | admin | `/admin#referrals` | page-back <sub>Back</sub> | button | ok: 6 runs |
 | admin | `/admin#referrals` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
@@ -845,7 +845,7 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | admin | `/admin#security` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 6 runs |
 | admin | `/admin#security` | admin-tab-security <sub>Security</sub> | button | ok: 6 runs |
 | admin | `/admin#security` | admin-tab-audit <sub>Audit</sub> | button | ok: 6 runs |
-| admin | `/admin#security` | admin-row <sub>Reset</sub> | button | ok: 2 runs |
+| admin | `/admin#security` | admin-row <sub>Reset</sub> | button | ok: 6 runs |
 | admin | `/admin#settings` | page-back <sub>Back</sub> | button | ok: 6 runs |
 | admin | `/admin#settings` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
 | admin | `/admin#settings` | admin-tab-queue <sub>Queue</sub> | button | ok: 6 runs |
@@ -932,7 +932,7 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | list-all <sub>Show all</sub> | button | ok: 6 runs |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | auto-toggle <sub>Auto request</sub> | switch | ok: 6 runs |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | find-now <sub>Find now</sub> | button | disabled: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | worker-card <sub>Dr. Meena CrawlD LICENCE VERIFIED < 1 km</sub> | button | moved: 22 runs; ok: 4 runs; sampled: 13 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | worker-card <sub>Dr. Arun Prakash < 1 km Paediatrics New </sub> | button | moved: 22 runs; sampled: 12 runs; ok: 4 runs |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | nav-home <sub>Home</sub> | a | moved: 6 runs |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | nav-conversations <sub>Conversations</sub> | a | moved: 6 runs |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | nav-profile <sub>Profile</sub> | a | moved: 6 runs |
@@ -980,46 +980,46 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | client | `/profile` | nav-conversations <sub>Conversations</sub> | a | ok: 6 runs |
 | client | `/profile` | nav-profile <sub>Profile</sub> | a | ok: 6 runs |
 | client | `/profile` | loc-use <sub>பயன்படுத்து</sub> | button | ok: 2 runs |
-| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | session-page <sub>பின்செல்</sub> | button | ok: 2 runs |
-| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | star-1 <sub>1</sub> | button | ok: 2 runs |
-| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | star-2 <sub>2</sub> | button | ok: 2 runs |
-| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | star-3 <sub>3</sub> | button | ok: 2 runs |
-| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | star-4 <sub>4</sub> | button | ok: 2 runs |
-| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | star-5 <sub>5</sub> | button | ok: 2 runs |
-| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | report-toggle <sub>புகார் அளிக்க</sub> | button | ok: 2 runs |
-| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | feedback-submit <sub>கருத்தை சமர்ப்பி</sub> | button | disabled: 2 runs |
-| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | go-history <sub>உரையாடல்கள்</sub> | a | ok: 2 runs |
-| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | session-summary <sub>முகப்பு</sub> | a | ok: 2 runs |
-| client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | session-page <sub>பின்செல்</sub> | button | ok: 2 runs |
-| client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | star-1 <sub>1</sub> | button | ok: 2 runs |
-| client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | star-2 <sub>2</sub> | button | ok: 2 runs |
-| client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | star-3 <sub>3</sub> | button | ok: 2 runs |
-| client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | star-4 <sub>4</sub> | button | ok: 2 runs |
-| client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | star-5 <sub>5</sub> | button | ok: 2 runs |
-| client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | report-toggle <sub>புகார் அளிக்க</sub> | button | ok: 2 runs |
-| client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | feedback-submit <sub>கருத்தை சமர்ப்பி</sub> | button | disabled: 2 runs |
-| client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | go-history <sub>உரையாடல்கள்</sub> | a | ok: 2 runs |
-| client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | session-summary <sub>முகப்பு</sub> | a | ok: 2 runs |
-| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | session-page <sub>பின்செல்</sub> | button | ok: tablet/en |
-| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | star-1 <sub>1</sub> | button | ok: tablet/en |
-| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | star-2 <sub>2</sub> | button | ok: tablet/en |
-| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | star-3 <sub>3</sub> | button | ok: tablet/en |
-| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | star-4 <sub>4</sub> | button | ok: tablet/en |
-| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | star-5 <sub>5</sub> | button | ok: tablet/en |
-| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | report-toggle <sub>புகார் அளிக்க</sub> | button | ok: tablet/en |
-| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | feedback-submit <sub>கருத்தை சமர்ப்பி</sub> | button | disabled: tablet/en |
-| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | go-history <sub>உரையாடல்கள்</sub> | a | ok: tablet/en |
-| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | session-summary <sub>முகப்பு</sub> | a | ok: tablet/en |
-| client | `/session/a629fefa-7bff-4708-bd28-7bd67d26aa24` | session-page <sub>பின்செல்</sub> | button | ok: tablet-land/en |
-| client | `/session/a629fefa-7bff-4708-bd28-7bd67d26aa24` | star-1 <sub>1</sub> | button | ok: tablet-land/en |
-| client | `/session/a629fefa-7bff-4708-bd28-7bd67d26aa24` | star-2 <sub>2</sub> | button | ok: tablet-land/en |
-| client | `/session/a629fefa-7bff-4708-bd28-7bd67d26aa24` | star-3 <sub>3</sub> | button | ok: tablet-land/en |
-| client | `/session/a629fefa-7bff-4708-bd28-7bd67d26aa24` | star-4 <sub>4</sub> | button | ok: tablet-land/en |
-| client | `/session/a629fefa-7bff-4708-bd28-7bd67d26aa24` | star-5 <sub>5</sub> | button | ok: tablet-land/en |
-| client | `/session/a629fefa-7bff-4708-bd28-7bd67d26aa24` | report-toggle <sub>புகார் அளிக்க</sub> | button | ok: tablet-land/en |
-| client | `/session/a629fefa-7bff-4708-bd28-7bd67d26aa24` | feedback-submit <sub>கருத்தை சமர்ப்பி</sub> | button | disabled: tablet-land/en |
-| client | `/session/a629fefa-7bff-4708-bd28-7bd67d26aa24` | go-history <sub>உரையாடல்கள்</sub> | a | ok: tablet-land/en |
-| client | `/session/a629fefa-7bff-4708-bd28-7bd67d26aa24` | session-summary <sub>முகப்பு</sub> | a | ok: tablet-land/en |
+| client | `/session/1a86f607-ae9d-48de-9ce8-32a558e735e7` | session-page <sub>பின்செல்</sub> | button | ok: 2 runs |
+| client | `/session/1a86f607-ae9d-48de-9ce8-32a558e735e7` | star-1 <sub>1</sub> | button | ok: 2 runs |
+| client | `/session/1a86f607-ae9d-48de-9ce8-32a558e735e7` | star-2 <sub>2</sub> | button | ok: 2 runs |
+| client | `/session/1a86f607-ae9d-48de-9ce8-32a558e735e7` | star-3 <sub>3</sub> | button | ok: 2 runs |
+| client | `/session/1a86f607-ae9d-48de-9ce8-32a558e735e7` | star-4 <sub>4</sub> | button | ok: 2 runs |
+| client | `/session/1a86f607-ae9d-48de-9ce8-32a558e735e7` | star-5 <sub>5</sub> | button | ok: 2 runs |
+| client | `/session/1a86f607-ae9d-48de-9ce8-32a558e735e7` | report-toggle <sub>புகார் அளிக்க</sub> | button | ok: 2 runs |
+| client | `/session/1a86f607-ae9d-48de-9ce8-32a558e735e7` | feedback-submit <sub>கருத்தை சமர்ப்பி</sub> | button | disabled: 2 runs |
+| client | `/session/1a86f607-ae9d-48de-9ce8-32a558e735e7` | go-history <sub>உரையாடல்கள்</sub> | a | ok: 2 runs |
+| client | `/session/1a86f607-ae9d-48de-9ce8-32a558e735e7` | session-summary <sub>முகப்பு</sub> | a | ok: 2 runs |
+| client | `/session/676209c5-15fd-40c8-8309-4c41771b04b4` | session-page <sub>பின்செல்</sub> | button | ok: tablet-land/en |
+| client | `/session/676209c5-15fd-40c8-8309-4c41771b04b4` | star-1 <sub>1</sub> | button | ok: tablet-land/en |
+| client | `/session/676209c5-15fd-40c8-8309-4c41771b04b4` | star-2 <sub>2</sub> | button | ok: tablet-land/en |
+| client | `/session/676209c5-15fd-40c8-8309-4c41771b04b4` | star-3 <sub>3</sub> | button | ok: tablet-land/en |
+| client | `/session/676209c5-15fd-40c8-8309-4c41771b04b4` | star-4 <sub>4</sub> | button | ok: tablet-land/en |
+| client | `/session/676209c5-15fd-40c8-8309-4c41771b04b4` | star-5 <sub>5</sub> | button | ok: tablet-land/en |
+| client | `/session/676209c5-15fd-40c8-8309-4c41771b04b4` | report-toggle <sub>புகார் அளிக்க</sub> | button | ok: tablet-land/en |
+| client | `/session/676209c5-15fd-40c8-8309-4c41771b04b4` | feedback-submit <sub>கருத்தை சமர்ப்பி</sub> | button | disabled: tablet-land/en |
+| client | `/session/676209c5-15fd-40c8-8309-4c41771b04b4` | go-history <sub>உரையாடல்கள்</sub> | a | ok: tablet-land/en |
+| client | `/session/676209c5-15fd-40c8-8309-4c41771b04b4` | session-summary <sub>முகப்பு</sub> | a | ok: tablet-land/en |
+| client | `/session/dc7e28ca-5c67-4574-91a2-d500d328d327` | session-page <sub>பின்செல்</sub> | button | ok: 2 runs |
+| client | `/session/dc7e28ca-5c67-4574-91a2-d500d328d327` | star-1 <sub>1</sub> | button | ok: 2 runs |
+| client | `/session/dc7e28ca-5c67-4574-91a2-d500d328d327` | star-2 <sub>2</sub> | button | ok: 2 runs |
+| client | `/session/dc7e28ca-5c67-4574-91a2-d500d328d327` | star-3 <sub>3</sub> | button | ok: 2 runs |
+| client | `/session/dc7e28ca-5c67-4574-91a2-d500d328d327` | star-4 <sub>4</sub> | button | ok: 2 runs |
+| client | `/session/dc7e28ca-5c67-4574-91a2-d500d328d327` | star-5 <sub>5</sub> | button | ok: 2 runs |
+| client | `/session/dc7e28ca-5c67-4574-91a2-d500d328d327` | report-toggle <sub>புகார் அளிக்க</sub> | button | ok: 2 runs |
+| client | `/session/dc7e28ca-5c67-4574-91a2-d500d328d327` | feedback-submit <sub>கருத்தை சமர்ப்பி</sub> | button | disabled: 2 runs |
+| client | `/session/dc7e28ca-5c67-4574-91a2-d500d328d327` | go-history <sub>உரையாடல்கள்</sub> | a | ok: 2 runs |
+| client | `/session/dc7e28ca-5c67-4574-91a2-d500d328d327` | session-summary <sub>முகப்பு</sub> | a | ok: 2 runs |
+| client | `/session/f3cad1e2-3a3c-4c4b-bcdf-5bcf21fe8ef5` | session-page <sub>பின்செல்</sub> | button | ok: tablet/en |
+| client | `/session/f3cad1e2-3a3c-4c4b-bcdf-5bcf21fe8ef5` | star-1 <sub>1</sub> | button | ok: tablet/en |
+| client | `/session/f3cad1e2-3a3c-4c4b-bcdf-5bcf21fe8ef5` | star-2 <sub>2</sub> | button | ok: tablet/en |
+| client | `/session/f3cad1e2-3a3c-4c4b-bcdf-5bcf21fe8ef5` | star-3 <sub>3</sub> | button | ok: tablet/en |
+| client | `/session/f3cad1e2-3a3c-4c4b-bcdf-5bcf21fe8ef5` | star-4 <sub>4</sub> | button | ok: tablet/en |
+| client | `/session/f3cad1e2-3a3c-4c4b-bcdf-5bcf21fe8ef5` | star-5 <sub>5</sub> | button | ok: tablet/en |
+| client | `/session/f3cad1e2-3a3c-4c4b-bcdf-5bcf21fe8ef5` | report-toggle <sub>புகார் அளிக்க</sub> | button | ok: tablet/en |
+| client | `/session/f3cad1e2-3a3c-4c4b-bcdf-5bcf21fe8ef5` | feedback-submit <sub>கருத்தை சமர்ப்பி</sub> | button | disabled: tablet/en |
+| client | `/session/f3cad1e2-3a3c-4c4b-bcdf-5bcf21fe8ef5` | go-history <sub>உரையாடல்கள்</sub> | a | ok: tablet/en |
+| client | `/session/f3cad1e2-3a3c-4c4b-bcdf-5bcf21fe8ef5` | session-summary <sub>முகப்பு</sub> | a | ok: tablet/en |
 | client | `/settings` | page-back <sub>Back</sub> | button | ok: 6 runs |
 | client | `/settings` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
 | client | `/settings` | lang-en <sub>English</sub> | button | ok: 6 runs |
@@ -1041,34 +1041,32 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | client | `/settings` | nav-home <sub>Home</sub> | a | moved: 4 runs; ok: 2 runs |
 | client | `/settings` | nav-conversations <sub>Conversations</sub> | a | moved: 4 runs; ok: 2 runs |
 | client | `/settings` | nav-profile <sub>Profile</sub> | a | moved: 4 runs; ok: 2 runs |
-| client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | page-back <sub>Back</sub> | button | ok: tablet/en |
-| client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: tablet/en |
-| client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | wp-consult <sub>View rates</sub> | button | ok: tablet/en |
-| client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | wp-message <sub>Send a message instead</sub> | button | ok: tablet/en |
-| client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | nav-home <sub>Home</sub> | a | ok: tablet/en |
-| client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | nav-conversations <sub>Conversations</sub> | a | ok: tablet/en |
-| client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | nav-profile <sub>Profile</sub> | a | ok: tablet/en |
-| client | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | page-back <sub>Back</sub> | button | ok: 2 runs |
-| client | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 2 runs |
-| client | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | wp-consult <sub>View rates</sub> | button | ok: 2 runs |
-| client | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | wp-message <sub>Send a message instead</sub> | button | ok: 2 runs |
-| client | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | nav-home <sub>Home</sub> | a | ok: 2 runs |
-| client | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | nav-conversations <sub>Conversations</sub> | a | ok: 2 runs |
-| client | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | nav-profile <sub>Profile</sub> | a | ok: 2 runs |
-| client | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | page-back <sub>Back</sub> | button | ok: 2 runs |
-| client | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 2 runs |
-| client | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | wp-consult <sub>View rates</sub> | button | ok: 2 runs |
-| client | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | wp-message <sub>Send a message instead</sub> | button | ok: 2 runs |
-| client | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | nav-home <sub>Home</sub> | a | ok: 2 runs |
-| client | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | nav-conversations <sub>Conversations</sub> | a | ok: 2 runs |
-| client | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | nav-profile <sub>Profile</sub> | a | ok: 2 runs |
-| client | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | page-back <sub>Back</sub> | button | ok: tablet-land/en |
-| client | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: tablet-land/en |
-| client | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | wp-consult <sub>View rates</sub> | button | ok: tablet-land/en |
-| client | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | wp-message <sub>Send a message instead</sub> | button | ok: tablet-land/en |
-| client | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | nav-home <sub>Home</sub> | a | ok: tablet-land/en |
-| client | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | nav-conversations <sub>Conversations</sub> | a | ok: tablet-land/en |
-| client | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | nav-profile <sub>Profile</sub> | a | ok: tablet-land/en |
+| client | `/w/5d41792b-91df-446e-9fbb-0223bd004e16` | page-back <sub>Back</sub> | button | ok: tablet-land/en |
+| client | `/w/5d41792b-91df-446e-9fbb-0223bd004e16` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: tablet-land/en |
+| client | `/w/5d41792b-91df-446e-9fbb-0223bd004e16` | wp-consult <sub>View rates</sub> | button | ok: tablet-land/en |
+| client | `/w/5d41792b-91df-446e-9fbb-0223bd004e16` | wp-message <sub>Send a message instead</sub> | button | ok: tablet-land/en |
+| client | `/w/5d41792b-91df-446e-9fbb-0223bd004e16` | nav-home <sub>Home</sub> | a | ok: tablet-land/en |
+| client | `/w/5d41792b-91df-446e-9fbb-0223bd004e16` | nav-conversations <sub>Conversations</sub> | a | ok: tablet-land/en |
+| client | `/w/5d41792b-91df-446e-9fbb-0223bd004e16` | nav-profile <sub>Profile</sub> | a | ok: tablet-land/en |
+| client | `/w/6a6673ff-11eb-41fa-a130-47b72ac09ea8` | page-back <sub>Back</sub> | button | ok: tablet/en |
+| client | `/w/6a6673ff-11eb-41fa-a130-47b72ac09ea8` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: tablet/en |
+| client | `/w/6a6673ff-11eb-41fa-a130-47b72ac09ea8` | wp-consult <sub>View rates</sub> | button | ok: tablet/en |
+| client | `/w/6a6673ff-11eb-41fa-a130-47b72ac09ea8` | wp-message <sub>Send a message instead</sub> | button | ok: tablet/en |
+| client | `/w/6a6673ff-11eb-41fa-a130-47b72ac09ea8` | nav-home <sub>Home</sub> | a | ok: tablet/en |
+| client | `/w/6a6673ff-11eb-41fa-a130-47b72ac09ea8` | nav-conversations <sub>Conversations</sub> | a | ok: tablet/en |
+| client | `/w/6a6673ff-11eb-41fa-a130-47b72ac09ea8` | nav-profile <sub>Profile</sub> | a | ok: tablet/en |
+| client | `/w/9156b7d1-0f8e-4118-aad5-7086965a7948` | page-back <sub>Back</sub> | button | ok: 2 runs |
+| client | `/w/9156b7d1-0f8e-4118-aad5-7086965a7948` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 2 runs |
+| client | `/w/9156b7d1-0f8e-4118-aad5-7086965a7948` | wp-consult <sub>View rates</sub> | button | ok: 2 runs |
+| client | `/w/9156b7d1-0f8e-4118-aad5-7086965a7948` | wp-message <sub>Send a message instead</sub> | button | ok: 2 runs |
+| client | `/w/9156b7d1-0f8e-4118-aad5-7086965a7948` | nav-home <sub>Home</sub> | a | ok: 2 runs |
+| client | `/w/9156b7d1-0f8e-4118-aad5-7086965a7948` | nav-conversations <sub>Conversations</sub> | a | ok: 2 runs |
+| client | `/w/9156b7d1-0f8e-4118-aad5-7086965a7948` | nav-profile <sub>Profile</sub> | a | ok: 2 runs |
+| client | `/w/ff6278b0-6269-4480-9464-b1d24df0675f` | page-back <sub>Back</sub> | button | ok: 2 runs |
+| client | `/w/ff6278b0-6269-4480-9464-b1d24df0675f` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 2 runs |
+| client | `/w/ff6278b0-6269-4480-9464-b1d24df0675f` | nav-home <sub>Home</sub> | a | ok: 2 runs |
+| client | `/w/ff6278b0-6269-4480-9464-b1d24df0675f` | nav-conversations <sub>Conversations</sub> | a | ok: 2 runs |
+| client | `/w/ff6278b0-6269-4480-9464-b1d24df0675f` | nav-profile <sub>Profile</sub> | a | ok: 2 runs |
 | client | `/wallet` | page-back <sub>பின்செல்</sub> | button | ok: 6 runs |
 | client | `/wallet` | lang-toggle <sub>Switch to English</sub> | button | ok: 6 runs |
 | client | `/wallet` | pack <sub>தொடக்கம் 99 ₹99 ₹15.10 GST உட்பட (18%)</sub> | button | ok: 34 runs |
@@ -1099,7 +1097,7 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | worker-approved | `/?tab=worker` | loc-chip <sub>Your location Mylapore, Chennai · Change</sub> | a | ok: 6 runs |
 | worker-approved | `/?tab=worker` | mic-toggle <sub>Turn on voice assistant</sub> | button | ok: 6 runs |
 | worker-approved | `/?tab=worker` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
-| worker-approved | `/?tab=worker` | bell <sub>Notifications · 2 unread</sub> | a | ok: 6 runs |
+| worker-approved | `/?tab=worker` | bell <sub>Notifications · 1 unread</sub> | a | ok: 6 runs |
 | worker-approved | `/?tab=worker` | avatar-btn <sub>Account</sub> | button | ok: 6 runs |
 | worker-approved | `/?tab=worker` | tab-find <sub>Find Worker</sub> | tab | ok: 6 runs |
 | worker-approved | `/?tab=worker` | tab-worker <sub>Worker</sub> | tab | ok: 6 runs |
@@ -1128,7 +1126,7 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | worker-approved | `/notifications` | page-back <sub>Back</sub> | button | ok: 6 runs |
 | worker-approved | `/notifications` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
 | worker-approved | `/notifications` | inbox-mark-all <sub>Mark all as read</sub> | button | ok: 4 runs |
-| worker-approved | `/notifications` | inbox-item <sub>While you were away You have 1 new updat</sub> | button | moved: 5 runs; ok: 3 runs |
+| worker-approved | `/notifications` | inbox-item <sub>You're verified! Go online to start gett</sub> | button | moved: 4 runs; ok: 2 runs |
 | worker-approved | `/notifications` | nav-home <sub>Home</sub> | a | moved: 4 runs; ok: 2 runs |
 | worker-approved | `/notifications` | nav-conversations <sub>Conversations</sub> | a | moved: 4 runs; ok: 2 runs |
 | worker-approved | `/notifications` | nav-profile <sub>Profile</sub> | a | moved: 4 runs; ok: 2 runs |
@@ -1154,71 +1152,71 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | worker-approved | `/settings` | nav-home <sub>Home</sub> | a | moved: 4 runs; ok: 2 runs |
 | worker-approved | `/settings` | nav-conversations <sub>Conversations</sub> | a | moved: 4 runs; ok: 2 runs |
 | worker-approved | `/settings` | nav-profile <sub>Profile</sub> | a | moved: 4 runs; ok: 2 runs |
-| worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | page-back <sub>பின்செல்</sub> | button | ok: tablet/en |
-| worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | lang-toggle <sub>Switch to English</sub> | button | ok: tablet/en |
-| worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | wp-consult <sub>கட்டணம் பார்க்க</sub> | button | ok: tablet/en |
-| worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | wp-message <sub>அதற்கு பதிலாக செய்தி அனுப்பு</sub> | button | ok: tablet/en |
-| worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | nav-home <sub>முகப்பு</sub> | a | ok: tablet/en |
-| worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: tablet/en |
-| worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: tablet/en |
-| worker-approved | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | page-back <sub>பின்செல்</sub> | button | ok: 2 runs |
-| worker-approved | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | lang-toggle <sub>Switch to English</sub> | button | ok: 2 runs |
-| worker-approved | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | wp-consult <sub>கட்டணம் பார்க்க</sub> | button | ok: 2 runs |
-| worker-approved | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | wp-message <sub>அதற்கு பதிலாக செய்தி அனுப்பு</sub> | button | ok: 2 runs |
-| worker-approved | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | nav-home <sub>முகப்பு</sub> | a | ok: 2 runs |
-| worker-approved | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: 2 runs |
-| worker-approved | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: 2 runs |
-| worker-approved | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | page-back <sub>பின்செல்</sub> | button | ok: 2 runs |
-| worker-approved | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | lang-toggle <sub>Switch to English</sub> | button | ok: 2 runs |
-| worker-approved | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | wp-consult <sub>கட்டணம் பார்க்க</sub> | button | ok: 2 runs |
-| worker-approved | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | wp-message <sub>அதற்கு பதிலாக செய்தி அனுப்பு</sub> | button | ok: 2 runs |
-| worker-approved | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | nav-home <sub>முகப்பு</sub> | a | ok: 2 runs |
-| worker-approved | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: 2 runs |
-| worker-approved | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: 2 runs |
-| worker-approved | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | page-back <sub>பின்செல்</sub> | button | ok: tablet-land/en |
-| worker-approved | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | lang-toggle <sub>Switch to English</sub> | button | ok: tablet-land/en |
-| worker-approved | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | wp-consult <sub>கட்டணம் பார்க்க</sub> | button | ok: tablet-land/en |
-| worker-approved | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | wp-message <sub>அதற்கு பதிலாக செய்தி அனுப்பு</sub> | button | ok: tablet-land/en |
-| worker-approved | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | nav-home <sub>முகப்பு</sub> | a | ok: tablet-land/en |
-| worker-approved | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: tablet-land/en |
-| worker-approved | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: tablet-land/en |
-| worker-pending | `/?tab=worker` | loc-chip <sub>Your location Mylapore, Chennai · Change</sub> | a | ok: 5 runs |
-| worker-pending | `/?tab=worker` | mic-toggle <sub>Turn on voice assistant</sub> | button | ok: 5 runs |
-| worker-pending | `/?tab=worker` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
-| worker-pending | `/?tab=worker` | bell <sub>Notifications</sub> | a | ok: 5 runs |
-| worker-pending | `/?tab=worker` | avatar-btn <sub>Account</sub> | button | ok: 5 runs |
-| worker-pending | `/?tab=worker` | tab-find <sub>Find Worker</sub> | tab | ok: 5 runs |
-| worker-pending | `/?tab=worker` | tab-worker <sub>Worker</sub> | tab | ok: 5 runs |
-| worker-pending | `/?tab=worker` | go-online <sub>Go online</sub> | switch | disabled: 5 runs |
-| worker-pending | `/?tab=worker` | nav-home <sub>Home</sub> | a | ok: 5 runs |
-| worker-pending | `/?tab=worker` | nav-conversations <sub>Conversations</sub> | a | ok: 5 runs |
-| worker-pending | `/?tab=worker` | nav-profile <sub>Profile</sub> | a | ok: 5 runs |
-| worker-pending | `/earnings` | page-back <sub>Back</sub> | button | ok: 5 runs |
-| worker-pending | `/earnings` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
-| worker-pending | `/earnings` | payout-request <sub>Request payout</sub> | button | disabled: 5 runs |
-| worker-pending | `/earnings` | payout-kind-bank <sub>Bank</sub> | button | ok: 5 runs |
-| worker-pending | `/earnings` | payout-kind-upi <sub>UPI</sub> | button | ok: 5 runs |
-| worker-pending | `/earnings` | payout-send-code <sub>Send code</sub> | button | ok: 5 runs |
-| worker-pending | `/earnings` | payout-save <sub>Check account</sub> | button | disabled: 5 runs |
-| worker-pending | `/earnings` | nav-home <sub>Home</sub> | a | ok: 5 runs |
-| worker-pending | `/earnings` | nav-conversations <sub>Conversations</sub> | a | ok: 5 runs |
-| worker-pending | `/earnings` | nav-profile <sub>Profile</sub> | a | ok: 5 runs |
-| worker-pending | `/messages` | page-back <sub>Back</sub> | button | ok: 5 runs |
-| worker-pending | `/messages` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
-| worker-pending | `/messages` | nav-home <sub>Home</sub> | a | ok: 5 runs |
-| worker-pending | `/messages` | nav-conversations <sub>Conversations</sub> | a | ok: 5 runs |
-| worker-pending | `/messages` | nav-profile <sub>Profile</sub> | a | ok: 5 runs |
-| worker-pending | `/worker/register` | loc-chip <sub>Your location Mylapore, Chennai · Change</sub> | a | ok: 5 runs |
-| worker-pending | `/worker/register` | mic-toggle <sub>Turn on voice assistant</sub> | button | ok: 5 runs |
-| worker-pending | `/worker/register` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
-| worker-pending | `/worker/register` | bell <sub>Notifications</sub> | a | ok: 5 runs |
-| worker-pending | `/worker/register` | avatar-btn <sub>Account</sub> | button | ok: 5 runs |
-| worker-pending | `/worker/register` | tab-find <sub>Find Worker</sub> | tab | ok: 5 runs |
-| worker-pending | `/worker/register` | tab-worker <sub>Worker</sub> | tab | ok: 5 runs |
-| worker-pending | `/worker/register` | go-online <sub>Go online</sub> | switch | disabled: 5 runs |
-| worker-pending | `/worker/register` | nav-home <sub>Home</sub> | a | ok: 5 runs |
-| worker-pending | `/worker/register` | nav-conversations <sub>Conversations</sub> | a | ok: 5 runs |
-| worker-pending | `/worker/register` | nav-profile <sub>Profile</sub> | a | ok: 5 runs |
+| worker-approved | `/w/5d41792b-91df-446e-9fbb-0223bd004e16` | page-back <sub>பின்செல்</sub> | button | ok: tablet-land/en |
+| worker-approved | `/w/5d41792b-91df-446e-9fbb-0223bd004e16` | lang-toggle <sub>Switch to English</sub> | button | ok: tablet-land/en |
+| worker-approved | `/w/5d41792b-91df-446e-9fbb-0223bd004e16` | wp-consult <sub>கட்டணம் பார்க்க</sub> | button | ok: tablet-land/en |
+| worker-approved | `/w/5d41792b-91df-446e-9fbb-0223bd004e16` | wp-message <sub>அதற்கு பதிலாக செய்தி அனுப்பு</sub> | button | ok: tablet-land/en |
+| worker-approved | `/w/5d41792b-91df-446e-9fbb-0223bd004e16` | nav-home <sub>முகப்பு</sub> | a | ok: tablet-land/en |
+| worker-approved | `/w/5d41792b-91df-446e-9fbb-0223bd004e16` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: tablet-land/en |
+| worker-approved | `/w/5d41792b-91df-446e-9fbb-0223bd004e16` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: tablet-land/en |
+| worker-approved | `/w/6a6673ff-11eb-41fa-a130-47b72ac09ea8` | page-back <sub>பின்செல்</sub> | button | ok: tablet/en |
+| worker-approved | `/w/6a6673ff-11eb-41fa-a130-47b72ac09ea8` | lang-toggle <sub>Switch to English</sub> | button | ok: tablet/en |
+| worker-approved | `/w/6a6673ff-11eb-41fa-a130-47b72ac09ea8` | wp-consult <sub>கட்டணம் பார்க்க</sub> | button | ok: tablet/en |
+| worker-approved | `/w/6a6673ff-11eb-41fa-a130-47b72ac09ea8` | wp-message <sub>அதற்கு பதிலாக செய்தி அனுப்பு</sub> | button | ok: tablet/en |
+| worker-approved | `/w/6a6673ff-11eb-41fa-a130-47b72ac09ea8` | nav-home <sub>முகப்பு</sub> | a | ok: tablet/en |
+| worker-approved | `/w/6a6673ff-11eb-41fa-a130-47b72ac09ea8` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: tablet/en |
+| worker-approved | `/w/6a6673ff-11eb-41fa-a130-47b72ac09ea8` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: tablet/en |
+| worker-approved | `/w/9156b7d1-0f8e-4118-aad5-7086965a7948` | page-back <sub>பின்செல்</sub> | button | ok: 2 runs |
+| worker-approved | `/w/9156b7d1-0f8e-4118-aad5-7086965a7948` | lang-toggle <sub>Switch to English</sub> | button | ok: 2 runs |
+| worker-approved | `/w/9156b7d1-0f8e-4118-aad5-7086965a7948` | wp-consult <sub>கட்டணம் பார்க்க</sub> | button | ok: 2 runs |
+| worker-approved | `/w/9156b7d1-0f8e-4118-aad5-7086965a7948` | wp-message <sub>அதற்கு பதிலாக செய்தி அனுப்பு</sub> | button | ok: 2 runs |
+| worker-approved | `/w/9156b7d1-0f8e-4118-aad5-7086965a7948` | nav-home <sub>முகப்பு</sub> | a | ok: 2 runs |
+| worker-approved | `/w/9156b7d1-0f8e-4118-aad5-7086965a7948` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: 2 runs |
+| worker-approved | `/w/9156b7d1-0f8e-4118-aad5-7086965a7948` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: 2 runs |
+| worker-approved | `/w/ff15a564-4cc0-4257-b68e-3a53f85bc6cc` | page-back <sub>பின்செல்</sub> | button | ok: 2 runs |
+| worker-approved | `/w/ff15a564-4cc0-4257-b68e-3a53f85bc6cc` | lang-toggle <sub>Switch to English</sub> | button | ok: 2 runs |
+| worker-approved | `/w/ff15a564-4cc0-4257-b68e-3a53f85bc6cc` | wp-consult <sub>கட்டணம் பார்க்க</sub> | button | ok: 2 runs |
+| worker-approved | `/w/ff15a564-4cc0-4257-b68e-3a53f85bc6cc` | wp-message <sub>அதற்கு பதிலாக செய்தி அனுப்பு</sub> | button | ok: 2 runs |
+| worker-approved | `/w/ff15a564-4cc0-4257-b68e-3a53f85bc6cc` | nav-home <sub>முகப்பு</sub> | a | ok: 2 runs |
+| worker-approved | `/w/ff15a564-4cc0-4257-b68e-3a53f85bc6cc` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: 2 runs |
+| worker-approved | `/w/ff15a564-4cc0-4257-b68e-3a53f85bc6cc` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: 2 runs |
+| worker-pending | `/?tab=worker` | loc-chip <sub>Your location Mylapore, Chennai · Change</sub> | a | ok: 6 runs |
+| worker-pending | `/?tab=worker` | mic-toggle <sub>Turn on voice assistant</sub> | button | ok: 6 runs |
+| worker-pending | `/?tab=worker` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
+| worker-pending | `/?tab=worker` | bell <sub>Notifications</sub> | a | ok: 6 runs |
+| worker-pending | `/?tab=worker` | avatar-btn <sub>Account</sub> | button | ok: 6 runs |
+| worker-pending | `/?tab=worker` | tab-find <sub>Find Worker</sub> | tab | ok: 6 runs |
+| worker-pending | `/?tab=worker` | tab-worker <sub>Worker</sub> | tab | ok: 6 runs |
+| worker-pending | `/?tab=worker` | go-online <sub>Go online</sub> | switch | disabled: 6 runs |
+| worker-pending | `/?tab=worker` | nav-home <sub>Home</sub> | a | ok: 6 runs |
+| worker-pending | `/?tab=worker` | nav-conversations <sub>Conversations</sub> | a | ok: 6 runs |
+| worker-pending | `/?tab=worker` | nav-profile <sub>Profile</sub> | a | ok: 6 runs |
+| worker-pending | `/earnings` | page-back <sub>Back</sub> | button | ok: 6 runs |
+| worker-pending | `/earnings` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
+| worker-pending | `/earnings` | payout-request <sub>Request payout</sub> | button | disabled: 6 runs |
+| worker-pending | `/earnings` | payout-kind-bank <sub>Bank</sub> | button | ok: 6 runs |
+| worker-pending | `/earnings` | payout-kind-upi <sub>UPI</sub> | button | ok: 6 runs |
+| worker-pending | `/earnings` | payout-send-code <sub>Send code</sub> | button | ok: 6 runs |
+| worker-pending | `/earnings` | payout-save <sub>Check account</sub> | button | disabled: 6 runs |
+| worker-pending | `/earnings` | nav-home <sub>Home</sub> | a | ok: 6 runs |
+| worker-pending | `/earnings` | nav-conversations <sub>Conversations</sub> | a | ok: 6 runs |
+| worker-pending | `/earnings` | nav-profile <sub>Profile</sub> | a | ok: 6 runs |
+| worker-pending | `/messages` | page-back <sub>Back</sub> | button | ok: 6 runs |
+| worker-pending | `/messages` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
+| worker-pending | `/messages` | nav-home <sub>Home</sub> | a | ok: 6 runs |
+| worker-pending | `/messages` | nav-conversations <sub>Conversations</sub> | a | ok: 6 runs |
+| worker-pending | `/messages` | nav-profile <sub>Profile</sub> | a | ok: 6 runs |
+| worker-pending | `/worker/register` | loc-chip <sub>Your location Mylapore, Chennai · Change</sub> | a | ok: 6 runs |
+| worker-pending | `/worker/register` | mic-toggle <sub>Turn on voice assistant</sub> | button | ok: 6 runs |
+| worker-pending | `/worker/register` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
+| worker-pending | `/worker/register` | bell <sub>Notifications</sub> | a | ok: 6 runs |
+| worker-pending | `/worker/register` | avatar-btn <sub>Account</sub> | button | ok: 6 runs |
+| worker-pending | `/worker/register` | tab-find <sub>Find Worker</sub> | tab | ok: 6 runs |
+| worker-pending | `/worker/register` | tab-worker <sub>Worker</sub> | tab | ok: 6 runs |
+| worker-pending | `/worker/register` | go-online <sub>Go online</sub> | switch | disabled: 6 runs |
+| worker-pending | `/worker/register` | nav-home <sub>Home</sub> | a | ok: 6 runs |
+| worker-pending | `/worker/register` | nav-conversations <sub>Conversations</sub> | a | ok: 6 runs |
+| worker-pending | `/worker/register` | nav-profile <sub>Profile</sub> | a | ok: 6 runs |
 
 Screen-check notes (non-blocking):
 
@@ -1228,21 +1226,21 @@ Screen-check notes (non-blocking):
 | admin | `/admin#districts` | desktop/en | tap-target<24px | districts-hide-zero:13x13 |
 | admin | `/admin#packs` | desktop/en | tap-target<24px | INPUT:13x13 |
 | admin | `/admin#packs` | desktop/en | tap-target<24px | pack-active:13x13 |
-| admin | `/admin#queue` | desktop/ta | english-in-tamil | Edge, Paediatrics, yrs, kanniyakumari, re-, XXXX-XXXX-, degree, review, text, year, duplicates, pass, clear, face, liveness, forensics, identity, unrecognised,  |
+| admin | `/admin#queue` | desktop/ta | english-in-tamil | Edge, Paediatrics, yrs, kanniyakumari, XXXX-XXXX-, degree, review, text, year, duplicates, pass, clear, face, liveness, forensics, identity, unrecognised, name, |
 | admin | `/admin#queue` | desktop/ta | tap-target<24px | A:124x17 |
 | admin | `/admin#districts` | desktop/ta | tap-target<24px | districts-hide-zero:13x13 |
-| admin | `/admin#referrals` | desktop/ta | english-in-tamil | Anbu, Ref, Oct, MJR, E-D, Facebook, post, E-M |
-| admin | `/admin#payments` | desktop/ta | english-in-tamil | Karthik, Crawl, max, order, webhook, pro, value, bfaecd, basic, fded, starter, cefe, dda, ffb, Subramanian, pay, late, BAD, REQUEST, ERROR, Payment, declined, b |
-| admin | `/admin#payouts` | desktop/ta | english-in-tamil | Priya, Natarajan, UTR- |
+| admin | `/admin#referrals` | desktop/ta | english-in-tamil | MXXCD, Anbu, Ref, Oct, MUVPXHP, E-D, Facebook, post, E-M |
+| admin | `/admin#payments` | desktop/ta | english-in-tamil | Karthik, Subramanian, basic, pay, late, webhook, starter, order, ebb, BAD, REQUEST, ERROR, Payment, declined, bank, value, Refresh, Payer, User, Refund, Client, |
+| admin | `/admin#payouts` | desktop/ta | english-in-tamil | Hold, HDFC, Priya, Natarajan, UTR- |
 | admin | `/admin#packs` | desktop/ta | english-in-tamil | Starter, Basic, Value, Pro, Max |
 | admin | `/admin#packs` | desktop/ta | tap-target<24px | INPUT:13x13 |
 | admin | `/admin#packs` | desktop/ta | tap-target<24px | pack-active:13x13 |
-| admin | `/admin#rates` | desktop/ta | english-in-tamil | doctor, allopathy, allergy-immunology, cardiology, dermatology, diabetology-endocrinology, ent, gastroenterology, general-surgery, geriatrics, gynaecology-obste |
+| admin | `/admin#rates` | desktop/ta | english-in-tamil | doctor, allopathy, diabetology-endocrinology, ent, gastroenterology, general-surgery, geriatrics, gynaecology-obstetrics, hematology, infectious-diseases, nephr |
 | admin | `/admin#settings` | desktop/ta | english-in-tamil | verify, auto, approve, false, risk, reject, name, pass, review, registry, live, days, selfie, retain, liveness, window, seconds, job, max, attempts, stub, provi |
 | admin | `/admin#catalog` | desktop/ta | english-in-tamil | migration |
 | admin | `/admin#milestones` | desktop/ta | english-in-tamil | first, consult, five, star, sessions, streak, top, rated, excellence |
-| admin | `/admin#security` | desktop/ta | english-in-tamil | Karthik, Subramanian, refmadm, dzx, ji-, admm, sqck, admtam, crawlm-admin, vqydgm-, yadmd, pwwyun-, hojz, vfm-admin, koy, vfd-admin, wps, pur-, ulq, cor, tf-, h |
-| admin | `/admin#audit` | desktop/ta | english-in-tamil | crawld-admin, bus-, Oct, first, consult, verify, auto, approve, categories, professionals--doctor, true, false, professionals--doctor--allopathy--allergy-immuno |
+| admin | `/admin#security` | desktop/ta | english-in-tamil | Karthik, Subramanian, refmadm, aeh-, admm, em-, admtam, asq, yadmd, ai-, vfd-admin, ubj, sy-, yadmm, rfx-, gnfk, vibbs-, gpm-, adm, vlu, zyn-, gpd-, uva, ts-, e |
+| admin | `/admin#audit` | desktop/ta | english-in-tamil | crawlm-admin, Oct, first, consult, crawld-admin, verify, auto, approve, categories, professionals--doctor, true, false, professionals--doctor--allopathy--diabet |
 | client | `/` | desktop/en | tap-target<24px | group-professionals:992x20 |
 | client | `/browse/professionals` | desktop/en | tap-target<24px | A:14x14 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | desktop/en | tap-target<24px | A:14x14 |
@@ -1251,16 +1249,16 @@ Screen-check notes (non-blocking):
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | desktop/en | tap-target<24px | crumb-professionals--doctor--allopathy:53x16 |
 | client | `/settings` | desktop/en | tap-target<24px | link-privacy:99x16 |
 | client | `/settings` | desktop/en | tap-target<24px | link-terms:91x16 |
-| client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | desktop/en | tap-target<24px | report-toggle:113x16 |
+| client | `/session/dc7e28ca-5c67-4574-91a2-d500d328d327` | desktop/en | tap-target<24px | report-toggle:113x16 |
 | client | `/` | desktop/ta | tap-target<24px | group-professionals:992x20 |
 | client | `/browse/professionals` | desktop/ta | tap-target<24px | A:14x14 |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | desktop/ta | english-in-tamil | Meena, CrawlD, CrawlM, Arun, Kumar, Kavitha, Raman, Prakash |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | desktop/ta | english-in-tamil | Arun, Prakash, Kavitha, Raman, Meena, CrawlL, CrawlT, CrawlD, CrawlM |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | desktop/ta | tap-target<24px | A:14x14 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | desktop/ta | tap-target<24px | crumb-professionals:136x16 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | desktop/ta | tap-target<24px | crumb-professionals--doctor:67x16 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | desktop/ta | tap-target<24px | crumb-professionals--doctor--allopathy:126x16 |
-| client | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | desktop/ta | english-in-tamil | Meena, CrawlD, Tamil, Nadu, Medical, Council |
-| client | `/profile` | desktop/ta | english-in-tamil | Marina, Beach, Triplicane, Chennai, MDWXXRZ, localhost, ref |
+| client | `/w/9156b7d1-0f8e-4118-aad5-7086965a7948` | desktop/ta | english-in-tamil | Meena, CrawlD, Tamil, Nadu, Medical, Council |
+| client | `/profile` | desktop/ta | english-in-tamil | Marina, Beach, Triplicane, Chennai, HPJKF, localhost, ref |
 | client | `/profile` | desktop/ta | tap-target<24px | loc-use:86x16 |
 | client | `/settings` | desktop/ta | english-in-tamil | English, Settings- |
 | client | `/settings` | desktop/ta | tap-target<24px | link-privacy:172x16 |
@@ -1268,8 +1266,8 @@ Screen-check notes (non-blocking):
 | client | `/wallet` | desktop/ta | english-in-tamil | credits, local, only, Oct |
 | client | `/history` | desktop/ta | english-in-tamil | Meena, CrawlD, Oct |
 | client | `/location` | desktop/ta | english-in-tamil | Marina, Beach, Triplicane, Chennai |
-| client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | desktop/ta | english-in-tamil | Meena, CrawlD |
-| client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | desktop/ta | tap-target<24px | report-toggle:113x16 |
+| client | `/session/dc7e28ca-5c67-4574-91a2-d500d328d327` | desktop/ta | english-in-tamil | Meena, CrawlD |
+| client | `/session/dc7e28ca-5c67-4574-91a2-d500d328d327` | desktop/ta | tap-target<24px | report-toggle:113x16 |
 | guest | `/privacy` | desktop/ta | english-in-tamil | draft-, Data, Fiduciary |
 | guest | `/terms` | desktop/ta | english-in-tamil | draft- |
 | worker-approved | `/?tab=worker` | desktop/en | tap-target<24px | view-public-profile:91x16 |
@@ -1280,7 +1278,7 @@ Screen-check notes (non-blocking):
 | worker-approved | `/settings` | desktop/ta | english-in-tamil | English, Settings- |
 | worker-approved | `/settings` | desktop/ta | tap-target<24px | link-privacy:172x16 |
 | worker-approved | `/settings` | desktop/ta | tap-target<24px | link-terms:184x16 |
-| worker-approved | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | desktop/ta | english-in-tamil | Meena, CrawlD, Tamil, Nadu, Medical, Council |
+| worker-approved | `/w/9156b7d1-0f8e-4118-aad5-7086965a7948` | desktop/ta | english-in-tamil | Meena, CrawlD, Tamil, Nadu, Medical, Council |
 | worker-pending | `/?tab=worker` | desktop/ta | english-in-tamil | Meena, CrawlD |
 | worker-pending | `/worker/register` | desktop/ta | english-in-tamil | Meena, CrawlD |
 | admin | `/admin#queue` | mobile/en | tap-target<24px | A:92x17 |
@@ -1288,21 +1286,21 @@ Screen-check notes (non-blocking):
 | admin | `/admin#districts` | mobile/en | tap-target<24px | districts-hide-zero:13x13 |
 | admin | `/admin#packs` | mobile/en | tap-target<24px | INPUT:13x13 |
 | admin | `/admin#packs` | mobile/en | tap-target<24px | pack-active:13x13 |
-| admin | `/admin#queue` | mobile/ta | english-in-tamil | Edge, Paediatrics, yrs, kanniyakumari, re-, XXXX-XXXX-, degree, review, text, year, duplicates, pass, clear, face, liveness, forensics, identity, unrecognised,  |
+| admin | `/admin#queue` | mobile/ta | english-in-tamil | Edge, Paediatrics, yrs, kanniyakumari, XXXX-XXXX-, degree, review, text, year, duplicates, pass, clear, face, liveness, forensics, identity, unrecognised, name, |
 | admin | `/admin#queue` | mobile/ta | tap-target<24px | A:125x17 |
 | admin | `/admin#districts` | mobile/ta | tap-target<24px | districts-hide-zero:13x13 |
-| admin | `/admin#referrals` | mobile/ta | english-in-tamil | Anbu, Ref, Oct, MJR, E-D, Facebook, post, E-M |
-| admin | `/admin#payments` | mobile/ta | english-in-tamil | Refund, Client, starter, pay, webhook, Bought, mistake, Karthik, Crawl, order, max, pro, value, eac, basic, faf, eca, dce, acfeaa, adf, cfa, fbf, fddad, cfecbbb |
+| admin | `/admin#referrals` | mobile/ta | english-in-tamil | MXXCD, Anbu, Ref, Oct, MUVPXHP, E-D, Facebook, post, E-M |
+| admin | `/admin#payments` | mobile/ta | english-in-tamil | Karthik, Subramanian, basic, pay, late, webhook, starter, order, ebb, BAD, REQUEST, ERROR, Payment, declined, bank, value, Refresh, Payer, User, Refund, Client, |
 | admin | `/admin#payouts` | mobile/ta | english-in-tamil | Hold, HDFC, Priya, Natarajan, UTR- |
 | admin | `/admin#packs` | mobile/ta | english-in-tamil | Starter, Basic, Value, Pro, Max |
 | admin | `/admin#packs` | mobile/ta | tap-target<24px | INPUT:13x13 |
 | admin | `/admin#packs` | mobile/ta | tap-target<24px | pack-active:13x13 |
-| admin | `/admin#rates` | mobile/ta | english-in-tamil | doctor, allopathy, dermatology, diabetology-endocrinology, ent, gastroenterology, general-surgery, geriatrics, gynaecology-obstetrics, hematology, infectious-di |
+| admin | `/admin#rates` | mobile/ta | english-in-tamil | doctor, allopathy, diabetology-endocrinology, ent, gastroenterology, general-surgery, geriatrics, gynaecology-obstetrics, hematology, infectious-diseases, nephr |
 | admin | `/admin#settings` | mobile/ta | english-in-tamil | verify, auto, approve, false, risk, reject, name, pass, review, registry, live, days, selfie, retain, liveness, window, seconds, job, max, attempts, stub, provi |
 | admin | `/admin#catalog` | mobile/ta | english-in-tamil | migration |
 | admin | `/admin#milestones` | mobile/ta | english-in-tamil | first, consult, five, star, sessions, streak, top, rated, excellence |
-| admin | `/admin#security` | mobile/ta | english-in-tamil | Karthik, Subramanian, refmadm, dzx, ji-, admm, sqck, admtam, yadmd, pwwyun-, vfd-admin, exq-, hojz, vfm-admin, koy, wps, pur-, ulq, cor, tf-, hmnifz-, wiguqu-,  |
-| admin | `/admin#audit` | mobile/ta | english-in-tamil | crawlm-admin, Oct, first, consult, verify, auto, approve, categories, professionals--doctor, true, false, professionals--doctor--allopathy--dermatology, chat, p |
+| admin | `/admin#security` | mobile/ta | english-in-tamil | Karthik, Subramanian, refmadm, aeh-, admm, em-, admtam, asq, yadmd, ai-, vfd-admin, ubj, sy-, yadmm, rfx-, gnfk, vibbs-, gpm-, adm, vlu, zyn-, gpd-, uva, ts-, e |
+| admin | `/admin#audit` | mobile/ta | english-in-tamil | crawlm-admin, Oct, first, consult, crawld-admin, verify, auto, approve, categories, professionals--doctor, true, false, professionals--doctor--allopathy--diabet |
 | client | `/` | mobile/en | tap-target<24px | group-professionals:380x20 |
 | client | `/ (dark)` | mobile/en | tap-target<24px | group-professionals:380x20 |
 | client | `/browse/professionals` | mobile/en | tap-target<24px | A:14x14 |
@@ -1312,16 +1310,15 @@ Screen-check notes (non-blocking):
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/en | tap-target<24px | crumb-professionals--doctor--allopathy:55x16 |
 | client | `/settings` | mobile/en | tap-target<24px | link-privacy:100x16 |
 | client | `/settings` | mobile/en | tap-target<24px | link-terms:97x16 |
-| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | mobile/en | tap-target<24px | report-toggle:116x16 |
+| client | `/session/1a86f607-ae9d-48de-9ce8-32a558e735e7` | mobile/en | tap-target<24px | report-toggle:116x16 |
 | client | `/` | mobile/ta | tap-target<24px | group-professionals:380x20 |
 | client | `/browse/professionals` | mobile/ta | tap-target<24px | A:14x14 |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/ta | english-in-tamil | Meena, CrawlT, CrawlD, CrawlM, CrawlL, Kavitha, Raman, Arun, Prakash |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/ta | english-in-tamil | Arun, Prakash, Kavitha, Raman, Meena, CrawlL, CrawlT, CrawlD |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/ta | tap-target<24px | A:14x14 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/ta | tap-target<24px | crumb-professionals:141x16 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/ta | tap-target<24px | crumb-professionals--doctor:68x16 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | mobile/ta | tap-target<24px | crumb-professionals--doctor--allopathy:129x16 |
-| client | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | mobile/ta | english-in-tamil | Meena, CrawlM, Tamil, Nadu, Medical, Council |
-| client | `/profile` | mobile/ta | english-in-tamil | Marina, Beach, Triplicane, Chennai, MHHK, localhost, ref |
+| client | `/profile` | mobile/ta | english-in-tamil | Marina, Beach, Triplicane, Chennai, MHK, localhost, ref |
 | client | `/profile` | mobile/ta | tap-target<24px | loc-use:89x16 |
 | client | `/settings` | mobile/ta | english-in-tamil | English, Settings- |
 | client | `/settings` | mobile/ta | tap-target<24px | link-privacy:176x16 |
@@ -1329,8 +1326,8 @@ Screen-check notes (non-blocking):
 | client | `/wallet` | mobile/ta | english-in-tamil | credits, local, only, Oct |
 | client | `/history` | mobile/ta | english-in-tamil | Meena, CrawlM, Oct |
 | client | `/location` | mobile/ta | english-in-tamil | Marina, Beach, Triplicane, Chennai |
-| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | mobile/ta | english-in-tamil | Meena, CrawlM |
-| client | `/session/4bc7ac87-e902-486b-8071-37fcdc5d591e` | mobile/ta | tap-target<24px | report-toggle:116x16 |
+| client | `/session/1a86f607-ae9d-48de-9ce8-32a558e735e7` | mobile/ta | english-in-tamil | Meena, CrawlM |
+| client | `/session/1a86f607-ae9d-48de-9ce8-32a558e735e7` | mobile/ta | tap-target<24px | report-toggle:116x16 |
 | guest | `/privacy` | mobile/ta | english-in-tamil | draft-, Data, Fiduciary |
 | guest | `/terms` | mobile/ta | english-in-tamil | draft- |
 | worker-approved | `/?tab=worker` | mobile/en | tap-target<24px | view-public-profile:94x16 |
@@ -1342,28 +1339,28 @@ Screen-check notes (non-blocking):
 | worker-approved | `/settings` | mobile/ta | english-in-tamil | English, Settings- |
 | worker-approved | `/settings` | mobile/ta | tap-target<24px | link-privacy:176x16 |
 | worker-approved | `/settings` | mobile/ta | tap-target<24px | link-terms:186x16 |
-| worker-approved | `/w/77ac19b6-0632-4ec4-8bf1-7ff4a5568cc2` | mobile/ta | english-in-tamil | Meena, CrawlM, Tamil, Nadu, Medical, Council |
+| worker-approved | `/w/ff15a564-4cc0-4257-b68e-3a53f85bc6cc` | mobile/ta | english-in-tamil | Meena, CrawlM, Tamil, Nadu, Medical, Council |
 | worker-pending | `/?tab=worker` | mobile/ta | english-in-tamil | Meena, CrawlM |
 | worker-pending | `/worker/register` | mobile/ta | english-in-tamil | Meena, CrawlM |
 | admin | `/admin#queue` | tablet/en | tap-target<24px | A:92x17 |
 | admin | `/admin#districts` | tablet/en | tap-target<24px | districts-hide-zero:13x13 |
 | admin | `/admin#packs` | tablet/en | tap-target<24px | INPUT:13x13 |
 | admin | `/admin#packs` | tablet/en | tap-target<24px | pack-active:13x13 |
-| admin | `/admin#queue` | tablet/ta | english-in-tamil | Edge, Paediatrics, yrs, kanniyakumari, re-, XXXX-XXXX-, degree, review, text, year, duplicates, pass, clear, face, liveness, forensics, identity, unrecognised,  |
+| admin | `/admin#queue` | tablet/ta | english-in-tamil | Edge, Paediatrics, yrs, kanniyakumari, XXXX-XXXX-, degree, review, text, year, duplicates, pass, clear, face, liveness, forensics, identity, unrecognised, name, |
 | admin | `/admin#queue` | tablet/ta | tap-target<24px | A:125x17 |
 | admin | `/admin#districts` | tablet/ta | tap-target<24px | districts-hide-zero:13x13 |
-| admin | `/admin#referrals` | tablet/ta | english-in-tamil | Anbu, Ref, Oct, MJR, E-D, Facebook, post, E-M |
-| admin | `/admin#payments` | tablet/ta | english-in-tamil | Karthik, Crawl, max, order, cfa, webhook, pro, value, basic, fbf, starter, eca, fddad, cfecbbb, bfaecd, fded, cefe, dda, ffb, Subramanian, pay, late, BAD, REQUE |
-| admin | `/admin#payouts` | tablet/ta | english-in-tamil | Priya, Natarajan, UTR- |
+| admin | `/admin#referrals` | tablet/ta | english-in-tamil | MXXCD, Anbu, Ref, Oct, MUVPXHP, E-D, Facebook, post, E-M |
+| admin | `/admin#payments` | tablet/ta | english-in-tamil | Karthik, Subramanian, basic, pay, late, webhook, starter, order, ebb, BAD, REQUEST, ERROR, Payment, declined, bank, value, Refresh, Payer, User, Refund, Client, |
+| admin | `/admin#payouts` | tablet/ta | english-in-tamil | Hold, HDFC, Priya, Natarajan, UTR- |
 | admin | `/admin#packs` | tablet/ta | english-in-tamil | Starter, Basic, Value, Pro, Max |
 | admin | `/admin#packs` | tablet/ta | tap-target<24px | INPUT:13x13 |
 | admin | `/admin#packs` | tablet/ta | tap-target<24px | pack-active:13x13 |
-| admin | `/admin#rates` | tablet/ta | english-in-tamil | doctor, allopathy, cardiology, dermatology, diabetology-endocrinology, ent, gastroenterology, general-surgery, geriatrics, gynaecology-obstetrics, hematology, i |
+| admin | `/admin#rates` | tablet/ta | english-in-tamil | doctor, allopathy, diabetology-endocrinology, ent, gastroenterology, general-surgery, geriatrics, gynaecology-obstetrics, hematology, infectious-diseases, nephr |
 | admin | `/admin#settings` | tablet/ta | english-in-tamil | verify, auto, approve, false, risk, reject, name, pass, review, registry, live, days, selfie, retain, liveness, window, seconds, job, max, attempts, stub, provi |
 | admin | `/admin#catalog` | tablet/ta | english-in-tamil | migration |
 | admin | `/admin#milestones` | tablet/ta | english-in-tamil | first, consult, five, star, sessions, streak, top, rated, excellence |
-| admin | `/admin#security` | tablet/ta | english-in-tamil | Karthik, Subramanian, refmadm, dzx, ji-, admm, sqck, admtam, crawlm-admin, vqydgm-, yadmd, pwwyun-, hojz, vfm-admin, koy, vfd-admin, wps, pur-, ulq, cor, tf-, h |
-| admin | `/admin#audit` | tablet/ta | english-in-tamil | crawlt-admin, qpew, Oct, first, consult, verify, auto, approve, categories, professionals--doctor, true, false, professionals--doctor--allopathy--cardiology, ch |
+| admin | `/admin#security` | tablet/ta | english-in-tamil | Karthik, Subramanian, refmadm, aeh-, admm, em-, admtam, asq, yadmd, ai-, vfd-admin, ubj, sy-, yadmm, rfx-, gnfk, vibbs-, gpm-, adm, vlu, zyn-, gpd-, uva, ts-, e |
+| admin | `/admin#audit` | tablet/ta | english-in-tamil | crawlm-admin, Oct, verify, auto, approve, categories, professionals--doctor, false, crawld-admin, true, crawll-admin, alxohi-, first, consult, crawlt-admin, arj |
 | client | `/` | tablet/en | tap-target<24px | group-professionals:736x20 |
 | client | `/browse/professionals` | tablet/en | tap-target<24px | A:14x14 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet/en | tap-target<24px | A:14x14 |
@@ -1372,16 +1369,16 @@ Screen-check notes (non-blocking):
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet/en | tap-target<24px | crumb-professionals--doctor--allopathy:55x16 |
 | client | `/settings` | tablet/en | tap-target<24px | link-privacy:100x16 |
 | client | `/settings` | tablet/en | tap-target<24px | link-terms:97x16 |
-| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | tablet/en | tap-target<24px | report-toggle:116x16 |
+| client | `/session/f3cad1e2-3a3c-4c4b-bcdf-5bcf21fe8ef5` | tablet/en | tap-target<24px | report-toggle:116x16 |
 | client | `/` | tablet/ta | tap-target<24px | group-professionals:736x20 |
 | client | `/browse/professionals` | tablet/ta | tap-target<24px | A:14x14 |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet/ta | english-in-tamil | Kavitha, Raman, Arun, Prakash |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet/ta | english-in-tamil | Arun, Prakash, Kavitha, Raman |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet/ta | tap-target<24px | A:14x14 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet/ta | tap-target<24px | crumb-professionals:141x16 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet/ta | tap-target<24px | crumb-professionals--doctor:68x16 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet/ta | tap-target<24px | crumb-professionals--doctor--allopathy:129x16 |
-| client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | tablet/ta | english-in-tamil | Meena, CrawlT, Tamil, Nadu, Medical, Council |
-| client | `/profile` | tablet/ta | english-in-tamil | Marina, Beach, Triplicane, Chennai, localhost, ref |
+| client | `/w/6a6673ff-11eb-41fa-a130-47b72ac09ea8` | tablet/ta | english-in-tamil | Meena, CrawlT, Tamil, Nadu, Medical, Council |
+| client | `/profile` | tablet/ta | english-in-tamil | Marina, Beach, Triplicane, Chennai, MPYSLXU, localhost, ref |
 | client | `/profile` | tablet/ta | tap-target<24px | loc-use:89x16 |
 | client | `/settings` | tablet/ta | english-in-tamil | English, iPhone-, Home, Screen-, Safari-, Share, Add, Screen |
 | client | `/settings` | tablet/ta | tap-target<24px | link-privacy:176x16 |
@@ -1389,29 +1386,29 @@ Screen-check notes (non-blocking):
 | client | `/wallet` | tablet/ta | english-in-tamil | credits, local, only, Oct |
 | client | `/history` | tablet/ta | english-in-tamil | Meena, CrawlT, Oct |
 | client | `/location` | tablet/ta | english-in-tamil | Marina, Beach, Triplicane, Chennai |
-| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | tablet/ta | english-in-tamil | Meena, CrawlT |
-| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | tablet/ta | tap-target<24px | report-toggle:116x16 |
+| client | `/session/f3cad1e2-3a3c-4c4b-bcdf-5bcf21fe8ef5` | tablet/ta | english-in-tamil | Meena, CrawlT |
+| client | `/session/f3cad1e2-3a3c-4c4b-bcdf-5bcf21fe8ef5` | tablet/ta | tap-target<24px | report-toggle:116x16 |
 | guest | `/privacy` | tablet/ta | english-in-tamil | draft-, Data, Fiduciary |
 | guest | `/terms` | tablet/ta | english-in-tamil | draft- |
 | admin | `/admin#queue` | tablet-land/en | tap-target<24px | A:92x17 |
 | admin | `/admin#districts` | tablet-land/en | tap-target<24px | districts-hide-zero:13x13 |
 | admin | `/admin#packs` | tablet-land/en | tap-target<24px | INPUT:13x13 |
 | admin | `/admin#packs` | tablet-land/en | tap-target<24px | pack-active:13x13 |
-| admin | `/admin#queue` | tablet-land/ta | english-in-tamil | Edge, Paediatrics, yrs, kanniyakumari, re-, XXXX-XXXX-, degree, review, text, year, duplicates, pass, clear, face, liveness, forensics, identity, unrecognised,  |
+| admin | `/admin#queue` | tablet-land/ta | english-in-tamil | Edge, Paediatrics, yrs, kanniyakumari, XXXX-XXXX-, degree, review, text, year, duplicates, pass, clear, face, liveness, forensics, identity, unrecognised, name, |
 | admin | `/admin#queue` | tablet-land/ta | tap-target<24px | A:125x17 |
 | admin | `/admin#districts` | tablet-land/ta | tap-target<24px | districts-hide-zero:13x13 |
-| admin | `/admin#referrals` | tablet-land/ta | english-in-tamil | Anbu, Ref, Oct, MJR, E-D, Facebook, post, E-M |
-| admin | `/admin#payments` | tablet-land/ta | english-in-tamil | Karthik, Crawl, starter, order, webhook, max, acfeaa, pro, adf, value, basic, cfa, fbf, eca, fddad, cfecbbb, bfaecd, fded, cefe, dda, ffb, Subramanian, pay, lat |
-| admin | `/admin#payouts` | tablet-land/ta | english-in-tamil | Priya, Natarajan, UTR- |
+| admin | `/admin#referrals` | tablet-land/ta | english-in-tamil | MXXCD, Anbu, Ref, Oct, MUVPXHP, E-D, Facebook, post, E-M |
+| admin | `/admin#payments` | tablet-land/ta | english-in-tamil | Karthik, Subramanian, basic, pay, late, webhook, starter, order, ebb, BAD, REQUEST, ERROR, Payment, declined, bank, value, Refresh, Payer, User, Refund, Client, |
+| admin | `/admin#payouts` | tablet-land/ta | english-in-tamil | Hold, HDFC, Priya, Natarajan, UTR- |
 | admin | `/admin#packs` | tablet-land/ta | english-in-tamil | Starter, Basic, Value, Pro, Max |
 | admin | `/admin#packs` | tablet-land/ta | tap-target<24px | INPUT:13x13 |
 | admin | `/admin#packs` | tablet-land/ta | tap-target<24px | pack-active:13x13 |
-| admin | `/admin#rates` | tablet-land/ta | english-in-tamil | doctor, allopathy, cardiology, dermatology, diabetology-endocrinology, ent, gastroenterology, general-surgery, geriatrics, gynaecology-obstetrics, hematology, i |
+| admin | `/admin#rates` | tablet-land/ta | english-in-tamil | doctor, allopathy, diabetology-endocrinology, ent, gastroenterology, general-surgery, geriatrics, gynaecology-obstetrics, hematology, infectious-diseases, nephr |
 | admin | `/admin#settings` | tablet-land/ta | english-in-tamil | verify, auto, approve, false, risk, reject, name, pass, review, registry, live, days, selfie, retain, liveness, window, seconds, job, max, attempts, stub, provi |
 | admin | `/admin#catalog` | tablet-land/ta | english-in-tamil | migration |
 | admin | `/admin#milestones` | tablet-land/ta | english-in-tamil | first, consult, five, star, sessions, streak, top, rated, excellence |
-| admin | `/admin#security` | tablet-land/ta | english-in-tamil | Karthik, Subramanian, refmadm, dzx, ji-, admm, sqck, admtam, crawlm-admin, vqydgm-, yadmd, pwwyun-, hojz, vfm-admin, koy, vfd-admin, wps, pur-, ulq, cor, tf-, h |
-| admin | `/admin#audit` | tablet-land/ta | english-in-tamil | crawll-admin, adqbwx-, Oct, first, consult, verify, auto, approve, categories, professionals--doctor, true, false, professionals--doctor--allopathy--cardiology, |
+| admin | `/admin#security` | tablet-land/ta | english-in-tamil | Karthik, Subramanian, refmadm, aeh-, admm, em-, admtam, asq, yadmd, ai-, vfd-admin, ubj, sy-, yadmm, rfx-, gnfk, vibbs-, gpm-, adm, vlu, zyn-, gpd-, uva, ts-, e |
+| admin | `/admin#audit` | tablet-land/ta | english-in-tamil | crawlm-admin, Oct, verify, auto, approve, categories, professionals--doctor, false, crawld-admin, true, crawll-admin, alxohi-, first, consult, crawlt-admin, arj |
 | client | `/` | tablet-land/en | tap-target<24px | group-professionals:992x20 |
 | client | `/browse/professionals` | tablet-land/en | tap-target<24px | A:14x14 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet-land/en | tap-target<24px | A:14x14 |
@@ -1420,16 +1417,16 @@ Screen-check notes (non-blocking):
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet-land/en | tap-target<24px | crumb-professionals--doctor--allopathy:55x16 |
 | client | `/settings` | tablet-land/en | tap-target<24px | link-privacy:100x16 |
 | client | `/settings` | tablet-land/en | tap-target<24px | link-terms:97x16 |
-| client | `/session/a629fefa-7bff-4708-bd28-7bd67d26aa24` | tablet-land/en | tap-target<24px | report-toggle:116x16 |
+| client | `/session/676209c5-15fd-40c8-8309-4c41771b04b4` | tablet-land/en | tap-target<24px | report-toggle:116x16 |
 | client | `/` | tablet-land/ta | tap-target<24px | group-professionals:992x20 |
 | client | `/browse/professionals` | tablet-land/ta | tap-target<24px | A:14x14 |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet-land/ta | english-in-tamil | Meena, CrawlT, CrawlD, CrawlM, Arun, Kumar, CrawlL, Kavitha, Raman, Prakash |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet-land/ta | english-in-tamil | Arun, Prakash, Kavitha, Raman, Meena, CrawlL, CrawlT, CrawlD, CrawlM |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet-land/ta | tap-target<24px | A:14x14 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet-land/ta | tap-target<24px | crumb-professionals:141x16 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet-land/ta | tap-target<24px | crumb-professionals--doctor:68x16 |
 | client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet-land/ta | tap-target<24px | crumb-professionals--doctor--allopathy:129x16 |
-| client | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | tablet-land/ta | english-in-tamil | Meena, CrawlL, Tamil, Nadu, Medical, Council |
-| client | `/profile` | tablet-land/ta | english-in-tamil | Marina, Beach, Triplicane, Chennai, MSXLBP, localhost, ref |
+| client | `/w/5d41792b-91df-446e-9fbb-0223bd004e16` | tablet-land/ta | english-in-tamil | Meena, CrawlL, Tamil, Nadu, Medical, Council |
+| client | `/profile` | tablet-land/ta | english-in-tamil | Marina, Beach, Triplicane, Chennai, localhost, ref |
 | client | `/profile` | tablet-land/ta | tap-target<24px | loc-use:89x16 |
 | client | `/settings` | tablet-land/ta | english-in-tamil | English, iPhone-, Home, Screen-, Safari-, Share, Add, Screen |
 | client | `/settings` | tablet-land/ta | tap-target<24px | link-privacy:176x16 |
@@ -1437,8 +1434,8 @@ Screen-check notes (non-blocking):
 | client | `/wallet` | tablet-land/ta | english-in-tamil | credits, local, only, Oct |
 | client | `/history` | tablet-land/ta | english-in-tamil | Meena, CrawlL, Oct |
 | client | `/location` | tablet-land/ta | english-in-tamil | Marina, Beach, Triplicane, Chennai |
-| client | `/session/a629fefa-7bff-4708-bd28-7bd67d26aa24` | tablet-land/ta | english-in-tamil | Meena, CrawlL |
-| client | `/session/a629fefa-7bff-4708-bd28-7bd67d26aa24` | tablet-land/ta | tap-target<24px | report-toggle:116x16 |
+| client | `/session/676209c5-15fd-40c8-8309-4c41771b04b4` | tablet-land/ta | english-in-tamil | Meena, CrawlL |
+| client | `/session/676209c5-15fd-40c8-8309-4c41771b04b4` | tablet-land/ta | tap-target<24px | report-toggle:116x16 |
 | guest | `/privacy` | tablet-land/ta | english-in-tamil | draft-, Data, Fiduciary |
 | guest | `/terms` | tablet-land/ta | english-in-tamil | draft- |
 | worker-approved | `/?tab=worker` | tablet-land/en | tap-target<24px | view-public-profile:94x16 |
@@ -1449,7 +1446,7 @@ Screen-check notes (non-blocking):
 | worker-approved | `/settings` | tablet-land/ta | english-in-tamil | English, iPhone-, Home, Screen-, Safari-, Share, Add, Screen |
 | worker-approved | `/settings` | tablet-land/ta | tap-target<24px | link-privacy:176x16 |
 | worker-approved | `/settings` | tablet-land/ta | tap-target<24px | link-terms:186x16 |
-| worker-approved | `/w/e7e449d7-4086-4dab-a6da-5f9ea041f178` | tablet-land/ta | english-in-tamil | Meena, CrawlL, Tamil, Nadu, Medical, Council |
+| worker-approved | `/w/5d41792b-91df-446e-9fbb-0223bd004e16` | tablet-land/ta | english-in-tamil | Meena, CrawlL, Tamil, Nadu, Medical, Council |
 | worker-pending | `/?tab=worker` | tablet-land/ta | english-in-tamil | Meena, CrawlL |
 | worker-pending | `/worker/register` | tablet-land/ta | english-in-tamil | Meena, CrawlL |
 | worker-approved | `/?tab=worker` | tablet/en | tap-target<24px | view-public-profile:94x16 |
@@ -1460,7 +1457,9 @@ Screen-check notes (non-blocking):
 | worker-approved | `/settings` | tablet/ta | english-in-tamil | English, iPhone-, Home, Screen-, Safari-, Share, Add, Screen |
 | worker-approved | `/settings` | tablet/ta | tap-target<24px | link-privacy:176x16 |
 | worker-approved | `/settings` | tablet/ta | tap-target<24px | link-terms:186x16 |
-| worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | tablet/ta | english-in-tamil | Meena, CrawlT, Tamil, Nadu, Medical, Council |
+| worker-approved | `/w/6a6673ff-11eb-41fa-a130-47b72ac09ea8` | tablet/ta | english-in-tamil | Meena, CrawlT, Tamil, Nadu, Medical, Council |
+| worker-pending | `/?tab=worker` | tablet/ta | english-in-tamil | Meena, CrawlT |
+| worker-pending | `/worker/register` | tablet/ta | english-in-tamil | Meena, CrawlT |
 
 ## Failures found and how they were fixed
 
