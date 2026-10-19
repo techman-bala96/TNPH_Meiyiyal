@@ -63,7 +63,7 @@ export function SearchBar({ compact = false }: { compact?: boolean }) {
         <input ref={input} data-testid="search-input" value={q} onChange={(e) => { setQ(e.target.value); setOpen(true); setNote(null); if (!e.target.value) { setQuestion(null); pending.current = null; } }}
           onFocus={() => setOpen(true)} onKeyDown={(e) => { if (e.key === "Escape") { setOpen(false); input.current?.blur(); } }}
           placeholder={t("nearby.search.placeholder")} aria-label={t("nearby.search.placeholder")} enterKeyHint="search" autoComplete="off"
-          className="min-w-0 flex-1 bg-transparent text-[15px] outline-none placeholder:text-muted-foreground/80" />
+          className="h-full min-w-0 flex-1 bg-transparent text-[15px] outline-none placeholder:text-muted-foreground/80" />
         {q && <button type="button" data-testid="search-clear" aria-label={t("nearby.search.clear")} onClick={() => { setQ(""); setQuestion(null); setNote(null); input.current?.focus(); }}
           className="grid h-8 w-8 place-items-center rounded-full text-muted-foreground hover:bg-muted"><X className="h-4 w-4" /></button>}
         {voice.enabled && <button type="button" data-testid="search-mic" onClick={voice.toggle} aria-label={t("nearby.search.mic")} aria-pressed={voice.state !== "off"}
