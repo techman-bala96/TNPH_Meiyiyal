@@ -50,7 +50,7 @@ async function stamp(page: Page) {
       const label = (el.getAttribute("aria-label") || el.getAttribute("title") || el.innerText || (el as HTMLInputElement).value || "").trim().replace(/\s+/g, " ").slice(0, 60);
       const kind = el.getAttribute("role") || el.tagName.toLowerCase();
       el.setAttribute("data-crawl", String(n));
-      out.push({ id: n, key: `${tid}|${kind}|${label}`, label, kind, disabled: (el as HTMLButtonElement).disabled || el.getAttribute("aria-disabled") === "true", href: el.getAttribute("href"), tag: el.tagName });
+      out.push({ id: n, key: `${tid}|${kind}|${label}`, label, kind, disabled: (el as HTMLButtonElement).disabled || el.getAttribute("aria-disabled") === "true" || (el.tagName === "LABEL" && !!(document.getElementById(el.getAttribute("for") ?? "") as HTMLInputElement | null)?.disabled), href: el.getAttribute("href"), tag: el.tagName });
       n++;
     }
     return out;
