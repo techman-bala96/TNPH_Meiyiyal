@@ -62,7 +62,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `admin_decide_appeal` | UI | called by the app during the UI run |
 | RPC | `admin_decide_worker` | UI | called by the app during the UI run |
 | RPC | `admin_delete_rate` | UI | called by the app during the UI run |
-| RPC | `admin_guard` | server | 1610 calls in run |
+| RPC | `admin_guard` | server | 1965 calls in run |
 | RPC | `admin_list_admins` | UI | called by the app during the UI run |
 | RPC | `admin_mfa_ok` | server | SQL helper: inside has_role() so admin rights need MFA (aal2); driven by the mfa-* projects |
 | RPC | `admin_milestones` | UI | called by the app during the UI run |
@@ -148,7 +148,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `push_subscribe` | UI | called by the app during the UI run |
 | RPC | `push_test` | UI | called by the app during the UI run |
 | RPC | `push_unsubscribe` | UI | called by the app during the UI run |
-| RPC | `rate_for` | server | 9022 calls in run |
+| RPC | `rate_for` | server | 9628 calls in run |
 | RPC | `rates_for` | server | supabase/tests |
 | RPC | `referral_check` | server | supabase/tests |
 | RPC | `referral_claim` | UI | called by the app during the UI run |
@@ -173,7 +173,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `verification_appeal` | UI | called by the app during the UI run |
 | RPC | `verification_liveness_challenge` | server | legacy RPC (M7), replaced by the M11 liveness flow in the verify service; safe to drop |
 | RPC | `verification_liveness_start` | UI | called by the app during the UI run |
-| RPC | `verification_rules_for` | server | 5036 calls in run |
+| RPC | `verification_rules_for` | server | 6160 calls in run |
 | RPC | `verification_stage_liveness` | UI | called by the app during the UI run |
 | RPC | `verification_stage_qr` | UI | called by the app during the UI run |
 | RPC | `verification_stage_selfie` | UI | called by the app during the UI run |
@@ -186,7 +186,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `worker_public` | UI | called by the app during the UI run |
 | RPC | `worker_reachable` | server | supabase/tests |
 | RPC | `worker_register` | UI | called by the app during the UI run |
-| RPC | `worker_register_guard` | server | 81 calls in run |
+| RPC | `worker_register_guard` | server | 82 calls in run |
 | RPC | `worker_set_online` | UI | called by the app during the UI run |
 | RPC | `worker_submit` | UI | called by the app during the UI run |
 | Edge function | `account-purge` | server | called by the hourly job via pg_net; driven in LR11 |
@@ -390,13 +390,13 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 
 ## 2. Scenarios
 
-101 scenarios · 85 pass · 13 fail · 3 not run yet · runs: 185 pass / 20 fail / 20 pending (per project).
+101 scenarios · 86 pass · 13 fail · 2 not run yet · runs: 195 pass / 21 fail / 9 pending (per project).
 
 | ID | Scenario (steps) | Expected | Actual | Spec | Device | Lang | Date (IST) | Mode | Shots |
 |---|---|---|---|---|---|---|---|---|---|
-| A11Y-1 | public pages pass axe (en + ta) | as described; every assertion in the test holds | tablet: **not run yet**<br>desktop: **pass**<br>mobile: **pass** | `a11y.spec.ts:19` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| A11Y-2 | signed-in user pages pass axe | as described; every assertion in the test holds | tablet: **not run yet**<br>desktop: **pass**<br>mobile: **pass** | `a11y.spec.ts:28` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
-| A11Y-3 | admin console passes axe | as described; every assertion in the test holds | tablet: **not run yet**<br>desktop: **pass**<br>mobile: **pass** | `a11y.spec.ts:40` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| A11Y-1 | public pages pass axe (en + ta) | as described; every assertion in the test holds | tablet: **pass**<br>desktop: **pass**<br>mobile: **pass** | `a11y.spec.ts:19` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en + ta | 19 Oct 2026, 7:36 am IST | UI |  |
+| A11Y-2 | signed-in user pages pass axe | as described; every assertion in the test holds | tablet: **pass**<br>desktop: **pass**<br>mobile: **pass** | `a11y.spec.ts:28` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 7:36 am IST | UI |  |
+| A11Y-3 | admin console passes axe | as described; every assertion in the test holds | tablet: **pass**<br>desktop: **pass**<br>mobile: **pass** | `a11y.spec.ts:40` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 7:36 am IST | UI |  |
 | AD-1 | invite codes: personal link captured before login, claimed once, admin sees who referred whom; campaign codes | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `admin-m11.spec.ts:26` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:24 am IST | UI |  |
 | AD-2 | admin editors: settings (validated + audited), per-category auto-approve, commission, milestone, profession; districts view + CSV | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `admin-m11.spec.ts:78` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:24 am IST | UI |  |
 | AD-3 | Tamil admin: districts and settings render in Tamil | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `admin-m11.spec.ts:166` | desktop 1366×820, phone (Pixel 7) | en + ta | 19 Oct 2026, 4:24 am IST | UI |  |
@@ -459,7 +459,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | PU-2 | settings: category switches + quiet hours persist, turn off removes the device; Tamil screen | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `push.spec.ts:148` | desktop 1366×820, phone (Pixel 7) | en + ta | 19 Oct 2026, 4:46 am IST | UI |  |
 | PU-3 | iPhone in a Safari tab: shows 'Add to Home Screen' steps instead of a prompt | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `push.spec.ts:194` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:46 am IST | UI |  |
 | PU-4 | service worker shows the phone notification with Accept / Decline, and stays quiet when the app is already open on that screen | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **skipped** | `push.spec.ts:210` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:46 am IST | UI |  |
-| SCR-1 | M11 screens on tablet (en + ta) | as described; every assertion in the test holds | tablet: **not run yet** | `screens.spec.ts:8` | tablet (iPad Mini) | en + ta |  | UI |  |
+| SCR-1 | M11 screens on tablet (en + ta) | as described; every assertion in the test holds | tablet: **pass** | `screens.spec.ts:8` | tablet (iPad Mini) | en + ta | 19 Oct 2026, 8:25 am IST | UI |  |
 | T-1 | feedback | rewards + certificate; complaint flag auto-clears; 3 complaints → block → admin extend/unblock; admin edits rates; public profile | desktop: **pass**<br>mobile: **pass** | `trust.spec.ts:20` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:47 am IST | UI |  |
 | V01 | doctor, everything genuine, auto-approve ON for doctors | approved automatically → can go online | desktop: **pass**<br>mobile: **FAIL** (Error: expect(received).toMatchObject(expected)) | `verification.spec.ts:134` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:47 am IST | UI | 17 ([first](/workspace/scenario-shots/V01-desktop-01-profession.png)) |
 | V02 | doctor genuine, auto-approve OFF (production default) | waits for admin → admin approves → goes online | desktop: **pass**<br>mobile: **pass** | `verification.spec.ts:150` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:48 am IST | UI | 20 ([first](/workspace/scenario-shots/V02-desktop-01-profession.png)) |
@@ -490,8 +490,8 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | V27 | physio: genuine registration | registry review, decision recorded, admin can approve | desktop: **pass**<br>mobile: **pass** | `verification.spec.ts:337` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 5:11 am IST | UI | 18 ([first](/workspace/scenario-shots/V27-desktop-01-profession.png)) |
 | V28 | approved doctor; 90 days later the council shows suspended | recheck takes them offline with a reason | desktop: **pass**<br>mobile: **pass** | `verification.spec.ts:352` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 5:11 am IST | UI | 20 ([first](/workspace/scenario-shots/V28-desktop-01-profession.png)) |
 | V29 | 30 days after the decision the raw selfie and liveness frames are deleted; the consented public portrait stays | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `verification.spec.ts:372` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 5:12 am IST | UI | 20 ([first](/workspace/scenario-shots/V29-desktop-01-profession.png)) |
-| VIS-1 | public screens look the same (en + ta) | as described; every assertion in the test holds | tablet: **not run yet**<br>desktop: **pass**<br>mobile: **pass** | `visual.spec.ts:15` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en + ta |  | UI |  |
-| VIS-2 | settings screen looks the same | as described; every assertion in the test holds | tablet: **not run yet**<br>desktop: **pass**<br>mobile: **pass** | `visual.spec.ts:30` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en |  | UI |  |
+| VIS-1 | public screens look the same (en + ta) | as described; every assertion in the test holds | tablet: **pass**<br>desktop: **pass**<br>mobile: **pass** | `visual.spec.ts:15` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en + ta | 19 Oct 2026, 8:25 am IST | UI |  |
+| VIS-2 | settings screen looks the same | as described; every assertion in the test holds | tablet: **pass**<br>desktop: **pass**<br>mobile: **pass** | `visual.spec.ts:30` | tablet (iPad Mini), desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 8:25 am IST | UI |  |
 | VM-1 | QR photo is decoded in the browser; no-camera selfie upload; reject | appeal → a different admin overturns (with media audit) | desktop: **pass**<br>mobile: **pass** | `verify-m11.spec.ts:17` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 5:12 am IST | UI |  |
 | VM-2 | Aadhaar OTP through the kyc-aadhaar Edge Function (mock adapter) when kyc_provider = edge | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `verify-m11.spec.ts:74` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 5:12 am IST | UI |  |
 | WR-1 | Doctor registers (Aadhaar OTP + docs) -> pending -> admin approves -> Go Online; non-admin blocked from /admin | as described; every assertion in the test holds | desktop: **FAIL** (Error: expect.toBeVisible: Error: strict mode violation: getByTestId('admin-checks') resolved to 2 elements:)<br>mobile: **FAIL** (Error: Timed out 5000ms waiting for expect(locator).toHaveCount(expected)) | `worker-reg.spec.ts:27` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 5:13 am IST | UI |  |
@@ -547,431 +547,432 @@ Cannot be proven in a desktop browser or without production keys. Do these on re
 Every visible clickable on every route, per role, language and screen size, clicked once on a fresh page (plus double taps on primary actions).
 Result: **ok** (landed as expected, no console error / unhandled rejection / blank screen) · **disabled** (correctly disabled for this state) · **covered-by-scenario** (side effect such as sign-out, submit or delete: exercised by a journey instead) · **external-link** · **moved** (navigated on purpose) · **FAIL**.
 
-2821 clicks · 595 distinct controls · 6 failures · screen issues: 117 (tap-target<24px, english-in-tamil).
+3517 clicks · 621 distinct controls · 6 failures · screen issues: 174 (tap-target<24px, english-in-tamil).
 
 | Role | Route | Control | Kind | Result (size/lang) |
 |---|---|---|---|---|
-| admin | `/admin#appeals` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | admin-tab-districts <sub>Districts</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | admin-tab-payments <sub>Payments</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | admin-tab-packs <sub>Packs</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | admin-tab-rates <sub>Rates</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | admin-tab-commission <sub>Commission</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | admin-tab-settings <sub>Settings</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | admin-tab-catalog <sub>Professions</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | admin-tab-security <sub>Security</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | admin-tab-audit <sub>Audit</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | appeals-filter-open <sub>Open</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | appeals-filter-upheld <sub>Upheld</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | appeals-filter-overturned <sub>Overturned</sub> | button | ok: 4 runs |
-| admin | `/admin#appeals` | appeals-filter-all <sub>All</sub> | button | ok: 3 runs; FAIL: mobile/ta |
-| admin | `/admin#audit` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| admin | `/admin#audit` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| admin | `/admin#audit` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs |
-| admin | `/admin#audit` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 4 runs |
-| admin | `/admin#audit` | admin-tab-districts <sub>Districts</sub> | button | ok: 4 runs |
-| admin | `/admin#audit` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 4 runs |
-| admin | `/admin#audit` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 4 runs |
-| admin | `/admin#audit` | admin-tab-payments <sub>Payments</sub> | button | ok: 4 runs |
-| admin | `/admin#audit` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 4 runs |
-| admin | `/admin#audit` | admin-tab-packs <sub>Packs</sub> | button | ok: 4 runs |
-| admin | `/admin#audit` | admin-tab-rates <sub>Rates</sub> | button | ok: 4 runs |
-| admin | `/admin#audit` | admin-tab-commission <sub>Commission</sub> | button | ok: 4 runs |
-| admin | `/admin#audit` | admin-tab-settings <sub>Settings</sub> | button | ok: 4 runs |
-| admin | `/admin#audit` | admin-tab-catalog <sub>Professions</sub> | button | ok: 4 runs |
-| admin | `/admin#audit` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 4 runs |
-| admin | `/admin#audit` | admin-tab-security <sub>Security</sub> | button | ok: 4 runs |
-| admin | `/admin#audit` | admin-tab-audit <sub>Audit</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | admin-tab-districts <sub>Districts</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | admin-tab-payments <sub>Payments</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | admin-tab-packs <sub>Packs</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | admin-tab-rates <sub>Rates</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | admin-tab-commission <sub>Commission</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | admin-tab-settings <sub>Settings</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | admin-tab-catalog <sub>Professions</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | admin-tab-security <sub>Security</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | admin-tab-audit <sub>Audit</sub> | button | ok: 4 runs |
-| admin | `/admin#catalog` | cat-node-open <sub>DoctorProfession · 0 professionals</sub> | button | ok: 12 runs; sampled: 454 runs |
-| admin | `/admin#catalog` | rule-required <sub>on</sub> | switch | ok: 4 runs |
-| admin | `/admin#commission` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| admin | `/admin#commission` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| admin | `/admin#commission` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs |
-| admin | `/admin#commission` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 4 runs |
-| admin | `/admin#commission` | admin-tab-districts <sub>Districts</sub> | button | ok: 4 runs |
-| admin | `/admin#commission` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 4 runs |
-| admin | `/admin#commission` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 4 runs |
-| admin | `/admin#commission` | admin-tab-payments <sub>Payments</sub> | button | ok: 4 runs |
-| admin | `/admin#commission` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 4 runs |
-| admin | `/admin#commission` | admin-tab-packs <sub>Packs</sub> | button | ok: 4 runs |
-| admin | `/admin#commission` | admin-tab-rates <sub>Rates</sub> | button | ok: 4 runs |
-| admin | `/admin#commission` | admin-tab-commission <sub>Commission</sub> | button | ok: 4 runs |
-| admin | `/admin#commission` | admin-tab-settings <sub>Settings</sub> | button | ok: 4 runs |
-| admin | `/admin#commission` | admin-tab-catalog <sub>Professions</sub> | button | ok: 4 runs |
-| admin | `/admin#commission` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 4 runs |
-| admin | `/admin#commission` | admin-tab-security <sub>Security</sub> | button | ok: 4 runs |
-| admin | `/admin#commission` | admin-tab-audit <sub>Audit</sub> | button | ok: 4 runs |
-| admin | `/admin#commission` | commission-node <sub>Choose a profession…</sub> | select | ok: 4 runs |
-| admin | `/admin#commission` | commission-add <sub>Add override</sub> | button | disabled: 4 runs |
-| admin | `/admin#districts` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| admin | `/admin#districts` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| admin | `/admin#districts` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs |
-| admin | `/admin#districts` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 4 runs |
-| admin | `/admin#districts` | admin-tab-districts <sub>Districts</sub> | button | ok: 4 runs |
-| admin | `/admin#districts` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 4 runs |
-| admin | `/admin#districts` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 4 runs |
-| admin | `/admin#districts` | admin-tab-payments <sub>Payments</sub> | button | ok: 4 runs |
-| admin | `/admin#districts` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 4 runs |
-| admin | `/admin#districts` | admin-tab-packs <sub>Packs</sub> | button | ok: 4 runs |
-| admin | `/admin#districts` | admin-tab-rates <sub>Rates</sub> | button | ok: 4 runs |
-| admin | `/admin#districts` | admin-tab-commission <sub>Commission</sub> | button | ok: 4 runs |
-| admin | `/admin#districts` | admin-tab-settings <sub>Settings</sub> | button | ok: 4 runs |
-| admin | `/admin#districts` | admin-tab-catalog <sub>Professions</sub> | button | ok: 4 runs |
-| admin | `/admin#districts` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 4 runs |
-| admin | `/admin#districts` | admin-tab-security <sub>Security</sub> | button | ok: 4 runs |
-| admin | `/admin#districts` | admin-tab-audit <sub>Audit</sub> | button | ok: 4 runs |
-| admin | `/admin#districts` | districts-prof-all <sub>All</sub> | radio | ok: 4 runs |
-| admin | `/admin#districts` | districts-prof-doctor <sub>Doctor</sub> | radio | ok: 4 runs |
-| admin | `/admin#districts` | districts-prof-veterinary <sub>Veterinary</sub> | radio | ok: 4 runs |
-| admin | `/admin#districts` | districts-prof-lawyer <sub>Lawyer</sub> | radio | ok: 4 runs |
-| admin | `/admin#districts` | districts-prof-engineer <sub>Engineer</sub> | radio | ok: 4 runs |
-| admin | `/admin#districts` | districts-status-all <sub>All</sub> | radio | ok: 4 runs |
-| admin | `/admin#districts` | districts-status-submitted <sub>Submitted</sub> | radio | ok: 4 runs |
-| admin | `/admin#districts` | districts-status-pending <sub>Pending</sub> | radio | ok: 4 runs |
-| admin | `/admin#districts` | districts-status-approved <sub>Approved</sub> | radio | ok: 4 runs |
-| admin | `/admin#districts` | districts-status-rejected <sub>Rejected</sub> | radio | ok: 4 runs |
-| admin | `/admin#districts` | districts-hide-zero <sub>on</sub> | input | ok: 4 runs |
-| admin | `/admin#districts` | districts-view <sub>Sort</sub> | select | ok: 4 runs |
-| admin | `/admin#districts` | districts-csv <sub>CSV</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | admin-tab-districts <sub>Districts</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | admin-tab-payments <sub>Payments</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | admin-tab-packs <sub>Packs</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | admin-tab-rates <sub>Rates</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | admin-tab-commission <sub>Commission</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | admin-tab-settings <sub>Settings</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | admin-tab-catalog <sub>Professions</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | admin-tab-security <sub>Security</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | admin-tab-audit <sub>Audit</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | ms-active <sub>on</sub> | switch | ok: 4 runs |
-| admin | `/admin#milestones` | ms-kind <sub>Measure</sub> | select | ok: 4 runs |
-| admin | `/admin#milestones` | ms-card <sub>Colour</sub> | select | ok: 4 runs |
-| admin | `/admin#milestones` | ms-save <sub>Save</sub> | button | ok: 4 runs |
-| admin | `/admin#milestones` | ms-add <sub>Add milestone</sub> | button | ok: 4 runs |
-| admin | `/admin#moderation` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| admin | `/admin#moderation` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| admin | `/admin#moderation` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs |
-| admin | `/admin#moderation` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 4 runs |
-| admin | `/admin#moderation` | admin-tab-districts <sub>Districts</sub> | button | ok: 4 runs |
-| admin | `/admin#moderation` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 4 runs |
-| admin | `/admin#moderation` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 4 runs |
-| admin | `/admin#moderation` | admin-tab-payments <sub>Payments</sub> | button | ok: 4 runs |
-| admin | `/admin#moderation` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 4 runs |
-| admin | `/admin#moderation` | admin-tab-packs <sub>Packs</sub> | button | ok: 4 runs |
-| admin | `/admin#moderation` | admin-tab-rates <sub>Rates</sub> | button | ok: 4 runs |
-| admin | `/admin#moderation` | admin-tab-commission <sub>Commission</sub> | button | ok: 4 runs |
-| admin | `/admin#moderation` | admin-tab-settings <sub>Settings</sub> | button | ok: 4 runs |
-| admin | `/admin#moderation` | admin-tab-catalog <sub>Professions</sub> | button | ok: 4 runs |
-| admin | `/admin#moderation` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 4 runs |
-| admin | `/admin#moderation` | admin-tab-security <sub>Security</sub> | button | ok: 4 runs |
-| admin | `/admin#moderation` | admin-tab-audit <sub>Audit</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | admin-tab-districts <sub>Districts</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | admin-tab-payments <sub>Payments</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | admin-tab-packs <sub>Packs</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | admin-tab-rates <sub>Rates</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | admin-tab-commission <sub>Commission</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | admin-tab-settings <sub>Settings</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | admin-tab-catalog <sub>Professions</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | admin-tab-security <sub>Security</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | admin-tab-audit <sub>Audit</sub> | button | ok: 4 runs |
-| admin | `/admin#packs` | pack-edit <sub>on</sub> | input | ok: 4 runs |
-| admin | `/admin#packs` | pack-active <sub>on</sub> | input | ok: 4 runs |
-| admin | `/admin#payments` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| admin | `/admin#payments` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| admin | `/admin#payments` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs |
-| admin | `/admin#payments` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 4 runs |
-| admin | `/admin#payments` | admin-tab-districts <sub>Districts</sub> | button | ok: 4 runs |
-| admin | `/admin#payments` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 4 runs |
-| admin | `/admin#payments` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 4 runs |
-| admin | `/admin#payments` | admin-tab-payments <sub>Payments</sub> | button | ok: 4 runs |
-| admin | `/admin#payments` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 4 runs |
-| admin | `/admin#payments` | admin-tab-packs <sub>Packs</sub> | button | ok: 4 runs |
-| admin | `/admin#payments` | admin-tab-rates <sub>Rates</sub> | button | ok: 4 runs |
-| admin | `/admin#payments` | admin-tab-commission <sub>Commission</sub> | button | ok: 4 runs |
-| admin | `/admin#payments` | admin-tab-settings <sub>Settings</sub> | button | ok: 4 runs |
-| admin | `/admin#payments` | admin-tab-catalog <sub>Professions</sub> | button | ok: 4 runs |
-| admin | `/admin#payments` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 4 runs |
-| admin | `/admin#payments` | admin-tab-security <sub>Security</sub> | button | ok: 4 runs |
-| admin | `/admin#payments` | admin-tab-audit <sub>Audit</sub> | button | ok: 4 runs |
-| admin | `/admin#payments` | refund <sub>Refund</sub> | button | disabled: 4 runs |
-| admin | `/admin#payouts` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| admin | `/admin#payouts` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| admin | `/admin#payouts` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs |
-| admin | `/admin#payouts` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 4 runs |
-| admin | `/admin#payouts` | admin-tab-districts <sub>Districts</sub> | button | ok: 4 runs |
-| admin | `/admin#payouts` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 4 runs |
-| admin | `/admin#payouts` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 4 runs |
-| admin | `/admin#payouts` | admin-tab-payments <sub>Payments</sub> | button | ok: 4 runs |
-| admin | `/admin#payouts` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 4 runs |
-| admin | `/admin#payouts` | admin-tab-packs <sub>Packs</sub> | button | ok: 4 runs |
-| admin | `/admin#payouts` | admin-tab-rates <sub>Rates</sub> | button | ok: 4 runs |
-| admin | `/admin#payouts` | admin-tab-commission <sub>Commission</sub> | button | ok: 4 runs |
-| admin | `/admin#payouts` | admin-tab-settings <sub>Settings</sub> | button | ok: 4 runs |
-| admin | `/admin#payouts` | admin-tab-catalog <sub>Professions</sub> | button | ok: 4 runs |
-| admin | `/admin#payouts` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 4 runs |
-| admin | `/admin#payouts` | admin-tab-security <sub>Security</sub> | button | ok: 4 runs |
-| admin | `/admin#payouts` | admin-tab-audit <sub>Audit</sub> | button | ok: 4 runs |
-| admin | `/admin#payouts` | payout-pause <sub>Resume payouts</sub> | button | covered-by-scenario: 4 runs |
-| admin | `/admin#payouts` | payout-run <sub>Run payout batch</sub> | button | disabled: 4 runs |
-| admin | `/admin#queue` | page-back <sub>Back</sub> | button | FAIL: desktop/en; ok: 3 runs |
-| admin | `/admin#queue` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-tab-districts <sub>Districts</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-tab-payments <sub>Payments</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-tab-packs <sub>Packs</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-tab-rates <sub>Rates</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-tab-commission <sub>Commission</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-tab-settings <sub>Settings</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-tab-catalog <sub>Professions</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-tab-security <sub>Security</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-tab-audit <sub>Audit</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-filter-pending <sub>Pending</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-filter-needs_info <sub>More info</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-filter-approved <sub>Approved</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-filter-rejected <sub>Rejected</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-filter-all <sub>All</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-card <sub>Open register</sub> | a | external-link: 4 runs; ok: 8 runs |
-| admin | `/admin#queue` | case-media-open <sub>View selfie & liveness frames</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-approve <sub>Approve</sub> | button | covered-by-scenario: 4 runs |
-| admin | `/admin#queue` | admin-needs-info <sub>More info</sub> | button | ok: 4 runs |
-| admin | `/admin#queue` | admin-reject <sub>Reject</sub> | button | covered-by-scenario: 4 runs |
-| admin | `/admin#rates` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | admin-tab-districts <sub>Districts</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | admin-tab-payments <sub>Payments</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | admin-tab-packs <sub>Packs</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | admin-tab-rates <sub>Rates</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | admin-tab-commission <sub>Commission</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | admin-tab-settings <sub>Settings</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | admin-tab-catalog <sub>Professions</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | admin-tab-security <sub>Security</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | admin-tab-audit <sub>Audit</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | rate-delete <sub>remove</sub> | button | ok: 4 runs |
-| admin | `/admin#rates` | rates-add-node <sub>Add override for… doctor › allopathy › g</sub> | select | moved: 4 runs |
-| admin | `/admin#rates` | rates-add | button | disabled: 4 runs |
-| admin | `/admin#referrals` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | admin-tab-districts <sub>Districts</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | admin-tab-payments <sub>Payments</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | admin-tab-packs <sub>Packs</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | admin-tab-rates <sub>Rates</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | admin-tab-commission <sub>Commission</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | admin-tab-settings <sub>Settings</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | admin-tab-catalog <sub>Professions</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | admin-tab-security <sub>Security</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | admin-tab-audit <sub>Audit</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | ref-view-top <sub>Top referrers</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | ref-view-campaign <sub>Campaign codes</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | ref-view-list <sub>All referrals</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | ref-see <sub>See who joined</sub> | button | ok: 4 runs |
-| admin | `/admin#referrals` | ref-active <sub>on</sub> | switch | ok: 4 runs |
-| admin | `/admin#referrals` | ref-code-row <sub>Copy code</sub> | button | ok: 2 runs; FAIL: 2 runs |
-| admin | `/admin#security` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| admin | `/admin#security` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| admin | `/admin#security` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs |
-| admin | `/admin#security` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 4 runs |
-| admin | `/admin#security` | admin-tab-districts <sub>Districts</sub> | button | ok: 4 runs |
-| admin | `/admin#security` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 4 runs |
-| admin | `/admin#security` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 4 runs |
-| admin | `/admin#security` | admin-tab-payments <sub>Payments</sub> | button | ok: 4 runs |
-| admin | `/admin#security` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 4 runs |
-| admin | `/admin#security` | admin-tab-packs <sub>Packs</sub> | button | ok: 4 runs |
-| admin | `/admin#security` | admin-tab-rates <sub>Rates</sub> | button | ok: 4 runs |
-| admin | `/admin#security` | admin-tab-commission <sub>Commission</sub> | button | ok: 4 runs |
-| admin | `/admin#security` | admin-tab-settings <sub>Settings</sub> | button | ok: 4 runs |
-| admin | `/admin#security` | admin-tab-catalog <sub>Professions</sub> | button | ok: 4 runs |
-| admin | `/admin#security` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 4 runs |
-| admin | `/admin#security` | admin-tab-security <sub>Security</sub> | button | ok: 4 runs |
-| admin | `/admin#security` | admin-tab-audit <sub>Audit</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | admin-tab-districts <sub>Districts</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | admin-tab-payments <sub>Payments</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | admin-tab-packs <sub>Packs</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | admin-tab-rates <sub>Rates</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | admin-tab-commission <sub>Commission</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | admin-tab-settings <sub>Settings</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | admin-tab-catalog <sub>Professions</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | admin-tab-security <sub>Security</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | admin-tab-audit <sub>Audit</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | settings-grp-verification <sub>Verification</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | settings-grp-money <sub>Money</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | settings-grp-consult <sub>Consultations</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | settings-grp-moderation <sub>Moderation</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | settings-grp-notifications <sub>Notifications</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | settings-grp-referrals <sub>Referrals</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | settings-grp-security <sub>Security</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | settings-grp-dev <sub>Developer</sub> | button | ok: 4 runs |
-| admin | `/admin#settings` | setting-row <sub>Auto-approve clean cases (all categories</sub> | label | ok: 12 runs; sampled: 48 runs |
-| admin | `/admin#settings` | setting-switch <sub>on</sub> | switch | ok: 4 runs |
-| admin | `/admin#settings` | auto-cat-inherit <sub>Inherit</sub> | radio | ok: 4 runs |
-| admin | `/admin#settings` | auto-cat-on <sub>On</sub> | radio | ok: 4 runs |
-| admin | `/admin#settings` | auto-cat-off <sub>Off</sub> | radio | ok: 4 runs |
-| admin | `/admin#settings` | setting-input <sub>stub edge</sub> | select | ok: 4 runs |
-| client | `/` | loc-chip <sub>Your location Mylapore, Chennai · Change</sub> | a | ok: 4 runs |
-| client | `/` | mic-toggle <sub>Turn on voice assistant</sub> | button | ok: 4 runs |
-| client | `/` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| client | `/` | bell <sub>Notifications</sub> | a | ok: 4 runs |
-| client | `/` | avatar-btn <sub>Account</sub> | button | ok: 4 runs |
-| client | `/` | tab-find <sub>Find Worker</sub> | tab | ok: 4 runs |
-| client | `/` | tab-worker <sub>Worker</sub> | tab | ok: 4 runs |
-| client | `/` | search-mic <sub>Speak to search</sub> | button | ok: 4 runs |
-| client | `/` | group-professionals <sub>PROFESSIONALS See all</sub> | a | ok: 4 runs |
-| client | `/` | cat-professionals--doctor <sub>Doctor Consult doctors by chat, voice or</sub> | a | ok: 4 runs |
-| client | `/` | cat-professionals--lawyer <sub>Lawyer Get legal advice from advocates F</sub> | a | ok: 4 runs |
-| client | `/` | cat-professionals--engineer <sub>Engineer Engineers, architects & designe</sub> | a | ok: 4 runs |
-| client | `/` | nav-home <sub>Home</sub> | a | ok: 4 runs |
-| client | `/` | nav-conversations <sub>Conversations</sub> | a | ok: 4 runs |
-| client | `/` | nav-profile <sub>Profile</sub> | a | ok: 4 runs |
-| client | `/?tab=worker` | loc-chip <sub>Your location Mylapore, Chennai · Change</sub> | a | ok: 4 runs |
-| client | `/?tab=worker` | mic-toggle <sub>Turn on voice assistant</sub> | button | ok: 4 runs |
-| client | `/?tab=worker` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| client | `/?tab=worker` | bell <sub>Notifications</sub> | a | ok: 4 runs |
-| client | `/?tab=worker` | avatar-btn <sub>Account</sub> | button | ok: 4 runs |
-| client | `/?tab=worker` | tab-find <sub>Find Worker</sub> | tab | ok: 4 runs |
-| client | `/?tab=worker` | tab-worker <sub>Worker</sub> | tab | ok: 4 runs |
-| client | `/?tab=worker` | btn-register-worker <sub>Start registration</sub> | a | ok: 4 runs |
-| client | `/?tab=worker` | nav-home <sub>Home</sub> | a | ok: 4 runs |
-| client | `/?tab=worker` | nav-conversations <sub>Conversations</sub> | a | ok: 4 runs |
-| client | `/?tab=worker` | nav-profile <sub>Profile</sub> | a | ok: 4 runs |
-| client | `/browse/professionals` | loc-chip <sub>Your location Mylapore, Chennai · Change</sub> | a | ok: 4 runs |
-| client | `/browse/professionals` | mic-toggle <sub>Turn on voice assistant</sub> | button | ok: 4 runs |
-| client | `/browse/professionals` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| client | `/browse/professionals` | bell <sub>Notifications</sub> | a | ok: 4 runs |
-| client | `/browse/professionals` | avatar-btn <sub>Account</sub> | button | ok: 4 runs |
-| client | `/browse/professionals` | search-mic <sub>Speak to search</sub> | button | ok: 4 runs |
-| client | `/browse/professionals` | browse-back <sub>Back</sub> | button | ok: 4 runs |
-| client | `/browse/professionals` | breadcrumb <sub>Home</sub> | a | ok: 4 runs |
-| client | `/browse/professionals` | node-professionals--doctor <sub>Doctor 11 options</sub> | a | ok: 4 runs |
-| client | `/browse/professionals` | node-professionals--lawyer <sub>Lawyer 20 options</sub> | a | ok: 4 runs |
-| client | `/browse/professionals` | node-professionals--engineer <sub>Engineer 18 options</sub> | a | ok: 4 runs |
-| client | `/browse/professionals` | nav-home <sub>Home</sub> | a | ok: 4 runs |
-| client | `/browse/professionals` | nav-conversations <sub>Conversations</sub> | a | ok: 4 runs |
-| client | `/browse/professionals` | nav-profile <sub>Profile</sub> | a | ok: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | loc-chip <sub>Your location Mylapore, Chennai · Change</sub> | a | ok: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | mic-toggle <sub>Turn on voice assistant</sub> | button | ok: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | bell <sub>Notifications</sub> | a | ok: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | avatar-btn <sub>Account</sub> | button | ok: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | search-mic <sub>Speak to search</sub> | button | ok: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | browse-back <sub>Back</sub> | button | ok: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | breadcrumb <sub>Home</sub> | a | ok: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | crumb-professionals <sub>Professionals</sub> | a | ok: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | crumb-professionals--doctor <sub>Doctor</sub> | a | ok: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | crumb-professionals--doctor--allopathy <sub>Allopathy</sub> | a | ok: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | list-near <sub>Nearby</sub> | button | ok: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | list-all <sub>Show all</sub> | button | ok: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | auto-toggle <sub>Auto request</sub> | switch | ok: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | find-now <sub>Find now</sub> | button | disabled: 2 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | worker-card <sub>Dr. Meena CrawlD LICENCE VERIFIED < 1 km</sub> | button | moved: 18 runs; ok: 2 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | nav-home <sub>Home</sub> | a | moved: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | nav-conversations <sub>Conversations</sub> | a | moved: 4 runs |
-| client | `/browse/professionals--doctor--allopathy--paediatrics` | nav-profile <sub>Profile</sub> | a | moved: 4 runs |
-| client | `/history` | page-back <sub>பின்செல்</sub> | button | ok: 4 runs |
-| client | `/history` | lang-toggle <sub>Switch to English</sub> | button | ok: 4 runs |
-| client | `/history` | get-test-credits <sub>சோதனை கிரெடிட்</sub> | button | ok: 4 runs |
-| client | `/history` | history-row <sub>Dr. Meena CrawlD மருத்துவர் · குழந்தை நல</sub> | a | ok: 2 runs |
-| client | `/history` | nav-home <sub>முகப்பு</sub> | a | ok: 4 runs |
-| client | `/history` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: 4 runs |
-| client | `/history` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: 4 runs |
-| client | `/location` | loc-back <sub>பின்செல்</sub> | button | ok: 4 runs |
-| client | `/location` | lang-toggle <sub>Switch to English</sub> | button | ok: 4 runs |
-| client | `/location` | btn-locate <sub>தற்போதைய இருப்பிடத்தைப் பயன்படுத்து</sub> | button | ok: 4 runs |
-| client | `/location` | btn-confirm <sub>இருப்பிடத்தை உறுதிசெய்</sub> | button | ok: 4 runs |
-| client | `/messages` | page-back <sub>பின்செல்</sub> | button | ok: 4 runs |
-| client | `/messages` | lang-toggle <sub>Switch to English</sub> | button | ok: 4 runs |
-| client | `/messages` | nav-home <sub>முகப்பு</sub> | a | ok: 4 runs |
-| client | `/messages` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: 4 runs |
-| client | `/messages` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: 4 runs |
-| client | `/no-such-page` | lang-toggle <sub>Switch to English</sub> | button | ok: 4 runs |
-| client | `/no-such-page` | not-found-home <sub>முகப்புக்குச் செல்</sub> | a | ok: 4 runs |
-| client | `/no-such-page` | nav-home <sub>முகப்பு</sub> | a | ok: 4 runs |
-| client | `/no-such-page` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: 4 runs |
-| client | `/no-such-page` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: 4 runs |
-| client | `/notifications` | page-back <sub>பின்செல்</sub> | button | ok: 4 runs |
-| client | `/notifications` | lang-toggle <sub>Switch to English</sub> | button | ok: 4 runs |
-| client | `/notifications` | nav-home <sub>முகப்பு</sub> | a | ok: 2 runs; moved: 2 runs |
-| client | `/notifications` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: 2 runs; moved: 2 runs |
-| client | `/notifications` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: 2 runs; moved: 2 runs |
+| admin | `/admin#appeals` | page-back <sub>Back</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | admin-tab-queue <sub>Queue</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | admin-tab-districts <sub>Districts</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | admin-tab-payments <sub>Payments</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | admin-tab-packs <sub>Packs</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | admin-tab-rates <sub>Rates</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | admin-tab-commission <sub>Commission</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | admin-tab-settings <sub>Settings</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | admin-tab-catalog <sub>Professions</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | admin-tab-security <sub>Security</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | admin-tab-audit <sub>Audit</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | appeals-filter-open <sub>Open</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | appeals-filter-upheld <sub>Upheld</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | appeals-filter-overturned <sub>Overturned</sub> | button | ok: 5 runs |
+| admin | `/admin#appeals` | appeals-filter-all <sub>All</sub> | button | ok: 4 runs; FAIL: mobile/ta |
+| admin | `/admin#audit` | page-back <sub>Back</sub> | button | ok: 5 runs |
+| admin | `/admin#audit` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| admin | `/admin#audit` | admin-tab-queue <sub>Queue</sub> | button | ok: 5 runs |
+| admin | `/admin#audit` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 5 runs |
+| admin | `/admin#audit` | admin-tab-districts <sub>Districts</sub> | button | ok: 5 runs |
+| admin | `/admin#audit` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 5 runs |
+| admin | `/admin#audit` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 5 runs |
+| admin | `/admin#audit` | admin-tab-payments <sub>Payments</sub> | button | ok: 5 runs |
+| admin | `/admin#audit` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 5 runs |
+| admin | `/admin#audit` | admin-tab-packs <sub>Packs</sub> | button | ok: 5 runs |
+| admin | `/admin#audit` | admin-tab-rates <sub>Rates</sub> | button | ok: 5 runs |
+| admin | `/admin#audit` | admin-tab-commission <sub>Commission</sub> | button | ok: 5 runs |
+| admin | `/admin#audit` | admin-tab-settings <sub>Settings</sub> | button | ok: 5 runs |
+| admin | `/admin#audit` | admin-tab-catalog <sub>Professions</sub> | button | ok: 5 runs |
+| admin | `/admin#audit` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 5 runs |
+| admin | `/admin#audit` | admin-tab-security <sub>Security</sub> | button | ok: 5 runs |
+| admin | `/admin#audit` | admin-tab-audit <sub>Audit</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | page-back <sub>Back</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | admin-tab-queue <sub>Queue</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | admin-tab-districts <sub>Districts</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | admin-tab-payments <sub>Payments</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | admin-tab-packs <sub>Packs</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | admin-tab-rates <sub>Rates</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | admin-tab-commission <sub>Commission</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | admin-tab-settings <sub>Settings</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | admin-tab-catalog <sub>Professions</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | admin-tab-security <sub>Security</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | admin-tab-audit <sub>Audit</sub> | button | ok: 5 runs |
+| admin | `/admin#catalog` | cat-node-open <sub>DoctorProfession · 0 professionals</sub> | button | ok: 15 runs; sampled: 567 runs |
+| admin | `/admin#catalog` | rule-required <sub>on</sub> | switch | ok: 5 runs |
+| admin | `/admin#commission` | page-back <sub>Back</sub> | button | ok: 5 runs |
+| admin | `/admin#commission` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| admin | `/admin#commission` | admin-tab-queue <sub>Queue</sub> | button | ok: 5 runs |
+| admin | `/admin#commission` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 5 runs |
+| admin | `/admin#commission` | admin-tab-districts <sub>Districts</sub> | button | ok: 5 runs |
+| admin | `/admin#commission` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 5 runs |
+| admin | `/admin#commission` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 5 runs |
+| admin | `/admin#commission` | admin-tab-payments <sub>Payments</sub> | button | ok: 5 runs |
+| admin | `/admin#commission` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 5 runs |
+| admin | `/admin#commission` | admin-tab-packs <sub>Packs</sub> | button | ok: 5 runs |
+| admin | `/admin#commission` | admin-tab-rates <sub>Rates</sub> | button | ok: 5 runs |
+| admin | `/admin#commission` | admin-tab-commission <sub>Commission</sub> | button | ok: 5 runs |
+| admin | `/admin#commission` | admin-tab-settings <sub>Settings</sub> | button | ok: 5 runs |
+| admin | `/admin#commission` | admin-tab-catalog <sub>Professions</sub> | button | ok: 5 runs |
+| admin | `/admin#commission` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 5 runs |
+| admin | `/admin#commission` | admin-tab-security <sub>Security</sub> | button | ok: 5 runs |
+| admin | `/admin#commission` | admin-tab-audit <sub>Audit</sub> | button | ok: 5 runs |
+| admin | `/admin#commission` | commission-node <sub>Choose a profession…</sub> | select | ok: 5 runs |
+| admin | `/admin#commission` | commission-add <sub>Add override</sub> | button | disabled: 5 runs |
+| admin | `/admin#districts` | page-back <sub>Back</sub> | button | ok: 5 runs |
+| admin | `/admin#districts` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| admin | `/admin#districts` | admin-tab-queue <sub>Queue</sub> | button | ok: 5 runs |
+| admin | `/admin#districts` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 5 runs |
+| admin | `/admin#districts` | admin-tab-districts <sub>Districts</sub> | button | ok: 5 runs |
+| admin | `/admin#districts` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 5 runs |
+| admin | `/admin#districts` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 5 runs |
+| admin | `/admin#districts` | admin-tab-payments <sub>Payments</sub> | button | ok: 5 runs |
+| admin | `/admin#districts` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 5 runs |
+| admin | `/admin#districts` | admin-tab-packs <sub>Packs</sub> | button | ok: 5 runs |
+| admin | `/admin#districts` | admin-tab-rates <sub>Rates</sub> | button | ok: 5 runs |
+| admin | `/admin#districts` | admin-tab-commission <sub>Commission</sub> | button | ok: 5 runs |
+| admin | `/admin#districts` | admin-tab-settings <sub>Settings</sub> | button | ok: 5 runs |
+| admin | `/admin#districts` | admin-tab-catalog <sub>Professions</sub> | button | ok: 5 runs |
+| admin | `/admin#districts` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 5 runs |
+| admin | `/admin#districts` | admin-tab-security <sub>Security</sub> | button | ok: 5 runs |
+| admin | `/admin#districts` | admin-tab-audit <sub>Audit</sub> | button | ok: 5 runs |
+| admin | `/admin#districts` | districts-prof-all <sub>All</sub> | radio | ok: 5 runs |
+| admin | `/admin#districts` | districts-prof-doctor <sub>Doctor</sub> | radio | ok: 5 runs |
+| admin | `/admin#districts` | districts-prof-veterinary <sub>Veterinary</sub> | radio | ok: 5 runs |
+| admin | `/admin#districts` | districts-prof-lawyer <sub>Lawyer</sub> | radio | ok: 5 runs |
+| admin | `/admin#districts` | districts-prof-engineer <sub>Engineer</sub> | radio | ok: 5 runs |
+| admin | `/admin#districts` | districts-status-all <sub>All</sub> | radio | ok: 5 runs |
+| admin | `/admin#districts` | districts-status-submitted <sub>Submitted</sub> | radio | ok: 5 runs |
+| admin | `/admin#districts` | districts-status-pending <sub>Pending</sub> | radio | ok: 5 runs |
+| admin | `/admin#districts` | districts-status-approved <sub>Approved</sub> | radio | ok: 5 runs |
+| admin | `/admin#districts` | districts-status-rejected <sub>Rejected</sub> | radio | ok: 5 runs |
+| admin | `/admin#districts` | districts-hide-zero <sub>on</sub> | input | ok: 5 runs |
+| admin | `/admin#districts` | districts-view <sub>Sort</sub> | select | ok: 5 runs |
+| admin | `/admin#districts` | districts-csv <sub>CSV</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | page-back <sub>Back</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | admin-tab-queue <sub>Queue</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | admin-tab-districts <sub>Districts</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | admin-tab-payments <sub>Payments</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | admin-tab-packs <sub>Packs</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | admin-tab-rates <sub>Rates</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | admin-tab-commission <sub>Commission</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | admin-tab-settings <sub>Settings</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | admin-tab-catalog <sub>Professions</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | admin-tab-security <sub>Security</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | admin-tab-audit <sub>Audit</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | ms-active <sub>on</sub> | switch | ok: 5 runs |
+| admin | `/admin#milestones` | ms-kind <sub>Measure</sub> | select | ok: 5 runs |
+| admin | `/admin#milestones` | ms-card <sub>Colour</sub> | select | ok: 5 runs |
+| admin | `/admin#milestones` | ms-save <sub>Save</sub> | button | ok: 5 runs |
+| admin | `/admin#milestones` | ms-add <sub>Add milestone</sub> | button | ok: 5 runs |
+| admin | `/admin#moderation` | page-back <sub>Back</sub> | button | ok: 5 runs |
+| admin | `/admin#moderation` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| admin | `/admin#moderation` | admin-tab-queue <sub>Queue</sub> | button | ok: 5 runs |
+| admin | `/admin#moderation` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 5 runs |
+| admin | `/admin#moderation` | admin-tab-districts <sub>Districts</sub> | button | ok: 5 runs |
+| admin | `/admin#moderation` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 5 runs |
+| admin | `/admin#moderation` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 5 runs |
+| admin | `/admin#moderation` | admin-tab-payments <sub>Payments</sub> | button | ok: 5 runs |
+| admin | `/admin#moderation` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 5 runs |
+| admin | `/admin#moderation` | admin-tab-packs <sub>Packs</sub> | button | ok: 5 runs |
+| admin | `/admin#moderation` | admin-tab-rates <sub>Rates</sub> | button | ok: 5 runs |
+| admin | `/admin#moderation` | admin-tab-commission <sub>Commission</sub> | button | ok: 5 runs |
+| admin | `/admin#moderation` | admin-tab-settings <sub>Settings</sub> | button | ok: 5 runs |
+| admin | `/admin#moderation` | admin-tab-catalog <sub>Professions</sub> | button | ok: 5 runs |
+| admin | `/admin#moderation` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 5 runs |
+| admin | `/admin#moderation` | admin-tab-security <sub>Security</sub> | button | ok: 5 runs |
+| admin | `/admin#moderation` | admin-tab-audit <sub>Audit</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | page-back <sub>Back</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | admin-tab-queue <sub>Queue</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | admin-tab-districts <sub>Districts</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | admin-tab-payments <sub>Payments</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | admin-tab-packs <sub>Packs</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | admin-tab-rates <sub>Rates</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | admin-tab-commission <sub>Commission</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | admin-tab-settings <sub>Settings</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | admin-tab-catalog <sub>Professions</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | admin-tab-security <sub>Security</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | admin-tab-audit <sub>Audit</sub> | button | ok: 5 runs |
+| admin | `/admin#packs` | pack-edit <sub>on</sub> | input | ok: 5 runs |
+| admin | `/admin#packs` | pack-active <sub>on</sub> | input | ok: 5 runs |
+| admin | `/admin#payments` | page-back <sub>Back</sub> | button | ok: 5 runs |
+| admin | `/admin#payments` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| admin | `/admin#payments` | admin-tab-queue <sub>Queue</sub> | button | ok: 5 runs |
+| admin | `/admin#payments` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 5 runs |
+| admin | `/admin#payments` | admin-tab-districts <sub>Districts</sub> | button | ok: 5 runs |
+| admin | `/admin#payments` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 5 runs |
+| admin | `/admin#payments` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 5 runs |
+| admin | `/admin#payments` | admin-tab-payments <sub>Payments</sub> | button | ok: 5 runs |
+| admin | `/admin#payments` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 5 runs |
+| admin | `/admin#payments` | admin-tab-packs <sub>Packs</sub> | button | ok: 5 runs |
+| admin | `/admin#payments` | admin-tab-rates <sub>Rates</sub> | button | ok: 5 runs |
+| admin | `/admin#payments` | admin-tab-commission <sub>Commission</sub> | button | ok: 5 runs |
+| admin | `/admin#payments` | admin-tab-settings <sub>Settings</sub> | button | ok: 5 runs |
+| admin | `/admin#payments` | admin-tab-catalog <sub>Professions</sub> | button | ok: 5 runs |
+| admin | `/admin#payments` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 5 runs |
+| admin | `/admin#payments` | admin-tab-security <sub>Security</sub> | button | ok: 5 runs |
+| admin | `/admin#payments` | admin-tab-audit <sub>Audit</sub> | button | ok: 5 runs |
+| admin | `/admin#payments` | refund <sub>Refund</sub> | button | disabled: 5 runs |
+| admin | `/admin#payouts` | page-back <sub>Back</sub> | button | ok: 5 runs |
+| admin | `/admin#payouts` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| admin | `/admin#payouts` | admin-tab-queue <sub>Queue</sub> | button | ok: 5 runs |
+| admin | `/admin#payouts` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 5 runs |
+| admin | `/admin#payouts` | admin-tab-districts <sub>Districts</sub> | button | ok: 5 runs |
+| admin | `/admin#payouts` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 5 runs |
+| admin | `/admin#payouts` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 5 runs |
+| admin | `/admin#payouts` | admin-tab-payments <sub>Payments</sub> | button | ok: 5 runs |
+| admin | `/admin#payouts` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 5 runs |
+| admin | `/admin#payouts` | admin-tab-packs <sub>Packs</sub> | button | ok: 5 runs |
+| admin | `/admin#payouts` | admin-tab-rates <sub>Rates</sub> | button | ok: 5 runs |
+| admin | `/admin#payouts` | admin-tab-commission <sub>Commission</sub> | button | ok: 5 runs |
+| admin | `/admin#payouts` | admin-tab-settings <sub>Settings</sub> | button | ok: 5 runs |
+| admin | `/admin#payouts` | admin-tab-catalog <sub>Professions</sub> | button | ok: 5 runs |
+| admin | `/admin#payouts` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 5 runs |
+| admin | `/admin#payouts` | admin-tab-security <sub>Security</sub> | button | ok: 5 runs |
+| admin | `/admin#payouts` | admin-tab-audit <sub>Audit</sub> | button | ok: 5 runs |
+| admin | `/admin#payouts` | payout-pause <sub>Resume payouts</sub> | button | covered-by-scenario: 5 runs |
+| admin | `/admin#payouts` | payout-run <sub>Run payout batch</sub> | button | disabled: 5 runs |
+| admin | `/admin#queue` | page-back <sub>Back</sub> | button | FAIL: desktop/en; ok: 4 runs |
+| admin | `/admin#queue` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| admin | `/admin#queue` | admin-tab-queue <sub>Queue</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-tab-districts <sub>Districts</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-tab-payments <sub>Payments</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-tab-packs <sub>Packs</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-tab-rates <sub>Rates</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-tab-commission <sub>Commission</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-tab-settings <sub>Settings</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-tab-catalog <sub>Professions</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-tab-security <sub>Security</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-tab-audit <sub>Audit</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-filter-pending <sub>Pending</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-filter-needs_info <sub>More info</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-filter-approved <sub>Approved</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-filter-rejected <sub>Rejected</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-filter-all <sub>All</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-card <sub>Open register</sub> | a | external-link: 5 runs; ok: 8 runs; moved: 2 runs |
+| admin | `/admin#queue` | case-media-open <sub>View selfie & liveness frames</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-approve <sub>Approve</sub> | button | covered-by-scenario: 5 runs |
+| admin | `/admin#queue` | admin-needs-info <sub>More info</sub> | button | ok: 4 runs; moved: tablet/en |
+| admin | `/admin#queue` | admin-reject <sub>Reject</sub> | button | covered-by-scenario: 5 runs |
+| admin | `/admin#queue` | push-ask-dismiss <sub>Not now</sub> | button | ok: tablet/en |
+| admin | `/admin#rates` | page-back <sub>Back</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | admin-tab-queue <sub>Queue</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | admin-tab-districts <sub>Districts</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | admin-tab-payments <sub>Payments</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | admin-tab-packs <sub>Packs</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | admin-tab-rates <sub>Rates</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | admin-tab-commission <sub>Commission</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | admin-tab-settings <sub>Settings</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | admin-tab-catalog <sub>Professions</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | admin-tab-security <sub>Security</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | admin-tab-audit <sub>Audit</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | rate-delete <sub>remove</sub> | button | ok: 5 runs |
+| admin | `/admin#rates` | rates-add-node <sub>Add override for… doctor › allopathy › g</sub> | select | moved: 5 runs |
+| admin | `/admin#rates` | rates-add | button | disabled: 5 runs |
+| admin | `/admin#referrals` | page-back <sub>Back</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | admin-tab-queue <sub>Queue</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | admin-tab-districts <sub>Districts</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | admin-tab-payments <sub>Payments</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | admin-tab-packs <sub>Packs</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | admin-tab-rates <sub>Rates</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | admin-tab-commission <sub>Commission</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | admin-tab-settings <sub>Settings</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | admin-tab-catalog <sub>Professions</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | admin-tab-security <sub>Security</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | admin-tab-audit <sub>Audit</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | ref-view-top <sub>Top referrers</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | ref-view-campaign <sub>Campaign codes</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | ref-view-list <sub>All referrals</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | ref-see <sub>See who joined</sub> | button | ok: 5 runs |
+| admin | `/admin#referrals` | ref-active <sub>on</sub> | switch | ok: 5 runs |
+| admin | `/admin#referrals` | ref-code-row <sub>Copy code</sub> | button | ok: 3 runs; FAIL: 2 runs |
+| admin | `/admin#security` | page-back <sub>Back</sub> | button | ok: 5 runs |
+| admin | `/admin#security` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| admin | `/admin#security` | admin-tab-queue <sub>Queue</sub> | button | ok: 5 runs |
+| admin | `/admin#security` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 5 runs |
+| admin | `/admin#security` | admin-tab-districts <sub>Districts</sub> | button | ok: 5 runs |
+| admin | `/admin#security` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 5 runs |
+| admin | `/admin#security` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 5 runs |
+| admin | `/admin#security` | admin-tab-payments <sub>Payments</sub> | button | ok: 5 runs |
+| admin | `/admin#security` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 5 runs |
+| admin | `/admin#security` | admin-tab-packs <sub>Packs</sub> | button | ok: 5 runs |
+| admin | `/admin#security` | admin-tab-rates <sub>Rates</sub> | button | ok: 5 runs |
+| admin | `/admin#security` | admin-tab-commission <sub>Commission</sub> | button | ok: 5 runs |
+| admin | `/admin#security` | admin-tab-settings <sub>Settings</sub> | button | ok: 5 runs |
+| admin | `/admin#security` | admin-tab-catalog <sub>Professions</sub> | button | ok: 5 runs |
+| admin | `/admin#security` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 5 runs |
+| admin | `/admin#security` | admin-tab-security <sub>Security</sub> | button | ok: 5 runs |
+| admin | `/admin#security` | admin-tab-audit <sub>Audit</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | page-back <sub>Back</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | admin-tab-queue <sub>Queue</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | admin-tab-appeals <sub>Appeals</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | admin-tab-districts <sub>Districts</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | admin-tab-moderation <sub>Moderation</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | admin-tab-referrals <sub>Referrals</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | admin-tab-payments <sub>Payments</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | admin-tab-payouts <sub>Payouts</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | admin-tab-packs <sub>Packs</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | admin-tab-rates <sub>Rates</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | admin-tab-commission <sub>Commission</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | admin-tab-settings <sub>Settings</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | admin-tab-catalog <sub>Professions</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | admin-tab-milestones <sub>Milestones</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | admin-tab-security <sub>Security</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | admin-tab-audit <sub>Audit</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | settings-grp-verification <sub>Verification</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | settings-grp-money <sub>Money</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | settings-grp-consult <sub>Consultations</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | settings-grp-moderation <sub>Moderation</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | settings-grp-notifications <sub>Notifications</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | settings-grp-referrals <sub>Referrals</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | settings-grp-security <sub>Security</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | settings-grp-dev <sub>Developer</sub> | button | ok: 5 runs |
+| admin | `/admin#settings` | setting-row <sub>Auto-approve clean cases (all categories</sub> | label | ok: 15 runs; sampled: 60 runs |
+| admin | `/admin#settings` | setting-switch <sub>on</sub> | switch | ok: 5 runs |
+| admin | `/admin#settings` | auto-cat-inherit <sub>Inherit</sub> | radio | ok: 5 runs |
+| admin | `/admin#settings` | auto-cat-on <sub>On</sub> | radio | ok: 5 runs |
+| admin | `/admin#settings` | auto-cat-off <sub>Off</sub> | radio | ok: 5 runs |
+| admin | `/admin#settings` | setting-input <sub>stub edge</sub> | select | ok: 5 runs |
+| client | `/` | loc-chip <sub>Your location Mylapore, Chennai · Change</sub> | a | ok: 5 runs |
+| client | `/` | mic-toggle <sub>Turn on voice assistant</sub> | button | ok: 5 runs |
+| client | `/` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| client | `/` | bell <sub>Notifications</sub> | a | ok: 5 runs |
+| client | `/` | avatar-btn <sub>Account</sub> | button | ok: 5 runs |
+| client | `/` | tab-find <sub>Find Worker</sub> | tab | ok: 5 runs |
+| client | `/` | tab-worker <sub>Worker</sub> | tab | ok: 5 runs |
+| client | `/` | search-mic <sub>Speak to search</sub> | button | ok: 5 runs |
+| client | `/` | group-professionals <sub>PROFESSIONALS See all</sub> | a | ok: 5 runs |
+| client | `/` | cat-professionals--doctor <sub>Doctor Consult doctors by chat, voice or</sub> | a | ok: 5 runs |
+| client | `/` | cat-professionals--lawyer <sub>Lawyer Get legal advice from advocates F</sub> | a | ok: 5 runs |
+| client | `/` | cat-professionals--engineer <sub>Engineer Engineers, architects & designe</sub> | a | ok: 5 runs |
+| client | `/` | nav-home <sub>Home</sub> | a | ok: 5 runs |
+| client | `/` | nav-conversations <sub>Conversations</sub> | a | ok: 5 runs |
+| client | `/` | nav-profile <sub>Profile</sub> | a | ok: 5 runs |
+| client | `/?tab=worker` | loc-chip <sub>Your location Mylapore, Chennai · Change</sub> | a | ok: 5 runs |
+| client | `/?tab=worker` | mic-toggle <sub>Turn on voice assistant</sub> | button | ok: 5 runs |
+| client | `/?tab=worker` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| client | `/?tab=worker` | bell <sub>Notifications</sub> | a | ok: 5 runs |
+| client | `/?tab=worker` | avatar-btn <sub>Account</sub> | button | ok: 5 runs |
+| client | `/?tab=worker` | tab-find <sub>Find Worker</sub> | tab | ok: 5 runs |
+| client | `/?tab=worker` | tab-worker <sub>Worker</sub> | tab | ok: 5 runs |
+| client | `/?tab=worker` | btn-register-worker <sub>Start registration</sub> | a | ok: 5 runs |
+| client | `/?tab=worker` | nav-home <sub>Home</sub> | a | ok: 5 runs |
+| client | `/?tab=worker` | nav-conversations <sub>Conversations</sub> | a | ok: 5 runs |
+| client | `/?tab=worker` | nav-profile <sub>Profile</sub> | a | ok: 5 runs |
+| client | `/browse/professionals` | loc-chip <sub>Your location Mylapore, Chennai · Change</sub> | a | ok: 5 runs |
+| client | `/browse/professionals` | mic-toggle <sub>Turn on voice assistant</sub> | button | ok: 5 runs |
+| client | `/browse/professionals` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| client | `/browse/professionals` | bell <sub>Notifications</sub> | a | ok: 5 runs |
+| client | `/browse/professionals` | avatar-btn <sub>Account</sub> | button | ok: 5 runs |
+| client | `/browse/professionals` | search-mic <sub>Speak to search</sub> | button | ok: 5 runs |
+| client | `/browse/professionals` | browse-back <sub>Back</sub> | button | ok: 5 runs |
+| client | `/browse/professionals` | breadcrumb <sub>Home</sub> | a | ok: 5 runs |
+| client | `/browse/professionals` | node-professionals--doctor <sub>Doctor 11 options</sub> | a | ok: 5 runs |
+| client | `/browse/professionals` | node-professionals--lawyer <sub>Lawyer 20 options</sub> | a | ok: 5 runs |
+| client | `/browse/professionals` | node-professionals--engineer <sub>Engineer 18 options</sub> | a | ok: 5 runs |
+| client | `/browse/professionals` | nav-home <sub>Home</sub> | a | ok: 5 runs |
+| client | `/browse/professionals` | nav-conversations <sub>Conversations</sub> | a | ok: 5 runs |
+| client | `/browse/professionals` | nav-profile <sub>Profile</sub> | a | ok: 5 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | loc-chip <sub>Your location Mylapore, Chennai · Change</sub> | a | ok: 5 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | mic-toggle <sub>Turn on voice assistant</sub> | button | ok: 5 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | bell <sub>Notifications</sub> | a | ok: 5 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | avatar-btn <sub>Account</sub> | button | ok: 5 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | search-mic <sub>Speak to search</sub> | button | ok: 5 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | browse-back <sub>Back</sub> | button | ok: 5 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | breadcrumb <sub>Home</sub> | a | ok: 5 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | crumb-professionals <sub>Professionals</sub> | a | ok: 5 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | crumb-professionals--doctor <sub>Doctor</sub> | a | ok: 5 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | crumb-professionals--doctor--allopathy <sub>Allopathy</sub> | a | ok: 5 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | list-near <sub>Nearby</sub> | button | ok: 5 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | list-all <sub>Show all</sub> | button | ok: 5 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | auto-toggle <sub>Auto request</sub> | switch | ok: 5 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | find-now <sub>Find now</sub> | button | disabled: 3 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | worker-card <sub>Dr. Meena CrawlD LICENCE VERIFIED < 1 km</sub> | button | moved: 21 runs; ok: 3 runs; sampled: 3 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | nav-home <sub>Home</sub> | a | moved: 5 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | nav-conversations <sub>Conversations</sub> | a | moved: 5 runs |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | nav-profile <sub>Profile</sub> | a | moved: 5 runs |
+| client | `/history` | page-back <sub>பின்செல்</sub> | button | ok: 5 runs |
+| client | `/history` | lang-toggle <sub>Switch to English</sub> | button | ok: 5 runs |
+| client | `/history` | get-test-credits <sub>சோதனை கிரெடிட்</sub> | button | ok: 5 runs |
+| client | `/history` | history-row <sub>Dr. Meena CrawlD மருத்துவர் · குழந்தை நல</sub> | a | ok: 3 runs |
+| client | `/history` | nav-home <sub>முகப்பு</sub> | a | ok: 5 runs |
+| client | `/history` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: 5 runs |
+| client | `/history` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: 5 runs |
+| client | `/location` | loc-back <sub>பின்செல்</sub> | button | ok: 5 runs |
+| client | `/location` | lang-toggle <sub>Switch to English</sub> | button | ok: 5 runs |
+| client | `/location` | btn-locate <sub>தற்போதைய இருப்பிடத்தைப் பயன்படுத்து</sub> | button | ok: 5 runs |
+| client | `/location` | btn-confirm <sub>இருப்பிடத்தை உறுதிசெய்</sub> | button | ok: 5 runs |
+| client | `/messages` | page-back <sub>பின்செல்</sub> | button | ok: 5 runs |
+| client | `/messages` | lang-toggle <sub>Switch to English</sub> | button | ok: 5 runs |
+| client | `/messages` | nav-home <sub>முகப்பு</sub> | a | ok: 5 runs |
+| client | `/messages` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: 5 runs |
+| client | `/messages` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: 5 runs |
+| client | `/no-such-page` | lang-toggle <sub>Switch to English</sub> | button | ok: 5 runs |
+| client | `/no-such-page` | not-found-home <sub>முகப்புக்குச் செல்</sub> | a | ok: 5 runs |
+| client | `/no-such-page` | nav-home <sub>முகப்பு</sub> | a | ok: 5 runs |
+| client | `/no-such-page` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: 5 runs |
+| client | `/no-such-page` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: 5 runs |
+| client | `/notifications` | page-back <sub>பின்செல்</sub> | button | ok: 5 runs |
+| client | `/notifications` | lang-toggle <sub>Switch to English</sub> | button | ok: 5 runs |
+| client | `/notifications` | nav-home <sub>முகப்பு</sub> | a | ok: 3 runs; moved: 2 runs |
+| client | `/notifications` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: 3 runs; moved: 2 runs |
+| client | `/notifications` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: 3 runs; moved: 2 runs |
 | client | `/notifications` | inbox-mark-all <sub>எல்லாவற்றையும் படித்ததாகக் குறி</sub> | button | ok: 2 runs |
 | client | `/notifications` | inbox-item <sub>அறிவிப்புகள் வேலை செய்கின்றன ✅ மெய்யியல்</sub> | button | moved: 2 runs |
-| client | `/profile` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| client | `/profile` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| client | `/profile` | profile-wallet <sub>Wallet 0 credits Add credits</sub> | a | ok: 4 runs |
-| client | `/profile` | btn-photo <sub>Change photo</sub> | button | ok: 4 runs |
-| client | `/profile` | profile-page <sub>Full name</sub> | label | ok: 12 runs; disabled: 2 runs; FAIL: 2 runs |
-| client | `/profile` | btn-save-profile <sub>Save</sub> | button | ok: 6 runs |
-| client | `/profile` | add-location <sub>Add a location</sub> | a | ok: 4 runs |
-| client | `/profile` | invite-copy-code <sub>Copy code</sub> | button | ok: 4 runs |
-| client | `/profile` | invite-share-user <sub>Invite a friend</sub> | button | ok: 4 runs |
-| client | `/profile` | invite-share-worker <sub>Invite a professional</sub> | button | ok: 4 runs |
-| client | `/profile` | invite-copy-link <sub>Copy link</sub> | button | ok: 4 runs |
-| client | `/profile` | invite-apply <sub>Apply</sub> | button | disabled: 4 runs |
-| client | `/profile` | nav-home <sub>Home</sub> | a | ok: 4 runs |
-| client | `/profile` | nav-conversations <sub>Conversations</sub> | a | ok: 4 runs |
-| client | `/profile` | nav-profile <sub>Profile</sub> | a | ok: 4 runs |
+| client | `/profile` | page-back <sub>Back</sub> | button | ok: 5 runs |
+| client | `/profile` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| client | `/profile` | profile-wallet <sub>Wallet 0 credits Add credits</sub> | a | ok: 5 runs |
+| client | `/profile` | btn-photo <sub>Change photo</sub> | button | ok: 5 runs |
+| client | `/profile` | profile-page <sub>Full name</sub> | label | ok: 15 runs; disabled: 3 runs; FAIL: 2 runs |
+| client | `/profile` | btn-save-profile <sub>Save</sub> | button | ok: 8 runs |
+| client | `/profile` | add-location <sub>Add a location</sub> | a | ok: 5 runs |
+| client | `/profile` | invite-copy-code <sub>Copy code</sub> | button | ok: 5 runs |
+| client | `/profile` | invite-share-user <sub>Invite a friend</sub> | button | ok: 5 runs |
+| client | `/profile` | invite-share-worker <sub>Invite a professional</sub> | button | ok: 5 runs |
+| client | `/profile` | invite-copy-link <sub>Copy link</sub> | button | ok: 5 runs |
+| client | `/profile` | invite-apply <sub>Apply</sub> | button | disabled: 5 runs |
+| client | `/profile` | nav-home <sub>Home</sub> | a | ok: 5 runs |
+| client | `/profile` | nav-conversations <sub>Conversations</sub> | a | ok: 5 runs |
+| client | `/profile` | nav-profile <sub>Profile</sub> | a | ok: 5 runs |
 | client | `/profile` | loc-use <sub>பயன்படுத்து</sub> | button | ok: 2 runs |
 | client | `/session/` | lang-toggle <sub>Switch to English</sub> | button | ok: 2 runs |
 | client | `/session/` | not-found-home <sub>முகப்புக்குச் செல்</sub> | a | ok: 2 runs |
@@ -985,32 +986,49 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | feedback-submit <sub>கருத்தை சமர்ப்பி</sub> | button | disabled: 2 runs |
 | client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | go-history <sub>உரையாடல்கள்</sub> | a | ok: 2 runs |
 | client | `/session/76e2f281-8ac4-4c8c-ba5b-4ca67367e884` | session-summary <sub>முகப்பு</sub> | a | ok: 2 runs |
-| client | `/settings` | page-back <sub>Back</sub> | button | ok: 4 runs |
-| client | `/settings` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 4 runs |
-| client | `/settings` | lang-en <sub>English</sub> | button | ok: 4 runs |
-| client | `/settings` | lang-ta <sub>தமிழ்</sub> | button | ok: 4 runs |
-| client | `/settings` | theme-light <sub>Light</sub> | button | moved: 2 runs; ok: 2 runs |
-| client | `/settings` | theme-dark <sub>Dark</sub> | button | moved: 2 runs; ok: 2 runs |
-| client | `/settings` | theme-system <sub>System</sub> | button | moved: 2 runs; ok: 2 runs |
-| client | `/settings` | push-test <sub>Send a test alert</sub> | button | moved: 2 runs; ok: 2 runs |
-| client | `/settings` | notify-requests <sub>New requests & calls</sub> | switch | moved: 2 runs; ok: 2 runs |
-| client | `/settings` | notify-chat <sub>Chat messages</sub> | switch | moved: 2 runs; ok: 2 runs |
-| client | `/settings` | notify-money <sub>Payments & payouts</sub> | switch | moved: 2 runs; ok: 2 runs |
-| client | `/settings` | notify-account <sub>Account & verification</sub> | switch | moved: 2 runs; ok: 2 runs |
-| client | `/settings` | notify-promos <sub>Offers & reminders</sub> | switch | moved: 2 runs; ok: 2 runs |
-| client | `/settings` | quiet-on <sub>Quiet hours</sub> | switch | moved: 2 runs; ok: 2 runs |
-| client | `/settings` | data-export <sub>Download my data</sub> | button | moved: 2 runs; ok: 2 runs |
-| client | `/settings` | link-privacy <sub>Privacy policy</sub> | a | moved: 2 runs; ok: 2 runs |
-| client | `/settings` | link-terms <sub>Terms of use</sub> | a | moved: 2 runs; ok: 2 runs |
-| client | `/settings` | delete-start <sub>Delete my account</sub> | button | moved: 2 runs; ok: 2 runs |
-| client | `/settings` | nav-home <sub>Home</sub> | a | moved: 2 runs; ok: 2 runs |
-| client | `/settings` | nav-conversations <sub>Conversations</sub> | a | moved: 2 runs; ok: 2 runs |
-| client | `/settings` | nav-profile <sub>Profile</sub> | a | moved: 2 runs; ok: 2 runs |
+| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | session-page <sub>பின்செல்</sub> | button | ok: tablet/en |
+| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | star-1 <sub>1</sub> | button | ok: tablet/en |
+| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | star-2 <sub>2</sub> | button | ok: tablet/en |
+| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | star-3 <sub>3</sub> | button | ok: tablet/en |
+| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | star-4 <sub>4</sub> | button | ok: tablet/en |
+| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | star-5 <sub>5</sub> | button | ok: tablet/en |
+| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | report-toggle <sub>புகார் அளிக்க</sub> | button | ok: tablet/en |
+| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | feedback-submit <sub>கருத்தை சமர்ப்பி</sub> | button | disabled: tablet/en |
+| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | go-history <sub>உரையாடல்கள்</sub> | a | ok: tablet/en |
+| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | session-summary <sub>முகப்பு</sub> | a | ok: tablet/en |
+| client | `/settings` | page-back <sub>Back</sub> | button | ok: 5 runs |
+| client | `/settings` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
+| client | `/settings` | lang-en <sub>English</sub> | button | ok: 5 runs |
+| client | `/settings` | lang-ta <sub>தமிழ்</sub> | button | ok: 5 runs |
+| client | `/settings` | theme-light <sub>Light</sub> | button | moved: 3 runs; ok: 2 runs |
+| client | `/settings` | theme-dark <sub>Dark</sub> | button | moved: 3 runs; ok: 2 runs |
+| client | `/settings` | theme-system <sub>System</sub> | button | moved: 3 runs; ok: 2 runs |
+| client | `/settings` | push-test <sub>Send a test alert</sub> | button | moved: 3 runs; ok: 2 runs |
+| client | `/settings` | notify-requests <sub>New requests & calls</sub> | switch | moved: 3 runs; ok: 2 runs |
+| client | `/settings` | notify-chat <sub>Chat messages</sub> | switch | moved: 3 runs; ok: 2 runs |
+| client | `/settings` | notify-money <sub>Payments & payouts</sub> | switch | moved: 3 runs; ok: 2 runs |
+| client | `/settings` | notify-account <sub>Account & verification</sub> | switch | moved: 3 runs; ok: 2 runs |
+| client | `/settings` | notify-promos <sub>Offers & reminders</sub> | switch | moved: 3 runs; ok: 2 runs |
+| client | `/settings` | quiet-on <sub>Quiet hours</sub> | switch | moved: 3 runs; ok: 2 runs |
+| client | `/settings` | data-export <sub>Download my data</sub> | button | moved: 3 runs; ok: 2 runs |
+| client | `/settings` | link-privacy <sub>Privacy policy</sub> | a | moved: 3 runs; ok: 2 runs |
+| client | `/settings` | link-terms <sub>Terms of use</sub> | a | moved: 3 runs; ok: 2 runs |
+| client | `/settings` | delete-start <sub>Delete my account</sub> | button | moved: 3 runs; ok: 2 runs |
+| client | `/settings` | nav-home <sub>Home</sub> | a | moved: 3 runs; ok: 2 runs |
+| client | `/settings` | nav-conversations <sub>Conversations</sub> | a | moved: 3 runs; ok: 2 runs |
+| client | `/settings` | nav-profile <sub>Profile</sub> | a | moved: 3 runs; ok: 2 runs |
 | client | `/w/` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 2 runs |
 | client | `/w/` | not-found-home <sub>Go to home</sub> | a | ok: 2 runs |
 | client | `/w/` | nav-home <sub>Home</sub> | a | ok: 2 runs |
 | client | `/w/` | nav-conversations <sub>Conversations</sub> | a | ok: 2 runs |
 | client | `/w/` | nav-profile <sub>Profile</sub> | a | ok: 2 runs |
+| client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | page-back <sub>Back</sub> | button | ok: tablet/en |
+| client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: tablet/en |
+| client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | wp-consult <sub>View rates</sub> | button | ok: tablet/en |
+| client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | wp-message <sub>Send a message instead</sub> | button | ok: tablet/en |
+| client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | nav-home <sub>Home</sub> | a | ok: tablet/en |
+| client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | nav-conversations <sub>Conversations</sub> | a | ok: tablet/en |
+| client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | nav-profile <sub>Profile</sub> | a | ok: tablet/en |
 | client | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | page-back <sub>Back</sub> | button | ok: 2 runs |
 | client | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 2 runs |
 | client | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | wp-consult <sub>View rates</sub> | button | ok: 2 runs |
@@ -1018,90 +1036,98 @@ Result: **ok** (landed as expected, no console error / unhandled rejection / bla
 | client | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | nav-home <sub>Home</sub> | a | ok: 2 runs |
 | client | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | nav-conversations <sub>Conversations</sub> | a | ok: 2 runs |
 | client | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | nav-profile <sub>Profile</sub> | a | ok: 2 runs |
-| client | `/wallet` | page-back <sub>பின்செல்</sub> | button | ok: 4 runs |
-| client | `/wallet` | lang-toggle <sub>Switch to English</sub> | button | ok: 4 runs |
-| client | `/wallet` | pack <sub>தொடக்கம் 99 ₹99 ₹15.10 GST உட்பட (18%)</sub> | button | ok: 22 runs |
-| client | `/wallet` | nav-home <sub>முகப்பு</sub> | a | ok: 4 runs |
-| client | `/wallet` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: 4 runs |
-| client | `/wallet` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: 4 runs |
-| client | `/worker/register` | page-back <sub>பின்செல்</sub> | button | ok: 4 runs |
-| client | `/worker/register` | lang-toggle <sub>Switch to English</sub> | button | ok: 4 runs |
-| client | `/worker/register` | reg-cat-professionals--doctor <sub>மருத்துவர்</sub> | button | ok: 4 runs |
-| client | `/worker/register` | reg-cat-professionals--lawyer <sub>வழக்கறிஞர்</sub> | button | ok: 4 runs |
-| client | `/worker/register` | reg-cat-professionals--engineer <sub>பொறியாளர்</sub> | button | ok: 4 runs |
-| client | `/worker/register` | reg-next <sub>தொடரவும்</sub> | button | disabled: 4 runs |
-| guest | `/auth/callback#error=access_denied&error_code=otp_expired&error_description=Email+link+is+invalid+or+has+expired` | callback-login <sub>Sign in again</sub> | a | ok: 5 runs |
-| guest | `/login` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
-| guest | `/login` | btn-google <sub>Continue with Google</sub> | button | ok: 5 runs |
-| guest | `/login` | btn-email <sub>Continue with Email</sub> | button | ok: 5 runs |
-| guest | `/login` | btn-phone <sub>Continue with Phone</sub> | button | ok: 5 runs |
-| guest | `/login` | login-terms <sub>Terms of use</sub> | a | ok: 5 runs |
-| guest | `/login` | login-privacy <sub>Privacy policy</sub> | a | ok: 5 runs |
-| guest | `/no-such-page` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
-| guest | `/no-such-page` | not-found-home <sub>Go to home</sub> | a | ok: 5 runs |
-| guest | `/privacy` | page-back <sub>Back</sub> | button | ok: 5 runs |
-| guest | `/privacy` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
-| guest | `/privacy` | legal-privacy <sub>Terms of use</sub> | a | ok: 5 runs |
-| guest | `/terms` | page-back <sub>Back</sub> | button | ok: 5 runs |
-| guest | `/terms` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 5 runs |
-| guest | `/terms` | legal-terms <sub>Privacy policy</sub> | a | ok: 5 runs |
-| worker-approved | `/?tab=worker` | loc-chip <sub>Your location Mylapore, Chennai · Change</sub> | a | ok: 2 runs |
-| worker-approved | `/?tab=worker` | mic-toggle <sub>Turn on voice assistant</sub> | button | ok: 2 runs |
-| worker-approved | `/?tab=worker` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 2 runs |
-| worker-approved | `/?tab=worker` | bell <sub>Notifications · 2 unread</sub> | a | ok: 2 runs |
-| worker-approved | `/?tab=worker` | avatar-btn <sub>Account</sub> | button | ok: 2 runs |
-| worker-approved | `/?tab=worker` | tab-find <sub>Find Worker</sub> | tab | ok: 2 runs |
-| worker-approved | `/?tab=worker` | tab-worker <sub>Worker</sub> | tab | ok: 2 runs |
-| worker-approved | `/?tab=worker` | go-online <sub>Go online</sub> | switch | covered-by-scenario: 2 runs |
-| worker-approved | `/?tab=worker` | btn-earnings <sub>Earnings Weekly payouts to your bank</sub> | a | ok: 2 runs |
-| worker-approved | `/?tab=worker` | view-public-profile <sub>Public profile</sub> | a | ok: 2 runs |
-| worker-approved | `/?tab=worker` | nav-home <sub>Home</sub> | a | ok: 2 runs |
-| worker-approved | `/?tab=worker` | nav-conversations <sub>Conversations</sub> | a | ok: 2 runs |
-| worker-approved | `/?tab=worker` | nav-profile <sub>Profile</sub> | a | ok: 2 runs |
-| worker-approved | `/earnings` | page-back <sub>Back</sub> | button | ok: 2 runs |
-| worker-approved | `/earnings` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 2 runs |
-| worker-approved | `/earnings` | payout-request <sub>Request payout</sub> | button | disabled: 2 runs |
-| worker-approved | `/earnings` | payout-kind-bank <sub>Bank</sub> | button | ok: 2 runs |
-| worker-approved | `/earnings` | payout-kind-upi <sub>UPI</sub> | button | ok: 2 runs |
-| worker-approved | `/earnings` | payout-send-code <sub>Send code</sub> | button | ok: 2 runs |
-| worker-approved | `/earnings` | payout-save <sub>Check account</sub> | button | disabled: 2 runs |
-| worker-approved | `/earnings` | nav-home <sub>Home</sub> | a | ok: 2 runs |
-| worker-approved | `/earnings` | nav-conversations <sub>Conversations</sub> | a | ok: 2 runs |
-| worker-approved | `/earnings` | nav-profile <sub>Profile</sub> | a | ok: 2 runs |
-| worker-approved | `/messages` | page-back <sub>Back</sub> | button | ok: 2 runs |
-| worker-approved | `/messages` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 2 runs |
-| worker-approved | `/messages` | nav-home <sub>Home</sub> | a | ok: 2 runs |
-| worker-approved | `/messages` | nav-conversations <sub>Conversations</sub> | a | ok: 2 runs |
-| worker-approved | `/messages` | nav-profile <sub>Profile</sub> | a | ok: 2 runs |
-| worker-approved | `/notifications` | page-back <sub>Back</sub> | button | ok: 2 runs |
-| worker-approved | `/notifications` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 2 runs |
-| worker-approved | `/notifications` | inbox-mark-all <sub>Mark all as read</sub> | button | ok: desktop/en |
-| worker-approved | `/notifications` | inbox-item <sub>While you were away You have 1 new updat</sub> | button | moved: 2 runs; ok: 2 runs |
-| worker-approved | `/notifications` | nav-home <sub>Home</sub> | a | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/notifications` | nav-conversations <sub>Conversations</sub> | a | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/notifications` | nav-profile <sub>Profile</sub> | a | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/settings` | page-back <sub>Back</sub> | button | ok: 2 runs |
-| worker-approved | `/settings` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 2 runs |
-| worker-approved | `/settings` | worker-badge <sub>Doctor Allopathy › Paediatrics Verified </sub> | a | ok: 2 runs |
-| worker-approved | `/settings` | lang-en <sub>English</sub> | button | ok: 2 runs |
-| worker-approved | `/settings` | lang-ta <sub>தமிழ்</sub> | button | ok: 2 runs |
-| worker-approved | `/settings` | theme-light <sub>Light</sub> | button | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/settings` | theme-dark <sub>Dark</sub> | button | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/settings` | theme-system <sub>System</sub> | button | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/settings` | push-test <sub>Send a test alert</sub> | button | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/settings` | notify-requests <sub>New requests & calls</sub> | switch | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/settings` | notify-chat <sub>Chat messages</sub> | switch | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/settings` | notify-money <sub>Payments & payouts</sub> | switch | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/settings` | notify-account <sub>Account & verification</sub> | switch | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/settings` | notify-promos <sub>Offers & reminders</sub> | switch | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/settings` | quiet-on <sub>Quiet hours</sub> | switch | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/settings` | data-export <sub>Download my data</sub> | button | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/settings` | link-privacy <sub>Privacy policy</sub> | a | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/settings` | link-terms <sub>Terms of use</sub> | a | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/settings` | delete-start <sub>Delete my account</sub> | button | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/settings` | nav-home <sub>Home</sub> | a | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/settings` | nav-conversations <sub>Conversations</sub> | a | moved: desktop/en; ok: desktop/ta |
-| worker-approved | `/settings` | nav-profile <sub>Profile</sub> | a | moved: desktop/en; ok: desktop/ta |
+| client | `/wallet` | page-back <sub>பின்செல்</sub> | button | ok: 5 runs |
+| client | `/wallet` | lang-toggle <sub>Switch to English</sub> | button | ok: 5 runs |
+| client | `/wallet` | pack <sub>தொடக்கம் 99 ₹99 ₹15.10 GST உட்பட (18%)</sub> | button | ok: 28 runs |
+| client | `/wallet` | nav-home <sub>முகப்பு</sub> | a | ok: 5 runs |
+| client | `/wallet` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: 5 runs |
+| client | `/wallet` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: 5 runs |
+| client | `/worker/register` | page-back <sub>பின்செல்</sub> | button | ok: 5 runs |
+| client | `/worker/register` | lang-toggle <sub>Switch to English</sub> | button | ok: 5 runs |
+| client | `/worker/register` | reg-cat-professionals--doctor <sub>மருத்துவர்</sub> | button | ok: 5 runs |
+| client | `/worker/register` | reg-cat-professionals--lawyer <sub>வழக்கறிஞர்</sub> | button | ok: 5 runs |
+| client | `/worker/register` | reg-cat-professionals--engineer <sub>பொறியாளர்</sub> | button | ok: 5 runs |
+| client | `/worker/register` | reg-next <sub>தொடரவும்</sub> | button | disabled: 5 runs |
+| guest | `/auth/callback#error=access_denied&error_code=otp_expired&error_description=Email+link+is+invalid+or+has+expired` | callback-login <sub>Sign in again</sub> | a | ok: 6 runs |
+| guest | `/login` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
+| guest | `/login` | btn-google <sub>Continue with Google</sub> | button | ok: 6 runs |
+| guest | `/login` | btn-email <sub>Continue with Email</sub> | button | ok: 6 runs |
+| guest | `/login` | btn-phone <sub>Continue with Phone</sub> | button | ok: 6 runs |
+| guest | `/login` | login-terms <sub>Terms of use</sub> | a | ok: 6 runs |
+| guest | `/login` | login-privacy <sub>Privacy policy</sub> | a | ok: 6 runs |
+| guest | `/no-such-page` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
+| guest | `/no-such-page` | not-found-home <sub>Go to home</sub> | a | ok: 6 runs |
+| guest | `/privacy` | page-back <sub>Back</sub> | button | ok: 6 runs |
+| guest | `/privacy` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
+| guest | `/privacy` | legal-privacy <sub>Terms of use</sub> | a | ok: 6 runs |
+| guest | `/terms` | page-back <sub>Back</sub> | button | ok: 6 runs |
+| guest | `/terms` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 6 runs |
+| guest | `/terms` | legal-terms <sub>Privacy policy</sub> | a | ok: 6 runs |
+| worker-approved | `/?tab=worker` | loc-chip <sub>Your location Mylapore, Chennai · Change</sub> | a | ok: 3 runs |
+| worker-approved | `/?tab=worker` | mic-toggle <sub>Turn on voice assistant</sub> | button | ok: 3 runs |
+| worker-approved | `/?tab=worker` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 3 runs |
+| worker-approved | `/?tab=worker` | bell <sub>Notifications · 2 unread</sub> | a | ok: 3 runs |
+| worker-approved | `/?tab=worker` | avatar-btn <sub>Account</sub> | button | ok: 3 runs |
+| worker-approved | `/?tab=worker` | tab-find <sub>Find Worker</sub> | tab | ok: 3 runs |
+| worker-approved | `/?tab=worker` | tab-worker <sub>Worker</sub> | tab | ok: 3 runs |
+| worker-approved | `/?tab=worker` | go-online <sub>Go online</sub> | switch | covered-by-scenario: 3 runs |
+| worker-approved | `/?tab=worker` | btn-earnings <sub>Earnings Weekly payouts to your bank</sub> | a | ok: 2 runs; moved: tablet/en |
+| worker-approved | `/?tab=worker` | view-public-profile <sub>Public profile</sub> | a | ok: 2 runs; moved: tablet/en |
+| worker-approved | `/?tab=worker` | nav-home <sub>Home</sub> | a | ok: 2 runs; moved: tablet/en |
+| worker-approved | `/?tab=worker` | nav-conversations <sub>Conversations</sub> | a | ok: 2 runs; moved: tablet/en |
+| worker-approved | `/?tab=worker` | nav-profile <sub>Profile</sub> | a | ok: 2 runs; moved: tablet/en |
+| worker-approved | `/?tab=worker` | push-ask-dismiss <sub>Not now</sub> | button | ok: tablet/en |
+| worker-approved | `/earnings` | page-back <sub>Back</sub> | button | ok: 3 runs |
+| worker-approved | `/earnings` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 3 runs |
+| worker-approved | `/earnings` | payout-request <sub>Request payout</sub> | button | disabled: 3 runs |
+| worker-approved | `/earnings` | payout-kind-bank <sub>Bank</sub> | button | ok: 3 runs |
+| worker-approved | `/earnings` | payout-kind-upi <sub>UPI</sub> | button | ok: 3 runs |
+| worker-approved | `/earnings` | payout-send-code <sub>Send code</sub> | button | ok: 3 runs |
+| worker-approved | `/earnings` | payout-save <sub>Check account</sub> | button | disabled: 3 runs |
+| worker-approved | `/earnings` | nav-home <sub>Home</sub> | a | ok: 3 runs |
+| worker-approved | `/earnings` | nav-conversations <sub>Conversations</sub> | a | ok: 3 runs |
+| worker-approved | `/earnings` | nav-profile <sub>Profile</sub> | a | ok: 3 runs |
+| worker-approved | `/messages` | page-back <sub>Back</sub> | button | ok: 3 runs |
+| worker-approved | `/messages` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 3 runs |
+| worker-approved | `/messages` | nav-home <sub>Home</sub> | a | ok: 3 runs |
+| worker-approved | `/messages` | nav-conversations <sub>Conversations</sub> | a | ok: 3 runs |
+| worker-approved | `/messages` | nav-profile <sub>Profile</sub> | a | ok: 3 runs |
+| worker-approved | `/notifications` | page-back <sub>Back</sub> | button | ok: 3 runs |
+| worker-approved | `/notifications` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 3 runs |
+| worker-approved | `/notifications` | inbox-mark-all <sub>Mark all as read</sub> | button | ok: 2 runs |
+| worker-approved | `/notifications` | inbox-item <sub>While you were away You have 1 new updat</sub> | button | moved: 3 runs; ok: 2 runs |
+| worker-approved | `/notifications` | nav-home <sub>Home</sub> | a | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/notifications` | nav-conversations <sub>Conversations</sub> | a | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/notifications` | nav-profile <sub>Profile</sub> | a | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/settings` | page-back <sub>Back</sub> | button | ok: 3 runs |
+| worker-approved | `/settings` | lang-toggle <sub>தமிழுக்கு மாற்று</sub> | button | ok: 3 runs |
+| worker-approved | `/settings` | worker-badge <sub>Doctor Allopathy › Paediatrics Verified </sub> | a | ok: 3 runs |
+| worker-approved | `/settings` | lang-en <sub>English</sub> | button | ok: 3 runs |
+| worker-approved | `/settings` | lang-ta <sub>தமிழ்</sub> | button | ok: 3 runs |
+| worker-approved | `/settings` | theme-light <sub>Light</sub> | button | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/settings` | theme-dark <sub>Dark</sub> | button | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/settings` | theme-system <sub>System</sub> | button | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/settings` | push-test <sub>Send a test alert</sub> | button | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/settings` | notify-requests <sub>New requests & calls</sub> | switch | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/settings` | notify-chat <sub>Chat messages</sub> | switch | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/settings` | notify-money <sub>Payments & payouts</sub> | switch | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/settings` | notify-account <sub>Account & verification</sub> | switch | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/settings` | notify-promos <sub>Offers & reminders</sub> | switch | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/settings` | quiet-on <sub>Quiet hours</sub> | switch | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/settings` | data-export <sub>Download my data</sub> | button | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/settings` | link-privacy <sub>Privacy policy</sub> | a | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/settings` | link-terms <sub>Terms of use</sub> | a | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/settings` | delete-start <sub>Delete my account</sub> | button | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/settings` | nav-home <sub>Home</sub> | a | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/settings` | nav-conversations <sub>Conversations</sub> | a | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/settings` | nav-profile <sub>Profile</sub> | a | moved: 2 runs; ok: desktop/ta |
+| worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | page-back <sub>பின்செல்</sub> | button | ok: tablet/en |
+| worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | lang-toggle <sub>Switch to English</sub> | button | ok: tablet/en |
+| worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | wp-consult <sub>கட்டணம் பார்க்க</sub> | button | ok: tablet/en |
+| worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | wp-message <sub>அதற்கு பதிலாக செய்தி அனுப்பு</sub> | button | ok: tablet/en |
+| worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | nav-home <sub>முகப்பு</sub> | a | ok: tablet/en |
+| worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | nav-conversations <sub>உரையாடல்கள்</sub> | a | ok: tablet/en |
+| worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | nav-profile <sub>சுயவிவரம்</sub> | a | ok: tablet/en |
 | worker-approved | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | page-back <sub>பின்செல்</sub> | button | ok: 2 runs |
 | worker-approved | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | lang-toggle <sub>Switch to English</sub> | button | ok: 2 runs |
 | worker-approved | `/w/4edeeae7-65f1-45f3-b02c-b78aa185e688` | wp-consult <sub>கட்டணம் பார்க்க</sub> | button | ok: 2 runs |
@@ -1264,10 +1290,67 @@ Screen-check notes (non-blocking):
 | guest | `/terms` | mobile/ta | english-in-tamil | draft- |
 | worker-pending | `/?tab=worker` | mobile/ta | english-in-tamil | Meena, CrawlM |
 | worker-pending | `/worker/register` | mobile/ta | english-in-tamil | Meena, CrawlM |
+| admin | `/admin#queue` | tablet/en | tap-target<24px | A:92x17 |
+| admin | `/admin#districts` | tablet/en | tap-target<24px | districts-hide-zero:13x13 |
+| admin | `/admin#packs` | tablet/en | tap-target<24px | INPUT:13x13 |
+| admin | `/admin#packs` | tablet/en | tap-target<24px | pack-active:13x13 |
+| admin | `/admin#queue` | tablet/ta | english-in-tamil | Edge, Paediatrics, yrs, kanniyakumari, re-, XXXX-XXXX-, degree, review, text, year, duplicates, pass, clear, face, liveness, forensics, identity, unrecognised,  |
+| admin | `/admin#queue` | tablet/ta | tap-target<24px | A:125x17 |
+| admin | `/admin#districts` | tablet/ta | tap-target<24px | districts-hide-zero:13x13 |
+| admin | `/admin#referrals` | tablet/ta | english-in-tamil | Anbu, Ref, Oct, MJR, E-D, Facebook, post, E-M |
+| admin | `/admin#payments` | tablet/ta | english-in-tamil | Karthik, Crawl, max, order, cfa, webhook, pro, value, basic, fbf, starter, eca, fddad, cfecbbb, bfaecd, fded, cefe, dda, ffb, Subramanian, pay, late, BAD, REQUE |
+| admin | `/admin#payouts` | tablet/ta | english-in-tamil | Priya, Natarajan, UTR- |
+| admin | `/admin#packs` | tablet/ta | english-in-tamil | Starter, Basic, Value, Pro, Max |
+| admin | `/admin#packs` | tablet/ta | tap-target<24px | INPUT:13x13 |
+| admin | `/admin#packs` | tablet/ta | tap-target<24px | pack-active:13x13 |
+| admin | `/admin#rates` | tablet/ta | english-in-tamil | doctor, allopathy, cardiology, dermatology, diabetology-endocrinology, ent, gastroenterology, general-surgery, geriatrics, gynaecology-obstetrics, hematology, i |
+| admin | `/admin#settings` | tablet/ta | english-in-tamil | verify, auto, approve, false, risk, reject, name, pass, review, registry, live, days, selfie, retain, liveness, window, seconds, job, max, attempts, stub, provi |
+| admin | `/admin#catalog` | tablet/ta | english-in-tamil | migration |
+| admin | `/admin#milestones` | tablet/ta | english-in-tamil | first, consult, five, star, sessions, streak, top, rated, excellence |
+| admin | `/admin#security` | tablet/ta | english-in-tamil | Karthik, Subramanian, refmadm, dzx, ji-, admm, sqck, admtam, crawlm-admin, vqydgm-, yadmd, pwwyun-, hojz, vfm-admin, koy, vfd-admin, wps, pur-, ulq, cor, tf-, h |
+| admin | `/admin#audit` | tablet/ta | english-in-tamil | crawlt-admin, qpew, Oct, first, consult, verify, auto, approve, categories, professionals--doctor, true, false, professionals--doctor--allopathy--cardiology, ch |
+| client | `/` | tablet/en | tap-target<24px | group-professionals:736x20 |
+| client | `/browse/professionals` | tablet/en | tap-target<24px | A:14x14 |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet/en | tap-target<24px | A:14x14 |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet/en | tap-target<24px | crumb-professionals:82x16 |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet/en | tap-target<24px | crumb-professionals--doctor:40x16 |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet/en | tap-target<24px | crumb-professionals--doctor--allopathy:55x16 |
+| client | `/settings` | tablet/en | tap-target<24px | link-privacy:100x16 |
+| client | `/settings` | tablet/en | tap-target<24px | link-terms:97x16 |
+| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | tablet/en | tap-target<24px | report-toggle:116x16 |
+| client | `/` | tablet/ta | tap-target<24px | group-professionals:736x20 |
+| client | `/browse/professionals` | tablet/ta | tap-target<24px | A:14x14 |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet/ta | english-in-tamil | Kavitha, Raman, Arun, Prakash |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet/ta | tap-target<24px | A:14x14 |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet/ta | tap-target<24px | crumb-professionals:141x16 |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet/ta | tap-target<24px | crumb-professionals--doctor:68x16 |
+| client | `/browse/professionals--doctor--allopathy--paediatrics` | tablet/ta | tap-target<24px | crumb-professionals--doctor--allopathy:129x16 |
+| client | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | tablet/ta | english-in-tamil | Meena, CrawlT, Tamil, Nadu, Medical, Council |
+| client | `/profile` | tablet/ta | english-in-tamil | Marina, Beach, Triplicane, Chennai, localhost, ref |
+| client | `/profile` | tablet/ta | tap-target<24px | loc-use:89x16 |
+| client | `/settings` | tablet/ta | english-in-tamil | English, iPhone-, Home, Screen-, Safari-, Share, Add, Screen |
+| client | `/settings` | tablet/ta | tap-target<24px | link-privacy:176x16 |
+| client | `/settings` | tablet/ta | tap-target<24px | link-terms:186x16 |
+| client | `/wallet` | tablet/ta | english-in-tamil | credits, local, only, Oct |
+| client | `/history` | tablet/ta | english-in-tamil | Meena, CrawlT, Oct |
+| client | `/location` | tablet/ta | english-in-tamil | Marina, Beach, Triplicane, Chennai |
+| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | tablet/ta | english-in-tamil | Meena, CrawlT |
+| client | `/session/a17fc546-f65e-494b-9920-906d7458cff4` | tablet/ta | tap-target<24px | report-toggle:116x16 |
+| guest | `/privacy` | tablet/ta | english-in-tamil | draft-, Data, Fiduciary |
+| guest | `/terms` | tablet/ta | english-in-tamil | draft- |
 | guest | `/privacy` | tablet-land/ta | english-in-tamil | draft-, Data, Fiduciary |
 | guest | `/terms` | tablet-land/ta | english-in-tamil | draft- |
 | worker-pending | `/?tab=worker` | tablet-land/ta | english-in-tamil | Meena, CrawlL |
 | worker-pending | `/worker/register` | tablet-land/ta | english-in-tamil | Meena, CrawlL |
+| worker-approved | `/?tab=worker` | tablet/en | tap-target<24px | view-public-profile:94x16 |
+| worker-approved | `/settings` | tablet/en | tap-target<24px | link-privacy:100x16 |
+| worker-approved | `/settings` | tablet/en | tap-target<24px | link-terms:97x16 |
+| worker-approved | `/?tab=worker` | tablet/ta | english-in-tamil | Meena, CrawlT |
+| worker-approved | `/?tab=worker` | tablet/ta | tap-target<24px | view-public-profile:139x16 |
+| worker-approved | `/settings` | tablet/ta | english-in-tamil | English, iPhone-, Home, Screen-, Safari-, Share, Add, Screen |
+| worker-approved | `/settings` | tablet/ta | tap-target<24px | link-privacy:176x16 |
+| worker-approved | `/settings` | tablet/ta | tap-target<24px | link-terms:186x16 |
+| worker-approved | `/w/1b46b0a8-b049-40c8-b64c-af3c0f41a361` | tablet/ta | english-in-tamil | Meena, CrawlT, Tamil, Nadu, Medical, Council |
 
 ## Failures found and how they were fixed
 
