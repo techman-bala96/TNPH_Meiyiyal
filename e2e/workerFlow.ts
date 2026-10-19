@@ -140,7 +140,7 @@ export async function adminApprove(page: Page, names: string[], shot?: (n: strin
   await expect(page.getByTestId("admin-page")).toBeVisible();
   for (const [i, n] of names.entries()) {
     const card = page.locator(`[data-testid="admin-card"][data-name="${n}"]`);
-    await expect(card).toBeVisible();
+    await expect(card).toBeVisible({ timeout: 20_000 }); // the queue loads after the admin checks; slow under parallel load
     if (i === 0) await shot?.("06-admin-queue");
     await card.getByTestId("admin-approve").click();
     await expect(card).toHaveCount(0);
