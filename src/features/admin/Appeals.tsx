@@ -21,7 +21,7 @@ export function Appeals() {
     <section className="space-y-3" data-testid="admin-appeals">
       <div className="flex gap-1 rounded-2xl bg-muted p-1">
         {["open", "upheld", "overturned", "all"].map((s) => (
-          <button key={s} data-testid={`appeals-filter-${s}`} onClick={() => setStatus(s)} className={`tap flex-1 rounded-xl px-3 text-xs font-semibold ${status === s ? "bg-card shadow" : "text-muted-foreground"}`}>{t(`admin.appeals.f.${s}`)}</button>
+          <button key={s} data-testid={`appeals-filter-${s}`} onClick={() => setStatus(s)} className={`tap min-w-0 flex-1 rounded-xl px-1.5 py-1 text-xs font-semibold leading-tight [overflow-wrap:anywhere] ${status === s ? "bg-card shadow" : "text-muted-foreground"}`}>{t(`admin.appeals.f.${s}`)}</button>
         ))}
       </div>
       {q.isLoading && <div className="h-24 animate-pulse rounded-2xl bg-muted" />}
