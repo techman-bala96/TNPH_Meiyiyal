@@ -1,6 +1,7 @@
 /**
  * Coverage-gap scenarios (UI only; the DB is used to verify, and once — marked — to make time pass).
- * G01 admin rate override add → edit → delete · G02 admin refunds a paid order · G03 credits run out mid-chat.
+ * G01 admin rate override add → edit → delete · G02 admin refunds a paid order · G03 credits run out mid-chat ·
+ * G04 payout account needs review → admins told; admin holds and releases a professional's payouts.
  */
 import { expect, test, type Browser, type Page } from "@playwright/test";
 import { IMG, grantAdmin, setProfile, signInAt, sql } from "./workerFlow";
@@ -38,7 +39,7 @@ test("[G01] admin adds a rate override for a sub-category, edits it, then delete
     await snap(p, "G01", "edited");
     await row.getByTestId("rate-delete").click();
     await expect.poll(() => sql(`SELECT count(*) FROM public.rate_cards WHERE node_slug='${node}' AND mode='chat'`)).toBe("0");
-    await p.evaluate(() => localStorage.setItem("i18nextLng", "ta")); await p.reload();
+    await p.getByTestId("lang-toggle").first().click();
     await expect(p.getByTestId("rates-editor")).toBeVisible();
     await expect(p.locator("html")).toHaveAttribute("lang", "ta");
     await snap(p, "G01", "ta");
@@ -93,4 +94,35 @@ test("[G03] credits run out in the middle of a chat → session ends for both, c
   await expect(u.page.locator('[data-testid="inbox-item"][data-kind="session.credits_out"]')).toBeVisible();
   await snap(u.page, "G03", "client-inbox");
   await w.ctx.close(); await u.ctx.close();
+});
+
+test("[G04] payout account without a KYC name goes to review → admins told; admin holds then releases payouts → professional told each time", async ({ browser }) => {
+  lang("en"); clean("04");
+  const a = await admin(browser, "04"); const p = a.page;   // the admin exists first, so the review alert reaches them
+  const name = `Dr. Hold ${tag()}`;
+  const w = await makeWorker(browser, `gp${tag()}-04-doc`, name, IMG("doctor"), "professionals--doctor--allopathy", { latitude: 13.0317, longitude: 80.27 }, "chennai");
+  await w.page.goto("/earnings");
+  await w.page.getByTestId("payout-account-number").fill("5010098765432");
+  await w.page.getByTestId("payout-ifsc").fill("HDFC0001234");
+  await w.page.getByTestId("payout-otp").fill("123456");
+  await w.page.getByTestId("payout-save").click();
+  await expect(w.page.getByTestId("payout-account")).toHaveAttribute("data-status", "review");
+  await snap(w.page, "G04", "account-review");
+  await p.goto("/notifications");
+  await expect(p.locator('[data-testid="inbox-item"][data-kind="admin.account_review"]').first()).toBeVisible();
+  await snap(p, "G04", "admin-inbox");
+  await p.goto("/admin#payouts");
+  const card = p.locator(`[data-testid="payout-account-admin"][data-name="${name}"]`);
+  await expect(card).toHaveAttribute("data-status", "review");
+  await card.getByTestId("payout-hold").click();
+  await expect(card.getByTestId("payout-hold")).toHaveText(/release/i);
+  await snap(p, "G04", "admin-held");
+  await w.page.goto("/notifications");
+  await expect(w.page.locator('[data-testid="inbox-item"][data-kind="payout.hold"]')).toBeVisible();
+  await card.getByTestId("payout-hold").click();
+  await expect(card.getByTestId("payout-hold")).not.toHaveText(/release/i);
+  await w.page.reload();
+  await expect(w.page.locator('[data-testid="inbox-item"][data-kind="payout.resumed"]')).toBeVisible();
+  await snap(w.page, "G04", "pro-inbox");
+  await w.ctx.close(); await a.ctx.close();
 });
