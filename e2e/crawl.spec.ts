@@ -10,6 +10,9 @@ import { Recorder, assertClean, checkScreen, crawl, doubleTap, shotScreen } from
 
 // runs in file order on one worker; later roles reuse the worker created earlier
 test.setTimeout(90 * 60_000);
+// a crawl clicks thousands of controls: its trace grows to hundreds of MB and can time out while being zipped.
+// Every click is recorded in .cache/crawl/*.json and every screen is screenshotted, so no trace here.
+test.use({ trace: "off" });
 
 const P = () => test.info().project.name;
 const TAG = () => ({ mobile: "m", desktop: "d", tablet: "t", "tablet-land": "l" } as Record<string, string>)[P()] ?? "x";
