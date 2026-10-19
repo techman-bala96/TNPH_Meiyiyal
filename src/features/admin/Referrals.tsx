@@ -43,7 +43,7 @@ export function ReferralsAdmin() {
           <p className="text-muted-foreground">{t("refAdmin.workers", { n: c.worker_uses })} · {t("refAdmin.last")} {fmt(c.last_at)}{c.max_uses ? ` · ${t("refAdmin.max", { n: c.max_uses })}` : ""}{c.expires_at ? ` · ${t("refAdmin.expires")} ${fmt(c.expires_at)}` : ""}</p>
           <div className="flex items-center gap-2 pt-1">
             <button data-testid="ref-see" onClick={() => { setCode(c.code); setView("list"); }} className="rounded-lg border px-2 py-1 font-semibold">{t("refAdmin.see")}</button>
-            {c.kind === "campaign" && <button aria-label={t("invite.copyCode")} onClick={() => navigator.clipboard?.writeText(inviteLinks(c.code).user).then(() => toast.success(t("invite.copied")))} className="grid h-7 w-7 place-items-center rounded-lg border"><Copy className="h-3.5 w-3.5" /></button>}
+            {c.kind === "campaign" && <button aria-label={t("invite.copyCode")} onClick={() => { const link = inviteLinks(c.code).user; Promise.resolve(navigator.clipboard?.writeText(link)).then(() => { if (!navigator.clipboard) throw new Error("no clipboard"); toast.success(t("invite.copied")); }).catch(() => toast(link)); }} className="grid h-7 w-7 place-items-center rounded-lg border"><Copy className="h-3.5 w-3.5" /></button>}
             <span className="flex-1" />
             <label className="flex items-center gap-1">{t("refAdmin.active")}<Switch data-testid="ref-active" checked={c.active} onCheckedChange={(v) => toggle(c, v)} /></label>
           </div>
