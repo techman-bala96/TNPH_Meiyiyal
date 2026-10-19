@@ -44,7 +44,8 @@ async function run(page: Page, rec: Recorder, routes: { path: string; open?: () 
     await page.goto(routes[0].path); await settle(page); await setLang(page, lang);
     const seen = new Set<string>();
     for (const r of routes) {
-      const open = r.open ?? (async () => { await page.goto(r.path); await settle(page); });
+      // reopening a screen hundreds of times: the dev server sometimes stalls on one request under load; wait longer and retry once
+      const open = r.open ?? (async () => { await page.goto(r.path, { timeout: 60_000 }).catch(() => page.goto(r.path, { timeout: 60_000 })); await settle(page); });
       await open();
       await shotScreen(page, rec, r.path, lang);
       await checkScreen(page, rec, r.path, lang);
