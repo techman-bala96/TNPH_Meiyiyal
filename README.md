@@ -43,13 +43,13 @@ src/                 web app (pages/, features/<area>/, components/, i18n/)
 supabase/migrations  schema + SQL API, in order    supabase/functions  Edge Functions (+ _shared adapters)
 supabase/tests       SQL test suites               e2e/                Playwright specs
 services/agent       voice agent (Python)          services/verify     verification worker (Python)
-deploy/              coturn, hosting (.htaccess), production config      docs/  HANDOFF, go-live, admin subdomain
+deploy/              cloudflare (Pages _headers), coturn, production     docs/  HANDOFF, go-live, admin subdomain
 ```
 
 ## Docs
 
 - `docs/HANDOFF.md` — every feature: how it works, what is mocked, every setting, and **What Bala must provide**.
-- `docs/GO-LIVE.md` — production steps for meiyiyal.com (Hostinger DNS) + hosted Supabase (Mumbai).
+- `docs/GO-LIVE.md` — production steps for meiyiyal.com (Cloudflare Pages + DNS; Hostinger keeps the domain) + hosted Supabase (Mumbai).
 - `docs/admin-subdomain.md` — admin console on admin.meiyiyal.com with TOTP.
 
 Legal pages (`/privacy`, `/terms`) are **drafts** and must be reviewed by a lawyer before launch.

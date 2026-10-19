@@ -1,0 +1,37 @@
+# Meiyiyal web app on Cloudflare Pages. The build copies this file into dist/ (vite.config.ts → cloudflarePagesFiles).
+# Same rules as deploy/hostinger/.htaccess. One Pages project serves meiyiyal.com, www and admin.meiyiyal.com.
+# Cloudflare joins values when two rules set the same header, so Cache-Control is set only on paths that do not overlap.
+# Paths without a rule below get Cloudflare's default "public, max-age=0, must-revalidate" (checked every visit).
+
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(self), microphone=(self), geolocation=(self), payment=(self)
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://checkout.razorpay.com https://challenges.cloudflare.com https://js.hcaptcha.com https://maps.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.supabase.co https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://maps.gstatic.com https://maps.googleapis.com https://*.googleusercontent.com; media-src 'self' blob: https://*.supabase.co; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://agent.meiyiyal.com https://nominatim.openstreetmap.org https://api.razorpay.com https://lumberjack.razorpay.com https://maps.googleapis.com https://*.hcaptcha.com; frame-src https://api.razorpay.com https://checkout.razorpay.com https://challenges.cloudflare.com https://*.hcaptcha.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+
+# The admin console is never indexed (admin host, and /admin on the main host)
+https://admin.meiyiyal.com/*
+  X-Robots-Tag: noindex, nofollow
+/admin
+  X-Robots-Tag: noindex, nofollow
+/admin/*
+  X-Robots-Tag: noindex, nofollow
+
+# Hashed build files (names change on every build): cache forever
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# The app shell, service worker and manifest: always ask for the newest copy
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+/sw.js
+  Cache-Control: no-cache
+/registerSW.js
+  Cache-Control: no-cache
+/manifest.webmanifest
+  Cache-Control: no-cache
+  Content-Type: application/manifest+json
