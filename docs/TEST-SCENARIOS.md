@@ -10,7 +10,7 @@ Links: [HANDOFF](HANDOFF.md) · [Live readiness](#live-readiness) · [Real-phone
 
 ## 1. Coverage matrix (feature inventory from the code)
 
-**370 / 371 items covered (99.7%)**: UI 329 · server 40 · key-only 1 · FAIL 1
+**371 / 371 items covered (100%)**: UI 330 · server 40 · key-only 1
 
 Status: **UI** = exercised through the app's UI in a passing scenario · **server** = runs server-side inside a UI journey or by a DB test (no screen of its own) · **key-only** = needs a production key/account, mock adapter tested instead · **GAP** = not covered.
 
@@ -62,7 +62,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `admin_decide_appeal` | UI | called by the app during the UI run |
 | RPC | `admin_decide_worker` | UI | called by the app during the UI run |
 | RPC | `admin_delete_rate` | UI | called by the app during the UI run |
-| RPC | `admin_guard` | server | 2641 calls in run |
+| RPC | `admin_guard` | server | 2676 calls in run |
 | RPC | `admin_list_admins` | UI | called by the app during the UI run |
 | RPC | `admin_mfa_ok` | server | SQL helper: inside has_role() so admin rights need MFA (aal2); driven by the mfa-* projects |
 | RPC | `admin_milestones` | UI | called by the app during the UI run |
@@ -148,7 +148,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `push_subscribe` | UI | called by the app during the UI run |
 | RPC | `push_test` | UI | called by the app during the UI run |
 | RPC | `push_unsubscribe` | UI | called by the app during the UI run |
-| RPC | `rate_for` | server | 12027 calls in run |
+| RPC | `rate_for` | server | 12338 calls in run |
 | RPC | `rates_for` | UI | called by the app during the UI run |
 | RPC | `referral_check` | server | supabase/tests |
 | RPC | `referral_claim` | UI | called by the app during the UI run |
@@ -173,7 +173,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `verification_appeal` | UI | called by the app during the UI run |
 | RPC | `verification_liveness_challenge` | server | legacy RPC (M7), replaced by the M11 liveness flow in the verify service; safe to drop |
 | RPC | `verification_liveness_start` | UI | called by the app during the UI run |
-| RPC | `verification_rules_for` | server | 8205 calls in run |
+| RPC | `verification_rules_for` | server | 8257 calls in run |
 | RPC | `verification_stage_liveness` | UI | called by the app during the UI run |
 | RPC | `verification_stage_qr` | UI | called by the app during the UI run |
 | RPC | `verification_stage_selfie` | UI | called by the app during the UI run |
@@ -360,7 +360,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | Chat | `both ways, Tamil/English/emoji, order in history` | UI | CL04, C-1 |
 | Chat | `long message, invalid inputs` | UI | LR12 |
 | Chat | `offline → missed messages once, resend once` | UI | LR05 |
-| Chat | `slow network, no double send` | FAIL | LR06 |
+| Chat | `slow network, no double send` | UI | LR06 |
 | Chat | `app closed + reopened, refresh mid-session` | UI | LR04 |
 | Calls | `voice + video connect both ways` | UI | C-1 |
 | Calls | `mute, camera off/on, switch camera, end by professional` | UI | CL05 |
@@ -390,7 +390,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 
 ## 2. Scenarios
 
-105 scenarios · 104 pass · 1 fail · 0 not run yet · runs: 226 pass / 7 fail / 0 pending (per project).
+105 scenarios · 105 pass · 0 fail · 0 not run yet · runs: 227 pass / 6 fail / 0 pending (per project).
 
 | ID | Scenario (steps) | Expected | Actual | Spec | Device | Lang | Date (IST) | Mode | Shots |
 |---|---|---|---|---|---|---|---|---|---|
@@ -438,7 +438,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | LR03 | two tabs: signing out in one signs out the other; signing in again in one tab works | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `live.spec.ts:86` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:31 am IST | UI | 2 ([first](/workspace/scenario-shots/LR03-desktop-other-tab-signed-out.png)) |
 | LR04 | app closed during a consultation and reopened | 'back to your consultation' pill → same chat, nothing lost or doubled | desktop: **pass**<br>mobile: **pass** | `live.spec.ts:99` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:31 am IST | UI | 4 ([first](/workspace/scenario-shots/LR04-desktop-after-refresh.png)) |
 | LR05 | network drops mid-chat | offline bar; a send fails with a clear message and keeps the text; back online → missed messages appear once, resend arrives once | desktop: **pass**<br>mobile: **pass** | `live.spec.ts:125` | desktop 1366×820, phone (Pixel 7) | en + ta | 19 Oct 2026, 4:31 am IST | UI | 6 ([first](/workspace/scenario-shots/LR05-desktop-offline-bar-ta.png)) |
-| LR06 | slow network (3 s per request) | chat still works, the send button cannot double-send | desktop: **FAIL** (TimeoutError: locator.click: Timeout 20000ms exceeded.)<br>mobile: **pass** | `live.spec.ts:161` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 9:02 am IST | UI | 2 ([first](/workspace/scenario-shots/LR06-desktop-slow-sent.png)) |
+| LR06 | slow network (3 s per request) | chat still works, the send button cannot double-send | desktop: **pass**<br>mobile: **pass** | `live.spec.ts:161` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 9:43 am IST | UI | 2 ([first](/workspace/scenario-shots/LR06-desktop-slow-sent.png)) |
 | LR07 | two clients ask the same professional at the same moment | one rings, the other is told plainly they are busy | desktop: **pass**<br>mobile: **pass** | `live.spec.ts:178` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:32 am IST | UI | 2 ([first](/workspace/scenario-shots/LR07-desktop-busy-message.png)) |
 | LR08 | double tap on Request | exactly one request rings | desktop: **pass**<br>mobile: **pass** | `live.spec.ts:194` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 9:08 am IST | UI | 2 ([first](/workspace/scenario-shots/LR08-desktop-one-ring.png)) |
 | LR09 | camera and microphone blocked | video call shows how to allow them (en + ta) instead of a browser error | desktop: **pass**<br>mobile: **pass** | `live.spec.ts:208` | desktop 1366×820, phone (Pixel 7) | en + ta | 19 Oct 2026, 4:32 am IST | UI | 4 ([first](/workspace/scenario-shots/LR09-desktop-blocked-ta.png)) |
@@ -505,7 +505,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | # | Real-world situation | Scenarios | Result |
 |---|---|---|---|
 | 1 | Wrong or expired OTP / reused email link | LR01, L-2 | PASS |
-| 2 | Offline or slow network mid-flow | LR05, LR06, CL07 | FAIL |
+| 2 | Offline or slow network mid-flow | LR05, LR06, CL07 | PASS |
 | 3 | App closed and reopened mid-consultation | LR04 | PASS |
 | 4 | Two devices or tabs (sign-out sync, worker on two devices) | LR03, CL02 | PASS |
 | 5 | Back / refresh mid-payment or mid-session | LR10, LR04 | PASS |

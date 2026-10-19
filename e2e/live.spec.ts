@@ -29,7 +29,7 @@ async function startChat(u: Page, law: { page: Page; id: string }) {
   await u.goto(`/browse/${LAW}`); await cardOf(u, law.id).click();
   if ((await u.getByTestId("wallet-balance").innerText()) === "0") await u.getByTestId("get-test-credits").click();
   await u.getByTestId("req-chat").click();
-  await law.page.getByTestId("ring-accept").click();
+  await law.page.getByTestId("ring-accept").click({ timeout: 30_000 }); // realtime, or the 5 s poll under load
   await u.waitForURL(/\/session\//); await law.page.waitForURL(/\/session\//);
   await expect(u.getByTestId("chat-input")).toBeVisible(); await expect(law.page.getByTestId("chat-input")).toBeVisible();
 }
