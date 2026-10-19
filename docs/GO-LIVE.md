@@ -5,7 +5,9 @@ here, never values. Keep values in a password manager and in `supabase secrets` 
 
 Run `psql "$PROD_DB_URL" -f deploy/production/check.sql` at any point: it prints OK / TODO for every go-live item.
 
-## 0. Accounts Bala needs (see HANDOFF "What Bala must provide")
+## 0. Accounts Bala needs (see HANDOFF §27 "What Bala must provide")
+**On hold (19 Oct 2026):** all key-dependent features stay on their mock adapters until the keys arrive; HANDOFF §27 lists
+each key with the exact env var / setting it goes into and where to get it.
 Supabase (Pro plan recommended for daily backups + PITR), Hostinger (domain + hosting), Razorpay + RazorpayX,
 MSG91 (with DLT registration), Surepass (Aadhaar e-KYC), Google Cloud (OAuth client; Maps keys optional),
 a small Linux VM (agent + verify + coturn; e.g. 2 vCPU / 4 GB in Mumbai), Cloudflare Turnstile (captcha, free),
