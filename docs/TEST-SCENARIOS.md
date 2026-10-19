@@ -10,7 +10,7 @@ Links: [HANDOFF](HANDOFF.md) · [Live readiness](#live-readiness) · [Real-phone
 
 ## 1. Coverage matrix (feature inventory from the code)
 
-**371 / 371 items covered (100%)**: UI 331 · server 39 · key-only 1
+**369 / 371 items covered (99.5%)**: UI 329 · server 39 · key-only 1 · FAIL 2
 
 Status: **UI** = exercised through the app's UI in a passing scenario · **server** = runs server-side inside a UI journey or by a DB test (no screen of its own) · **key-only** = needs a production key/account, mock adapter tested instead · **GAP** = not covered.
 
@@ -62,7 +62,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `admin_decide_appeal` | UI | called by the app during the UI run |
 | RPC | `admin_decide_worker` | UI | called by the app during the UI run |
 | RPC | `admin_delete_rate` | UI | called by the app during the UI run |
-| RPC | `admin_guard` | server | 3112 calls in run |
+| RPC | `admin_guard` | server | 3239 calls in run |
 | RPC | `admin_list_admins` | UI | called by the app during the UI run |
 | RPC | `admin_mfa_ok` | server | SQL helper: inside has_role() so admin rights need MFA (aal2); driven by the mfa-* projects |
 | RPC | `admin_milestones` | UI | called by the app during the UI run |
@@ -148,7 +148,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `push_subscribe` | UI | called by the app during the UI run |
 | RPC | `push_test` | UI | called by the app during the UI run |
 | RPC | `push_unsubscribe` | UI | called by the app during the UI run |
-| RPC | `rate_for` | server | 13809 calls in run |
+| RPC | `rate_for` | server | 19566 calls in run |
 | RPC | `rates_for` | UI | called by the app during the UI run |
 | RPC | `referral_check` | server | supabase/tests |
 | RPC | `referral_claim` | UI | called by the app during the UI run |
@@ -173,7 +173,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `verification_appeal` | UI | called by the app during the UI run |
 | RPC | `verification_liveness_challenge` | server | legacy RPC (M7), replaced by the M11 liveness flow in the verify service; safe to drop |
 | RPC | `verification_liveness_start` | UI | called by the app during the UI run |
-| RPC | `verification_rules_for` | server | 9190 calls in run |
+| RPC | `verification_rules_for` | server | 9485 calls in run |
 | RPC | `verification_stage_liveness` | UI | called by the app during the UI run |
 | RPC | `verification_stage_qr` | UI | called by the app during the UI run |
 | RPC | `verification_stage_selfie` | UI | called by the app during the UI run |
@@ -186,7 +186,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | RPC | `worker_public` | UI | called by the app during the UI run |
 | RPC | `worker_reachable` | server | supabase/tests |
 | RPC | `worker_register` | UI | called by the app during the UI run |
-| RPC | `worker_register_guard` | server | 128 calls in run |
+| RPC | `worker_register_guard` | server | 167 calls in run |
 | RPC | `worker_set_online` | UI | called by the app during the UI run |
 | RPC | `worker_submit` | UI | called by the app during the UI run |
 | Edge function | `account-purge` | server | called by the hourly job via pg_net; driven in LR11 |
@@ -336,8 +336,8 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | Referrals | `personal invite link, claimed once, campaign codes, admin view` | UI | AD-1 |
 | Districts | `districts view + CSV export` | UI | AD-2 |
 | i18n | `Tamil + English on every screen (crawl checks missing keys / English leftovers)` | UI | LOC-2, AD-3, LR01 · plus Button coverage crawl in ta |
-| PWA | `install card (Chrome beforeinstallprompt) + manifest/SW audit` | UI | FS01 · npm run test:pwa audits the build |
-| PWA | `first open from scratch: language choice, sign-up, onboarding` | UI | FS01 |
+| PWA | `install card (Chrome beforeinstallprompt) + manifest/SW audit` | FAIL | FS01 · npm run test:pwa audits the build |
+| PWA | `first open from scratch: language choice, sign-up, onboarding` | FAIL | FS01 |
 | Push | `worker alerts, settings, iPhone steps, SW Accept/Decline` | UI | PU-1, PU-2, PU-3, PU-4 · real FCM/APNs delivery is real-phone only |
 | Location | `GPS allow, map pin, confirm` | UI | LOC-1 |
 | Location | `GPS denied → manual area / district search, Tamil area names` | UI | LOC-2 |
@@ -390,7 +390,7 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 
 ## 2. Scenarios
 
-105 scenarios · 105 pass · 0 fail · 0 not run yet · runs: 228 pass / 5 fail / 0 pending (per project).
+105 scenarios · 104 pass · 1 fail · 0 not run yet · runs: 227 pass / 6 fail / 0 pending (per project).
 
 | ID | Scenario (steps) | Expected | Actual | Spec | Device | Lang | Date (IST) | Mode | Shots |
 |---|---|---|---|---|---|---|---|---|---|
@@ -416,11 +416,11 @@ Status: **UI** = exercised through the app's UI in a passing scenario · **serve
 | CL09 | professional moves: going online from a new place moves them in search; a new location while online moves them again | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `consult-live.spec.ts:255` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:26 am IST | UI | 2 ([first](/workspace/scenario-shots/CL09-desktop-moved-near.png)) |
 | DP-1 | privacy and terms pages are public, bilingual, marked DRAFT, with the grievance placeholder | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `privacy.spec.ts:8` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:43 am IST | UI |  |
 | DP-2 | your data: download a JSON export, schedule account deletion with typed confirm, then cancel | as described; every assertion in the test holds | desktop: **pass**<br>mobile: **pass** | `privacy.spec.ts:26` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:43 am IST | UI |  |
-| FS01 | first open on a new phone: Tamil chosen | phone OTP sign-up → location → name → Home with the install card → Install opens the browser prompt | desktop: **pass**<br>mobile: **pass** | `fresh.spec.ts:7` | desktop 1366×820, phone (Pixel 7) | en + ta | 19 Oct 2026, 8:59 am IST | UI | 12 ([first](/workspace/scenario-shots/FS01-desktop-01-first-open.png)) |
-| G01 | admin adds a rate override for a sub-category, edits it, then deletes it (en + ta) | as described; every assertion in the test holds | mobile: **pass**<br>desktop: **pass** | `gaps.spec.ts:23` | phone (Pixel 7), desktop 1366×820 | en + ta | 19 Oct 2026, 9:08 am IST | UI | 4 ([first](/workspace/scenario-shots/G01-desktop-edited.png)) |
-| G02 | admin refunds a paid order with a reason | credits taken back, client told (inbox + wallet) | desktop: **pass**<br>mobile: **pass** | `gaps.spec.ts:50` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 9:21 am IST | UI | 4 ([first](/workspace/scenario-shots/G02-desktop-admin-refund.png)) |
-| G03 | credits run out in the middle of a chat | session ends for both, client is told and offered a top-up | desktop: **pass**<br>mobile: **pass** | `gaps.spec.ts:74` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 9:02 am IST | UI | 6 ([first](/workspace/scenario-shots/G03-desktop-client-ended.png)) |
-| G04 | payout account without a KYC name goes to review | admins told; admin holds then releases payouts → professional told each time | mobile: **pass**<br>desktop: **pass** | `gaps.spec.ts:99` | phone (Pixel 7), desktop 1366×820 | en | 19 Oct 2026, 9:09 am IST | UI | 8 ([first](/workspace/scenario-shots/G04-desktop-account-review.png)) |
+| FS01 | first open on a new phone: Tamil chosen | phone OTP sign-up → location → name → Home with the install card → Install opens the browser prompt | desktop: **pass**<br>mobile: **FAIL** (Test timeout of 60000ms exceeded.) | `fresh.spec.ts:7` | desktop 1366×820, phone (Pixel 7) | en + ta | 19 Oct 2026, 8:59 am IST | UI | 12 ([first](/workspace/scenario-shots/FS01-desktop-01-first-open.png)) |
+| G01 | admin adds a rate override for a sub-category, edits it, then deletes it (en + ta) | as described; every assertion in the test holds | mobile: **pass**<br>desktop: **pass** | `gaps.spec.ts:23` | phone (Pixel 7), desktop 1366×820 | en + ta | 19 Oct 2026, 10:49 am IST | UI | 4 ([first](/workspace/scenario-shots/G01-desktop-edited.png)) |
+| G02 | admin refunds a paid order with a reason | credits taken back, client told (inbox + wallet) | mobile: **pass**<br>desktop: **pass** | `gaps.spec.ts:50` | phone (Pixel 7), desktop 1366×820 | en | 19 Oct 2026, 10:49 am IST | UI | 4 ([first](/workspace/scenario-shots/G02-desktop-admin-refund.png)) |
+| G03 | credits run out in the middle of a chat | session ends for both, client is told and offered a top-up | mobile: **pass**<br>desktop: **pass** | `gaps.spec.ts:78` | phone (Pixel 7), desktop 1366×820 | en | 19 Oct 2026, 10:49 am IST | UI | 6 ([first](/workspace/scenario-shots/G03-desktop-client-ended.png)) |
+| G04 | payout account without a KYC name goes to review | admins told; admin holds then releases payouts → professional told each time | mobile: **pass**<br>desktop: **pass** | `gaps.spec.ts:102` | phone (Pixel 7), desktop 1366×820 | en | 19 Oct 2026, 10:49 am IST | UI | 8 ([first](/workspace/scenario-shots/G04-desktop-account-review.png)) |
 | J01 | video call: both sides fetch ICE servers from the ice-servers function, then connect | STUN list (TURN when keys are set) used | desktop: **pass**<br>mobile: **pass** | `m11-journeys.spec.ts:29` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:33 am IST | UI | 2 ([first](/workspace/scenario-shots/J01-desktop-connected.png)) |
 | J02 | ice-servers down (500) | call still connects with the built-in STUN fallback | desktop: **pass**<br>mobile: **pass** | `m11-journeys.spec.ts:45` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:34 am IST | UI | 2 ([first](/workspace/scenario-shots/J02-desktop-connected-fallback.png)) |
 | J03 | SMS hook: unsigned / wrong secret / stale | 401, bad OTP → 400, signed → 200 and the OTP SMS is queued (mock MSG91) | desktop: **pass**<br>mobile: **pass** | `m11-journeys.spec.ts:66` | desktop 1366×820, phone (Pixel 7) | en | 19 Oct 2026, 4:34 am IST | API (Auth → hook contract) |  |
