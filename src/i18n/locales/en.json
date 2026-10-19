@@ -1225,5 +1225,8 @@
     "body": "Opens like an app, rings for calls, works on slow networks.",
     "install": "Install",
     "later": "Not now"
+  },
+  "testMode": {
+    "banner": "Test version — payments and OTP are not real"
   }
 }

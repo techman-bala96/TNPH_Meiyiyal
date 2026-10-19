@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { NetworkBanner } from "@/components/app/NetworkBanner";
+import { TestModeBanner } from "@/components/app/TestModeBanner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/hooks/useAuth";
@@ -39,6 +40,7 @@ export default function App() {
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem storageKey="meiyiyal-theme" disableTransitionOnChange>
     <QueryClientProvider client={qc}>
       <Toaster />
+      <TestModeBanner />
       <NetworkBanner />
       <BrowserRouter>
         <AuthProvider>

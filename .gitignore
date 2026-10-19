@@ -33,3 +33,4 @@ playwright-report/
 .env.local
 .cache/
 .wrangler/
+admin-totp-secret.txt

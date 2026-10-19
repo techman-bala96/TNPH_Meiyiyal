@@ -213,7 +213,7 @@ export function ConsultProvider({ children }: { children: ReactNode }) {
       <MessageSheet target={msgTarget} onClose={() => setMsgTarget(null)} />
       {pill && (
         <button data-testid="active-session-pill" data-paused={active.paused} onClick={() => nav(`/session/${active.data!.id}`)}
-          className={`fixed inset-x-3 top-[calc(0.5rem+env(safe-area-inset-top))] z-[70] mx-auto flex max-w-sm items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-white shadow-xl animate-in slide-in-from-top-2 ${active.paused ? "bg-amber-600" : "bg-emerald-600"}`}>
+          className={`fixed inset-x-3 top-[calc(0.5rem+var(--tm-h,env(safe-area-inset-top)))] z-[70] mx-auto flex max-w-sm items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-white shadow-xl animate-in slide-in-from-top-2 ${active.paused ? "bg-amber-600" : "bg-emerald-600"}`}>
           {active.paused ? <PauseCircle className="h-4 w-4" /> : <span className="relative flex h-2.5 w-2.5"><span className="absolute inset-0 animate-ping rounded-full bg-white/70" /><span className="relative h-2.5 w-2.5 rounded-full bg-white" /></span>}
           <span className="flex-1 truncate text-left">{active.paused ? t("nearby.session.backPaused") : t("nearby.session.back")}</span>
         </button>)}

@@ -86,6 +86,7 @@ If the domain lapses, the whole site stops.
    `VITE_SUPABASE_PUBLISHABLE_KEY=<anon key>`, `VITE_AGENT_URL=https://agent.meiyiyal.com`,
    `VITE_ADMIN_HOST=admin.meiyiyal.com`, `VITE_GRIEVANCE_NAME/EMAIL/PHONE/ADDRESS`, and as each provider goes live:
    `VITE_CAPTCHA_PROVIDER` + `VITE_CAPTCHA_SITE_KEY`, `VITE_VAPID_PUBLIC_KEY`, `VITE_STT`, maps (`.env.example`).
+   `VITE_TEST_MODE` must be **empty or absent** for the real launch (it is `true` only for the test deployment, §8).
    **Never** put a secret (service-role key, Razorpay secret …) here. After changing a variable: Deployments →
    *Retry deployment* (they are read at build time).
 4. Settings → Builds → **Branch control → Preview branches: None** (so other branches are not published).
@@ -180,6 +181,78 @@ Why grey for these:
 - Legal: lawyer-reviewed `/privacy` and `/terms` replace the DRAFT text (`src/features/legal/content.ts`); Grievance
   Officer details in `VITE_GRIEVANCE_*`; remove the DRAFT banner (`legal.draft` key / `Legal.tsx`).
 - Monitoring: Supabase → Reports + Log drains (optional); an uptime check on `/login`, `agent…/agent/health`, `verify…/verify/health`.
+
+## 8. Test deployment on meiyiyal.com (mocks on)
+**Decided 19 Oct 2026:** before the real keys exist, meiyiyal.com runs a **test version**: Cloudflare Pages + a free
+hosted Supabase project, every provider on its mock (payments, SMS/OTP with fixed codes, KYC, verification, push), and
+demo professionals. Everything in §1–§3 applies, with the differences below. Going live for real later = new keys in the
+same project (or a fresh Pro project), `VITE_TEST_MODE` removed, demo data deleted (end of this section).
+
+### 8a. The `VITE_TEST_MODE` flag
+`VITE_TEST_MODE=true` at build time (Pages → Settings → Environment variables) turns on:
+- a slim, non-dismissable bar on **every** screen, admin included: *"Test version — payments and OTP are not real"* /
+  *"சோதனைப் பதிப்பு — பணம் செலுத்துதலும் OTP-யும் உண்மையானவை அல்ல"* (follows the app language). The page, sticky headers
+  and the session pill move down under it; the bottom nav is untouched (`src/components/app/TestModeBanner.tsx`, `index.css`);
+- `<meta name="robots" content="noindex, nofollow">` in `index.html` and a `robots.txt` that disallows everything,
+  so search engines don't list the test site.
+
+Any other value (empty, `false`, missing) = nothing changes; the real build is identical to one without the flag.
+Changing it needs a rebuild: Deployments → *Retry deployment*.
+
+### 8b. Supabase (free tier, region Mumbai)
+Same as §1 steps 1–5 (`db push`, `settings.sql`, `functions deploy`), on the **Free** plan (pauses after 7 days without
+traffic; Dashboard → *Restore* brings it back; no daily backups, which is fine for test data). Then:
+1. **Function secrets (mocks):** `npx supabase secrets set SMS_PROVIDER=mock KYC_PROVIDER=mock
+   MOCK_PAYMENT_SECRET=<random> MOCK_WEBHOOK_SECRET=<random> ICE_PROVIDER=stun`. Leave every Razorpay / RazorpayX /
+   MSG91 / Surepass secret **unset**: payments and payouts then stay on the mock checkout (`payments_mock` /
+   `payouts_mock` settings stay on; check them in Admin → Settings).
+   `settings.sql` is written for the real launch, so for the test version put two mocks back afterwards (SQL editor):
+   `UPDATE public.app_settings SET value='true' WHERE key='push_mock'; UPDATE public.app_settings SET value='"123456"'
+   WHERE key='kyc_stub_otp';` (mock push; the mock KYC / step-up code is 123456). VAPID keys
+   (`node scripts/gen-vapid-keys.mjs`) are optional; without them the push switch says push is unavailable.
+2. **Auth → URL configuration:** Site URL `https://meiyiyal.com`; Redirect URLs `https://meiyiyal.com/**`,
+   `https://admin.meiyiyal.com/**` (add `https://meiyiyal.pages.dev/**` while trying it before DNS is ready).
+3. **Auth → Providers → Phone:** on. Hosted Supabase needs an SMS sender before it accepts phone sign-in: use
+   **Hooks → Send SMS** → `https://<project-ref>.supabase.co/functions/v1/sms-hook` with `SMS_PROVIDER=mock` (no SMS
+   is sent; codes land in `public.sms_outbox`) and copy the hook secret into `SEND_SMS_HOOK_SECRET`.
+4. **Fixed test OTPs:** Auth → Providers → Phone → **Test phone numbers and OTPs** (no SMS, no hook call for these):
+   `919876543210=123456, 919000000003=135790, 919000000001=654321, 919000000004=112233, 919000000002=246810`
+   (same as `supabase/config.toml` `[auth.sms.test_otp]`). Supabase lets test numbers be valid for a limited time;
+   set the expiry far ahead and renew it if sign-in starts saying "invalid code".
+5. **Auth → MFA:** TOTP on (the admin needs an authenticator code). Captcha off (`VITE_CAPTCHA_PROVIDER` empty).
+6. **Demo data** (from your PC, Python 3 + `psql`; DB URL from Dashboard → *Connect* → Session pooler):
+   ```bash
+   MEIYIYAL_DEMO_SEED=yes SUPABASE_URL=https://<project-ref>.supabase.co \
+   SUPABASE_SERVICE_ROLE_KEY=<service_role or sb_secret key> SUPABASE_ANON_KEY=<anon or sb_publishable key> \
+   SUPABASE_DB_URL='postgresql://postgres.<project-ref>:<db-password>@aws-0-ap-south-1.pooler.supabase.com:5432/postgres' \
+   python3 scripts/seed_demo.py
+   ```
+   Creates 17 approved demo professionals (doctors incl. vet/physio, lawyers, engineers) across 9 districts, the two
+   clients, the admin (role + authenticator; the key is printed and saved to `admin-totp-secret.txt`, which git
+   ignores) and a pg_cron job `demo-presence` that keeps the demo pros online. Safe to re-run. **Test projects only:**
+   it refuses to run without `MEIYIYAL_DEMO_SEED=yes`.
+
+### 8c. Pages build variables for the test version
+`NODE_VERSION=22`, `VITE_TEST_MODE=true`, `VITE_SUPABASE_URL=https://<project-ref>.supabase.co`,
+`VITE_SUPABASE_PUBLISHABLE_KEY=<anon / publishable key>`, `VITE_ADMIN_HOST=admin.meiyiyal.com`.
+Leave `VITE_AGENT_URL` empty unless the VM (§4) is up (voice search / AI helper are then hidden or fall back), and
+leave `VITE_CAPTCHA_*`, `VITE_CALL_PROVIDER`, `VITE_MAPS_PROVIDER` empty (defaults: no captcha, WebRTC with STUN, OSM).
+Without TURN (§4) calls can fail on mobile data; Wi-Fi works best.
+
+### 8d. Logins on the test site
+| who | phone | OTP |
+| --- | --- | --- |
+| client | 9876543210 | 123456 |
+| second client | 9000000003 | 135790 |
+| doctor (Dr. Priya Raman) | 9000000001 | 654321 |
+| lawyer (Adv. Lakshmi Narayanan) | 9000000004 | 112233 |
+| admin | 9000000002 | 246810, then the authenticator code |
+
+### 8e. From test to real launch
+1. Remove `VITE_TEST_MODE` in Pages and redeploy (bar and noindex disappear).
+2. Delete demo data: `SELECT cron.unschedule('demo-presence');` and delete the demo users (phones `919000000%` and
+   `919876543210`) in Dashboard → Authentication → Users; remove the test phone numbers.
+3. Do §5 (real providers one at a time) and upgrade the project to Pro (backups, no pausing) per §1.7.
 
 ## Appendix: Hostinger shared hosting (fallback only, not used)
 Only if you ever move off Cloudflare Pages: buy a Hostinger web hosting plan, upload the contents of `dist/` plus
