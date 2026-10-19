@@ -13,8 +13,9 @@ test("[FS01] first open on a new phone: Tamil chosen → phone OTP sign-up → l
   await p.addInitScript(() => {
     // Chrome fires beforeinstallprompt when the PWA is installable; simulate it a moment after load
     (window as unknown as { __prompted: number }).__prompted = 0;
-    setTimeout(() => { const e = new Event("beforeinstallprompt") as Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: string }> };
-      e.prompt = async () => { (window as unknown as { __prompted: number }).__prompted++; }; e.userChoice = Promise.resolve({ outcome: "accepted" }); window.dispatchEvent(e); }, 300);
+    // (after "load", like Chrome: a fixed 300 ms could fire before the dev server had run the app's modules)
+    window.addEventListener("load", () => setTimeout(() => { const e = new Event("beforeinstallprompt") as Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: string }> };
+      e.prompt = async () => { (window as unknown as { __prompted: number }).__prompted++; }; e.userChoice = Promise.resolve({ outcome: "accepted" }); window.dispatchEvent(e); }, 300));
   });
   await p.goto("/");
   await expect(p).toHaveURL(/\/login$/);
