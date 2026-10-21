@@ -50,6 +50,6 @@ deploy/              cloudflare (Pages _headers), coturn, production     docs/  
 
 - `docs/HANDOFF.md` — every feature: how it works, what is mocked, every setting, and **What Bala must provide**.
 - `docs/GO-LIVE.md` — production steps for meiyiyal.com (Cloudflare Pages + DNS; Hostinger keeps the domain) + hosted Supabase (Mumbai).
-- `docs/admin-subdomain.md` — admin console on admin.meiyiyal.com with TOTP.
+- `docs/admin-subdomain.md` — optional admin.meiyiyal.com host (not used; console is meiyiyal.com/admin with TOTP).
 
 Legal pages (`/privacy`, `/terms`) are **drafts** and must be reviewed by a lawyer before launch.

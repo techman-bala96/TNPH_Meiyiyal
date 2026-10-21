@@ -84,11 +84,18 @@ If the domain lapses, the whole site stops.
 3. **Environment variables → Production** (plain variables; these are public values that end up in the browser):
    `NODE_VERSION=22` (the repo also has `.node-version`), `VITE_SUPABASE_URL=https://<project-ref>.supabase.co`,
    `VITE_SUPABASE_PUBLISHABLE_KEY=<anon key>`, `VITE_AGENT_URL=https://agent.meiyiyal.com`,
-   `VITE_ADMIN_HOST=admin.meiyiyal.com`, `VITE_GRIEVANCE_NAME/EMAIL/PHONE/ADDRESS`, and as each provider goes live:
+   `VITE_ADMIN_HOST` **empty** (see the note below), `VITE_GRIEVANCE_NAME/EMAIL/PHONE/ADDRESS`, and as each provider goes live:
    `VITE_CAPTCHA_PROVIDER` + `VITE_CAPTCHA_SITE_KEY`, `VITE_VAPID_PUBLIC_KEY`, `VITE_STT`, maps (`.env.example`).
    `VITE_TEST_MODE` must be **empty or absent** for the real launch (it is `true` only for the test deployment, §8).
    **Never** put a secret (service-role key, Razorpay secret …) here. After changing a variable: Deployments →
    *Retry deployment* (they are read at build time).
+   > **Leave `VITE_ADMIN_HOST` empty.** The sign-in session lives in the browser's `localStorage`, which is separate
+   > for each domain. With `VITE_ADMIN_HOST=admin.meiyiyal.com`, opening `meiyiyal.com/admin` redirects to
+   > `admin.meiyiyal.com`, where there is no session, so the admin page bounces back to the normal app. That was the
+   > bug found on 21 Oct 2026. The admin console therefore lives at `https://meiyiyal.com/admin`. Today
+   > `admin.meiyiyal.com` just shows the normal app. If a separate admin domain is wanted at launch, admins must sign
+   > in **directly on that domain** (not via meiyiyal.com), and it must be in the Supabase Redirect URLs
+   > (docs/admin-subdomain.md).
 4. Settings → Builds → **Branch control → Preview branches: None** (so other branches are not published).
 5. **Custom domains** → Set up a custom domain → add `meiyiyal.com`, then `www.meiyiyal.com`, then
    `admin.meiyiyal.com`. Cloudflare creates the DNS records and SSL for each one itself.
@@ -111,7 +118,8 @@ switched to Git later; pick one way.)
 - `https://meiyiyal.com/login` opens with a padlock; `https://www.meiyiyal.com` goes to `https://meiyiyal.com`.
 - Reload on a deep link (e.g. `https://meiyiyal.com/privacy`) still shows the page, not an error.
 - Chrome → ⋮ → *Install app* works; Lighthouse PWA installable, accessibility ≥ 95 (same checks as `npm run test:pwa`).
-- `https://admin.meiyiyal.com/admin` asks for sign-in + authenticator; `https://meiyiyal.com/admin` moves there.
+- `https://meiyiyal.com/admin` (signed in on meiyiyal.com) asks for the authenticator and opens the console; it does
+  **not** move to another host (`VITE_ADMIN_HOST` empty).
 - DevTools → Console shows no "Content Security Policy" errors while signing in, paying and making a call.
 
 ## 3. DNS records (Cloudflare → meiyiyal.com → DNS → Records)
@@ -212,6 +220,11 @@ traffic; Dashboard → *Restore* brings it back; no daily backups, which is fine
    (`node scripts/gen-vapid-keys.mjs`) are optional; without them the push switch says push is unavailable.
 2. **Auth → URL configuration:** Site URL `https://meiyiyal.com`; Redirect URLs `https://meiyiyal.com/**`,
    `https://admin.meiyiyal.com/**` (add `https://meiyiyal.pages.dev/**` while trying it before DNS is ready).
+2a. **Auth → Providers → Google** (test site, set up 21 Oct 2026): Google Cloud project `hopeful-market-512207-h6`,
+   OAuth client "Meiyiyal Supabase" (Web application), consent screen **published to production** (any Gmail can sign
+   in; Google shows "unverified app" until the app is verified before the real launch). Authorized redirect URI:
+   `https://dsegcwepcbphjyfzvmab.supabase.co/auth/v1/callback`. The Client ID and Secret are entered only in the
+   Supabase dashboard; never commit them.
 3. **Auth → Providers → Phone:** on. Hosted Supabase needs an SMS sender before it accepts phone sign-in: use
    **Hooks → Send SMS** → `https://<project-ref>.supabase.co/functions/v1/sms-hook` with `SMS_PROVIDER=mock` (no SMS
    is sent; codes land in `public.sms_outbox`) and copy the hook secret into `SEND_SMS_HOOK_SECRET`.
@@ -234,7 +247,8 @@ traffic; Dashboard → *Restore* brings it back; no daily backups, which is fine
 
 ### 8c. Pages build variables for the test version
 `NODE_VERSION=22`, `VITE_TEST_MODE=true`, `VITE_SUPABASE_URL=https://<project-ref>.supabase.co`,
-`VITE_SUPABASE_PUBLISHABLE_KEY=<anon / publishable key>`, `VITE_ADMIN_HOST=admin.meiyiyal.com`.
+`VITE_SUPABASE_PUBLISHABLE_KEY=<anon / publishable key>`. Leave `VITE_ADMIN_HOST` **empty** (§2b note: the session
+is per domain, so the redirect to admin.meiyiyal.com lost it; bug found 21 Oct 2026).
 Leave `VITE_AGENT_URL` empty unless the VM (§4) is up (voice search / AI helper are then hidden or fall back), and
 leave `VITE_CAPTCHA_*`, `VITE_CALL_PROVIDER`, `VITE_MAPS_PROVIDER` empty (defaults: no captcha, WebRTC with STUN, OSM).
 Without TURN (§4) calls can fail on mobile data; Wi-Fi works best.
