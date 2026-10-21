@@ -192,7 +192,7 @@ feature — what it does, where the code is, what is **mock** today, which setti
   (RPCs or RLS) until the session is `aal2`. `/admin` shows enrol (QR + manual key) or a code prompt. Turning MFA **off** is
   refused from the app (SQL only). Admin → Security lists admins and resets a colleague's lost authenticator (reason
   required, audited). Events `admin.mfa.enrolled/verified`, `admin.idle.signout` in the audit log.
-- Idle sign-out after `admin_idle_minutes` (30). Optional `VITE_ADMIN_HOST=admin.meiyiyal.com` redirect (docs/admin-subdomain.md).
+- Idle sign-out after `admin_idle_minutes` (30). `VITE_ADMIN_HOST` is left **empty**: the session is per domain (localStorage), so the redirect to admin.meiyiyal.com lost it (bug 21 Oct 2026); console at meiyiyal.com/admin (docs/admin-subdomain.md).
 - **Captcha adapter** (`features/captcha`): `VITE_CAPTCHA_PROVIDER` none | mock | turnstile | hcaptcha + site key; token
   passed to Supabase Auth, verified server-side when `[auth.captcha]` is enabled. A provider without a site key falls back to
   none (no lock-out).

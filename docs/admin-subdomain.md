@@ -1,4 +1,10 @@
-# Admin on admin.meiyiyal.com (optional, recommended)
+# Admin on admin.meiyiyal.com (optional, not used now)
+
+> **Current setup: leave `VITE_ADMIN_HOST` empty; the console is at `https://meiyiyal.com/admin`.** The sign-in
+> session lives in `localStorage`, which is separate for each domain, so redirecting meiyiyal.com/admin to
+> admin.meiyiyal.com loses the session and bounces to the normal app (bug found 21 Oct 2026).
+> `admin.meiyiyal.com` currently just shows the normal app. To use a separate admin domain at launch, admins must
+> sign in directly on that domain, and it must be added to the Supabase Redirect URLs (step 4).
 
 The admin console is the same web app, served from a second host name. Security does **not** depend on the host:
 the database refuses every admin read and write unless the signed-in user holds the `admin` role **and** the session
@@ -14,9 +20,10 @@ has passed the authenticator (TOTP) step (`aal2`). The separate host adds:
    no second project): Workers & Pages → `meiyiyal` → Custom domains → add `admin.meiyiyal.com`. Cloudflare makes the
    `CNAME admin → meiyiyal.pages.dev` record and the free SSL certificate itself (docs/GO-LIVE.md §2b, §3).
 2. **Nothing else to upload.** Every push to `meyiyal-v1` updates both hosts at once.
-3. **Build setting.** Build the web app with `VITE_ADMIN_HOST=admin.meiyiyal.com`. With it set:
+3. **Build setting (only if you adopt this).** `VITE_ADMIN_HOST=admin.meiyiyal.com`. With it set:
    - visiting `/admin` on meiyiyal.com sends the browser to `https://admin.meiyiyal.com/admin`;
-   - admins sign in again there (sessions are per origin) and pass the authenticator step.
+   - the meiyiyal.com session does **not** carry over (localStorage is per domain); admins must sign in directly on
+     admin.meiyiyal.com and pass the authenticator step.
 4. **Supabase Auth URLs.** Dashboard → Authentication → URL configuration → add
    `https://admin.meiyiyal.com/auth/callback` to *Redirect URLs* (keep the main one).
 5. **Headers.** `deploy/cloudflare/_headers` sends `X-Robots-Tag: noindex` for `https://admin.meiyiyal.com/*` and `/admin`,
