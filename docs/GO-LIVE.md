@@ -114,6 +114,21 @@ What the repo adds to the build (`deploy/cloudflare/`, copied into `dist/` by `v
 `npx wrangler pages deploy dist --project-name meiyiyal --branch meyiyal-v1`. (A project made this way cannot be
 switched to Git later; pick one way.)
 
+### 2b-2. Auto-deploy (GitHub Actions)
+The Pages project is *Direct Upload*, so it cannot use Cloudflare's Git integration. Instead
+`.github/workflows/deploy-pages.yml` builds and runs `wrangler pages deploy dist --project-name=meiyiyal
+--branch=meyiyal-v1` on every push to `meyiyal-v1` (and by hand: Actions → *Deploy to Cloudflare Pages* → *Run
+workflow*). One deploy runs at a time. Roll back in Cloudflare: Deployments → an older one → *Rollback*.
+
+Set once in GitHub → repo → Settings → Secrets and variables → Actions:
+- **Secrets** (never commit these): `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. Make a **new** token
+  (My Profile → API Tokens → Create custom token) with only **Account › Cloudflare Pages: Edit** for this account,
+  and revoke any token that was shared in chat or email.
+- **Variables** (public, they end up in the browser bundle): `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`
+  (anon key) and `VITE_TEST_MODE` (`true` for the test site; delete it for the real launch, §8).
+  `VITE_ADMIN_HOST` is always empty in the workflow. Add other `VITE_*` values (§2b list) to both the variables and
+  the workflow's Build step as each provider goes live.
+
 ### 2c. Checks
 - `https://meiyiyal.com/login` opens with a padlock; `https://www.meiyiyal.com` goes to `https://meiyiyal.com`.
 - Reload on a deep link (e.g. `https://meiyiyal.com/privacy`) still shows the page, not an error.
