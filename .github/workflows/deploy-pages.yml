@@ -1,0 +1,53 @@
+# Builds the web app and deploys it to Cloudflare Pages (project "meiyiyal") on every push to meyiyal-v1.
+# Setup and the required secrets/variables: docs/GO-LIVE.md §2b "Auto-deploy (GitHub Actions)".
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [meyiyal-v1]
+  workflow_dispatch:
+
+concurrency:
+  group: cloudflare-pages-meiyiyal
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - run: npm ci
+
+      # Public build values only (they end up in the browser bundle anyway).
+      # vite.config.ts copies deploy/cloudflare/_headers and _redirects into dist/.
+      - name: Build
+        run: npm run build
+        env:
+          VITE_TEST_MODE: ${{ vars.VITE_TEST_MODE }}
+          VITE_ADMIN_HOST: ""
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+
+      - name: Check build output
+        run: |
+          test -f dist/index.html
+          test -f dist/_headers
+          test -f dist/_redirects
+          grep -q "${{ vars.VITE_SUPABASE_URL }}" dist/assets/index-*.js
+
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=meiyiyal --branch=meyiyal-v1 --commit-hash=${{ github.sha }}
